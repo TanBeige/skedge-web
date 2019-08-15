@@ -27,7 +27,7 @@ class App extends Component {
       this.props.client
         .mutate({
           mutation: gql`
-            mutation($userId: String!, $timestamp: timestamptz!) {
+            mutation($userId: String!, $timestamp: timestamp!) {
               update_users(
                 where: { auth0_id: { _eq: $userId } }
                 _set: { auth0_id: $userId, last_seen: $timestamp }

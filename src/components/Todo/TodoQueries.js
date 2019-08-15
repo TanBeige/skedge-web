@@ -10,7 +10,7 @@ const EVENT_FRAGMENT = gql`
 `;
 
 const USER_FRAGMENT = gql`
-  fragment UserFragment on entity {
+  fragment UserFragment on user {
     username
   }
 `;
@@ -35,7 +35,7 @@ const QUERY_PUBLIC_EVENT = gql`
       limit: $eventLimit
     ) {
       ...TodoFragment
-      user {
+      users {
         ...UserFragment
       }
     }

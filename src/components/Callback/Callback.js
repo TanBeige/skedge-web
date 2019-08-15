@@ -9,6 +9,7 @@ class Callback extends Component {
       justifyContent: "center",
       height: "100vh",
       width: "100vw",
+      fontSize: 100,
       top: 0,
       bottom: 0,
       left: 0,
@@ -18,7 +19,7 @@ class Callback extends Component {
 
     return (
       <div style={style}>
-        <img src={loading} alt="loading" />
+        <img src={loading} alt="loading aaa" />
       </div>
     );
   }
