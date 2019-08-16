@@ -51,7 +51,7 @@ const QUERY_FEED_PUBLIC_EVENT = gql`
       order_by: { created_at: desc }
     ) {
       ...TodoFragment
-      user {
+      users {
         ...UserFragment
       }
     }

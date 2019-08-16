@@ -26,6 +26,7 @@ class Auth {
   }
 
   login() {
+    console.log("Logging In")
     this.auth0.authorize();
   }
 
@@ -75,7 +76,9 @@ class Auth {
     return this.sub;
   }
 
+
   renewSession() {
+    console.log("renewSession() Running...")
     const _this = this;
     return new Promise((resolve, reject) => {
       _this.auth0.checkSession({}, (err, authResult) => {
@@ -83,6 +86,7 @@ class Auth {
           _this.setSession(authResult);
           resolve(authResult);
         } else if (err) {
+          console.log("error in checkSession(): ", authResult)
           _this.logout();
           reject(err);
         }
@@ -92,16 +96,19 @@ class Auth {
 
   logout() {
     // Remove tokens and expiry time
+    console.log("logging out")
     this.accessToken = null;
     this.idToken = null;
     this.expiresAt = 0;
+
+    console.log(this.expiresAt)
 
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem("isLoggedIn");
 
     // navigate to the home route
     history.replace("/");
-    // window.location.href="/home";
+    //window.location.href="/home";
   }
 
   isAuthenticated() {
