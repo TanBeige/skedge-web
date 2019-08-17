@@ -44,8 +44,7 @@ class LoginButtons extends Component {
             <div className='loginButtons' style={style}>
                 {/*<LoginModals type='signup' {...this.props} />
                 <LoginModals type='login' {...this.props} />*/}
-                <Button color='secondary' variant={buttonStyle} style={{display: 'block', width: '8em', marginBottom: 6}} onClick={this.handleClick}>Sign Up</Button>
-                <Button color='secondary' size='small' variant='outlined' onClick={this.handleClick}>Login</Button> 
+                <Button color='secondary' variant={buttonStyle} style={{display: 'block', width: '8em'}} onClick={this.handleClick}>Sign Up</Button>
             </div>
          );
     }

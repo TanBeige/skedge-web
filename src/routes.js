@@ -5,7 +5,7 @@ import Home from "./components/Home/Home";
 import Callback from "./components/Callback/Callback";
 import auth from "./components/Auth/Auth";
 //import LandingPage from "./components/LandingPage/LandingPage";
-import LandingPage from './components/LandingPage/LandingPageTemplate/Home'
+import LandingPage from './components/LandingPage/LandingPageTemplate/LandingPage'
 import history from "./utils/history";
 
 import { ApolloProvider } from "react-apollo";
@@ -13,7 +13,7 @@ import makeApolloClient from "./apollo";
 
 let client;
 
-const provideClient = (Component, renderProps) => {
+const provideClient = (Component, renderProps) => { 
   // check if logged in
   if (localStorage.getItem("isLoggedIn") === "true") {
     // check if client exists

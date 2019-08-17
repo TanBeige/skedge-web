@@ -20,17 +20,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const LANGUAGES = [
-  {
-    code: 'en-US',
-    name: 'English',
-  },
-  {
-    code: 'fr-FR',
-    name: 'Français',
-  },
-];
-
 export default function AppFooter() {
   const classes = useStyles();
 
@@ -40,8 +29,8 @@ export default function AppFooter() {
         <Grid container spacing={1} direction={'row'}>
           <Grid container>
             <Grid item xs={4} sm={3}>
-              <Link href="/premium-themes/onepirate/terms/" className={classes.text}>Terms<br/></Link>
-              <Link href="/premium-themes/onepirate/privacy/" className={classes.text}>Privacy</Link>
+              <Link href="/terms/" className={classes.text}>Terms<br/></Link>
+              <Link href="/privacy/" className={classes.text}>Privacy</Link>
             </Grid>
             <Grid item xs={4} sm={3}>
                 <p className={classes.text}>© 2019 <br/>Skedge</p>
