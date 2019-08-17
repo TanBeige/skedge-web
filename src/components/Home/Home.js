@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import gql from "graphql-tag";
 import "../../styles/App.css";
-import TodoPublicWrapper from "../Todo/TodoPublicWrapper";
-import TodoPrivateWrapper from "../Todo/TodoPrivateWrapper";
+import EventPublicWrapper from "../Todo/EventPublicWrapper";
+import EventPrivateWrapper from "../Todo/EventPrivateWrapper";
 import OnlineUsers from "../OnlineUsers/OnlineUsers";
 import { Navbar, Button } from "react-bootstrap";
 import auth from "../Auth/Auth";
@@ -105,7 +105,7 @@ class App extends Component {
               <div className="col-md-6 col-sm-12">
                 <div className="wd95 addPaddTopBottom">
                   <div className="sectionHeader">Personal todos</div>
-                  <TodoPrivateWrapper
+                  <EventPrivateWrapper
                     client={this.props.client}
                     userId={auth.getSub()}
                   />
@@ -114,7 +114,7 @@ class App extends Component {
               <div className="col-xs-12 col-md-6 col-sm-12 grayBgColor todoMainWrapper commonBorRight">
                 <div className="wd95 addPaddTopBottom">
                   <div className="sectionHeader">Public todos</div>
-                  <TodoPublicWrapper
+                  <EventPublicWrapper
                     client={this.props.client}
                     userId={auth.getSub()}
                   />

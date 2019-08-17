@@ -1,0 +1,110 @@
+
+.card {
+    margin: 'auto';
+    width: '95%';
+    max-width: 425;
+    border-radius: 10;
+}
+
+.media {
+    height: 140,
+}
+
+.distance{
+    color: gray;
+    font-size: 0.8em;
+    text-align: right;
+}
+
+
+//This is currently for mobile, web will be added later
+/*
+.Event {
+    position: relative;
+    display: block;
+    width: 90%;
+    margin: auto;
+    border: 2px solid black;
+    border-radius: 1.5em;
+    overflow: hidden;
+    background-color: white;
+}
+
+.image-container img {
+    width: 100%;
+    height: 8em;
+    object-fit: cover;
+    //border-top-left-radius: 0.85em;
+    //border-top-right-radius: 0.85em;
+}
+
+.event-information {
+    text-align: left;
+    //height: 6em;
+    width: 100%;
+}
+
+.event-bio {
+    height: 3em;
+    margin-bottom: 0.5em;
+}
+
+.event-name{
+    text-align: left;
+    margin: 0px;
+    padding-top: 0em;
+}
+p.event-name {
+    font-family: 'Montserrat', sans-serif;
+    //-webkit-font-smoothing: antialiased;
+    //-moz-osx-font-smoothing: grayscale; 
+    font-weight: 900;
+    text-shadow: black -1px 1px 0px;
+    -webkit-text-stroke: 0.2px black;
+    color: complement($color: #FFFFFF);
+    font-size: 1.5em;
+}
+
+.event-address p {
+    //display: inline-block;
+    margin: 0em;
+}
+
+.rating{
+    display: inline-block;
+    width: 100%;
+    margin: 0px;
+}
+.category {
+    margin-bottom: 2em;
+}
+a.category{
+    font-size: 20px;
+    font-weight: bold;
+    padding: 2px 8px 2px 8px;
+    color: white;
+    background-color: red;
+    border-radius: 1.5em;
+    margin: 0px;
+    margin-top: 1em;
+    margin-left: 1em;
+}
+.distance {
+    position: absolute;
+    color: gray;
+    font-size: 0.8em;
+    text-align: right;
+    //float: right;
+    //margin-top: 1em;
+    //margin-right: 2em;
+    bottom: 0;
+    right: 0;
+    margin-right: 1em;
+    margin-bottom: 2px;
+}
+
+.event-bottom {
+    height: 2em;
+}
+
+*/

@@ -10,7 +10,6 @@ class Auth {
     audience: 'https://skedge.auth0.com/userinfo',
     responseType: "token id_token",
     scope: "openid profile",
-    connection: 'twitter'
   });
   constructor() {
     this.accessToken = null;
@@ -105,7 +104,7 @@ class Auth {
 
     // navigate to the home route
     //history.replace("/logout");
-    //window.location.href="https://skedge.auth0.com/v2/logout?returnTo=http://localhost:3000&client_id=RH47tlmwwW28QH44WrohPJ1YyjAAEEbd";
+    window.location.href=`https://skedge.auth0.com/v2/logout?returnTo=${AUTH_CONFIG.webUrl}&client_id=RH47tlmwwW28QH44WrohPJ1YyjAAEEbd`;
   }
 
   isAuthenticated() {

@@ -1,5 +1,10 @@
 import gql from "graphql-tag";
 
+/*
+  users is the database TABLE.
+  user is the relationship between events.creator_id and users.auth0_id
+*/
+
 const EVENT_FRAGMENT = gql`
   fragment TodoFragment on events {
     id
@@ -10,7 +15,7 @@ const EVENT_FRAGMENT = gql`
 `;
 
 const USER_FRAGMENT = gql`
-  fragment UserFragment on user {
+  fragment UserFragment on users {
     username
   }
 `;
@@ -35,7 +40,7 @@ const QUERY_PUBLIC_EVENT = gql`
       limit: $eventLimit
     ) {
       ...TodoFragment
-      users {
+      user {
         ...UserFragment
       }
     }
@@ -51,7 +56,7 @@ const QUERY_FEED_PUBLIC_EVENT = gql`
       order_by: { created_at: desc }
     ) {
       ...TodoFragment
-      users {
+      user {
         ...UserFragment
       }
     }
@@ -84,6 +89,7 @@ const MUTATION_EVENT_ADD = gql`
       returning {
         id
         description
+        created_at
         updated_at
         is_public
       }
@@ -115,8 +121,7 @@ const SUBSCRIPTION_EVENT_PUBLIC_LIST = gql`
       limit: 1
     ) {
       id
-      text
-      is_completed
+      description
       created_at
       is_public
     }

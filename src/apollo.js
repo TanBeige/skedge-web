@@ -36,6 +36,7 @@ const makeApolloClient = () => {
       },
       connectionCallback: err => {
         if (err) {
+          console.log("Error: ",getHeaders())
           wsLink.subscriptionClient.close(false, false);
         }
       }
