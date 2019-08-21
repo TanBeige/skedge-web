@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import EventPrivateList from "./EventPrivateList";
 import EventInput from "./EventInput";
-import "../../styles/App.css";
+//import "../../styles/App.css";
 
 class EventPrivateWrapper extends Component {
   render() {

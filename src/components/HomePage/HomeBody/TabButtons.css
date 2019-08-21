@@ -1,0 +1,31 @@
+Button {
+    /*margin: 0px 100px 0px 0px;
+    width: 5em;*/
+}
+Button:hover {
+    /*maybe take the hover aspect out because it looks weird while scrolling*/
+}
+.tabButtons {
+    height: 4em;
+}
+.tabDiv {
+    top: 0px;
+    position: sticky;
+    width: 100%;
+    text-align: center;
+    background-color: white;
+}
+
+.tabGroup {
+    /*
+    position: sticky;
+    position: -webkit-sticky;
+    top: 4em;*/
+}
+
+@media only screen and (min-width: 600px) {
+    .tabGroup Button{
+        top: 0px;
+        height: 5em;
+    }
+}

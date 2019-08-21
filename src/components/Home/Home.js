@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import gql from "graphql-tag";
-import "../../styles/App.css";
+//import "../../styles/App.css";
 import EventPublicWrapper from "../Todo/EventPublicWrapper";
 import EventPrivateWrapper from "../Todo/EventPrivateWrapper";
 import OnlineUsers from "../OnlineUsers/OnlineUsers";

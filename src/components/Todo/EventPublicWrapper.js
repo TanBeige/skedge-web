@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import EventPublicList from "./EventPublicList";
 import EventInput from "./EventInput";
-import "../../styles/App.css";
+//import "../../styles/App.css";
 
 class EventPublicWrapper extends Component {
   render() {

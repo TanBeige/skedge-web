@@ -4,7 +4,7 @@ import { Query } from "react-apollo";
 import { GRAPHQL_URL } from "../../utils/constants";
 import EventItem from "./EventItem";
 import EventFilters from "./EventFilters";
-import { QUERY_PRIVATE_EVENT } from "./TodoQueries";
+import { QUERY_PRIVATE_EVENT } from "./EventQueries";
 
 class EventPrivateList extends Component {
   constructor() {

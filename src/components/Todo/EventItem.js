@@ -1,14 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
-import "../../styles/App.css";
+//import "../../styles/App.css";
 
 import {
   QUERY_PRIVATE_EVENT,
-  QUERY_PUBLIC_EVENT,
+  QUERY_LOCAL_EVENT,
   MUTATION_EVENT_UPDATE,
   MUTATION_EVENT_DELETE
-} from "./TodoQueries";
+} from "./EventQueries";
 
 const handleEventToggle = (
   toggleEvent,
@@ -26,7 +26,7 @@ const handleEventToggle = (
     },
     update: (cache, { data: { update_event } }) => {
       // eslint-disable-line
-      const query = type === "private" ? QUERY_PRIVATE_EVENT : QUERY_PUBLIC_EVENT;
+      const query = type === "private" ? QUERY_PRIVATE_EVENT : QUERY_LOCAL_EVENT;
       if (type === "private") {
         const data = cache.readQuery({
           query: query,
@@ -61,7 +61,7 @@ const handleEventDelete = (
     },
     update: (cache, { data: { update_event } }) => {
       // eslint-disable-line
-      const query = type === "private" ? QUERY_PRIVATE_EVENT : QUERY_PUBLIC_EVENT;
+      const query = type === "private" ? QUERY_PRIVATE_EVENT : QUERY_LOCAL_EVENT;
       if (type === "private") {
         const data = cache.readQuery({
           query: query,

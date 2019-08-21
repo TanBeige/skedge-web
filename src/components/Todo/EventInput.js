@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
-import "../../styles/App.css";
+//import "../../styles/App.css";
 
-import { QUERY_PRIVATE_EVENT, MUTATION_EVENT_ADD } from "./TodoQueries";
+import { QUERY_PRIVATE_EVENT, MUTATION_EVENT_ADD } from "./EventQueries";
 
 class EventInput extends React.Component {
   constructor() {

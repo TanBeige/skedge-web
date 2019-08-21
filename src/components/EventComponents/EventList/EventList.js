@@ -1,19 +1,23 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
-import EventItem from "./EventItem";
-import EventFilters from "./EventFilters";
-import {
-  SUBSCRIPTION_EVENT_LOCAL_LIST,
-  QUERY_LOCAL_EVENT,
-  QUERY_FEED_LOCAL_EVENT,
-  QUERY_FEED_LOCAL_OLD_EVENT
-} from "./EventQueries";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
+import Button from 'react-bootstrap/Button';
+import Grid from '@material-ui/core/Grid';
 
-class EventPublicList extends Component {
-  constructor() {
-    super();
+import {
+    QUERY_LOCAL_EVENT,
+    QUERY_FEED_LOCAL_EVENT,
+    QUERY_FEED_LOCAL_OLD_EVENT,
+    SUBSCRIPTION_EVENT_LOCAL_LIST
+} from "../../Todo/EventQueries";
+
+import Event from '../Event/Event';
+require('./EventList.scss')
+
+class EventList extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
-      filter: "all",
+      filter: "private",
       dataLength: 0,
       showNew: false,
       showOlder: true,
@@ -22,11 +26,12 @@ class EventPublicList extends Component {
       events: []
     };
     this.deletePublicEventClicked = this.deletePublicEventClicked.bind(this);
-    this.completePublicEventClicked = this.completePublicEventClicked.bind(this);
     this.loadMoreClicked = this.loadMoreClicked.bind(this);
     this.loadOlderClicked = this.loadOlderClicked.bind(this);
     this.filterResults = this.filterResults.bind(this);
   }
+
+  //-------------ComponentDidMount()----------------
   componentDidMount() {
     const { client } = this.props;
     const _this = this;
@@ -37,8 +42,8 @@ class EventPublicList extends Component {
         variables: { eventLimit: this.state.limit }
       })
       .then(data => {
+        console.log("Comp. Did Mount: ", data)
         this.setState({ events: data.data.events });
-        console.log("Events: ", this.state.events)
         const latestEventId = data.data.events.length
           ? data.data.events[0].id
           : null;
@@ -64,9 +69,9 @@ class EventPublicList extends Component {
           });
       });
   }
-  filterResults(type) {
-    this.setState({ filter: type });
-  }
+
+  // Support Function 
+
   loadMoreClicked() {
     const { client } = this.props;
     this.setState({ showNew: false, newEventsLength: 0 });
@@ -85,6 +90,7 @@ class EventPublicList extends Component {
         }
       });
   }
+
   loadOlderClicked() {
     const { client } = this.props;
     client
@@ -106,43 +112,24 @@ class EventPublicList extends Component {
         }
       });
   }
+
+  filterResults(type) {
+    this.setState({ filter: type });
+  }
+
   deletePublicEventClicked(deletedEvent) {
     const finalEvents = this.state.events.filter(t => {
       return t.id !== deletedEvent.id;
     });
     this.setState({ events: finalEvents });
   }
-  completePublicEventClicked(completedEvent) {
-    const finalEvents = this.state.events.filter(t => {
-      if (t.id === completedEvent.id) {
-        t.is_completed = !t.is_completed;
-        return t;
-      }
-      return t;
-    });
-    this.setState({ events: finalEvents });
-  }
-  render() {
-    const { userId, type } = this.props;
 
-    // apply client side filters for displaying events
-    let finalEvents = this.state.events;
-    if (this.state.filter === "active") {
-      finalEvents = this.state.events.filter(event => event.is_completed !== true);
-    } else if (this.state.filter === "completed") {
-      finalEvents = this.state.events.filter(event => event.is_completed === true);
-    }
+  render() { 
+    console.log("EventList.js: ", this.props)
+    let finalEvents = this.state.events
+    console.log("State Events: ", finalEvents)
 
-    // show new event feed logic
-    let showNewEvents = null;
-    if (this.state.showNew && this.state.newEventsLength) {
-      showNewEvents = (
-        <div className={"loadMoreSection"} onClick={this.loadMoreClicked}>
-          You have {this.state.newEventsLength} new{" "}
-          {this.state.newEventsLength > 1 ? "events" : "event"}
-        </div>
-      );
-    }
+    const { userId, type } = this.props;  //Might delete this later
 
     // show old event history logic
     let showOlderEvents = (
@@ -158,45 +145,35 @@ class EventPublicList extends Component {
       );
     }
 
-    return (
-      <Fragment>
-        <div className="todoListwrapper">
-          {showNewEvents}
-          <ul>
-            EventPublicList.js
-            {finalEvents.map((event, index) => {
-              return (
-                <EventItem
-                  key={index}
-                  index={index}
-                  event={event}
-                  type={type}
-                  userId={userId}
-                  client={this.props.client}
-                  deletePublicEventClicked={this.deletePublicEventClicked}
-                  completePublicEventClicked={this.completePublicEventClicked}
-                />
-              );
-            })}
-          </ul>
-          {showOlderEvents}
-        </div>
-        <EventFilters
-          events={this.state.events}
-          userId={userId}
-          type={type}
-          currentFilter={this.state.filter}
-          filterResults={this.filterResults}
-        />
-      </Fragment>
-    );
+      return ( 
+          <div className="EventList">
+            <h1>TESTINGGGGG</h1>
+              <Grid container spacing={1} direction="row">
+              {
+                  finalEvents.map((event, index) => {
+                    return (
+                        <Grid container item xs justify="center">
+                        <h1>TESTING EVENT LISTS {index}</h1>
+                            <div className='eachEvent'>
+                                <Event 
+                                  event={event} 
+                                  key={event.id} 
+                                  client={this.props.client}
+                                />
+                            </div>
+                        </Grid>
+                      )
+                  })
+              }
+              </Grid>
+          </div>
+      );
   }
 }
 
-EventPublicList.propTypes = {
-  userId: PropTypes.string,
+EventList.propTypes = {
   client: PropTypes.object,
   type: PropTypes.string
 };
-
-export default EventPublicList;
+ 
+export default EventList;
