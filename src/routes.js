@@ -3,6 +3,7 @@ import { Route, Router } from "react-router-dom";
 
 //Styling
 import { MuiThemeProvider } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from './styles/theme';
 
 //import Home from "./components/Home/Home";
@@ -62,6 +63,7 @@ export const makeMainRoutes = (loc) => {
   }
   return (
     <MuiThemeProvider theme={theme}>
+      <CssBaseline />
       <Router history={history}>
         <div>
           <Route

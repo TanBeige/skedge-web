@@ -10,10 +10,23 @@ import gql from "graphql-tag";
 const EVENT_FRAGMENT = gql`
   fragment TodoFragment on events {
     id
+
+    event_type
     name
     description
-    created_at
-    event_type
+    event_date
+    start_time 
+    end_time 
+    price
+    allow_invites 
+    host_approval 
+    category
+    web_url
+    cover_pic
+    street
+    city
+    state
+    zip_code
   }
 `;
 
@@ -37,7 +50,7 @@ const QUERY_USER_PROFILE = gql`
     events(
       where: {creator_id: { _eq: $userId }}
     ) {
-
+      ...TodoFragment
     }
   }
   ${EVENT_FRAGMENT}
@@ -182,6 +195,7 @@ const QUERY_ACCEPTED_FRIENDS = gql`
 
 
 export {
+  QUERY_USER_PROFILE,
   QUERY_PRIVATE_EVENT,
   QUERY_LOCAL_EVENT,
   QUERY_FEED_LOCAL_EVENT,
@@ -192,3 +206,6 @@ export {
   SUBSCRIPTION_EVENT_LOCAL_LIST,
   QUERY_ACCEPTED_FRIENDS
 };
+
+
+

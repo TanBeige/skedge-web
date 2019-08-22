@@ -1,0 +1,23 @@
+.createEvent {
+    position: absolute;
+    width: 100%;
+    background-color: #25e6bd;
+    height: 100%;
+}
+
+.localOrPrivate {
+    position: absolute;
+    margin-top: 50%;
+    width: 100%;
+    top: 30%;
+    margin: auto;
+    text-align: center;
+
+    font-family: 'Montserrat';
+    font-size: 3em;
+    font-weight: 900;
+    text-shadow: black -1px 1px 0px;
+    color: white;
+    -webkit-text-stroke: 0.2px black;
+    /*color: complement($color: #FFFFFF)*/
+}

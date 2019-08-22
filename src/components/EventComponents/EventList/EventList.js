@@ -147,13 +147,11 @@ class EventList extends Component {
 
       return ( 
           <div className="EventList">
-            <h1>TESTINGGGGG</h1>
               <Grid container spacing={1} direction="row">
               {
                   finalEvents.map((event, index) => {
                     return (
-                        <Grid container item xs justify="center">
-                        <h1>TESTING EVENT LISTS {index}</h1>
+                        <Grid container item xs justify="center" key={event.id}>
                             <div className='eachEvent'>
                                 <Event 
                                   event={event} 
