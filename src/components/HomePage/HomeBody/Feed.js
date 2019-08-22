@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import EventList from '../../EventComponents/EventList/EventList';
-import EventDisplayButton from './EventDisplayButton';
 import TabButtons from './TabButtons'
 import debounce from 'lodash/debounce'
 import TopNavBanner from '../../NavBanner/TopNavBanner'
