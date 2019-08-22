@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
+//import Spinner from 'react-bootstrap/Spinner';
 import Auth from '../../controllers/Auth';
 import './callback.scss';
 
@@ -14,9 +14,9 @@ class Callback extends Component {
         return ( 
             <div className='loading'>
                 <h1>Loading...</h1>
-                <Spinner animation="border" role="status">
+                {/*<Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
-                </Spinner>
+        </Spinner>*/}
             </div>
          );
     }

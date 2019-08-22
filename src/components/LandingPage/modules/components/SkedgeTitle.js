@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-//import Button from 'react-bootstrap/Button';
-import debounce from 'lodash/debounce';
 
 require('./TitleStyle.css')
 
