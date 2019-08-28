@@ -38,7 +38,6 @@ class EventPublicList extends Component {
       })
       .then(data => {
         this.setState({ events: data.data.events });
-        console.log("Events: ", this.state.events)
         const latestEventId = data.data.events.length
           ? data.data.events[0].id
           : null;

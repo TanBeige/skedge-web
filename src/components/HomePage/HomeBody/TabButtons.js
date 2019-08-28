@@ -24,8 +24,8 @@ class TabButtons extends Component {
     }
 
     render() { 
-        let btn_local = this.state.localSelect ? 'primary' : 'secondary'
-        let btn_friend = this.state.friendSelect ? 'primary' : 'secondary'
+        let btn_local = this.state.localSelect ? 'secondary' : 'primary'
+        let btn_friend = this.state.friendSelect ? 'secondary' : 'primary'
 
         return ( 
             <div className='tabDiv'>

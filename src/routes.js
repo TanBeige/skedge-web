@@ -52,9 +52,9 @@ const handleAuthentication = ({ location }) => {
 };
 
 export const makeMainRoutes = (loc) => {
-  console.log(loc)
+  console.log("Location: ", loc)
   let bottomBar = ""
-  if (loc === "" || loc === "callback"){
+  if (loc === "" || loc === "create"){
     bottomBar = ""
   }
   else {

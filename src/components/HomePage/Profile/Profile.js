@@ -31,7 +31,6 @@ class Profile extends Component {
             variables: { eventLimit: this.state.limit }
           })
           .then(data => {
-            console.log("Comp. Did Mount: ", data)
             this.setState({ events: data.data.events });
             const latestEventId = data.data.events.length
               ? data.data.events[0].id

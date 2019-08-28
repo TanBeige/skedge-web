@@ -70,7 +70,6 @@ class HomePage extends Component {
         }
 
         let mainComponent = ""
-        console.log(this.props.location)
         switch(this.props.location.pathname) {
           case "/home":
             mainComponent = <Feed {...this.props}/>

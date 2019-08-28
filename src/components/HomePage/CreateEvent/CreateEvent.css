@@ -19,5 +19,46 @@
     text-shadow: black -1px 1px 0px;
     color: white;
     -webkit-text-stroke: 0.2px black;
-    /*color: complement($color: #FFFFFF)*/
+}
+
+.localOrPrivate Button {
+    font-family: 'Montserrat';
+    font-size: 3em;
+    font-weight: 900;
+    text-shadow: black -1px 1px 0px;
+    color: white;
+    -webkit-text-stroke: 0.2px black;
+}
+
+.EventCreateInfo {
+    background-color: white;
+    border-radius: 0.5em;
+    /*width: 85%;*/
+    padding: 20px;
+}
+
+.EventCreateInfoContainer {
+    position: absolute;
+    width: 80%;
+    max-width: 600px;
+    align-content: center;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.submitButton { 
+    display: block;
+    width: 80%;
+    max-width: 20em;
+    height: 45px;
+    margin: auto;
+}
+
+.center {
+    display: block;
+    margin: auto;
+    width: 100%;
+    text-align: center;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
+import Slide from '@material-ui/core/Slide';
 
-import Button from '@material-ui/core/Button'
+import {Button} from '@material-ui/core'
 
 const localStyle = {
     textAlign: 'center',
@@ -8,7 +9,8 @@ const localStyle = {
     margin: 'auto',
     width: '20%',
     minWidth: '10em',
-    fontSize: 28,
+    fontSize: 26,
+    color: '#02C39A',
     //fontWeight: '400'
 }
 
@@ -16,17 +18,32 @@ const privateSyle = {
 
 }
 
+
+
+
 const LocalOrPrivate = (props) => {
+
+    const handleLocal = () => {
+        props.handleLocalOrPrivate('local')
+    }
+    const handlePrivate = () => {
+        props.handleLocalOrPrivate('private')
+    }
+
+    let dir = props.goingBack ? 'right' : 'left';
+
     return (
-        <div className='localOrPrivate'>
-            <Button size='large' variant='contained' color='secondary' style={localStyle}>
-                LOCAL
-            </Button>
-            -Or-
-            <Button size='large' variant='contained' color='secondary' style={localStyle}>
-                Private
-            </Button>
-        </div>
+        <Slide direction={dir} in >
+            <div className='localOrPrivate'>
+                <Button size='large' variant='contained' color='secondary' style={localStyle} onClick={handleLocal}>
+                    Local
+                </Button>
+                -Or-
+                <Button size='large' variant='contained' color='secondary' style={localStyle} onClick={handlePrivate}>
+                    Private
+                </Button>
+            </div>
+        </Slide>
     )
 }
 

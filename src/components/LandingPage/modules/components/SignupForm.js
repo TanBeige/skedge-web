@@ -116,7 +116,6 @@ export default function SignUp(props) {
 
   const handleSubmit = event => {
     props.auth.login();
-    console.log(props.auth)
   }
 
   return (

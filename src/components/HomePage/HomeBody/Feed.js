@@ -137,7 +137,6 @@ class Feed extends Component {
 
 
     render() { 
-        console.log("Feed.js: ", this.props)
         return ( 
             <div className='feed'>
                 <TopNavBanner handleSearch={this.handleSearch}/>

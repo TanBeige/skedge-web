@@ -41,7 +41,6 @@ class EventList extends Component {
         variables: { eventLimit: this.state.limit }
       })
       .then(data => {
-        console.log("Comp. Did Mount: ", data)
         this.setState({ events: data.data.events });
         const latestEventId = data.data.events.length
           ? data.data.events[0].id
@@ -124,9 +123,7 @@ class EventList extends Component {
   }
 
   render() { 
-    console.log("EventList.js: ", this.props)
     let finalEvents = this.state.events
-    console.log("State Events: ", finalEvents)
 
     const { userId, type } = this.props;  //Might delete this later
 
