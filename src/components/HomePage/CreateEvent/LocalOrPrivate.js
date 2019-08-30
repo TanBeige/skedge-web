@@ -3,7 +3,7 @@ import Slide from '@material-ui/core/Slide';
 
 import {Button} from '@material-ui/core'
 
-const localStyle = {
+const buttonStyle = {
     textAlign: 'center',
     display: 'block',
     margin: 'auto',
@@ -13,12 +13,6 @@ const localStyle = {
     color: '#02C39A',
     //fontWeight: '400'
 }
-
-const privateSyle = {
-
-}
-
-
 
 
 const LocalOrPrivate = (props) => {
@@ -35,11 +29,11 @@ const LocalOrPrivate = (props) => {
     return (
         <Slide direction={dir} in >
             <div className='localOrPrivate'>
-                <Button size='large' variant='contained' color='secondary' style={localStyle} onClick={handleLocal}>
+                <Button size='large' variant='contained' color='secondary' style={buttonStyle} onClick={handleLocal}>
                     Local
                 </Button>
                 -Or-
-                <Button size='large' variant='contained' color='secondary' style={localStyle} onClick={handlePrivate}>
+                <Button size='large' variant='contained' color='secondary' style={buttonStyle} onClick={handlePrivate}>
                     Private
                 </Button>
             </div>

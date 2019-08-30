@@ -37,17 +37,6 @@
     padding: 20px;
 }
 
-.EventCreateInfoContainer {
-    position: absolute;
-    width: 80%;
-    max-width: 600px;
-    align-content: center;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 .submitButton { 
     display: block;
     width: 80%;
@@ -61,4 +50,12 @@
     margin: auto;
     width: 100%;
     text-align: center;
+}
+
+/* Tag Select */
+.TagSelect {
+    background-color: white;
+    border-radius: 0.5em;
+    padding: 20px;
+    margin: auto;
 }

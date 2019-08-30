@@ -1,7 +1,7 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar'
 import { fade, makeStyles, withStyles } from '@material-ui/core/styles';
-import { Toolbar, MenuItem } from '@material-ui/core';
+import { Toolbar, MenuItem, SvgIcon } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton'
 
@@ -96,6 +96,13 @@ const StyledMenuItem = withStyles(theme => ({
   },
 }))(MenuItem);
 
+function HomeIcon(props) {
+  return (
+    <SvgIcon {...props}> 
+      <path d="M193 134l52-51h-51l-38 40 6-109-35 46-2 26q-10-6-25-10l-12-3a63 63 0 0 1-10-3 25 25 0 0 1-8-5 11 11 0 0 1-4-7 13 13 0 0 1 5-12q5-5 14-5a45 45 0 0 1 15 1c7 2 9 2 14 6l35-40a550 550 0 0 0-74-6 74 74 0 0 0-25 7 56 56 0 0 0-19 13 54 54 0 0 0-11 20 64 64 0 0 0-2 24q1 14 6 22a43 43 0 0 0 12 14 56 56 0 0 0 16 8l18 4 13 4a39 39 0 0 1 10 4 15 15 0 0 1 5 5 16 16 0 0 1 2 7q0 7-5 13t-17 6a50 50 0 0 1-20-3 81 81 0 0 1-22-12L3 178c24 14 58 16 81 15a92 92 0 0 0 29-7 75 75 0 0 0 6-3v10h37v-45l40 45h52z" />
+    </SvgIcon>
+  )
+}
 
 // Creating NavBar
 export default function TopNavBar(props) {
@@ -125,7 +132,7 @@ export default function TopNavBar(props) {
         <Toolbar>
           {/* Menu Button Left of Searchbar */}
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Menu" onClick={handleClick}>
-            <MenuIcon />
+            <HomeIcon />
           </IconButton>
           <StyledMenu
             id="customized-menu"

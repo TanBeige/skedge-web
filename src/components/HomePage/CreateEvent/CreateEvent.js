@@ -8,7 +8,7 @@ import TypoGraphy from '@material-ui/core/Typography';
 
 import LocalOrPrivate from './LocalOrPrivate';
 import CreateEventInfo from './EventCreateInfo';
-import CreateEventInfoNew from './EventCreateInfoNew';
+import TagSelect from './TagSelect'
 
 require('./CreateEvent.css')
 
@@ -39,7 +39,8 @@ class CreateEvent extends Component {
 
         this.handleLocalOrPrivate = this.handleLocalOrPrivate.bind(this);
         this.handleGoBack = this.handleGoBack.bind(this);
-        this.handleEventInfo = this.handleEventInfo.bind(this)
+        this.handleEventInfo = this.handleEventInfo.bind(this);
+        this.handleTagInfo = this.handleTagInfo.bind(this);
     }
 
     // Functions
@@ -77,6 +78,13 @@ class CreateEvent extends Component {
         console.log("Submitted")
     }
 
+    handleTagInfo() {
+        this.setState({
+            currentPage: this.state.currentPage + 1,
+            goingBack: false
+        });
+    }
+
     render() { 
 
         //CHECK FOR IF LOGGED IN HERE (AND ON EVERY PAGE)
@@ -95,10 +103,11 @@ class CreateEvent extends Component {
                 break;
             case 1:
                 appBarTitle = "Create An Event"
-                //page = <CreateEventInfo handleEventInfo={this.handleEventInfo}/>
-                page = <CreateEventInfoNew goingBack={this.state.goingBack} handleEventInfo={this.handleEventInfo} />
+                page = <CreateEventInfo goingBack={this.state.goingBack} handleEventInfo={this.handleEventInfo} />
                 break;
             case 2:
+                appBarTitle = "Category"
+                page = <TagSelect goingBack={this.state.goingBack} handleTagInfo={this.handleTagInfo} />
                 break;
             case 3:
                 break;

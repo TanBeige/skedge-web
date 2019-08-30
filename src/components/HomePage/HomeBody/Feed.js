@@ -156,7 +156,10 @@ class Feed extends Component {
                     userId={this.props.userId}
                     type='local'
                     client={this.props.client}/>
+
+                    
                 </div>
+                {/*<img src={require('../../../SkedgeDiffColor.png')} alt='Skedge' height={150} width={200} style={{textAlign: 'center'}}/>*/}
                 <h1>{this.state.search}</h1>
             </div>
         );
