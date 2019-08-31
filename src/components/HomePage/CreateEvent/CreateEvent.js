@@ -3,12 +3,15 @@ import {AppBar} from '@material-ui/core';
 import {Toolbar} from '@material-ui/core';
 import {IconButton} from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-
 import TypoGraphy from '@material-ui/core/Typography';
+
+import auth from "../../Auth/Auth";
+
 
 import LocalOrPrivate from './LocalOrPrivate';
 import CreateEventInfo from './EventCreateInfo';
 import TagSelect from './TagSelect'
+import AddCohost from './AddCohost/AddCohost'
 
 require('./CreateEvent.css')
 
@@ -35,17 +38,19 @@ class CreateEvent extends Component {
             city: "",
             state: "",
             zip_code: 0,
+
+            cohost_id: 0
          }
 
         this.handleLocalOrPrivate = this.handleLocalOrPrivate.bind(this);
         this.handleGoBack = this.handleGoBack.bind(this);
         this.handleEventInfo = this.handleEventInfo.bind(this);
         this.handleTagInfo = this.handleTagInfo.bind(this);
+        this.handleCohost = this.handleCohost.bind(this);
     }
 
     // Functions
     handleGoBack() {
-        console.log("Go Back:", this.state.currentPage)
         if (this.state.currentPage > 0) {
             this.setState({
                 currentPage: this.state.currentPage - 1,
@@ -75,7 +80,6 @@ class CreateEvent extends Component {
             currentPage: this.state.currentPage + 1,
             goingBack: false
         });
-        console.log("Submitted")
     }
 
     handleTagInfo() {
@@ -85,13 +89,20 @@ class CreateEvent extends Component {
         });
     }
 
+    handleCohost(cohostId) {
+        this.setState({
+            currentPage: this.state.currentPage + 1,
+            goingBack: false,
+
+            cohost_id: cohostId
+        });
+    }
+
     render() { 
 
         //CHECK FOR IF LOGGED IN HERE (AND ON EVERY PAGE)
 
 
-
-        console.log(this.state)
         let currentPageNumber = this.state.currentPage
         let appBarTitle = ""
         let page = ""
@@ -110,8 +121,16 @@ class CreateEvent extends Component {
                 page = <TagSelect goingBack={this.state.goingBack} handleTagInfo={this.handleTagInfo} />
                 break;
             case 3:
+                appBarTitle = "Add A Cohost"
+                page = <AddCohost 
+                            goingBack={this.state.goingBack} 
+                            handleCohost={this.handleCohost} 
+                            client={this.props.client}
+                            userId={auth.getSub()}
+                        />
                 break;
         }
+
 
         return ( 
             <div className='createEvent'>

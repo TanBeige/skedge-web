@@ -32,11 +32,19 @@ const EVENT_FRAGMENT = gql`
 
 const USER_FRAGMENT = gql`
   fragment UserFragment on users {
-    username
+    full_name
     name
     email
     auth0_id
   }
+`;
+
+const FRIEND_FRAGMENT = gql`
+fragment FriendFragment on users {
+  auth0_id
+  name
+  picture
+}
 `;
 
 // Fetch Users
@@ -186,11 +194,15 @@ const QUERY_ACCEPTED_FRIENDS = gql`
         ]
       }
     ) {
-      user_one_id
-      user_two_id
-      status
+      friend_one {
+        ...FriendFragment
+      }
+      friend_two {
+        ...FriendFragment
+      }
     }
   }
+  ${FRIEND_FRAGMENT}
 `;
 
 

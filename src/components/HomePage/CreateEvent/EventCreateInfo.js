@@ -14,7 +14,6 @@ import Container from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
-import FormHelperText from '@material-ui/core/FormHelperText'
 
 // Material-UI transition imports
 import Collapse from '@material-ui/core/Collapse';
@@ -125,7 +124,7 @@ export default function EventCreateInfo(props) {
 
   if (values.endTimeExists) {
     endTimeJS = (<div>
-      <Grid container>
+                <Grid container>
                   <Grid item xs={8}>
                     <TimePicker 
                       label="End Time"
@@ -136,9 +135,10 @@ export default function EventCreateInfo(props) {
                     />
                   </Grid>
                   <Grid item xs={2}>
-                    <Button contained style={{marginTop: 8}} color='primary' onClick={handleEndTimeClick}>X</Button>
+                    <Button variant='outlined' style={{marginTop: 8}} size='small' color='primary' onClick={handleEndTimeClick}>X</Button>
                   </Grid>
-                  </Grid>
+                </Grid>
+
                 </div>
     )
   }
@@ -146,7 +146,7 @@ export default function EventCreateInfo(props) {
     endTimeJS = (<Button 
                   variant="contained" 
                   color='primary' 
-                  style={{width: '100%', height: '100%'}}
+                  style={{width: '100%', height: '80%'}}
                   onClick={handleEndTimeClick}
                   >
                     End Time
@@ -384,7 +384,7 @@ export default function EventCreateInfo(props) {
           className={classes.submit}
           onClick={props.handleEventInfo}
           >
-          Continue
+          Choose Category ->
           </Button>
         </form>
       </div>

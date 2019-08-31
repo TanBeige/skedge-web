@@ -143,7 +143,7 @@ class EventList extends Component {
 
       return ( 
           <div className="EventList">
-              <Grid container spacing={1} direction="row">
+              <Grid container direction="row">
               {
                   finalEvents.map((event, index) => {
                     return (

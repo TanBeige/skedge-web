@@ -37,12 +37,22 @@
     padding: 20px;
 }
 
+.weekdayCheckboxes {
+    margin-left: 0.5em;
+    width: 90%;
+}
+
 .submitButton { 
     display: block;
     width: 80%;
     max-width: 20em;
     height: 45px;
     margin: auto;
+}
+
+.xButton {
+    width: 1em;
+    max-width: 8px;
 }
 
 .center {
@@ -58,4 +68,19 @@
     border-radius: 0.5em;
     padding: 20px;
     margin: auto;
+}
+
+/* Friend Cohost Select*/
+.AddCohost {
+    background-color: white;
+    border-radius: 0.5em;
+    padding: 20px;
+    width: 100%;
+
+}
+.listFriendWrapper {
+    
+}
+.listFriends {
+    
 }

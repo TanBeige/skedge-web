@@ -59,7 +59,6 @@ class EventPrivateList extends Component {
           }
           refetch();
           // apply filters for displaying events
-          console.log(data.events)
           let finalData = data.events;
           if (this.state.filter === "active") {
             finalData = data.events.filter(event => event.is_completed !== true);

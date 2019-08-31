@@ -6,11 +6,9 @@ import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup'
 import Radio from '@material-ui/core/Radio';
 import Grid from '@material-ui/core/Grid';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormGroup from '@material-ui/core/FormGroup';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import TextField from '@material-ui/core/TextField';
 import ChipInput from 'material-ui-chip-input';
 
 
@@ -28,14 +26,6 @@ const useStyles = makeStyles(theme => ({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-    },
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(2),
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
@@ -58,7 +48,6 @@ export default function TagSelect(props) {
     const handleAddChip = (chip) => {
         let tempTags = values.tags;
         tempTags.push(chip)
-        console.log("temp: ", tempTags)
         setValues({
             ...values,
             tags: tempTags
@@ -75,24 +64,22 @@ export default function TagSelect(props) {
 
     let dir = props.goingBack ? 'right' : 'left';
 
-    const error = [values].filter(v => v).length !== 2;
-
     return (
         <Slide direction={dir} in >
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
                 <div className='TagSelect'>
-                    <FormControl required error={error} component="fieldset">
-                        <FormLabel component="legend">Pick one</FormLabel>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">Choose a category</FormLabel>
                             <FormGroup>
                                 <EventTags values={values} onRadioChange={handleChange}/>
                             </FormGroup>
-                        <FormHelperText>You can display an error</FormHelperText>
                     </FormControl>
 
                     <Grid item xs={12}>
                         <ChipInput 
                         value={values.tags}
+                        placeholder='Add tags for event here'
                         onAdd={(chip)=> handleAddChip(chip)}
                         onDelete={(chip, index) => handleDeleteChip(chip, index)}
                         fullWidth
@@ -106,7 +93,7 @@ export default function TagSelect(props) {
                 className={classes.submit}
                 onClick={props.handleTagInfo}
                 >
-                Continue
+                Choose Cohost ->
                 </Button>
             </div>
             </Container>
@@ -116,7 +103,6 @@ export default function TagSelect(props) {
 
 
 const EventTags = ({values, onRadioChange}) => {
-    console.log(values.category)
     return(
         <div className='TagCheckbox'>
             <RadioGroup
