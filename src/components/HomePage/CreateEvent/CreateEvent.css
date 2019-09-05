@@ -12,7 +12,9 @@
     top: 30%;
     margin: auto;
     text-align: center;
+}
 
+.OrText {
     font-family: 'Montserrat';
     font-size: 3em;
     font-weight: 900;
@@ -26,8 +28,6 @@
     font-size: 3em;
     font-weight: 900;
     text-shadow: black -1px 1px 0px;
-    color: white;
-    -webkit-text-stroke: 0.2px black;
 }
 
 .EventCreateInfo {
@@ -76,11 +76,30 @@
     border-radius: 0.5em;
     padding: 20px;
     width: 100%;
+}
 
+/* Upload Banner */
+span.InputBanner {
+    font-family: 'Montserrat';
+    font-size: 3em;
+    font-weight: 900;
+    text-shadow: black -1px 1px 0px;
 }
-.listFriendWrapper {
-    
+.uploadedImage {
+    /*position: absolute;*/
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    opacity: 1.0;
+    visibility: visible;
 }
-.listFriends {
-    
+
+.centerSubmit {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

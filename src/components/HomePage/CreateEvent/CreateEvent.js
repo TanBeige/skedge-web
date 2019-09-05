@@ -5,13 +5,19 @@ import {IconButton} from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import TypoGraphy from '@material-ui/core/Typography';
 
+import { Mutation } from "react-apollo";
+import { useMutation } from '@apollo/react-hooks';
+import { MUTATION_EVENT_ADD } from "../../Todo/EventQueries";
+
+
 import auth from "../../Auth/Auth";
 
 
 import LocalOrPrivate from './LocalOrPrivate';
 import CreateEventInfo from './EventCreateInfo';
-import TagSelect from './TagSelect'
-import AddCohost from './AddCohost/AddCohost'
+import TagSelect from './TagSelect';
+import AddCohost from './AddCohost/AddCohost';
+import AddBanner from './AddBanner';
 
 require('./CreateEvent.css')
 
@@ -23,6 +29,12 @@ class CreateEvent extends Component {
             goingBack: false,
 
             event_type: "",
+
+            street: "",
+            city: "",
+            state: "",
+            zip_code: 0,
+
             name: "",
             description: "",
             event_date: "",
@@ -34,10 +46,8 @@ class CreateEvent extends Component {
             category: "",
             web_url: "",
             cover_pic: "",
-            street: "",
-            city: "",
-            state: "",
-            zip_code: 0,
+            repeat_days: false,
+            
 
             cohost_id: 0
          }
@@ -47,6 +57,7 @@ class CreateEvent extends Component {
         this.handleEventInfo = this.handleEventInfo.bind(this);
         this.handleTagInfo = this.handleTagInfo.bind(this);
         this.handleCohost = this.handleCohost.bind(this);
+        this.submitEvent = this.submitEvent.bind(this);
     }
 
     // Functions
@@ -61,17 +72,17 @@ class CreateEvent extends Component {
             let path = `home`;
             this.props.history.push(path);
             // eslint-disable-next-line
-            window.location.reload()
+            /*window.location.reload()*/
         }
     }
 
     // Page 0: Loca or Private Choosing
     handleLocalOrPrivate(type) {
         this.setState({
-            event_type: type,
             currentPage: this.state.currentPage + 1,
-            goingBack: false
+            goingBack: false,
 
+            event_type: type
         });
     }
     // Page 1: Event Info Submission
@@ -79,13 +90,36 @@ class CreateEvent extends Component {
         this.setState({
             currentPage: this.state.currentPage + 1,
             goingBack: false
+
+
         });
     }
 
-    handleTagInfo() {
+    handleTagInfo(
+        name,
+        address,
+        city,
+        state,
+        event_date,
+        start_time,
+        end_time,
+        description,
+        repeat_days
+    ) {
         this.setState({
             currentPage: this.state.currentPage + 1,
-            goingBack: false
+            goingBack: false,
+
+            name: name,
+            description: description,
+            street: address,
+            city: city,
+            state: state,
+            event_date: event_date,
+            start_time: start_time,
+            end_time: end_time,
+            repeat_days: repeat_days,
+
         });
     }
 
@@ -97,38 +131,80 @@ class CreateEvent extends Component {
             cohost_id: cohostId
         });
     }
+    //TODO: Fix Payload Not Serializable Error
+    submitEvent(addEvent, bannerImg) {
+        console.log(addEvent)
+        addEvent({
+            variables: {
+                objects: [
+                    {
+                        creator_id: auth.getSub(),
+                        cohostId: this.state.cohost_id,
+                        event_type: this.state.event_type,
+                        name: this.state.name,
+                        description: this.state.description,
+                        /*event_date: this.state.event_date,
+                        start_time: this.state.start_time,
+                        end_time: this.state.end_time,
+                        price: this.state.price,
+                        allow_invites: this.state.allow_invites,
+                        host_approval: this.state.host_approval,
+                        category: this.state.category,
+
+                        cover_pic: bannerImg,
+                        street: this.state.street,
+                        city: this.state.city,
+                        state: this.state.state,*/
+                    }
+                ]
+            }
+        })
+
+        let path = `home`;
+        this.props.history.push(path);
+        // eslint-disable-next-line
+        /*window.location.reload()*/
+    }
 
     render() { 
 
         //CHECK FOR IF LOGGED IN HERE (AND ON EVERY PAGE)
 
 
-        let currentPageNumber = this.state.currentPage
-        let appBarTitle = ""
-        let page = ""
+        let currentPageNumber = this.state.currentPage;
+        let appBarTitle = "";
+        let page = "";
 
         switch(currentPageNumber) {
             case 0:
-                appBarTitle = "Create An Event"
+                appBarTitle = "Create An Event";
                 page = <LocalOrPrivate goingBack={this.state.goingBack} handleLocalOrPrivate={this.handleLocalOrPrivate}/>
                 break;
             case 1:
-                appBarTitle = "Create An Event"
+                appBarTitle = "Create An Event";
                 page = <CreateEventInfo goingBack={this.state.goingBack} handleEventInfo={this.handleEventInfo} />
                 break;
             case 2:
-                appBarTitle = "Category"
+                appBarTitle = "Category";
                 page = <TagSelect goingBack={this.state.goingBack} handleTagInfo={this.handleTagInfo} />
                 break;
             case 3:
-                appBarTitle = "Add A Cohost"
+                appBarTitle = "Add A Cohost";
                 page = <AddCohost 
                             goingBack={this.state.goingBack} 
                             handleCohost={this.handleCohost} 
                             client={this.props.client}
                             userId={auth.getSub()}
+                            event_type={this.state.event_type}
                         />
                 break;
+            case 4:
+
+                appBarTitle = "Banner";
+                page = <AddBanner 
+                            goingBack={this.state.goingBack} 
+                            submitEvent={this.submitEvent} 
+                        />
         }
 
 

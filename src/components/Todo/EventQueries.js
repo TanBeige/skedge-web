@@ -140,6 +140,7 @@ const MUTATION_EVENT_ADD = gql`
       affected_rows
       returning {
         id
+        name
         description
         created_at
         updated_at

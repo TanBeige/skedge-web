@@ -112,6 +112,19 @@ export default function EventCreateInfo(props) {
           endTimeExists: !values.endTimeExists
       })
   }
+  const submitEventInfo = () => {
+    props.handleEventInfo(
+        values.name,
+        values.address,
+        values.city,
+        values.state,
+        values.event_date,
+        values.start_time,
+        values.end_time,
+        values.description,
+        values.repeatCheck
+    )
+  }
 
 
 
@@ -382,7 +395,7 @@ export default function EventCreateInfo(props) {
           variant="contained"
           color="secondary"
           className={classes.submit}
-          onClick={props.handleEventInfo}
+          onClick={submitEventInfo}
           >
           Choose Category ->
           </Button>

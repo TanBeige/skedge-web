@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     },
   }));
 
-export default function AddCohost (props) {
+export default function InviteFriends (props) {
     const classes = useStyles();
 
     const [values, setValues] = React.useState({
@@ -43,13 +43,6 @@ export default function AddCohost (props) {
       setValues({ ...values, cohostId: id });
     };
 
-    let buttonText = ""
-    if (props.event_type === 'private') {
-      buttonText = "Invite Guests ->"
-    }
-    else {
-      buttonText = "Add Event Banner ->"
-    }
 
     let dir = props.goingBack ? 'right' : 'left';
 
@@ -73,7 +66,7 @@ export default function AddCohost (props) {
                   style={{margin: 3, height: '4em'}}
                   onClick={() => props.handleCohost(values.cohostId)}
                   >
-                  {buttonText}
+                  Choose Event Cover ->
                   </Button>
                 </div>
             </Container>

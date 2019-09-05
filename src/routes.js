@@ -54,7 +54,7 @@ const handleAuthentication = ({ location }) => {
 export const makeMainRoutes = (loc) => {
   console.log("Location: ", loc)
   let bottomBar = ""
-  if (loc === "" || loc === "create"){
+  if (loc === ""){
     bottomBar = ""
   }
   else {
