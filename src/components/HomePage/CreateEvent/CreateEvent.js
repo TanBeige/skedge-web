@@ -4,11 +4,7 @@ import {Toolbar} from '@material-ui/core';
 import {IconButton} from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import TypoGraphy from '@material-ui/core/Typography';
-
-import { Mutation } from "react-apollo";
-import { useMutation } from '@apollo/react-hooks';
-import { MUTATION_EVENT_ADD } from "../../Todo/EventQueries";
-
+import gql from 'graphql-tag';
 
 import auth from "../../Auth/Auth";
 
@@ -86,7 +82,7 @@ class CreateEvent extends Component {
         });
     }
     // Page 1: Event Info Submission
-    handleEventInfo() {
+    handleTagInfo() {
         this.setState({
             currentPage: this.state.currentPage + 1,
             goingBack: false
@@ -95,7 +91,7 @@ class CreateEvent extends Component {
         });
     }
 
-    handleTagInfo(
+    handleEventInfo(
         name,
         address,
         city,
@@ -132,14 +128,29 @@ class CreateEvent extends Component {
         });
     }
     //TODO: Fix Payload Not Serializable Error
-    submitEvent(addEvent, bannerImg) {
-        console.log(addEvent)
-        addEvent({
+    submitEvent() {
+        console.log(this.props);
+
+        this.props.client.mutate({
+            mutation: gql`
+            mutation insert_events($objects: [events_insert_input!]!) {
+              insert_events(objects: $objects) {
+                affected_rows
+                returning {
+                  id
+                  name
+                  description
+                  created_at
+                  updated_at
+                }
+              }
+            }
+          `,
             variables: {
                 objects: [
                     {
                         creator_id: auth.getSub(),
-                        cohostId: this.state.cohost_id,
+                        cohost_id: this.state.cohost_id,
                         event_type: this.state.event_type,
                         name: this.state.name,
                         description: this.state.description,
@@ -158,12 +169,15 @@ class CreateEvent extends Component {
                     }
                 ]
             }
+        }).then(() =>{
+            let path = `home`;
+            this.props.history.push(path);
         })
 
-        let path = `home`;
+        /*let path = `home`;
         this.props.history.push(path);
         // eslint-disable-next-line
-        /*window.location.reload()*/
+        window.location.reload()*/
     }
 
     render() { 
@@ -204,6 +218,9 @@ class CreateEvent extends Component {
                 page = <AddBanner 
                             goingBack={this.state.goingBack} 
                             submitEvent={this.submitEvent} 
+                            client={this.props.client}
+                            userId={auth.getSub()}
+                            createState={this.state}
                         />
         }
 

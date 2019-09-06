@@ -2,8 +2,10 @@ import React from 'react';
 import Slide from '@material-ui/core/Slide';
 import Spinner from './Spinner'
 import DisplayUploadedImage from './DisplayUploadedImage';
-import { Mutation } from 'react-apollo';
-import { MUTATION_EVENT_ADD } from '../../Todo/EventQueries'
+
+import { MUTATION_EVENT_ADD } from "../../Todo/EventQueries";
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
 import { Button } from '@material-ui/core'
 
@@ -27,6 +29,8 @@ const AddBanner = (props) => {
         imgSet: false,
         bannerImg: null
     });
+
+    // For Create Event Mutation
     
     const bannerChoose = (banner) => {
       setValues({ ...values, bannerImg: banner });
@@ -53,9 +57,56 @@ const AddBanner = (props) => {
         })
     }
 
-    const bannerSubmit = (event, addEvent) => {
-        event.preventDefault();
-        props.submitEvent(addEvent, values.bannerImg)
+    const bannerSubmit = (e) => {
+        const {bannerImg} = values;
+        e.preventDefault();
+        console.log("Props AddBanner: ", props)
+        console.log("name: ", props.createState.name)
+
+        props.submitEvent(bannerImg);
+        /*
+        props.client.mutate({
+            mutation: gql`
+            mutation insert_events($objects: [events_insert_input!]!) {
+              insert_events(objects: $objects) {
+                affected_rows
+                returning {
+                  id
+                  name
+                  description
+                  created_at
+                  updated_at
+                }
+              }
+            }
+          `,
+            variables: {
+                objects: [
+                    {
+                        creator_id: props.userId,
+                        name: props.createState.name,
+                        description: props.createState.description,
+                        cohost_id: props.createState.cohost_id,
+                        //event_type: props.createState.event_type,
+                        event_date: this.state.event_date,
+                        start_time: this.state.start_time,
+                        end_time: this.state.end_time,
+                        price: this.state.price,
+                        allow_invites: this.state.allow_invites,
+                        host_approval: this.state.host_approval,
+                        category: this.state.category,
+
+                        cover_pic: bannerImg,
+                        street: this.state.street,
+                        city: this.state.city,
+                        state: this.state.state,
+                    }
+                ]
+            }
+        }).then(() =>{
+            let path = `home`;
+            props.history.push(path);
+        })*/
     }
 
     const content = () => {
@@ -94,25 +145,16 @@ const AddBanner = (props) => {
                         onError={this.onError}
                     />
                     <div className="centerSubmit">
-                    <Mutation mutation={MUTATION_EVENT_ADD} onCompleted={() => this.props.history.push('/')}>
-                        {(addEvent, { error }) => {
-                            if (error) {
-                                alert("Something went wrong");
-                            }
-                            return (
-                                <Button
-                                    fullWidth
-                                    type='submit'
-                                    variant="contained"
-                                    color="secondary"
-                                    style={{height: '4em', width: '90%', marginTop: '2em'}}
-                                    onClick={(event) => {bannerSubmit(event, addEvent)}}
-                                    >
-                                    Finish Creating Event!
-                                </Button>
-                            );
-                            }}
-                        </Mutation>
+                        <Button
+                            fullWidth
+                            type='button'
+                            variant="contained"
+                            color="secondary"
+                            style={{height: '4em', width: '90%', marginTop: '2em'}}
+                            onClick={(e)=>bannerSubmit(e)}
+                            >
+                            Finish Creating Event!
+                        </Button>
                     </div>
                 </div>
             )
@@ -126,4 +168,4 @@ const AddBanner = (props) => {
     )
 }
 
-export default AddBanner;
+export default graphql(MUTATION_EVENT_ADD)(AddBanner);

@@ -87,6 +87,7 @@ export default function EventCreateInfo(props) {
   //Functions
   const handleChange = name => event => {
       setValues({ ...values, [name]: event.target.value });
+      console.log(values.name)
   };
   const handleCheck = name => event => {
     setValues({ ...values, [name]: event.target.checked });
@@ -300,6 +301,7 @@ export default function EventCreateInfo(props) {
                 variant="outlined"
                 required
                 fullWidth
+                onChange={handleChange('name')}
                 id="name"
                 label="Event Name"
                 autoFocus
@@ -310,7 +312,8 @@ export default function EventCreateInfo(props) {
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
+                onChange={handleChange('address')}
+                id="address"
                 label="Location"
                 name="address"
                 autoComplete="address"
@@ -321,6 +324,7 @@ export default function EventCreateInfo(props) {
                     id="city"
                     label="City"
                     variant="outlined"
+                    onChange={handleChange}
                     fullWidth
                     className={classes.textField}
                     value={values.city}
