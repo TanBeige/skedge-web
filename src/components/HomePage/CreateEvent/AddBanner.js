@@ -5,7 +5,6 @@ import DisplayUploadedImage from './DisplayUploadedImage';
 
 import { MUTATION_EVENT_ADD } from "../../Todo/EventQueries";
 import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
 
 import { Button } from '@material-ui/core'
 
@@ -37,6 +36,7 @@ const AddBanner = (props) => {
     };
 
     const fileSelectedHandler = (event) => {
+        event.preventDefault();
         setValues({
             ...values,
             bannerImg: event.target.files[0],
@@ -61,52 +61,8 @@ const AddBanner = (props) => {
         const {bannerImg} = values;
         e.preventDefault();
         console.log("Props AddBanner: ", props)
-        console.log("name: ", props.createState.name)
 
         props.submitEvent(bannerImg);
-        /*
-        props.client.mutate({
-            mutation: gql`
-            mutation insert_events($objects: [events_insert_input!]!) {
-              insert_events(objects: $objects) {
-                affected_rows
-                returning {
-                  id
-                  name
-                  description
-                  created_at
-                  updated_at
-                }
-              }
-            }
-          `,
-            variables: {
-                objects: [
-                    {
-                        creator_id: props.userId,
-                        name: props.createState.name,
-                        description: props.createState.description,
-                        cohost_id: props.createState.cohost_id,
-                        //event_type: props.createState.event_type,
-                        event_date: this.state.event_date,
-                        start_time: this.state.start_time,
-                        end_time: this.state.end_time,
-                        price: this.state.price,
-                        allow_invites: this.state.allow_invites,
-                        host_approval: this.state.host_approval,
-                        category: this.state.category,
-
-                        cover_pic: bannerImg,
-                        street: this.state.street,
-                        city: this.state.city,
-                        state: this.state.state,
-                    }
-                ]
-            }
-        }).then(() =>{
-            let path = `home`;
-            props.history.push(path);
-        })*/
     }
 
     const content = () => {

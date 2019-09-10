@@ -7,7 +7,8 @@ import TypoGraphy from '@material-ui/core/Typography';
 import gql from 'graphql-tag';
 
 import auth from "../../Auth/Auth";
-
+import axios from 'axios';
+import { backendUrl } from '../../../utils/constants';
 
 import LocalOrPrivate from './LocalOrPrivate';
 import CreateEventInfo from './EventCreateInfo';
@@ -36,14 +37,15 @@ class CreateEvent extends Component {
             event_date: "",
             start_time: "",
             end_time: "",
-            price: 0,
+            price: "0.00",
             allow_invites: false,
             host_approval: false,
-            category: "",
             web_url: "",
             cover_pic: "",
             repeat_days: false,
-            
+
+            category: "",
+            tags: [],
 
             cohost_id: 0
          }
@@ -127,9 +129,25 @@ class CreateEvent extends Component {
             cohost_id: cohostId
         });
     }
-    //TODO: Fix Payload Not Serializable Error
-    submitEvent() {
-        console.log(this.props);
+
+    async submitEvent(bannerImg) {
+        console.log("State: ", this.state);
+
+        const form_data = new FormData();
+
+        form_data.append('files', bannerImg)
+
+        const response = await axios.post(`${backendUrl}/storage/upload`, form_data, {
+            header: {
+                'Content-Type': 'multipater/form-data',
+                'x-path': '/upload-folder/',
+            },
+            withCredentials: true
+        });
+
+        console.log(response);
+
+        //const inserted_file = response.data[0];
 
         this.props.client.mutate({
             mutation: gql`
@@ -154,18 +172,18 @@ class CreateEvent extends Component {
                         event_type: this.state.event_type,
                         name: this.state.name,
                         description: this.state.description,
-                        /*event_date: this.state.event_date,
+                        event_date: this.state.event_date,
                         start_time: this.state.start_time,
                         end_time: this.state.end_time,
                         price: this.state.price,
-                        allow_invites: this.state.allow_invites,
-                        host_approval: this.state.host_approval,
+                        //allow_invites: this.state.allow_invites,
+                        //host_approval: this.state.host_approval,
                         category: this.state.category,
 
                         cover_pic: bannerImg,
                         street: this.state.street,
                         city: this.state.city,
-                        state: this.state.state,*/
+                        state: this.state.state,
                     }
                 ]
             }
@@ -219,8 +237,6 @@ class CreateEvent extends Component {
                             goingBack={this.state.goingBack} 
                             submitEvent={this.submitEvent} 
                             client={this.props.client}
-                            userId={auth.getSub()}
-                            createState={this.state}
                         />
         }
 

@@ -87,7 +87,6 @@ export default function EventCreateInfo(props) {
   //Functions
   const handleChange = name => event => {
       setValues({ ...values, [name]: event.target.value });
-      console.log(values.name)
   };
   const handleCheck = name => event => {
     setValues({ ...values, [name]: event.target.checked });
