@@ -1,10 +1,3 @@
-## Live demo
-
-[![Edit react-apollo-todo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/hasura/graphql-engine/tree/master/community/sample-apps/react-apollo-todo?fontsize=14)
-
-- [React App](https://react-apollo-todo.demo.hasura.app/)
-- [Hasura Console](https://react-apollo-todo.demo.hasura.app/console)
-
 ## Tech stack
 
 - Frontend
@@ -14,7 +7,4 @@
 
 - Backend
   - Hasura GraphQL Engine
-
-## Run the React app
-
-Run `npm start` to start the todo app.
+  - Express Server to DigitalOcean Space
