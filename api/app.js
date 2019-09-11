@@ -21,6 +21,7 @@ app.use(cors({
   credentials: true,
   origin: true
 }))
+app.disable('x-powered-by')
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

@@ -6,6 +6,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import TypoGraphy from '@material-ui/core/Typography';
 import gql from 'graphql-tag';
 
+import { QUERY_LOCAL_EVENT } from '../../Todo/EventQueries'
+
 import auth from "../../Auth/Auth";
 import axios from 'axios';
 import { backendUrl } from '../../../utils/constants';
@@ -130,6 +132,10 @@ class CreateEvent extends Component {
         });
     }
 
+    /**
+     * This function finally submits all the information received from the user.
+     * Import bannerImg so we don't have to put it in the state.
+     */
     async submitEvent(bannerImg) {
         console.log("State: ", this.state);
 
@@ -137,18 +143,20 @@ class CreateEvent extends Component {
 
         form_data.append('files', bannerImg)
 
+        // Upload file to DigitalOcean
         const response = await axios.post(`${backendUrl}/storage/upload`, form_data, {
-            header: {
-                'Content-Type': 'multipater/form-data',
+            headers: {
+                'Content-Type': 'multipart/form-data',
                 'x-path': '/upload-folder/',
             },
             withCredentials: true
         });
 
+        // Grabs image info and adds uploaded file ID to cover_pic in events table.
         console.log(response);
+        const inserted_file = response.data[0];
 
-        //const inserted_file = response.data[0];
-
+        // Inputs all information into Hasura Postgres DB via GraphQL
         this.props.client.mutate({
             mutation: gql`
             mutation insert_events($objects: [events_insert_input!]!) {
@@ -180,13 +188,14 @@ class CreateEvent extends Component {
                         //host_approval: this.state.host_approval,
                         category: this.state.category,
 
-                        cover_pic: bannerImg,
+                        cover_pic: inserted_file.key,
                         street: this.state.street,
                         city: this.state.city,
                         state: this.state.state,
                     }
                 ]
-            }
+            },
+            refetchQueries: [{ QUERY_LOCAL_EVENT }]
         }).then(() =>{
             let path = `home`;
             this.props.history.push(path);

@@ -41,9 +41,8 @@ const upload = multer({
         key: function(req, file, cb) {
 
             const uuid = uuidv4();
-            const key = `${uuid}`;
-
-            console.log(file);
+            console.log(req.s3_key_prefix);
+            const key = `${req.s3_key_prefix}${uuid}`;
 
             req.saved_files.push({
                 originalname: file.originalname,
@@ -55,11 +54,18 @@ const upload = multer({
             cb(null, key);
         }
     })
+
 });
 
 
 const upload_auth = (req, res, next) => {
-    console.log("upload_auth test")
+    
+    try {
+        req.s3_key_prefix = req.headers['x-path'].replace(/^\/+/g, '');
+    } catch(e) {
+        return next(Boom.badImplementation('x-path header incorrect'))
+    }
+
     req.saved_files = [];
 
     next()
