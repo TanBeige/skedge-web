@@ -26,6 +26,7 @@ const s3 = new AWS.S3({
 })
 
 
+// Uplooad TO digitalocean
 const upload = multer({
     storage: multerS3({
         s3: s3,
@@ -73,6 +74,47 @@ const upload_auth = (req, res, next) => {
 
 router.post('/upload', upload_auth, upload.array('files', 50), function (req, res) {
     res.json(req.saved_files);
+});
+
+// Read FROM digitalocean to grab images
+router.get('/file', (req, res, next) => {
+    const key = `/${req.query.key}`;
+    console.log("KEY: ", key)
+
+    const params = {
+        Bucket: S3_BUCKET,
+        Key: key,
+    };
+
+    s3.headObject(params, function (err, data) {
+        if (err) {
+            //console.error(err);
+            console.log("Error")
+            if(err.code === 'NotFound') {
+                return next(Boom.notFound())
+            }
+            return next(Boom.badImplementation('Unable to retrieve file.'));
+        }
+
+        const stream = s3.getObject(params).createReadStream();
+
+        //forward errors
+        stream.on('error', function error(err) {
+            console.error(err);
+            return next(Boom.badImplementation());
+        });
+
+        console.log("Another TEst");
+
+        res.set('Content-Type', data.ContentType);
+        res.set('Content-Length', data.ContentLength);
+        res.set('Last-Modified', data.LastModified);
+        res.set('Content-Disposition', `inline; filename="${data.Metadata.originalname}"`);
+        res.set('ETag', data.ETag);
+
+        //pipe the s3 object to the response
+        stream.pipe(res);
+    })
 });
 
 module.exports = router;

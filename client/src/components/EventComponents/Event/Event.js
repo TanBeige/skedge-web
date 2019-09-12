@@ -8,6 +8,10 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+import { backendUrl } from '../../../utils/constants';
+import axios from 'axios';
+
+
 const useStyles = makeStyles({
   card: {
     margin: 10,
@@ -37,14 +41,39 @@ const MediaCard = (props) => {
       eventBio = eventBio.substring(0, bioMaxLength);
       eventBio += "..."
   }
+
+  const getCoverImage = async() => {
+    const response = await axios.get(`${backendUrl}/storage/file`, {
+      params: {
+        key: props.event.cover_pic
+      }
+    })
+    .then(function (response) {
+      console.log("Response: ", response);
+
+      const form_data = new FormData();
+      form_data.append(response.data)
+
+
+      return form_data.get('files');
+    })
+    .catch(function (error) {
+      console.log(props.event.name,": ",error);
+    });
     
+
+    console.log(response);
+    return response;
+  }
+
+  let cover_img = getCoverImage();
 
   return (
     <Card className={classes.card}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={props.event.cover_pic}
+          image={cover_img}
           title="Contemplative Reptile"
         />
         <CardContent>
