@@ -5,6 +5,8 @@ import { WebSocketLink } from "apollo-link-ws";
 import { split } from "apollo-link";
 import { getMainDefinition } from "apollo-utilities";
 import { SubscriptionClient } from "subscriptions-transport-ws";
+import { persistCache } from 'apollo-cache-persist';
+
 
 import { GRAPHQL_URL, REALTIME_GRAPHQL_URL } from "./utils/constants";
 import auth from "./components/Auth/Auth";
@@ -17,6 +19,10 @@ const getHeaders = () => {
   }
   return headers;
 };
+
+
+// await before instantiating ApolloClient, else queries might run before the cache is persisted
+
 
 const makeApolloClient = () => {
   // Create an http link:
@@ -53,12 +59,22 @@ const makeApolloClient = () => {
     httpLink
   );
 
+  /* Holding Cache so wehn refreshed the queue doesn't dissapear
+  const cache = new InMemoryCache({
+    addTypename: true
+  })
+  persistCache({
+    cache,
+    storage: window.localStorage,
+  });*/
+  
   const client = new ApolloClient({
     link: link,
     cache: new InMemoryCache({
       addTypename: true
-    })
+    }),
   });
+  
 
   return client;
 };

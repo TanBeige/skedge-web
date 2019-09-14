@@ -45,25 +45,16 @@ const MediaCard = (props) => {
   const getCoverImage = async() => {
     const response = await axios.get(`${backendUrl}/storage/file`, {
       params: {
-        key: props.event.cover_pic
+        key: props.event.cover_pic,
       }
     })
     .then(function (response) {
-      console.log("Response: ", response);
-
-      const form_data = new FormData();
-      form_data.append(response.data)
-
-
-      return form_data.get('files');
+      console.log("Response: ", response.data);
+      return response.data;
     })
     .catch(function (error) {
       console.log(props.event.name,": ",error);
     });
-    
-
-    console.log(response);
-    return response;
   }
 
   let cover_img = getCoverImage();

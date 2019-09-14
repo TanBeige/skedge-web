@@ -62,6 +62,10 @@ export default function TagSelect(props) {
         })
     }
 
+    const submitTags = () => {
+        props.handleTagInfo(values.category, values.tags)
+    }
+
     let dir = props.goingBack ? 'right' : 'left';
 
     return (
@@ -91,7 +95,7 @@ export default function TagSelect(props) {
                 variant="contained"
                 color="secondary"
                 className={classes.submit}
-                onClick={props.handleTagInfo}
+                onClick={submitTags}
                 >
                 Choose Cohost ->
                 </Button>

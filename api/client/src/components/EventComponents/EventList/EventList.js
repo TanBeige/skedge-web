@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import Grid from '@material-ui/core/Grid';
 
+import { s3Url } from '../../../utils/constants';
+
 import {
     QUERY_LOCAL_EVENT,
     QUERY_FEED_LOCAL_EVENT,

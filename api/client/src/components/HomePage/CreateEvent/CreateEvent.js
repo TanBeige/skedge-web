@@ -86,12 +86,13 @@ class CreateEvent extends Component {
         });
     }
     // Page 1: Event Info Submission
-    handleTagInfo() {
+    handleTagInfo(cat, inTags) {
         this.setState({
             currentPage: this.state.currentPage + 1,
-            goingBack: false
+            goingBack: false,
 
-
+            category: cat,
+            tags: inTags
         });
     }
 
@@ -141,7 +142,7 @@ class CreateEvent extends Component {
 
         const form_data = new FormData();
 
-        form_data.append('files', bannerImg)
+        form_data.append('file', bannerImg)
 
         // Upload file to DigitalOcean
         const response = await axios.post(`${backendUrl}/storage/upload`, form_data, {
@@ -156,11 +157,14 @@ class CreateEvent extends Component {
         console.log(response);
         const inserted_file = response.data[0];
 
+        console.log(response.data[0].originalname, response.data[0].key,response.data[0].mimetype)
+
         // Inputs all information into Hasura Postgres DB via GraphQL
         this.props.client.mutate({
             mutation: gql`
             mutation insert_events($objects: [events_insert_input!]!) {
-              insert_events(objects: $objects) {
+              insert_events(objects: $objects) 
+              {
                 affected_rows
                 returning {
                   id
@@ -188,14 +192,21 @@ class CreateEvent extends Component {
                         //host_approval: this.state.host_approval,
                         category: this.state.category,
 
-                        cover_pic: inserted_file.key,
+                        //cover_pic: inserted_file.key,
                         street: this.state.street,
                         city: this.state.city,
                         state: this.state.state,
+
+                        image: {
+                            data: {
+                                image_name: response.data[0].originalname,
+                                image_uuid: response.data[0].key,
+                                content_type: response.data[0].mimetype,
+                            }
+                        }
                     }
                 ]
             },
-            refetchQueries: [{ QUERY_LOCAL_EVENT }]
         }).then(() =>{
             let path = `home`;
             this.props.history.push(path);
