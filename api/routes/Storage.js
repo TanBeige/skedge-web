@@ -7,12 +7,15 @@ const uuidv4 = require('uuid/v4');
 var multer = require('multer');
 var multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
+const { StorageManager, AWSS3Config } = require('@slynova/flydrive');
+const { NoSuchBucket, FileNotFound } = require('@slynova/flydrive');
+//import { AWSS3, AWSS3Config } from '../../src/Drivers/AWSS3';
 
 const {
     S3_ACCESS_KEY_ID,
     S3_SECRET_ACCESS_KEY,
     S3_ENDPOINT,
-    S3_BUCKET
+    S3_BUCKET,
 } = require('../config');
 
 const router = express.Router()
@@ -26,7 +29,9 @@ const s3 = new AWS.S3({
 })
 
 
-// Uplooad TO digitalocean
+
+
+// Upload TO digitalocean
 const upload = multer({
     storage: multerS3({
         s3: s3,
@@ -72,20 +77,57 @@ const upload_auth = (req, res, next) => {
     next()
 }
 
-router.post('/upload', upload_auth, upload.array('files', 50), function (req, res) {
+router.post('/upload', upload_auth, upload.array('file', 50), function (req, res) {
     res.json(req.saved_files);
 });
 
 // Read FROM digitalocean to grab images
 router.get('/file', (req, res, next) => {
-    const key = `/${req.query.key}`;
-    console.log("KEY: ", key)
+    const key = req.query.key
+    console.log("Key: ", key)
 
-    const params = {
+
+
+    //TODO: Fix <Code>SignatureDoesNotMatch</Code> Error
+
+    var expireSeconds = 60;
+
+    s3.getSignedUrl('putObject', {
         Bucket: S3_BUCKET,
-        Key: key,
-    };
+        Expires: 60,
+        Key: key
+    }, function(err, url) {
+        console.log("url: ", url);
+        res.send(url);
+    })
 
+
+    
+    /*
+    const s3Driver = new AWS.S3({
+        accessKeyId: S3_ACCESS_KEY_ID,
+        secretAccessKey: S3_SECRET_ACCESS_KEY,
+        endpoint: S3_ENDPOINT,
+        bucket: S3_BUCKET,
+        region: S3_REGION,
+
+        s3ForcePathStyle: true,
+    })
+    const storage = new StorageManager(s3Driver.config);
+
+    const fn = () => storage.disk('awsCloud'); // Overwrite the default configuration of the disk
+    assert.throw(fn, 'E_INVALID_CONFIG: Make sure to define config correctly.');
+
+    const { exists } = s3Driver.exists(fileUrl);
+    assert.isFalse(exists);
+    
+
+
+    const {signedUrl} = storage.disk('awsCloud').getSignedUrl(fileUrl);
+    console.log("SignedUrl: ", signedUrl)*/
+
+
+    /*
     s3.headObject(params, function (err, data) {
         if (err) {
             //console.error(err);
@@ -115,6 +157,7 @@ router.get('/file', (req, res, next) => {
         //pipe the s3 object to the response
         stream.pipe(res);
     })
+    */
 });
 
 module.exports = router;

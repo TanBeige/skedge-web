@@ -7,6 +7,7 @@
     "heroku-postbuild": "cd ../client && npm install && npm run build"
   },
   "dependencies": {
+    "@slynova/flydrive": "^0.3.1",
     "aws-sdk": "^2.526.0",
     "boom": "^7.3.0",
     "cookie-parser": "^1.4.4",
