@@ -55,12 +55,12 @@ const hexToRgb = input => {
 const drawerWidth = 260;
 
 const primaryColor = [
-  "#9c27b0",
-  "#ab47bc",
-  "#8e24aa",
-  "#af2cc5",
-  "#e1bee7",
-  "#ba68c8"
+  "#02C39A",  //main
+  "#25e6bd",  //lighter
+  "#00A896",  //darker
+  "#25e6bd",  //lighter
+  "#afede0",  //close to white
+  "#77d1be"   //close to white but less than above
 ];
 const secondaryColor = ["#fafafa"];
 const warningColor = [
