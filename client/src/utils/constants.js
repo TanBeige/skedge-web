@@ -10,6 +10,7 @@ export const GRAPHQL_URL = `${scheme(
 export const REALTIME_GRAPHQL_URL = `${scheme(
   "ws"
 )}://${HASURA_GRAPHQL_ENGINE_HOSTNAME}/v1/graphql`;
+
 export const authClientId = "RH47tlmwwW28QH44WrohPJ1YyjAAEEbd";
 export const authDomain = "skedge.auth0.com";
 

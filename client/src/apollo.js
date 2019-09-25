@@ -9,11 +9,14 @@ import { persistCache } from 'apollo-cache-persist';
 
 
 import { GRAPHQL_URL, REALTIME_GRAPHQL_URL } from "./utils/constants";
+import { useAuth0 } from './Authorization/react-auth0-wrapper';
 import auth from "./Authorization/Auth";
+
 
 const getHeaders = () => {
   const headers = {};
   const token = auth.getIdToken();
+  //const token = user.;
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
@@ -25,6 +28,8 @@ const getHeaders = () => {
 
 
 const makeApolloClient = () => {
+  const { user } = useAuth0()
+
   // Create an http link:
   const httpLink = new HttpLink({
     uri: GRAPHQL_URL,

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import loading from "./loading.svg";
+import { useAuth0 } from '../../Authorization/react-auth0-wrapper'
 
 class CallbackPage extends Component {
   render() {
@@ -17,6 +18,11 @@ class CallbackPage extends Component {
       backgroundColor: "white"
     };
 
+  //const { handleRedirectCallback } = useAuth0();
+
+  //handleRedirectCallback();
+
+    
     return (
       <div style={style}>
         <img src={loading} alt="loading" />

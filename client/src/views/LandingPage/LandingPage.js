@@ -25,14 +25,34 @@ import SectionProduct from "./Sections/SectionProduct.js";
 import SectionTeam from "./Sections/SectionTeam.js";
 import SectionWork from "./Sections/SectionWork.js";
 
+//Authorization
+import { useAuth0 } from '../../Authorization/react-auth0-wrapper';
+//import history from "../../utils/history";
+
+
 const useStyles = makeStyles(landingPageStyle);
 
-export default function LandingPage({ ...rest }) {
+export default function LandingPage(props) {
+
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
+
   React.useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   });
   const classes = useStyles();
+
+  const handleClick = async () => {
+    //props.auth.login()
+    await loginWithRedirect({});
+  }
+
+  if (isAuthenticated) {
+    console.log("landingpage auth: ", isAuthenticated)
+    props.history.push("/home");
+  }
+
+  console.log("Props: ", props)
   return (
     <div>
       {/*<Header
@@ -46,26 +66,22 @@ export default function LandingPage({ ...rest }) {
         }}
         {...rest}
       />*/}
-      <Parallax image={require("assets/img/bg8.jpg")} filter="dark">
+      <Parallax image={require("assets/img/cover1.jpg")} filter="dark">
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={6} md={6}>
               <h1 className={classes.title}>Skedge.</h1>
               <h4>
-                Every landing page needs a small description after the big bold
-                title, that{"'"}s why we added this text here. Add here all the
-                information that can make you or your product create the first
-                impression.
+                Made to help share events with all of your friends, 
+                as well as find events you'll love near you.
               </h4>
               <br />
               <Button
-                color="danger"
+                color="primary"
                 size="lg"
-                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ref=creativetim"
-                target="_blank"
+                onClick={() => loginWithRedirect({})}
               >
-                <i className="fas fa-play" />
-                Watch video
+                Let's Go!
               </Button>
             </GridItem>
           </GridContainer>

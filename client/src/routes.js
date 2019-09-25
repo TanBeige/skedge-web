@@ -17,7 +17,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
-import { Router, Route, Switch } from "react-router";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
+import ErrorBoundary from  './components/Debug/ErrorBoundary'
 
 import "assets/scss/material-kit-pro-react.scss?v=1.8.0";
 
@@ -28,7 +30,7 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 //import theme from './styles/theme';
 
-import auth from "./Authorization/Auth";
+//import auth from "./Authorization/Auth";
 //import LandingPage from "./components/LandingPage/LandingPage";
 import history from "./utils/history";
 
@@ -65,44 +67,49 @@ import CallbackPage from "views/CallbackPage/CallbackPage.js";
 let client;
 const provideClient = (Component, renderProps) => { 
   // check if logged in
-  if (localStorage.getItem("isLoggedIn") === "true") {
+  //if (localStorage.getItem("isLoggedIn") === "true") {
     // check if client exists
     if (!client) {
       client = makeApolloClient();
     }
+
+    // auth={auth}
     return (
       <ApolloProvider client={client}>
-        <Component {...renderProps} auth={auth} client={client} />
+        <Component {...renderProps} client={client} /> 
       </ApolloProvider>
     );
+    /*
   } else {
     // not logged in already, hence redirect to login page
     if (renderProps.match.path !== "/") {
       window.location.href = "/";
     } else {
-      return <Component auth={auth} {...renderProps} />;
+      return <Component {...renderProps} />;
     }
-  }
+  }*/
 };
 
 // Auth0 handling user authentication
-const handleAuthentication = ({ location }) => {
-  if (/access_token|id_token|error/.test(location.hash)) {
+const handleAuthentication = async () => {
+  /*if (/access_token|id_token|error/.test(location.hash)) {
     auth.handleAuthentication();
-  }
+  }*/
 };
 
 var hist = createBrowserHistory();
 
-export const makeMainRoutes = (loc) => {
-  console.log("Location: ", loc)
+// ******BlogPostsPage is our /home for now******
+
+export const makeMainRoutes = () => {
+  //const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
   return(
     <Router history={hist}>
       <Switch>exact 
         <Route exact path="/about-us" render={props => provideClient(AboutUsPage, props)} />
         <Route exact path="/blog-post" render={props => provideClient(BlogPostPage, props)} />
-        <Route exact path="/blog-posts" render={props => provideClient(BlogPostsPage, props)} />
-        <Route exact path="/components" render={props => provideClient(ComponentsPage, props)} />
+        <PrivateRoute path="/home" render={props => provideClient(BlogPostsPage, props)} />
+        {/*<Route exact path="/components" render={props => provideClient(ComponentsPage, props)} />*/}
         <Route exact path="/contact-us" render={props => provideClient(ContactUsPage, props)} />
         <Route exact path="/ecommerce-page" render={props => provideClient(EcommercePage, props)} />
         <Route exact path="/landing-page" render={props => provideClient(LandingPage, props)} />

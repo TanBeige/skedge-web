@@ -63,7 +63,7 @@ class Auth {
 
     // navigate to the home route
     history.replace("/home");
-    // window.location.href="/home";
+    //window.location.href="/home";
   }
 
   getAccessToken() {
