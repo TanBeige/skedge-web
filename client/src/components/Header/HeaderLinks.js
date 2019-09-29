@@ -41,6 +41,7 @@ import Error from "@material-ui/icons/Error";
 // core components
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 import Button from "components/CustomButtons/Button.js";
+import { useAuth0 } from '../../Authorization/react-auth0-wrapper';
 
 import styles from "assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
 
@@ -53,6 +54,8 @@ export default function HeaderLinks(props) {
     t--;
     return (-c / 2) * (t * (t - 2) - 1) + b;
   };
+
+  const { isAuthenticated, logout } = useAuth0();
 
   const smoothScroll = (e, target) => {
     if (window.location.pathname === "/sections") {
@@ -244,6 +247,11 @@ export default function HeaderLinks(props) {
             </Link>
           ]}
         />
+      </ListItem>
+      <ListItem>
+        <Link onClick={logout} to="/" className={classes.dropdownLink}>
+          <AccountBalance className={classes.dropdownIcons} /> Logout
+        </Link>
       </ListItem>
       <ListItem className={classes.listItem}>
         <Button

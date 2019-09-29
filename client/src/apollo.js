@@ -26,7 +26,6 @@ const getHeaders = (tok) => {
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
-  console.log("Apollo Headers: ", headers);
   return headers;
 };
 
@@ -34,7 +33,6 @@ const getHeaders = (tok) => {
 // await before instantiating ApolloClient, else queries might run before the cache is persisted
 
 const makeApolloClient = (token) => {
-  console.log("makeApolloClient() called");
   // Create an http link:
   const httpLink = new HttpLink({
     uri: GRAPHQL_URL,

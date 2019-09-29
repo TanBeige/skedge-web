@@ -1,4 +1,4 @@
-/*eslint-disable*/ import React from "react";
+/*eslint-disable*/ import React, { useState } from "react";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // nodejs library that concatenates classes
@@ -24,6 +24,7 @@ import landingPageStyle from "assets/jss/material-kit-pro-react/views/landingPag
 import SectionProduct from "./Sections/SectionProduct.js";
 import SectionTeam from "./Sections/SectionTeam.js";
 import SectionWork from "./Sections/SectionWork.js";
+import SectionTitle from "./Sections/SectionTitle.js"
 
 //Authorization
 import { useAuth0 } from '../../Authorization/react-auth0-wrapper';
@@ -42,17 +43,11 @@ export default function LandingPage(props) {
   });
   const classes = useStyles();
 
-  const handleClick = async () => {
-    //props.auth.login()
-    await loginWithRedirect({});
-  }
-
   if (isAuthenticated) {
     console.log("landingpage auth: ", isAuthenticated)
     props.history.push("/home");
   }
 
-  console.log("Props: ", props)
   return (
     <div>
       {/*<Header
@@ -70,7 +65,7 @@ export default function LandingPage(props) {
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={6} md={6}>
-              <h1 className={classes.title}>Skedge.</h1>
+              <SectionTitle className={classes.title} />
               <h4>
                 Made to help share events with all of your friends, 
                 as well as find events you'll love near you.

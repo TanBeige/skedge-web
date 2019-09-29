@@ -99,14 +99,13 @@ var hist = createBrowserHistory();
 // ******BlogPostsPage is our /home for now******
 
 export const MakeMainRoutes = () => {
+  
 
   // Variables/Imports from auth0-spa
   const {loading, getTokenSilently, getIdTokenClaims } = useAuth0();
   const [values, setValues] = useState({
     client
   })
-
-
 
   let newToken = "";
 
@@ -129,8 +128,9 @@ export const MakeMainRoutes = () => {
     }
   },[loading, values.client]);
 
+
   //Wait for Auth0 to load
-  if (loading) {
+  if (loading && window.location.pathname !== "/") {
     return(
       <div>
         <LoadingPage reason="Loading" />
@@ -138,7 +138,7 @@ export const MakeMainRoutes = () => {
     )
   }
   // Wait for token to return and client to be made.
-  else if(!values.client) {
+  else if(!values.client && window.location.pathname !== "/") {
     getIdTokenClaims().then(function(result) {
       newToken = result.__raw;
       setValues({
@@ -155,9 +155,6 @@ export const MakeMainRoutes = () => {
   }
   // Finally load Website
   else {
-    // getIdTokenClaims().then((result) =>{
-    //   console.log("wtfL ", result.__raw);
-    // });
     return(
       <Router history={hist}>
         <Switch>exact 
@@ -181,7 +178,7 @@ export const MakeMainRoutes = () => {
                   handleAuthentication(props);
                   return <CallbackPage {...props} />;
                 }} />
-          <Route exact path="/" render={props => provideClient(LandingPage, props)} />
+          <Route exact path="/" component={LandingPage} />
         </Switch>
       </Router>
     );

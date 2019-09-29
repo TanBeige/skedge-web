@@ -46,8 +46,6 @@ export default function BlogPostsPage(props) {
 
   const { loading, isAuthenticated, user } = useAuth0();
 
-
-
   //When called, updates last time user was seen on website.
   //  Called every time user enters home page.
   const getUserInfo = async() => {
@@ -60,7 +58,6 @@ export default function BlogPostsPage(props) {
   const updateLastSeen = () => {
     const userId = user.sub;
     const timestamp = moment().format();
-    console.log("updatelast seen cleint:", props.client)
     if (props.client) {
       props.client.mutate({
           mutation: gql`
@@ -82,7 +79,7 @@ export default function BlogPostsPage(props) {
           console.log("Blogs Response: ", response)
         })
         .catch(error => {
-          console.error("updateLastSeen(): ", error);
+          console.error(error);
         });
     }
   };
@@ -95,7 +92,11 @@ export default function BlogPostsPage(props) {
     document.body.scrollTop = 0;
 
     if (isAuthenticated && user) {
-      updateLastSeen();
+      // eslint-disable-next-line
+      const lastSeenMutation = setInterval(
+        updateLastSeen,
+        5000
+      );
     }
     /*
     else if(!isAuthenticated) {
@@ -103,7 +104,7 @@ export default function BlogPostsPage(props) {
     }*/
   },[loading]); // Empty array for param means effect will only run on first render.
 
-    //Place this here before returning the actual page so we can determine 
+  //Place this here before returning the actual page so we can determine 
   // what displays while loadinh
   if (loading || !user) {
     return (
@@ -139,7 +140,9 @@ export default function BlogPostsPage(props) {
       }
       <div className={classes.main}>
         <div className={classes.container}>
-          <SectionPills />
+          <SectionPills 
+            client={props.client}
+          />
           <SectionInterested />
         </div>
         <SectionImage />

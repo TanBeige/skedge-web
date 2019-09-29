@@ -16,12 +16,6 @@ const onRedirectCallback = appState => {
     );
   };
 
-// eslint-disable-next-line
-const loc = location.pathname.replace(/^\/?|\/$/g, "");
-//const routes = makeMainRoutes();
-console.log("Location: ", loc)
-
-
 ReactDOM.render(
     <Auth0Provider
       domain={AUTH_CONFIG.domain}
