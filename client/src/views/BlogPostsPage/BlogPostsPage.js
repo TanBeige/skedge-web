@@ -20,22 +20,18 @@ import SectionPills from "./Sections/SectionPills.js";
 import SectionInterested from "./Sections/SectionInterested.js";
 import SectionImage from "./Sections/SectionImage.js";
 import SubscribeLine from "./Sections/SubscribeLine.js";
+import LoadingPage from '../LoadingPage/LoadingPage.js'
 
 //import auth from "../../Authorization/Auth";
 import { useAuth0 } from "../../Authorization/react-auth0-wrapper";
 
-
+//Styles
 import blogPostsPageStyle from "assets/jss/material-kit-pro-react/views/blogPostsPageStyle.js";
 
 const useStyles = makeStyles(blogPostsPageStyle);
 
 export default function BlogPostsPage(props) {
   const classes = useStyles();
-
-  React.useEffect(() => {
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
-  });
 
   const [values, setValues] = useState({
     events: [],
@@ -52,6 +48,8 @@ export default function BlogPostsPage(props) {
 
 
 
+  //When called, updates last time user was seen on website.
+  //  Called every time user enters home page.
   const getUserInfo = async() => {
     const token = await user;
     console.log("Token: ", token)
@@ -61,12 +59,10 @@ export default function BlogPostsPage(props) {
   // Login/Event Logic:
   const updateLastSeen = () => {
     const userId = user.sub;
-    console.log("user sub: ", user)
-    console.log("props: ", props)
     const timestamp = moment().format();
+    console.log("updatelast seen cleint:", props.client)
     if (props.client) {
-      props.client
-        .mutate({
+      props.client.mutate({
           mutation: gql`
             mutation($userId: String!, $timestamp: timestamp!) {
               update_users(
@@ -82,11 +78,11 @@ export default function BlogPostsPage(props) {
             timestamp: timestamp
           }
         })
-        .then(() => {
-          // handle response if required
+        .then((response) => {
+          console.log("Blogs Response: ", response)
         })
         .catch(error => {
-          console.error(error);
+          console.error("updateLastSeen(): ", error);
         });
     }
   };
@@ -95,28 +91,16 @@ export default function BlogPostsPage(props) {
 
   //Replaces ComponentDidMount() from React Components in Function Components
   useEffect(() => {
-    console.log("props: ", props)
-    if(user) {
-      console.log("User: ", user.sub)
-    }
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
 
-    //const { renewSession } = auth;
-    if (isAuthenticated/*localStorage.getItem("isLoggedIn") === "true"*/) {
-      // eslint-disable-next-line
-      const lastSeenMutation = setInterval(
-        updateLastSeen.bind(this),
-        5000
-      );
-      /*
-      renewSession().then(data => {
-        setValues({ 
-          ...values,
-          session: true 
-        });
-      });*/
-    } else {
-      //window.location.href = "/";
+    if (isAuthenticated && user) {
+      updateLastSeen();
     }
+    /*
+    else if(!isAuthenticated) {
+      window.location.href = "/";
+    }*/
   },[loading]); // Empty array for param means effect will only run on first render.
 
     //Place this here before returning the actual page so we can determine 
@@ -126,7 +110,7 @@ export default function BlogPostsPage(props) {
       <div>Loading...</div>
     )
   }
-  console.log(user);
+  //console.log(user);
 
   return (
     <div>

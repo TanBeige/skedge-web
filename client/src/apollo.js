@@ -8,33 +8,38 @@ import { SubscriptionClient } from "subscriptions-transport-ws";
 import { persistCache } from 'apollo-cache-persist';
 
 
-import { GRAPHQL_URL, REALTIME_GRAPHQL_URL } from "./utils/constants";
-import { useAuth0 } from './Authorization/react-auth0-wrapper';
+import { GRAPHQL_URL, REALTIME_GRAPHQL_URL, backendUrl } from "./utils/constants";
 import auth from "./Authorization/Auth";
 
+const getUserInfo = async () => {
+  // const token = getIdTokenClaims();
+  //return token;
+}
 
-const getHeaders = () => {
+
+
+const getHeaders = (tok) => {
+
   const headers = {};
-  const token = auth.getIdToken();
-  //const token = user.;
+  //const token = auth.getIdToken();
+  const token=tok
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
+  console.log("Apollo Headers: ", headers);
   return headers;
 };
 
 
 // await before instantiating ApolloClient, else queries might run before the cache is persisted
 
-
-const makeApolloClient = () => {
-  const { user } = useAuth0()
-
+const makeApolloClient = (token) => {
+  console.log("makeApolloClient() called");
   // Create an http link:
   const httpLink = new HttpLink({
     uri: GRAPHQL_URL,
     fetch,
-    headers: getHeaders()
+    headers: getHeaders(token)
   });
 
   // Create a WebSocket link:
@@ -43,7 +48,7 @@ const makeApolloClient = () => {
       reconnect: true,
       timeout: 30000,
       connectionParams: () => {
-        return { headers: getHeaders() };
+        return { headers: getHeaders(token) };
       },
       connectionCallback: err => {
         if (err) {

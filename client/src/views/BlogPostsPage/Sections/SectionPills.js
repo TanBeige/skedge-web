@@ -20,7 +20,7 @@ import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPosts
 
 const useStyles = makeStyles(sectionPillsStyle);
 
-export default function SectionPills() {
+export default function SectionPills(props) {
   const classes = useStyles();
   return (
     <div className={classes.section}>

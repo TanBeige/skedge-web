@@ -14,12 +14,14 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import ErrorBoundary from  './components/Debug/ErrorBoundary'
+import { useAuth0 } from './Authorization/react-auth0-wrapper';
+
 
 import "assets/scss/material-kit-pro-react.scss?v=1.8.0";
 
@@ -37,10 +39,7 @@ import history from "./utils/history";
 import { ApolloProvider } from "react-apollo";
 import makeApolloClient from "./apollo";
 //import BottomBar from "./components/BottomBar/BottomBar";
-
-
 ///////
-
 
 // pages for this product
 import AboutUsPage from "views/AboutUsPage/AboutUsPage.js";
@@ -59,36 +58,34 @@ import SectionsPage from "views/SectionsPage/SectionsPage.js";
 import ShoppingCartPage from "views/ShoppingCartPage/ShoppingCartPage.js";
 import SignupPage from "views/SignupPage/SignupPage.js";
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
+import LoadingPage from "views/LoadingPage/LoadingPage.js";
 
 import CallbackPage from "views/CallbackPage/CallbackPage.js";
 
 
 // Creating Apollo Client When Entering Website
 let client;
-const provideClient = (Component, renderProps) => { 
-  // check if logged in
-  //if (localStorage.getItem("isLoggedIn") === "true") {
-    // check if client exists
-    if (!client) {
-      client = makeApolloClient();
-    }
-
-    // auth={auth}
-    return (
-      <ApolloProvider client={client}>
-        <Component {...renderProps} client={client} /> 
-      </ApolloProvider>
-    );
-    /*
-  } else {
-    // not logged in already, hence redirect to login page
-    if (renderProps.match.path !== "/") {
-      window.location.href = "/";
-    } else {
-      return <Component {...renderProps} />;
-    }
-  }*/
-};
+// const provideClient = (Component, renderProps, token) => { 
+//   if (!client) {
+//     //const token = GetToken();
+//     console.log("Client Making:", token)
+//     client = makeApolloClient(token);
+//   }
+//   return (
+//     <ApolloProvider client={client}>
+//       <Component {...renderProps} client={client} /> 
+//     </ApolloProvider>
+//   );
+//   /*
+//   } else {
+//     // not logged in already, hence redirect to login page
+//     if (renderProps.match.path !== "/") {
+//       window.location.href = "/";
+//     } else {
+//       return <Component {...renderProps} />;
+//     }
+//   }*/
+// };
 
 // Auth0 handling user authentication
 const handleAuthentication = async () => {
@@ -101,33 +98,92 @@ var hist = createBrowserHistory();
 
 // ******BlogPostsPage is our /home for now******
 
-export const makeMainRoutes = () => {
-  //const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
-  return(
-    <Router history={hist}>
-      <Switch>exact 
-        <Route exact path="/about-us" render={props => provideClient(AboutUsPage, props)} />
-        <Route exact path="/blog-post" render={props => provideClient(BlogPostPage, props)} />
-        <PrivateRoute path="/home" render={props => provideClient(BlogPostsPage, props)} />
-        {/*<Route exact path="/components" render={props => provideClient(ComponentsPage, props)} />*/}
-        <Route exact path="/contact-us" render={props => provideClient(ContactUsPage, props)} />
-        <Route exact path="/ecommerce-page" render={props => provideClient(EcommercePage, props)} />
-        <Route exact path="/landing-page" render={props => provideClient(LandingPage, props)} />
-        <Route exact path="/login-page" render={props => provideClient(LoginPage, props)} />
-        <Route exact path="/pricing" render={props => provideClient(PricingPage, props)} />
-        <Route exact path="/profile-page" render={props => provideClient(ProfilePage, props)} />
-        <Route exact path="/product-page" render={props => provideClient(ProductPage, props)} />
-        <Route exact path="/sections" render={props => provideClient(SectionsPage, props)} />
-        <Route exact path="/shopping-cart-page" render={props => provideClient(ShoppingCartPage, props)} />
-        <Route exact path="/signup-page" render={props => provideClient(SignupPage, props)} />
-        <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
-        <Route path="/callback" 
-              render={props => {
-                handleAuthentication(props);
-                return <CallbackPage {...props} />;
-              }} />
-        <Route exact path="/" render={props => provideClient(LandingPage, props)} />
-      </Switch>
-    </Router>
-  );
+export const MakeMainRoutes = () => {
+
+  // Variables/Imports from auth0-spa
+  const {loading, getTokenSilently, getIdTokenClaims } = useAuth0();
+  const [values, setValues] = useState({
+    client
+  })
+
+
+
+  let newToken = "";
+
+  // Supporting Functions
+  const provideClient = (Component, renderProps) => { 
+    return (
+      <ApolloProvider client={values.client}>
+        <Component {...renderProps} client={values.client} /> 
+      </ApolloProvider>
+    );
+  };
+
+  // useEffect substitutes componentDidMount() and rerenders after loading value changes
+  useEffect(() => {
+    if(!loading) {
+      console.log("Loaded");
+    }
+    else {
+      console.log("Currently Loading");
+    }
+  },[loading, values.client]);
+
+  //Wait for Auth0 to load
+  if (loading) {
+    return(
+      <div>
+        <LoadingPage reason="Loading" />
+      </div>
+    )
+  }
+  // Wait for token to return and client to be made.
+  else if(!values.client) {
+    getIdTokenClaims().then(function(result) {
+      newToken = result.__raw;
+      setValues({
+        ...values,
+        client: makeApolloClient(newToken)
+      })
+    });
+
+    return(
+      <div>
+        <LoadingPage reason="Getting Client" />
+      </div>
+    )
+  }
+  // Finally load Website
+  else {
+    // getIdTokenClaims().then((result) =>{
+    //   console.log("wtfL ", result.__raw);
+    // });
+    return(
+      <Router history={hist}>
+        <Switch>exact 
+          <Route exact path="/about-us" render={props => provideClient(AboutUsPage, props)} />
+          <Route exact path="/blog-post" render={props => provideClient(BlogPostPage, props)} />
+          <PrivateRoute path="/home" render={props => provideClient(BlogPostsPage, props)} />
+          {/*<Route exact path="/components" render={props => provideClient(ComponentsPage, props)} />*/}
+          <Route exact path="/contact-us" render={props => provideClient(ContactUsPage, props)} />
+          <Route exact path="/ecommerce-page" render={props => provideClient(EcommercePage, props)} />
+          <Route exact path="/landing-page" render={props => provideClient(LandingPage, props)} />
+          <Route exact path="/login-page" render={props => provideClient(LoginPage, props)} />
+          <Route exact path="/pricing" render={props => provideClient(PricingPage, props)} />
+          <Route exact path="/profile-page" render={props => provideClient(ProfilePage, props)} />
+          <Route exact path="/product-page" render={props => provideClient(ProductPage, props)} />
+          <Route exact path="/sections" render={props => provideClient(SectionsPage, props)} />
+          <Route exact path="/shopping-cart-page" render={props => provideClient(ShoppingCartPage, props)} />
+          <Route exact path="/signup-page" render={props => provideClient(SignupPage, props)} />
+          <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
+          <Route path="/callback" 
+                render={props => {
+                  handleAuthentication(props);
+                  return <CallbackPage {...props} />;
+                }} />
+          <Route exact path="/" render={props => provideClient(LandingPage, props)} />
+        </Switch>
+      </Router>
+    );
+  }
 }
