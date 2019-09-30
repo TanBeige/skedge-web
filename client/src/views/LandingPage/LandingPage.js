@@ -1,4 +1,5 @@
 /*eslint-disable*/ import React, { useState } from "react";
+import { Redirect } from 'react-router-dom'
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // nodejs library that concatenates classes
@@ -35,7 +36,7 @@ const useStyles = makeStyles(landingPageStyle);
 
 export default function LandingPage(props) {
 
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, user } = useAuth0();
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -46,6 +47,8 @@ export default function LandingPage(props) {
   if (isAuthenticated) {
     console.log("landingpage auth: ", isAuthenticated)
     props.history.push("/home");
+    //return(<Redirect to="/home"/>)
+    window.location.reload();
   }
 
   return (

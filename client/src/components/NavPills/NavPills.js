@@ -13,6 +13,7 @@ import Tabs from "@material-ui/core/Tabs";
 // core components
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
+import EventCardList from '../EventCards/EventCardList'
 
 import styles from "assets/jss/material-kit-pro-react/components/navPillsStyle.js";
 
@@ -21,9 +22,7 @@ const useStyles = makeStyles(styles);
 export default function NavPills(props) {
   const [active, setActive] = React.useState(props.active);
   const handleChange = (event, active) => {
-    if(props.onChange) {
-      props.onChange(active)
-    }
+    console.log("active: ", active)
     setActive(active);
   };
   const handleChangeIndex = index => {
@@ -96,8 +95,15 @@ export default function NavPills(props) {
     </GridContainer>
   ) : (
     <div>
-      {tabButtons}
-      {tabContent}
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={12} md={8} className={classes.textCenter}>
+          {tabButtons}      
+          {tabContent}
+        </GridItem>
+      </GridContainer>
+      <EventCardList 
+        client={props.client}
+      />
     </div>
   );
 }

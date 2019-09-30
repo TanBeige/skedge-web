@@ -111,8 +111,9 @@ export default function BlogPostsPage(props) {
       <div>Loading...</div>
     )
   }
-  //console.log(user);
-
+  else {
+    console.log(user);
+  }
   return (
     <div>
       <Header

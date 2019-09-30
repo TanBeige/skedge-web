@@ -249,9 +249,9 @@ export default function HeaderLinks(props) {
         />
       </ListItem>
       <ListItem>
-        <Link onClick={logout} to="/" className={classes.dropdownLink}>
+        <Button onClick={logout} className={classes.dropdownLink}>
           <AccountBalance className={classes.dropdownIcons} /> Logout
-        </Link>
+        </Button>
       </ListItem>
       <ListItem className={classes.listItem}>
         <Button

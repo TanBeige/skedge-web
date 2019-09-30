@@ -65,34 +65,6 @@ import CallbackPage from "views/CallbackPage/CallbackPage.js";
 
 // Creating Apollo Client When Entering Website
 let client;
-// const provideClient = (Component, renderProps, token) => { 
-//   if (!client) {
-//     //const token = GetToken();
-//     console.log("Client Making:", token)
-//     client = makeApolloClient(token);
-//   }
-//   return (
-//     <ApolloProvider client={client}>
-//       <Component {...renderProps} client={client} /> 
-//     </ApolloProvider>
-//   );
-//   /*
-//   } else {
-//     // not logged in already, hence redirect to login page
-//     if (renderProps.match.path !== "/") {
-//       window.location.href = "/";
-//     } else {
-//       return <Component {...renderProps} />;
-//     }
-//   }*/
-// };
-
-// Auth0 handling user authentication
-const handleAuthentication = async () => {
-  /*if (/access_token|id_token|error/.test(location.hash)) {
-    auth.handleAuthentication();
-  }*/
-};
 
 var hist = createBrowserHistory();
 
@@ -102,7 +74,7 @@ export const MakeMainRoutes = () => {
   
 
   // Variables/Imports from auth0-spa
-  const {loading, getTokenSilently, getIdTokenClaims } = useAuth0();
+  const {loading, getTokenSilently, getIdTokenClaims, isAuthenticated } = useAuth0();
   const [values, setValues] = useState({
     client
   })
@@ -120,6 +92,9 @@ export const MakeMainRoutes = () => {
 
   // useEffect substitutes componentDidMount() and rerenders after loading value changes
   useEffect(() => {
+    if(window.location.pathname === "/") {
+      console.log("Home")
+    }
     if(!loading) {
       console.log("Loaded");
     }
@@ -130,7 +105,7 @@ export const MakeMainRoutes = () => {
 
 
   //Wait for Auth0 to load
-  if (loading && window.location.pathname !== "/") {
+  if (loading) {
     return(
       <div>
         <LoadingPage reason="Loading" />
@@ -138,9 +113,14 @@ export const MakeMainRoutes = () => {
     )
   }
   // Wait for token to return and client to be made.
-  else if(!values.client && window.location.pathname !== "/") {
+  else if(!values.client) {
     getIdTokenClaims().then(function(result) {
-      newToken = result.__raw;
+      if(isAuthenticated) {
+        newToken = result.__raw;
+      }
+      else {
+        newToken = "";
+      }
       setValues({
         ...values,
         client: makeApolloClient(newToken)
@@ -153,6 +133,7 @@ export const MakeMainRoutes = () => {
       </div>
     )
   }
+
   // Finally load Website
   else {
     return(
@@ -175,7 +156,6 @@ export const MakeMainRoutes = () => {
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
           <Route path="/callback" 
                 render={props => {
-                  handleAuthentication(props);
                   return <CallbackPage {...props} />;
                 }} />
           <Route exact path="/" component={LandingPage} />

@@ -66,10 +66,9 @@ export default function EventCardList(props) {
         {
             finalEvents.map((event, index) => {
                 return (
-                <GridItem xs={12} sm={6} md={6}>
+                <GridItem xs={12} sm={6} md={6} key={event.id}>
                     <EventCard 
                         event={event} 
-                        key={event.id} 
                         //client={this.props.client}
                     />
                 </GridItem>
