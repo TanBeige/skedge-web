@@ -94,7 +94,7 @@ const successColor = [
   "#66bb6a"
 ];
 const infoColor = [
-  "#00acc1",
+  "#00acc1", // New Secondary main color, will fix rest later
   "#26c6da",
   "#00acc1",
   "#00d3ee",

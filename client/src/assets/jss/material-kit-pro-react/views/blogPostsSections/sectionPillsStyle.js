@@ -37,6 +37,13 @@ const sectionPillsStyle = {
   },
   tabSpace: {
     padding: "20px 0 50px"
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
   }
 };
 

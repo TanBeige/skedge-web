@@ -21,3 +21,11 @@ export const callbackUrl = `${webUrl}/callback`;
 export const backendUrl = 'http://localhost:9000';
 //export const backendUrl = `https://secret-journey-62331.herokuapp.com:9000`;
 
+export const categoryList = [
+  "Any",
+  "Arts/Culture",
+  "Business",
+  "Education",
+  "Games",
+  
+]

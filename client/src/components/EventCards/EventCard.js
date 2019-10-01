@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 // @material-ui/icons
 import FormatAlignLeft from "@material-ui/icons/FormatAlignLeft";
 // core components
@@ -32,20 +33,18 @@ export default function EventCard({event}) {
             background
             style={{ backgroundImage: "url(" + event.image.url + ")" }}
         >  
+          <Link to={`/event#${event.name}_${event.id}`}>
             <CardBody background>
               <h6 className={classes.category}>{event.category.toUpperCase()}</h6>
-              <a href="#pablo">
                 <h3 className={classes.cardTitle}>
                   {event.name}
                 </h3>
-              </a>
               <p className={classes.category}>
                 {eventBio}
               </p>
-              <Button round href="#pablo" color="danger">
-                <FormatAlignLeft className={classes.icons} /> Read article
-              </Button>
             </CardBody>
+          </Link>
+
         </Card>
     )
 }

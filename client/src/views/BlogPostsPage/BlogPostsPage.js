@@ -95,7 +95,7 @@ export default function BlogPostsPage(props) {
       // eslint-disable-next-line
       const lastSeenMutation = setInterval(
         updateLastSeen,
-        5000
+        10000
       );
     }
     /*
@@ -122,24 +122,23 @@ export default function BlogPostsPage(props) {
         fixed
         color="transparent"
         changeColorOnScroll={{
-          height: 400,
+          height: 100,
           color: "primary"
         }}
       />
       {
-      <Parallax image={require("assets/img/bg10.jpg")} filter="dark" small>
+      <Parallax image={require("assets/img/cover1.jpg")} filter="dark" small>
         <div className={classes.container}>
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={8} className={classes.textCenter}>
-              <h2 className={classes.title}>
-                A Place for Entrepreneurs to Share and Discover New Stories.
-              </h2>
+
             </GridItem>
           </GridContainer>
         </div>
       </Parallax>
+      // Add style={{marginTop: '5em'}} to  <div className={classes.main} > if not using parallax
       }
-      <div className={classes.main}>
+      <div className={classes.main} >
         <div className={classes.container}>
           <SectionPills 
             client={props.client}
