@@ -22,7 +22,7 @@ export default function EventCardList(props) {
       showNew: false,
       showOlder: true,
       newEventsLength: 0,
-      limit: 5,
+      limit: 10,
       events: []
   });
 
@@ -63,15 +63,40 @@ export default function EventCardList(props) {
         });
     }
 
+    // Update Query When new Events are added
+    const loadMoreClicked = () => {
+      const { client } = this.props;
+      this.setState({ showNew: false, newEventsLength: 0 });
+      client
+        .query({
+          query: QUERY_FEED_LOCAL_EVENT,
+          variables: {
+            eventId: this.state.events.length ? this.state.events[0].id : null
+          }
+        })
+        .then(data => {
+          if (data.data.events.length) {
+            const mergedEvents = data.data.events.concat(this.state.events);
+            // update state with new events
+            this.setState({ events: mergedEvents });
+          }
+        });
+    }
+
+    // Replaces ComponentDidMount() in a Functional Component
     useEffect(() => {
       console.log("useffect")
       grabEvents();
     }, [props.type, props.filter])
 
+    // Start Filtering Responses here. Since it's so fucking hard in GraphQL
     let finalEvents = values.events //[{name: "wtf", description: "aaah", category: "rap", image: {url: "https://upload.wikimedia.org/wikipedia/commons/a/a1/Mallard2.jpg"}}]
+    
+    console.log("Show New: ", values.showNew)
 
+    // Components to Render
     return (
-    <GridContainer>
+      <GridContainer>
         {
             finalEvents.map((event, index) => {
                 return (

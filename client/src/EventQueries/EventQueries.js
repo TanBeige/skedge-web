@@ -235,4 +235,41 @@ export {
 };
 
 
+/*
+Hasura GraphQL event search filter Test: 
+// Not Ready Yet
 
+query fetch_tagged_events($search: String, $category: String, $city: String, $state: String, $order: String) {
+  events(
+    order_by:[{event_date: asc}, {start_time: asc}]
+    where: {
+      _or: [
+        {name: {_ilike: $search}},
+        {user: {
+          _or: [
+            {full_name: {_ilike: $search}},
+            {name: {_ilike: $search}}
+          ]}
+        },
+        {event_tags: {
+          tag: 
+            {name: {_ilike: $search}}
+        }
+        }
+    ]}
+  )
+  {
+    id
+    name
+    description
+    event_date
+    start_time
+    event_type
+    user {
+      name
+      full_name
+    }
+  }
+}
+
+*/

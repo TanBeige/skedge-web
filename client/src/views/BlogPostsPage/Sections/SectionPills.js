@@ -25,7 +25,6 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import NavPills from "components/NavPills/NavPills.js";
 import EventCardList from "components/EventCards/EventCardList.js";
-import EventTypeTabs from './EventTypeTabs'
 import CustomInput from 'components/CustomInput/CustomInput.js';
 
 
