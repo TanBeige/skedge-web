@@ -68,6 +68,55 @@ const QUERY_USER_PROFILE = gql`
 
 
 // Fetch Events
+
+const QUERY_FILTERED_EVENT = gql`
+  query fetch_filtered_events($eventLimit: Int, $search: String, $category: String, $city: String, $state: String, $type: String) {
+    events(
+      order_by:[{event_date: asc}, {start_time: asc}]
+      limit: $eventLimit
+      where: {
+        _or: [
+          {name: {_ilike: $search}},
+          {user: {
+            _or: [
+              {full_name: {_ilike: $search}},
+              {name: {_ilike: $search}}
+            ]}
+          },
+          {event_tags: {
+            tag: 
+              {name: {_ilike: $search}}
+          }}
+        ]
+        _and: [
+          {event_type: {_eq: $type}},
+          {category: {_eq: $category}},
+          {city: {_ilike: $city}},
+          {state: {_ilike: $state}}
+        ]
+      }
+    )
+    {
+      id
+      name
+      description
+      event_type
+      event_date
+      start_time
+      end_time
+      category
+      city
+      state
+      image {
+        url
+      }
+      user {
+        name
+      }
+    }
+  }
+`
+
 const QUERY_PRIVATE_EVENT = gql`
   query events($userId: String!) {
     events(
@@ -221,6 +270,7 @@ const QUERY_ACCEPTED_FRIENDS = gql`
 
 
 export {
+  QUERY_FILTERED_EVENT,
   QUERY_USER_PROFILE,
   QUERY_PRIVATE_EVENT,
   QUERY_LOCAL_EVENT,
@@ -239,37 +289,8 @@ export {
 Hasura GraphQL event search filter Test: 
 // Not Ready Yet
 
-query fetch_tagged_events($search: String, $category: String, $city: String, $state: String, $order: String) {
-  events(
-    order_by:[{event_date: asc}, {start_time: asc}]
-    where: {
-      _or: [
-        {name: {_ilike: $search}},
-        {user: {
-          _or: [
-            {full_name: {_ilike: $search}},
-            {name: {_ilike: $search}}
-          ]}
-        },
-        {event_tags: {
-          tag: 
-            {name: {_ilike: $search}}
-        }
-        }
-    ]}
-  )
-  {
-    id
-    name
-    description
-    event_date
-    start_time
-    event_type
-    user {
-      name
-      full_name
-    }
-  }
-}
+
+
+
 
 */

@@ -4,10 +4,13 @@ import EventCard from "components/EventCards/EventCard.js"
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
+import gql from 'graphql-tag'
+
 //Lodash!
 import debounce from 'lodash/debounce';
 
 import {
+    QUERY_FILTERED_EVENT,
     QUERY_LOCAL_EVENT,
     QUERY_FEED_LOCAL_EVENT,
     QUERY_FEED_LOCAL_OLD_EVENT,
@@ -28,11 +31,23 @@ export default function EventCardList(props) {
 
   const grabEvents = () => {
     const { client } = props;
+    const { filter } = props;
+
+    if(filter.category == "Any") {
+      //Do something
+    }
       // query for public events
       client
         .query({
-          query: QUERY_LOCAL_EVENT,
-          variables: { eventLimit: values.limit }
+          query: QUERY_FILTERED_EVENT,
+          variables: {
+            eventLimit: values.limit,
+            search: `%${filter.searchText}%`,
+            category: filter.category,
+            city: filter.city,
+            state: filter.state,
+            type: filter.type
+          }
         })
         .then(data => {
           setValues({ ...values, events: data.data.events });
@@ -85,14 +100,16 @@ export default function EventCardList(props) {
 
     // Replaces ComponentDidMount() in a Functional Component
     useEffect(() => {
-      console.log("useffect")
+      console.log("EventCardList UseEffect()")
       grabEvents();
-    }, [props.type, props.filter])
+      console.log(values.events)
+      console.log(props.filter)
+    }, [props.filter])
 
     // Start Filtering Responses here. Since it's so fucking hard in GraphQL
     let finalEvents = values.events //[{name: "wtf", description: "aaah", category: "rap", image: {url: "https://upload.wikimedia.org/wikipedia/commons/a/a1/Mallard2.jpg"}}]
     
-    console.log("Show New: ", values.showNew)
+    //console.log("Show New: ", values.showNew)
 
     // Components to Render
     return (

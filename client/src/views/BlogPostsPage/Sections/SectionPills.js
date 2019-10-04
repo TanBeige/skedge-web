@@ -58,14 +58,12 @@ export default function SectionPills(props) {
 
   // Handle Event Type Button Press
   const changeToLocal = () => {
-    console.log("handle Local: ");
     setValues({
       ...values,
       type: "local"
     });
   }
   const changeToExclusive = () => {
-    console.log("handle Exclusive: ");
     setValues({
       ...values,
       type: "exclusive",
@@ -75,7 +73,6 @@ export default function SectionPills(props) {
   // Handle Filter Change
 
   const handleExpandClick = () => {
-    console.log("Expanded: ", values.expanded)
     setValues({
       ...values,
       expanded: !values.expanded
@@ -83,7 +80,6 @@ export default function SectionPills(props) {
   }
 
   const handleFilters = name => event => {
-    console.log(" Value:", event.target.value)
     setValues({
       ...values,
       [name]: event.target.value,
@@ -106,6 +102,7 @@ export default function SectionPills(props) {
 
   const filter = {
     searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
+    type: values.type,
     category: values.category,
     city: values.city,
     state: values.state
@@ -249,7 +246,6 @@ export default function SectionPills(props) {
 
       <EventCardList 
         client={props.client}
-        type={values.type}
         filter={filter}
       /> 
     </div>
