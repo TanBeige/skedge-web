@@ -44,6 +44,7 @@ const useStyles = makeStyles(sectionPillsStyle);
 
 export default function SectionPills(props) {
   const classes = useStyles();
+  console.log("SectionPills New Load")
 
   // 0 is local, 1 is exclusive
   const [values, setValues] = useState({
@@ -131,7 +132,7 @@ export default function SectionPills(props) {
                   labelText="Search Events"
                   id="search"
                   inputProps={{
-                    onChange: handleFilters("search")
+                    onChange: handleFilters("searchText")
                   }}
                   formControlProps={{
                     fullWidth: true

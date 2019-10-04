@@ -26,16 +26,21 @@ export default function EventCardList(props) {
       showOlder: true,
       newEventsLength: 0,
       limit: 10,
-      events: []
+      events: [],
+
+      loadingEvents: false
   });
 
   const grabEvents = () => {
     const { client } = props;
     const { filter } = props;
 
+    let cat = filter.category;
     if(filter.category == "Any") {
-      //Do something
+      cat = ""
     }
+    // TODO: private events don't show up when "Any" category is chosen
+    console.log(`cat: "${cat}"`)
       // query for public events
       client
         .query({
@@ -43,38 +48,46 @@ export default function EventCardList(props) {
           variables: {
             eventLimit: values.limit,
             search: `%${filter.searchText}%`,
-            category: filter.category,
+            category: cat,
             city: filter.city,
             state: filter.state,
             type: filter.type
           }
         })
         .then(data => {
-          setValues({ ...values, events: data.data.events });
-          const latestEventId = data.data.events.length
-            ? data.data.events[0].id
-            : null;
+          setValues({ 
+            ...values, 
+            events: data.data.events, 
+            loadingEvents: data.loading
+          });
+          console.log(data)
+
+          //Commented out because subscriptions break it
+          
+          // const latestEventId = data.data.events.length
+          //   ? data.data.events[0].id
+          //   : null;
           // start a subscription
-          client
-            .subscribe({
-              query: SUBSCRIPTION_EVENT_LOCAL_LIST,
-              variables: { eventId: latestEventId } // update subscription when eventId changes
-            })
-            .subscribe({
-              next(data) {
-                if (data.data.events.length) {
-                  setValues({
-                      ...values,
-                      showNew: true,
-                      newEventsLength:
-                      values.newEventsLength + data.data.events.length
-                  });
-                }
-              },
-              error(err) {
-                console.error("err", err);
-              }
-            });
+          // client
+          //   .subscribe({
+          //     query: SUBSCRIPTION_EVENT_LOCAL_LIST,
+          //     variables: { eventId: latestEventId } // update subscription when eventId changes
+          //   })
+          //   .subscribe({
+          //     next(data) {
+          //       if (data.data.events.length) {
+          //         setValues({
+          //             ...values,
+          //             showNew: true,
+          //             newEventsLength:
+          //             newEventsLength + data.data.events.length,
+          //         });
+          //       }
+          //     },
+          //     error(err) {
+          //       console.error("err", err);
+          //     }
+          //   });
         });
     }
 
@@ -102,16 +115,28 @@ export default function EventCardList(props) {
     useEffect(() => {
       console.log("EventCardList UseEffect()")
       grabEvents();
-      console.log(values.events)
       console.log(props.filter)
     }, [props.filter])
 
     // Start Filtering Responses here. Since it's so fucking hard in GraphQL
-    let finalEvents = values.events //[{name: "wtf", description: "aaah", category: "rap", image: {url: "https://upload.wikimedia.org/wikipedia/commons/a/a1/Mallard2.jpg"}}]
+    let finalEvents = values.events
+    console.log("Events: ", values.events)
     
-    //console.log("Show New: ", values.showNew)
+    if(values.loadingEvents) {
+      return <div>Loading...</div>
+    }
 
     // Components to Render
+
+    if(values.events.length === 0)
+    {
+      return(
+        <div>
+          No events found for this search.
+        </div>
+      )
+    }
+
     return (
       <GridContainer>
         {
@@ -120,7 +145,7 @@ export default function EventCardList(props) {
                 <GridItem xs={12} sm={6} md={6} key={event.id}>
                     <EventCard 
                         event={event} 
-                        //client={this.props.client}
+                        client={props.client}
                     />
                 </GridItem>
                 )

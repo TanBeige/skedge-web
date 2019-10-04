@@ -2,10 +2,11 @@
   "name": "api",
   "version": "0.0.0",
   "private": true,
+  "proxy": "http://localhost:9000",
   "scripts": {
     "start": "nodemon ./bin/www",
     "build": "cd ./client && npm install && npm run build",
-    "heroku-postbuild": "cd ./client && npm install && npm run build"
+    "heroku-postbuild": "cd ./client && npm install && npm run build && cd .."
   },
   "dependencies": {
     "@slynova/flydrive": "^0.3.1",

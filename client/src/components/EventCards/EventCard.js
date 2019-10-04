@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react'
+
 import { Link } from 'react-router-dom'
 // @material-ui/icons
 import FormatAlignLeft from "@material-ui/icons/FormatAlignLeft";
@@ -10,9 +11,13 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js";
 
+import {
+  MUTATION_EVENT_IMPRESSION,
+} from "../../EventQueries/EventQueries";
+
 const useStyles = makeStyles(sectionPillsStyle);
 
-export default function EventCard({event}) {
+export default function EventCard({event, client}) {
     const classes = useStyles();
 
     /*
@@ -75,6 +80,23 @@ export default function EventCard({event}) {
     else {
       holdURL = event.image.url;
     }
+
+    const addImpression = () => {
+      client.mutate({
+        mutation: MUTATION_EVENT_IMPRESSION,
+        variables: {
+          eventId: event.id
+        }
+      })
+      .then( data => {
+          console.log("impressions: ", data)
+      })
+    }
+
+    useEffect(() => {
+      console.log("UseEffect In EventCard");
+      addImpression();
+    }, [])
     
     return(
         <Card

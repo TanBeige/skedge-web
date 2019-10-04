@@ -8,26 +8,22 @@ import gql from "graphql-tag";
 
 // Fragments
 const EVENT_FRAGMENT = gql`
-  fragment TodoFragment on events {
+  fragment EventFragment on events {
     id
-    event_type
     name
     description
+    event_type
     event_date
-    start_time 
-    end_time 
-    price
+    start_time
+    end_time
     category
-    cover_pic
-    street
     city
     state
-    zip_code
     image {
-      id
-      image_name
       url
-      content_type
+    }
+    user {
+      name
     }
   }
 `;
@@ -60,7 +56,7 @@ const QUERY_USER_PROFILE = gql`
     events(
       where: {creator_id: { _eq: $userId }}
     ) {
-      ...TodoFragment
+      ...EventFragment
     }
   }
   ${EVENT_FRAGMENT}
@@ -90,31 +86,17 @@ const QUERY_FILTERED_EVENT = gql`
         ]
         _and: [
           {event_type: {_eq: $type}},
-          {category: {_eq: $category}},
+          {category: {_like: $category}},
           {city: {_ilike: $city}},
           {state: {_ilike: $state}}
         ]
       }
     )
     {
-      id
-      name
-      description
-      event_type
-      event_date
-      start_time
-      end_time
-      category
-      city
-      state
-      image {
-        url
-      }
-      user {
-        name
-      }
+      ...EventFragment
     }
   }
+  ${EVENT_FRAGMENT}
 `
 
 const QUERY_PRIVATE_EVENT = gql`
@@ -128,7 +110,7 @@ const QUERY_PRIVATE_EVENT = gql`
       }
       order_by: { created_at: desc }
     ) {
-      ...TodoFragment
+      ...EventFragment
     }
   }
   ${EVENT_FRAGMENT}
@@ -141,7 +123,7 @@ const QUERY_LOCAL_EVENT = gql`
       order_by: { created_at: desc }
       limit: $eventLimit
     ) {
-      ...TodoFragment
+      ...EventFragment
       user {
         ...UserFragment
       }
@@ -157,7 +139,7 @@ const QUERY_FEED_LOCAL_EVENT = gql`
       where: { event_type: { _eq: "local" }, id: { _gt: $eventId } }
       order_by: { created_at: desc }
     ) {
-      ...TodoFragment
+      ...EventFragment
       user {
         ...UserFragment
       }
@@ -174,7 +156,7 @@ const QUERY_FEED_LOCAL_OLD_EVENT = gql`
       limit: 5
       order_by: { created_at: desc }
     ) {
-      ...TodoFragment
+      ...EventFragment
       user {
         ...UserFragment
       }
@@ -188,7 +170,7 @@ const FETCH_TAGGED_EVENTS = gql`
   query fetch_tagged_events($tag: String){
     event_tags(where: {tag: {name: {_like: $tag}}}, order_by: {event: {event_date: asc}}) {
       event {
-        ...TodoFragment
+        ...EventFragment
       }
     }
   }
@@ -227,6 +209,17 @@ const MUTATION_EVENT_DELETE = gql`
     }
   }
 `;
+
+const MUTATION_EVENT_IMPRESSION = gql`
+  mutation update_events_mutation($eventId: Int) {
+    update_events(
+      where: {id: {_eq: $eventId}},
+      _inc: {impressions: 1}
+    ) {
+      affected_rows
+    }
+  }
+`
 
 const SUBSCRIPTION_EVENT_LOCAL_LIST = gql`
   subscription($eventId: Int) {
@@ -280,6 +273,7 @@ export {
   MUTATION_EVENT_ADD,
   MUTATION_EVENT_UPDATE,
   MUTATION_EVENT_DELETE,
+  MUTATION_EVENT_IMPRESSION,
   SUBSCRIPTION_EVENT_LOCAL_LIST,
   QUERY_ACCEPTED_FRIENDS
 };
