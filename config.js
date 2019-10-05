@@ -8,4 +8,3 @@ exports.API_SECRET = process.env.API_SECRET || 'secret-key'
 exports.PORT = process.env.PORT;
 
 exports.AUTHDOMAIN = process.env.AUTHDOMAIN || "auth-domain";
-exports.AUDIENCE = process.env.AUDIENCE || "auth-audience";
