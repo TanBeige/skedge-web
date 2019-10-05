@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Button from 'components/CustomButtons/Button.js';
 import clsx from 'clsx';
 
+
+
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
@@ -81,10 +83,11 @@ export default function SectionPills(props) {
   }
 
   const handleFilters = name => event => {
-    setValues({
-      ...values,
-      [name]: event.target.value,
-    });
+      console.log("GOOOOO")
+      setValues({
+        ...values,
+        [name]: event.target.value,
+      });
   };
 
 
@@ -106,7 +109,8 @@ export default function SectionPills(props) {
     type: values.type,
     category: values.category,
     city: values.city,
-    state: values.state
+    state: values.state,
+    limit: 20   // This is how many events will show up in the eventList
   };
 
   //  style={{paddingTop: 25}}
@@ -124,7 +128,7 @@ export default function SectionPills(props) {
 
         <br />
 
-        <Paper elevation={10} style={{paddingLeft:20, paddingRight: 20}}>
+        <Paper elevation={10} style={{paddingLeft:20, paddingRight: 20}} color="primary">
           <GridContainer>
             <GridItem xs={10}>
               <FormControl fullWidth className={classes.selectFormControl} style={{marginBottom: 0}}>            

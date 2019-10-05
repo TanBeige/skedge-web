@@ -6,8 +6,11 @@ import FormatAlignLeft from "@material-ui/icons/FormatAlignLeft";
 // core components
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
+import CardHeader from "components/Card/CardHeader.js";
 import Button from "components/CustomButtons/Button.js";
 import { makeStyles } from "@material-ui/core/styles";
+import Info from "components/Typography/Info.js";
+
 
 import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js";
 
@@ -88,33 +91,45 @@ export default function EventCard({event, client}) {
           eventId: event.id
         }
       })
-      .then( data => {
-          console.log("impressions: ", data)
-      })
     }
 
     useEffect(() => {
-      console.log("UseEffect In EventCard");
       addImpression();
     }, [])
     
     return(
-        <Card
-            raised
-            background
-            style={{ backgroundImage: "url(" + holdURL + ")" }}
-        >  
-          <Link to={`/event#${holdName}_${event.id}`}>
-            <CardBody background>
-              <h6 className={classes.category}>{holdCategory.toUpperCase()}</h6>
-                <h3 className={classes.cardTitle}>
-                  {holdName}
-                </h3>
-              <p className={classes.category}>
+        <Card blog>  
+          <CardHeader image>
+            <Link to={`/event#${holdName}_${event.id}`}>
+              <img
+                className={classes.imgCard}
+                src={holdURL}
+                alt={holdName}
+              />
+              <div className={classes.imgCardOverlay}>
+                <h4
+                  className={classes.cardTitle}
+                  style={{
+                    color: "white",
+                    position: "absolute",
+                    bottom: "10px",
+                    left: "15px"
+                  }}
+                >
+                </h4>
+              </div>
+            </Link>
+          </CardHeader>
+
+            <CardBody>
+              <h3><strong>{holdName}</strong></h3>
+              <p>
                 {eventBio}
               </p>
+              <Info>
+                <h6 className={classes.cardCategory}>{holdCategory.toUpperCase()}</h6>
+              </Info>
             </CardBody>
-          </Link>
 
         </Card>
     )

@@ -48,7 +48,7 @@ const cardStyle = {
     textAlign: "center"
   },
   cardBlog: {
-    marginTop: "60px"
+    marginTop: "50px"
   },
   cardRaised: {
     boxShadow:

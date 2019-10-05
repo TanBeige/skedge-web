@@ -1,4 +1,4 @@
-import { authDomain, authClientId, callbackUrl, webUrl , audience} from "../utils/constants";
+import { authDomain, authClientId, callbackUrl, webUrl } from "../utils/constants";
 
 export const AUTH_CONFIG = {
   domain: authDomain,

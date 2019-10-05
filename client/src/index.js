@@ -22,7 +22,6 @@ ReactDOM.render(
       client_id={AUTH_CONFIG.clientId}
       redirect_uri={window.location.origin}
       onRedirectCallback={onRedirectCallback}
-      audience={AUTH_CONFIG.audience}
   >
       <MakeMainRoutes />
     </Auth0Provider>,

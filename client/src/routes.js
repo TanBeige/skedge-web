@@ -147,7 +147,7 @@ export const MakeMainRoutes = () => {
           <Route exact path="/ecommerce-page" render={props => provideClient(EcommercePage, props)} />
           <Route exact path="/landing-page" render={props => provideClient(LandingPage, props)} />
           <Route exact path="/login-page" render={props => provideClient(LoginPage, props)} />
-          <Route exact path="/pricing" render={props => provideClient(PricingPage, props)} />
+          <Route exact path="/create" render={props => provideClient(PricingPage, props)} />
           <Route exact path="/profile-page" render={props => provideClient(ProfilePage, props)} />
           <Route exact path="/product-page" render={props => provideClient(ProductPage, props)} />
           <Route exact path="/sections" render={props => provideClient(SectionsPage, props)} />
@@ -158,7 +158,7 @@ export const MakeMainRoutes = () => {
                 render={props => {
                   return <CallbackPage {...props} />;
                 }} />
-          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/" render={props => provideClient(LandingPage, props)}/>
         </Switch>
       </Router>
     );

@@ -19,6 +19,7 @@ import Button from "components/CustomButtons/Button.js";
 //import HeaderLinks from "components/Header/HeaderLinks.js";
 import Parallax from "components/Parallax/Parallax.js";
 
+
 import landingPageStyle from "assets/jss/material-kit-pro-react/views/landingPageStyle.js";
 
 // Sections for this page
@@ -33,6 +34,8 @@ import { useAuth0 } from '../../Authorization/react-auth0-wrapper';
 
 
 const useStyles = makeStyles(landingPageStyle);
+
+// TODO: Adding local events to homepage to make a more dynamic look
 
 export default function LandingPage(props) {
 
@@ -50,6 +53,7 @@ export default function LandingPage(props) {
     //return(<Redirect to="/home"/>)
     window.location.reload();
   }
+  console.log(props)
 
   return (
     <div>
@@ -88,7 +92,7 @@ export default function LandingPage(props) {
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}>
           <SectionProduct />
-          <SectionTeam />
+          <SectionTeam client={props.client}/>
           <SectionWork />
         </div>
       </div>

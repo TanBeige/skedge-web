@@ -37,7 +37,6 @@ export default function BlogPostsPage(props) {
     events: [],
     tabType: 'local',
     search: "",
-    limit: 10
   });
 
   const selectValues = (id) => {

@@ -4,6 +4,8 @@ import EventCard from "components/EventCards/EventCard.js"
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import gql from 'graphql-tag'
 
 //Lodash!
@@ -25,7 +27,7 @@ export default function EventCardList(props) {
       showNew: false,
       showOlder: true,
       newEventsLength: 0,
-      limit: 10,
+      limit: props.filter.limit,
       events: [],
 
       loadingEvents: false
@@ -40,7 +42,6 @@ export default function EventCardList(props) {
       cat = ""
     }
     // TODO: private events don't show up when "Any" category is chosen
-    console.log(`cat: "${cat}"`)
       // query for public events
       client
         .query({
@@ -48,9 +49,9 @@ export default function EventCardList(props) {
           variables: {
             eventLimit: values.limit,
             search: `%${filter.searchText}%`,
-            category: cat,
-            city: filter.city,
-            state: filter.state,
+            category: `%${cat}%`,
+            city: `%${filter.city}%`,
+            state: `%${filter.state}%`,
             type: filter.type
           }
         })
@@ -60,7 +61,6 @@ export default function EventCardList(props) {
             events: data.data.events, 
             loadingEvents: data.loading
           });
-          console.log(data)
 
           //Commented out because subscriptions break it
           
@@ -113,17 +113,20 @@ export default function EventCardList(props) {
 
     // Replaces ComponentDidMount() in a Functional Component
     useEffect(() => {
-      console.log("EventCardList UseEffect()")
       grabEvents();
-      console.log(props.filter)
     }, [props.filter])
 
     // Start Filtering Responses here. Since it's so fucking hard in GraphQL
     let finalEvents = values.events
     console.log("Events: ", values.events)
+    console.log("eventlist props: ", props)
     
     if(values.loadingEvents) {
-      return <div>Loading...</div>
+      return (
+        <div>
+          <CircularProgress color="primary" />
+        </div>
+      )
     }
 
     // Components to Render
@@ -132,7 +135,7 @@ export default function EventCardList(props) {
     {
       return(
         <div>
-          No events found for this search.
+          <h5 style={{marginTop: 20}}>No events found.</h5>
         </div>
       )
     }
