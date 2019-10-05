@@ -5,5 +5,4 @@ export const AUTH_CONFIG = {
   clientId: authClientId,
   callbackUrl: callbackUrl,
   webUrl: webUrl,
-  audience: audience
 };
