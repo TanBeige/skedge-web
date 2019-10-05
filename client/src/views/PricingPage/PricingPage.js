@@ -17,7 +17,11 @@ import GridItem from "components/Grid/GridItem.js";
 import Footer from "components/Footer/Footer.js";
 // sections for this page
 import SectionPricing from "views/PricingPage/Sections/SectionPricing.js";
-import SectionFeatures from "views/PricingPage/Sections/SectionFeatures.js";
+import LocalOrPrivate from 'views/PricingPage/Sections/LocalOrPrivate.js';
+import EventCreateInfo from 'views/PricingPage/Sections/EventCreateInfo.js';
+import TagSelect from 'views/PricingPage/Sections/TagSelect.js';
+import AddCohost from 'views/PricingPage/Sections/AddCohost/AddCohost.js';
+import AddBanner from 'views/PricingPage/Sections/AddBanner.js';
 
 import pricingStyle from "assets/jss/material-kit-pro-react/views/pricingStyle.js";
 
@@ -60,15 +64,15 @@ export default function PricingPage() {
 
   // Functions
   const handleGoBack = () => {
-    if (this.state.currentPage > 0) {
-        this.setState({
-            currentPage: this.state.currentPage - 1,
+    if (values.currentPage > 0) {
+        setValues({
+            currentPage: values.currentPage - 1,
             goingBack: true
         })
     }
     else {
         let path = `home`;
-        this.props.history.push(path);
+        props.history.push(path);
         // eslint-disable-next-line
         /*window.location.reload()*/
     }
@@ -76,8 +80,8 @@ export default function PricingPage() {
 
 // Page 0: Loca or Private Choosing
 const handleLocalOrPrivate = (type) => {
-    this.setState({
-        currentPage: this.state.currentPage + 1,
+    setValues({
+        currentPage: values.currentPage + 1,
         goingBack: false,
 
         event_type: type
@@ -100,8 +104,8 @@ const handleLocalOrPrivate = (type) => {
     )};
     
     console.log(newTags);
-    this.setState({
-        currentPage: this.state.currentPage + 1,
+    setValues({
+        currentPage: values.currentPage + 1,
         goingBack: false,
 
         category: cat,
@@ -120,8 +124,8 @@ const handleLocalOrPrivate = (type) => {
     description,
     repeat_days
   ) => {
-    this.setState({
-      currentPage: this.state.currentPage + 1,
+    setValues({
+      currentPage: values.currentPage + 1,
       goingBack: false,
 
       name: name,
@@ -137,8 +141,8 @@ const handleLocalOrPrivate = (type) => {
   }
 
   const handleCohost = (cohostId) => {
-    this.setState({
-        currentPage: this.state.currentPage + 1,
+    setValues({
+        currentPage: values.currentPage + 1,
         goingBack: false,
 
         cohost_id: cohostId
@@ -150,7 +154,7 @@ const handleLocalOrPrivate = (type) => {
  * Import bannerImg so we don't have to put it in the state.
  */
   const submitEvent = async (bannerImg) => {
-    console.log("State: ", this.state);
+    console.log("SubmitEvnt Values: ", values);
 
     const form_data = new FormData();
 
@@ -165,7 +169,7 @@ const handleLocalOrPrivate = (type) => {
     console.log(response.data)
 
     // Inputs all information into Hasura Postgres DB via GraphQL
-    this.props.client.mutate({
+    props.client.mutate({
         mutation: gql`
         mutation insert_events($objects: [events_insert_input!]!) {
             insert_events(objects: $objects) {
@@ -195,21 +199,21 @@ const handleLocalOrPrivate = (type) => {
             objects: [
                 {
                     creator_id: auth.getSub(),
-                    cohost_id: this.state.cohost_id,
-                    event_type: this.state.event_type,
-                    name: this.state.name,
-                    description: this.state.description,
-                    event_date: this.state.event_date,
-                    start_time: this.state.start_time,
-                    end_time: this.state.end_time,
-                    price: this.state.price,
-                    //allow_invites: this.state.allow_invites,
-                    //host_approval: this.state.host_approval,
-                    category: this.state.category,
+                    cohost_id: values.cohost_id,
+                    event_type: values.event_type,
+                    name: values.name,
+                    description: values.description,
+                    event_date: values.event_date,
+                    start_time: values.start_time,
+                    end_time: values.end_time,
+                    price: values.price,
+                    //allow_invites: values.allow_invites,
+                    //host_approval: values.host_approval,
+                    category: values.category,
 
-                    street: this.state.street,
-                    city: this.state.city,
-                    state: this.state.state,
+                    street: values.street,
+                    city: values.city,
+                    state: values.state,
 
                     image: {
                         data: {
@@ -220,7 +224,7 @@ const handleLocalOrPrivate = (type) => {
                         }
                     },
                     event_tags: {
-                        data: this.state.tags
+                        data: values.tags
                     }
                 }
             ],
@@ -228,23 +232,61 @@ const handleLocalOrPrivate = (type) => {
         },
     }).then(() =>{
         let path = `home`;
-        this.props.history.push(path);
+        props.history.push(path);
     })
 
     /*let path = `home`;
-    this.props.history.push(path);
+    props.history.push(path);
     // eslint-disable-next-line
     window.location.reload()*/
   }
 
+  // Handling What page displays here:
+  let currentPageNumber = values.currentPage;
+  let appBarTitle = "";
+  let page = "";
+
+  switch(currentPageNumber) {
+      case 0:
+          appBarTitle = "Create An Event";
+          page = <LocalOrPrivate goingBack={values.goingBack} handleLocalOrPrivate={handleLocalOrPrivate}/>
+          break;
+      case 1:
+          appBarTitle = "Create An Event";
+          page = <EventCreateInfo goingBack={values.goingBack} handleEventInfo={handleEventInfo} />
+          break;
+      case 2:
+          appBarTitle = "Category";
+          page = <TagSelect goingBack={values.goingBack} handleTagInfo={handleTagInfo} />
+          break;
+      case 3:
+          appBarTitle = "Add A Cohost";
+          page = <AddCohost 
+                      goingBack={values.goingBack} 
+                      handleCohost={handleCohost} 
+                      client={props.client}
+                      userId={auth.getSub()}
+                      event_type={values.event_type}
+                  />
+          break;
+      case 4:
+
+          appBarTitle = "Banner";
+          page = <AddBanner 
+                      goingBack={values.goingBack} 
+                      submitEvent={submitEvent} 
+                      client={props.client}
+                  />
+  }
+
   return (
-    <div style={{backgroundColor: "blue"}}>
-      <div style={{height: '3em'}}></div>
-      <div className={classNames(classes.main, classes.mainRaised)}>
+    <div style={{backgroundColor: "#02C39A", height: '100vh'}}>
+      <div style={{height: 60}}></div>
+      <div className={classNames(classes.main, classes.mainRaised)} style={{height: '90vh'}}>
         <div className={classes.container}>
-          <h2 style={{textAlign: 'center'}}><strong>Create Event</strong></h2>
+          <h2 style={{textAlign: 'center'}}><strong>{appBarTitle}</strong></h2>
           <hr />
-          <SectionPricing />
+          {page}
         </div>
       </div>
       <div style={{height: '2em'}}></div>

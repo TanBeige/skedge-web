@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import FormGroup from '@material-ui/core/FormGroup';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import ChipInput from 'material-ui-chip-input';
+import TagsInput from "react-tagsinput";
 
 
 
@@ -45,22 +45,12 @@ export default function TagSelect(props) {
         setValues({ ...values, category: event.target.value });
     };
 
-    const handleAddChip = (chip) => {
-        let tempTags = values.tags;
-        tempTags.push(chip)
+    const handleTags = (regularTags) => {
         setValues({
             ...values,
-            tags: tempTags
-        })
-    }
-    const handleDeleteChip = (chip, index) => {
-        let tempTags = values.tags
-        tempTags.splice(index, 1)
-        setValues({
-            ...values,
-            tags: tempTags
-        })
-    }
+            tags: regularTags
+        });
+    };
 
     const submitTags = () => {
         props.handleTagInfo(values.category, values.tags)
@@ -81,12 +71,10 @@ export default function TagSelect(props) {
                     </FormControl>
 
                     <Grid item xs={12}>
-                        <ChipInput 
+                        <TagsInput 
                         value={values.tags}
-                        placeholder='Add tags for event here'
-                        onAdd={(chip)=> handleAddChip(chip)}
-                        onDelete={(chip, index) => handleDeleteChip(chip, index)}
-                        fullWidth
+                        onChange={handleTags}
+                        tagProps={{ className: "react-tagsinput-tag primary" }}
                         />
                     </Grid>
                 </div>

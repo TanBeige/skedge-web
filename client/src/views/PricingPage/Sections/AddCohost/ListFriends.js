@@ -4,7 +4,7 @@ import { Query } from "react-apollo";
 import Container from '@material-ui/core/Container'
 import { GRAPHQL_URL } from "../../../../utils/constants";
 import FriendItem from "./FriendItem";
-import { QUERY_ACCEPTED_FRIENDS } from "../../../Todo/EventQueries";
+import { QUERY_ACCEPTED_FRIENDS } from "EventQueries/EventQueries.js";
 import List from '@material-ui/core/List';
 import { Button } from "@material-ui/core";
 

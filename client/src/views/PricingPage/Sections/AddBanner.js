@@ -3,8 +3,6 @@ import Slide from '@material-ui/core/Slide';
 import Spinner from './Spinner'
 import DisplayUploadedImage from './DisplayUploadedImage';
 
-import { MUTATION_EVENT_ADD } from "../../Todo/EventQueries";
-import { graphql } from 'react-apollo'
 
 import { Button } from '@material-ui/core'
 
@@ -124,4 +122,4 @@ const AddBanner = (props) => {
     )
 }
 
-export default graphql(MUTATION_EVENT_ADD)(AddBanner);
+export default AddBanner;

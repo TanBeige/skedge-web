@@ -4,7 +4,7 @@ import Container from '@material-ui/core/Container';
 import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
 
-import ListFriends from './ListFriends'
+import ListFriends from 'views/PricingPage/Sections/AddCohost/ListFriends.js'
 
 const useStyles = makeStyles(theme => ({
     '@global': {

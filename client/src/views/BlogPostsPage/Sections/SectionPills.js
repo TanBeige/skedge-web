@@ -48,7 +48,7 @@ export default function SectionPills(props) {
   const classes = useStyles();
   console.log("SectionPills New Load")
 
-  // 0 is local, 1 is exclusive
+  // 0 is local, 1 is private
   const [values, setValues] = useState({
     type: "local",
     category: "Any",
@@ -66,10 +66,10 @@ export default function SectionPills(props) {
       type: "local"
     });
   }
-  const changeToExclusive = () => {
+  const changeToPrivate = () => {
     setValues({
       ...values,
-      type: "exclusive",
+      type: "private",
     });
   }
 
@@ -94,14 +94,14 @@ export default function SectionPills(props) {
 
   // Change Selected Buttons
   let localBtn;
-  let exclusiveBtn;
+  let privateBtn;
   if (values.type === "local") {
       localBtn = true;
-      exclusiveBtn = false;
+      privateBtn = false;
   }
-  else if (values.type === "exclusive") {
+  else if (values.type === "private") {
       localBtn = false;
-      exclusiveBtn = true;
+      privateBtn = true;
   }
 
   const filter = {
@@ -121,7 +121,7 @@ export default function SectionPills(props) {
         <GridItem xs={12} className={classes.textCenter}>
             <div>
                 <Button onClick={changeToLocal} simple={!localBtn} color="primary"><ApartmentIcon/>Local</Button>
-                <Button onClick={changeToExclusive} simple={!exclusiveBtn} color="primary"><EmojiPeopleIcon/>Exclusive</Button>
+                <Button onClick={changeToPrivate} simple={!privateBtn} color="primary"><EmojiPeopleIcon/>Friends</Button>
             </div>
         </GridItem>
         <GridItem xs={12}>

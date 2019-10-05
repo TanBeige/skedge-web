@@ -18,8 +18,6 @@ import TagSelect from './TagSelect';
 import AddCohost from './AddCohost/AddCohost';
 import AddBanner from './AddBanner';
 
-require('./CreateEvent.css')
-
 class CreateEvent extends Component {
     constructor(props) {
         super(props);

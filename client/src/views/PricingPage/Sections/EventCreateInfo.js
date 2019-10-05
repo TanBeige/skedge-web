@@ -21,12 +21,12 @@ import Slide from '@material-ui/core/Slide'
 import { MenuItem } from '@material-ui/core';
 
 // Time/Date Selections Imports
-import MomentUtils from '@date-io/moment';
+import MomentUtils from '@date-io/moment';    //uninstall if dont need this later
 import {
     DatePicker,
     MuiPickersUtilsProvider,
     TimePicker
-  } from '@material-ui/pickers';
+  } from '@material-ui/pickers';  //if i dont need this later uninstall
 
 // Lodash import
 import _ from 'lodash'

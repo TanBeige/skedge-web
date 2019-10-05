@@ -30,7 +30,7 @@ export default function SectionTeam({client}) {
     category: "",
     city: "",
     state: "",
-    limit: 3
+    limit: 8
   }
   
   return (
@@ -38,7 +38,7 @@ export default function SectionTeam({client}) {
       <h2 className={classes.title}>Find Local Events</h2>
       <div>
         <GridContainer>
-          <GridItem xs={12} sm={6} md={6}>
+          <GridItem xs={12} sm={12} md={12}>
             <Card profile plain className={classes.card3}>
               <EventCardList 
                 client={client}
