@@ -8,6 +8,9 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
+import {IconButton} from '@material-ui/core';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+
 // core components
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
@@ -24,10 +27,17 @@ import AddCohost from 'views/PricingPage/Sections/AddCohost/AddCohost.js';
 import AddBanner from 'views/PricingPage/Sections/AddBanner.js';
 
 import pricingStyle from "assets/jss/material-kit-pro-react/views/pricingStyle.js";
+import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 
 const useStyles = makeStyles(pricingStyle);
 
-export default function PricingPage() {
+export default function PricingPage(props) {
+
+  console.log("props blog: ", props);
+
+  const { user } = useAuth0();
+
+
   React.useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
@@ -247,36 +257,35 @@ const handleLocalOrPrivate = (type) => {
   let page = "";
 
   switch(currentPageNumber) {
-      case 0:
-          appBarTitle = "Create An Event";
-          page = <LocalOrPrivate goingBack={values.goingBack} handleLocalOrPrivate={handleLocalOrPrivate}/>
-          break;
-      case 1:
-          appBarTitle = "Create An Event";
-          page = <EventCreateInfo goingBack={values.goingBack} handleEventInfo={handleEventInfo} />
-          break;
-      case 2:
-          appBarTitle = "Category";
-          page = <TagSelect goingBack={values.goingBack} handleTagInfo={handleTagInfo} />
-          break;
-      case 3:
-          appBarTitle = "Add A Cohost";
-          page = <AddCohost 
-                      goingBack={values.goingBack} 
-                      handleCohost={handleCohost} 
-                      client={props.client}
-                      userId={auth.getSub()}
-                      event_type={values.event_type}
-                  />
-          break;
-      case 4:
-
-          appBarTitle = "Banner";
-          page = <AddBanner 
-                      goingBack={values.goingBack} 
-                      submitEvent={submitEvent} 
-                      client={props.client}
-                  />
+    case 0:
+      appBarTitle = "Create An Event";
+      page = <LocalOrPrivate goingBack={values.goingBack} handleLocalOrPrivate={handleLocalOrPrivate}/>
+      break;
+    case 1:
+      appBarTitle = "Create An Event";
+      page = <EventCreateInfo goingBack={values.goingBack} handleEventInfo={handleEventInfo} />
+      break;
+    case 2:
+      appBarTitle = "Category";
+      page = <TagSelect goingBack={values.goingBack} handleTagInfo={handleTagInfo} />
+      break;
+    case 3:
+      appBarTitle = "Add A Cohost";
+      page = <AddCohost 
+        goingBack={values.goingBack} 
+        handleCohost={handleCohost} 
+        client={props.client}
+        userId={auth.getSub()}
+        event_type={values.event_type}
+      />
+      break;
+    case 4:
+      appBarTitle = "Banner";
+      page = <AddBanner 
+          goingBack={values.goingBack} 
+          submitEvent={submitEvent} 
+          client={props.client}
+      />
   }
 
   return (
@@ -284,9 +293,12 @@ const handleLocalOrPrivate = (type) => {
       <div style={{height: 60}}></div>
       <div className={classNames(classes.main, classes.mainRaised)} style={{height: '90vh'}}>
         <div className={classes.container}>
+          <IconButton style={{position: 'absolute', left: 0}} onClick={handleGoBack}>
+            <ChevronLeftIcon style={{fontSize: '2em'}} />
+          </IconButton>
           <h2 style={{textAlign: 'center'}}><strong>{appBarTitle}</strong></h2>
           <hr />
-          {page}
+          { page }
         </div>
       </div>
       <div style={{height: '2em'}}></div>

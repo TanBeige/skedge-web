@@ -8,21 +8,26 @@ const buttonStyle = {
     textAlign: 'center',
     display: 'block',
     margin: 'auto',
-    width: '20%',
-    minWidth: '10em',
+    width: '8em',
     fontSize: 26,
+    maxWidth: '%90',
     //color: '#00A896',
     //fontWeight: '400'
 }
 
+const vertStyle = {
+    position: 'block',
+    textAlign: 'center',
+    margin: '4em 0 0 0'
+}
 
 export default function LocalOrPrivate(props) {
     //Functions
     const handleLocal = () => {
-        this.props.handleLocalOrPrivate('local')
+        props.handleLocalOrPrivate('local')
     }
     const handlePrivate = () => {
-        this.props.handleLocalOrPrivate('private')
+        props.handleLocalOrPrivate('private')
     }
 
     //Rendering
@@ -30,16 +35,18 @@ export default function LocalOrPrivate(props) {
 
     return (
         <Slide direction={dir} in >
-            <div className='localOrPrivate' style={{paddingBottom: 20, textAlign: 'center', verticalAlign: 'middle'}}>
-                <Button size='large' variant='contained' color='primary' style={buttonStyle} onClick={handlePrivate}>
-                    Private
-                </Button>
-                <div className='OrText'>
-                    -Or-
+            <div className='localOrPrivate' style={vertStyle}>
+                <div >
+                    <Button variant='contained' color='primary' style={buttonStyle} onClick={handlePrivate}>
+                        Private
+                    </Button>
+                    <div className='OrText'>
+                        -Or-
+                    </div>
+                    <Button variant='contained' color='primary' style={buttonStyle} onClick={handleLocal}>
+                        Local
+                    </Button>
                 </div>
-                <Button size='large' variant='contained' color='primary' style={buttonStyle} onClick={handleLocal}>
-                    Local
-                </Button>
             </div>
         </Slide>
     )
