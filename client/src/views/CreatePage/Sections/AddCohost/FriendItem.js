@@ -5,15 +5,18 @@ import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import Divider from '@material-ui/core/Divider'
+import Divider from '@material-ui/core/Divider';
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import Checkbox from '@material-ui/core/Checkbox';
 //import "../../styles/App.css";
 
 const FriendItem = ({
     index,
     friend,
     userId,
+    check,
     selectedFriend,
-    handleSelect
+    handleChange
     }) => {
 
     let currentFriend = null;
@@ -26,19 +29,20 @@ const FriendItem = ({
 
     return (
         <Fragment>
-            <ListItem 
-            button
-            alignItems="flex-start" 
-            selected={selectedFriend === index}
-            onClick={event => handleSelect(event, index, currentFriend.auth0_id)}
-            >
+            <ListItem key={currentFriend.auth0_id} button onClick={handleChange(currentFriend.auth0_id)}>
                 <ListItemAvatar>
-                    <Avatar alt={currentFriend.name} src={currentFriend.picture} />
-                </ListItemAvatar>
-                <ListItemText
-                    primary={currentFriend.name}
-                    secondary=''
+                <Avatar
+                    alt={currentFriend.name}
+                    src={currentFriend.picture}
                 />
+                </ListItemAvatar>
+                <ListItemText id={currentFriend.name} primary={currentFriend.name} />
+                <ListItemIcon>
+                <Checkbox
+                    edge="end"
+                    checked={check.indexOf(currentFriend.auth0_id) !== -1}
+                />
+                </ListItemIcon>
             </ListItem>
             <Divider variant="inset" component="li" />
         </Fragment>

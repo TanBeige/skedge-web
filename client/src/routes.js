@@ -51,7 +51,7 @@ import EcommercePage from "views/EcommercePage/EcommercePage.js";
 import LandingPage from "views/LandingPage/LandingPage.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
 //import PresentationPage from "views/PresentationPage/PresentationPage.js";
-import PricingPage from "views/PricingPage/PricingPage.js";
+import CreatePage from "views/CreatePage/CreatePage.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import ProductPage from "views/ProductPage/ProductPage.js";
 import SectionsPage from "views/SectionsPage/SectionsPage.js";
@@ -144,10 +144,10 @@ export const MakeMainRoutes = () => {
           <PrivateRoute path="/home" render={props => provideClient(BlogPostsPage, props)} />
           {/*<Route exact path="/components" render={props => provideClient(ComponentsPage, props)} />*/}
           <Route exact path="/contact-us" render={props => provideClient(ContactUsPage, props)} />
-          <Route exact path="/ecommerce-page" render={props => provideClient(EcommercePage, props)} />
+          <Route exact path="/subscriptions" render={props => provideClient(EcommercePage, props)} />
           <Route exact path="/landing-page" render={props => provideClient(LandingPage, props)} />
           <Route exact path="/login-page" render={props => provideClient(LoginPage, props)} />
-          <Route exact path="/create" render={props => provideClient(PricingPage, props)} />
+          <Route exact path="/create" render={props => provideClient(CreatePage, props)} />
           <Route exact path="/profile-page" render={props => provideClient(ProfilePage, props)} />
           <Route exact path="/product-page" render={props => provideClient(ProductPage, props)} />
           <Route exact path="/sections" render={props => provideClient(SectionsPage, props)} />

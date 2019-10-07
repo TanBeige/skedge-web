@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -12,22 +12,20 @@ import {IconButton} from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 // core components
-import Header from "components/Header/Header.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
-import Parallax from "components/Parallax/Parallax.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import Footer from "components/Footer/Footer.js";
+import MomentUtils from '@date-io/moment';    //uninstall if dont need this later
+
 // sections for this page
-import SectionPricing from "views/PricingPage/Sections/SectionPricing.js";
-import LocalOrPrivate from 'views/PricingPage/Sections/LocalOrPrivate.js';
-import EventCreateInfo from 'views/PricingPage/Sections/EventCreateInfo.js';
-import TagSelect from 'views/PricingPage/Sections/TagSelect.js';
-import AddCohost from 'views/PricingPage/Sections/AddCohost/AddCohost.js';
-import AddBanner from 'views/PricingPage/Sections/AddBanner.js';
+import LocalOrPrivate from 'views/CreatePage/Sections/LocalOrPrivate.js';
+import EventCreateInfo from 'views/CreatePage/Sections/EventCreateInfo.js';
+import TagSelect from 'views/CreatePage/Sections/TagSelect.js';
+import AddCohost from 'views/CreatePage/Sections/AddCohost/AddCohost.js';
+import AddBanner from 'views/CreatePage/Sections/AddBanner.js';
 
 import pricingStyle from "assets/jss/material-kit-pro-react/views/pricingStyle.js";
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
+import {
+  FETCH_IF_ENTITY
+} from 'EventQueries/EventQueries.js'
 
 const useStyles = makeStyles(pricingStyle);
 
@@ -37,6 +35,8 @@ export default function PricingPage(props) {
 
   const { user } = useAuth0();
 
+  console.log("user: ", user)
+
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,9 +45,14 @@ export default function PricingPage(props) {
   const classes = useStyles();
 
   const [values, setValues] = useState({
-    currentPage: 0,
+      // Page information for display
+      currentPage: 0,
       goingBack: false,
 
+      // User information
+      isEntity: false,
+
+      // Event Information to be submitted
       event_type: "",
       street: "",
       city: "",
@@ -56,9 +61,9 @@ export default function PricingPage(props) {
 
       name: "",
       description: "",
-      event_date: "",
-      start_time: "",
-      end_time: "",
+      event_date: new Date(),
+      start_time: new Date(),
+      end_time: null,
       price: "0.00",
       allow_invites: false,
       host_approval: false,
@@ -66,7 +71,7 @@ export default function PricingPage(props) {
       cover_pic: "",
       repeat_days: false,
 
-      category: "",
+      category: "Sports",
       tags: [],
 
       cohost_id: []
@@ -76,8 +81,9 @@ export default function PricingPage(props) {
   const handleGoBack = () => {
     if (values.currentPage > 0) {
         setValues({
-            currentPage: values.currentPage - 1,
-            goingBack: true
+          ...values,
+          currentPage: values.currentPage - 1,
+          goingBack: true
         })
     }
     else {
@@ -91,35 +97,21 @@ export default function PricingPage(props) {
 // Page 0: Loca or Private Choosing
 const handleLocalOrPrivate = (type) => {
     setValues({
-        currentPage: values.currentPage + 1,
+        ...values,
         goingBack: false,
-
-        event_type: type
+        event_type: type,
+        currentPage: values.currentPage + 1
     });
 }
 // Page 1: Event Info Submission
   const handleTagInfo = (cat, inTags) => {
-    let newTags = [];
-    let i;
-    for(i = 0; i < inTags.length; i++){
-        newTags.push({
-            tag: {
-                    data: { name: inTags[i] },
-                    "on_conflict": {
-                        "constraint": "tags_name_key",
-                        "update_columns": "name"
-                    }
-                }
-            }
-    )};
-    
-    console.log(newTags);
     setValues({
+        ...values,
         currentPage: values.currentPage + 1,
         goingBack: false,
 
         category: cat,
-        tags: newTags
+        tags: inTags
     });
 }
 
@@ -135,6 +127,7 @@ const handleLocalOrPrivate = (type) => {
     repeat_days
   ) => {
     setValues({
+      ...values, 
       currentPage: values.currentPage + 1,
       goingBack: false,
 
@@ -151,7 +144,9 @@ const handleLocalOrPrivate = (type) => {
   }
 
   const handleCohost = (cohostId) => {
+    console.log(cohostId)
     setValues({
+        ...values,
         currentPage: values.currentPage + 1,
         goingBack: false,
 
@@ -164,6 +159,20 @@ const handleLocalOrPrivate = (type) => {
  * Import bannerImg so we don't have to put it in the state.
  */
   const submitEvent = async (bannerImg) => {
+
+    // Error Check event creation first
+    if(
+      !values.name.replace(/\s/g, '').length && 
+      !values.city.replace(/\s/g, '').length && 
+      !values.state.replace(/\s/g, '').length
+      )
+    {
+      // Error message or something
+      console.log("Event not completed")
+      let path = `home`;
+      props.history.push(path);
+    }
+    // If no errors, store image on cloudinary.
     console.log("SubmitEvnt Values: ", values);
 
     const form_data = new FormData();
@@ -177,6 +186,25 @@ const handleLocalOrPrivate = (type) => {
     // Grabs image info and adds uploaded file ID to cover_pic in events table.
     console.log(response);
     console.log(response.data)
+
+    //Order tags so they can be input properly
+    let newTags = [];
+    let i;
+
+    // Adds all input tags inside these keys
+    //  This is so if a tag already exists, we just grab the
+    //  tag id and make the event_tags equal to that id.
+    for(i = 0; i < inTags.length; i++){
+        newTags.push({
+            tag: {
+                    data: { name: inTags[i] },
+                    "on_conflict": {
+                      "constraint": "tags_name_key",
+                      "update_columns": "name"
+                    }
+                }
+            }
+    )};
 
     // Inputs all information into Hasura Postgres DB via GraphQL
     props.client.mutate({
@@ -234,7 +262,7 @@ const handleLocalOrPrivate = (type) => {
                         }
                     },
                     event_tags: {
-                        data: values.tags
+                        data: newTags
                     }
                 }
             ],
@@ -245,11 +273,32 @@ const handleLocalOrPrivate = (type) => {
         props.history.push(path);
     })
 
+    // If returning to the Homepage becomes a problem:
     /*let path = `home`;
     props.history.push(path);
     // eslint-disable-next-line
     window.location.reload()*/
   }
+
+  useEffect(() => {
+    const userId = user.sub;
+    if (props.client) {
+      props.client.query({
+          query: FETCH_IF_ENTITY,
+          variables: {
+            userId: userId,
+          }
+        })
+        .then(data => {
+          console.log("Entity Data: ", data.data.users[0].entity)
+          setValues({ 
+            ...values, 
+            isEntity: data.data.users[0].entity
+          });
+        });
+    }
+  }, [])
+
 
   // Handling What page displays here:
   let currentPageNumber = values.currentPage;
@@ -259,23 +308,36 @@ const handleLocalOrPrivate = (type) => {
   switch(currentPageNumber) {
     case 0:
       appBarTitle = "Create An Event";
-      page = <LocalOrPrivate goingBack={values.goingBack} handleLocalOrPrivate={handleLocalOrPrivate}/>
+      page = <LocalOrPrivate entity={values.isEntity} goingBack={values.goingBack} handleLocalOrPrivate={handleLocalOrPrivate}/>
       break;
     case 1:
       appBarTitle = "Create An Event";
-      page = <EventCreateInfo goingBack={values.goingBack} handleEventInfo={handleEventInfo} />
+      page = (
+      <EventCreateInfo 
+        entity={values.isEntity} 
+        savedValues={values} 
+        goingBack={values.goingBack} 
+        handleEventInfo={handleEventInfo} 
+      />
+      )
       break;
     case 2:
       appBarTitle = "Category";
-      page = <TagSelect goingBack={values.goingBack} handleTagInfo={handleTagInfo} />
+      page = (<TagSelect 
+        goingBack={values.goingBack} 
+        savedTag={values.tags} 
+        savedCategory={values.category} 
+        handleTagInfo={handleTagInfo} 
+      />)
       break;
     case 3:
       appBarTitle = "Add A Cohost";
       page = <AddCohost 
         goingBack={values.goingBack} 
-        handleCohost={handleCohost} 
+        handleCohost={handleCohost}
+        cohosts={values.cohost_id}
         client={props.client}
-        userId={auth.getSub()}
+        userId={user.sub}
         event_type={values.event_type}
       />
       break;
@@ -288,15 +350,19 @@ const handleLocalOrPrivate = (type) => {
       />
   }
 
+  // For the appBarTitle, for some reason page 2 is not bold when using the <strong> tag
+  //  so I set fontWeight to bolder, this fixed the problem but now none of the titles are bold except
+  //  page 2. So I have to have BOTH fontWeight: 'bolder' AND <strong> for all of them.
+  //  This is probably becsue I used a material-ui theme in EventCreateInfo.js
   return (
-    <div style={{backgroundColor: "#02C39A", height: '100vh'}}>
+    <div style={{backgroundColor: "#02C39A", height: '100vh', overflowY: 'scroll'}}>
       <div style={{height: 60}}></div>
-      <div className={classNames(classes.main, classes.mainRaised)} style={{height: '90vh'}}>
+      <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '90vh'}}>
         <div className={classes.container}>
           <IconButton style={{position: 'absolute', left: 0}} onClick={handleGoBack}>
             <ChevronLeftIcon style={{fontSize: '2em'}} />
           </IconButton>
-          <h2 style={{textAlign: 'center'}}><strong>{appBarTitle}</strong></h2>
+          <h2 style={{paddingTop: 8, textAlign: 'center', fontWeight: 'bolder'}}><strong>{appBarTitle}</strong></h2>
           <hr />
           { page }
         </div>

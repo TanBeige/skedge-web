@@ -4,7 +4,7 @@ import Container from '@material-ui/core/Container';
 import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
 
-import ListFriends from 'views/PricingPage/Sections/AddCohost/ListFriends.js'
+import ListFriends from 'views/CreatePage/Sections/AddCohost/ListFriends.js'
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -36,11 +36,11 @@ export default function AddCohost (props) {
     const classes = useStyles();
 
     const [values, setValues] = React.useState({
-        cohostId: 0
+        cohostId: props.cohosts
     });
     
-    const selectCohost = (id) => {
-      setValues({ ...values, cohostId: id });
+    const selectCohosts = (cohosts) => {
+      setValues({ ...values, cohostId: cohosts });
     };
 
     let buttonText = ""
@@ -55,13 +55,14 @@ export default function AddCohost (props) {
 
     return(
         <Slide direction={dir} in mountOnEnter unmountOnExit>
-            <Container component="main" maxWidth="xs">
+            <Container component="main">
                 <div className={classes.paper}>
                     <div className='AddCohost'>
                         <ListFriends
                           client={props.client}
                           userId={props.userId}
-                          selectCohost={selectCohost}
+                          selectCohosts={selectCohosts}
+                          cohosts={values.cohostId}
                          />
                     </div>
                 </div>

@@ -7,13 +7,23 @@ import RadioGroup from '@material-ui/core/RadioGroup'
 import Radio from '@material-ui/core/Radio';
 import Grid from '@material-ui/core/Grid';
 import FormGroup from '@material-ui/core/FormGroup';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import TagsInput from "react-tagsinput";
+import TextField from '@material-ui/core/TextField'
+import { ThemeProvider } from '@material-ui/styles';
 
 
+import Button from 'components/CustomButtons/Button.js';
 
-import { Button } from '@material-ui/core'
+
+const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: "#02C39A"
+      },
+    },
+  });
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -37,8 +47,8 @@ export default function TagSelect(props) {
     const classes = useStyles();
 
     const [values, setValues] = React.useState({
-        category: "Sports",
-        tags: []
+        category: props.savedCategory,
+        tags: props.savedTag
       });
     
     const handleChange = (event) => {
@@ -60,7 +70,9 @@ export default function TagSelect(props) {
 
     return (
         <Slide direction={dir} in >
-        <Container component="main" maxWidth="xs">
+        <Container component="main" >
+        <ThemeProvider theme={theme}>
+
             <div className={classes.paper}>
                 <div className='TagSelect'>
                     <FormControl component="fieldset">
@@ -71,23 +83,27 @@ export default function TagSelect(props) {
                     </FormControl>
 
                     <Grid item xs={12}>
-                        <TagsInput 
-                        value={values.tags}
-                        onChange={handleTags}
-                        tagProps={{ className: "react-tagsinput-tag primary" }}
-                        />
+                        <div style={{border: '2px solid #02C39A', borderRadius: 10, marginTop: '1em'}}>
+                            <TagsInput 
+                            value={values.tags}
+                            onChange={handleTags}
+                            tagProps={{ className: "react-tagsinput-tag primary" }}
+                            />
+                        </div>
                     </Grid>
                 </div>
                 <Button
                 fullWidth
                 variant="contained"
-                color="secondary"
+                color="primary"
                 className={classes.submit}
                 onClick={submitTags}
                 >
                 Choose Cohost ->
                 </Button>
             </div>
+            </ThemeProvider>
+
             </Container>
         </Slide>
     )

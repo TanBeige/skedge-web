@@ -1732,6 +1732,7 @@ button.slick-arrow.slick-next {
   -o-transition: all 300ms ease 0s;
   -ms-transition: all 300ms ease 0s;
   transition: all 300ms ease 0s;
+  min-width: 100%;
   background-color: #999; }
   .react-tagsinput .react-tagsinput-tag:hover {
     padding-right: 22px; }
@@ -1741,7 +1742,7 @@ button.slick-arrow.slick-next {
       background-color: transparent;
       color: #ffffff; }
   .react-tagsinput .react-tagsinput-tag.primary {
-    background-color: #9c27b0; }
+    background-color: #02C39A; }
   .react-tagsinput .react-tagsinput-tag.info {
     background-color: #00bcd4; }
   .react-tagsinput .react-tagsinput-tag.success {

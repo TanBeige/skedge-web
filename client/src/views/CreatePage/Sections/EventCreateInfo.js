@@ -8,12 +8,16 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
+
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+
+import pricingStyle from "assets/jss/material-kit-pro-react/views/pricingSections/pricingStyle.js";
+
 
 // Material-UI transition imports
 import Collapse from '@material-ui/core/Collapse';
@@ -32,56 +36,44 @@ import {
 import _ from 'lodash'
 
 // Begin Code !
-const useStyles = makeStyles(theme => ({
-  '@global': {
-    body: {
-      backgroundColor: theme.palette.common.white,
+const useStyles = makeStyles(pricingStyle);
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#02C39A"
     },
   },
-  paper: {
-    marginTop: theme.spacing(2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(2),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-    height: '4em'
-  },
-}));
+});
 
 export default function EventCreateInfo(props) {
   const classes = useStyles();
+  const savedValues = props.savedValues;
 
   const [values, setValues] = React.useState({
-  name: "",
-  address: "",
-  city: "",
-  state: "Florida",
-  selectedDay: new Date(),
-  startTime: new Date(),
+    // Event Creation
+    name: savedValues.name,
+    address: savedValues.street,
+    city: savedValues.city,
+    state: savedValues.state,
 
-  endTimeExists: false,
-  endTime: new Date(),
-  price: 0,
-  description: "",
+    selectedDay: savedValues.event_date,
+    startTime: savedValues.start_time,
+    endTimeExists: savedValues.end_time === null ? false : true,
+    endTime: savedValues.end_time,
 
-  repeatCheck: false,
-  monday: false,
-  tuesday: false,
-  wednesday: false,
-  thursday: false,
-  friday: false,
-  saturday: false,
-  sunday: false
+    price: savedValues.price,
+    description: savedValues.description,
+
+    repeatCheck: savedValues.repeat_days,
+    monday: false,
+    tuesday: false,
+    wednesday: false,
+    thursday: false,
+    friday: false,
+    saturday: false,
+    sunday: false,
+
   });
 
   //Functions
@@ -106,6 +98,13 @@ export default function EventCreateInfo(props) {
       })
   }
 
+  const handleEndTime = (time) => {
+    setValues({
+        ...values,
+        endTime: time
+    })
+  }
+
   const handleEndTimeClick = () => {
     setValues({
           ...values,
@@ -118,9 +117,9 @@ export default function EventCreateInfo(props) {
         values.address,
         values.city,
         values.state,
-        values.event_date,
-        values.start_time,
-        values.end_time,
+        values.selectedDay,
+        values.startTime,
+        values.endTime,
         values.description,
         values.repeatCheck
     )
@@ -144,7 +143,7 @@ export default function EventCreateInfo(props) {
                       variant="outlined"
                       fullWidth
                       value={values.endTime}
-                      onChange={handleTimeClick}
+                      onChange={handleEndTime}
                     />
                   </Grid>
                   <Grid item xs={2}>
@@ -197,11 +196,11 @@ export default function EventCreateInfo(props) {
   else {
     repeatEvent = (
       <div className='weekdayCheckboxes'>
-      <FormControl required error={error} component="fieldset">
-        <FormLabel component="legend">Check at least one</FormLabel>
+      <FormControl required error={error} component="fieldset" style={{marginBottom: 15}}>
+        <FormLabel component="legend" style={{marginBottom: 15}}>Check at least one</FormLabel>
         <FormGroup>
           <Grid container direction='row' alignContent='center'>
-            <Grid item xs>
+            <Grid item xs={3}>
             <FormControlLabel
               control={<Checkbox checked={values.monday} onChange={handleCheck('monday')} value="monday" color='primary'/>}
               label="Mon."
@@ -285,19 +284,50 @@ export default function EventCreateInfo(props) {
     )
   }
 
-  //********************* Return ******************************
+  let continueDisabled = true;
+
+  if(
+    values.name.replace(/\s/g, '').length && 
+    values.city.replace(/\s/g, '').length && 
+    values.state.replace(/\s/g, '').length
+    ) {
+      if(values.repeatCheck)
+      {
+        if(
+          values.monday || 
+          values.tuesday || 
+          values.wednesday || 
+          values.thursday || 
+          values.friday || 
+          values.saturday ||
+          values.sunday
+          ) {
+            continueDisabled = false;
+          }
+      }
+      else {
+        continueDisabled = false;
+      }
+  }
+  else {
+    continueDisabled = true;
+  }
+
+  //**************************** Return ******************************
   return (
     <Slide direction={dir} in mountOnEnter unmountOnExit>
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" style={{paddingBottom: '0.5em'}}>
       <CssBaseline />
-      <div className={classes.paper}>
+      <ThemeProvider theme={theme}>
         <form className={classes.form} noValidate>
         <div className='EventCreateInfo'>
           <Grid container spacing={2} >
             <Grid item xs={12} sm={6}>
               <TextField
+                className={classes.input}
                 name="name"
                 variant="outlined"
+                value={values.name}
                 required
                 fullWidth
                 onChange={handleChange('name')}
@@ -309,6 +339,7 @@ export default function EventCreateInfo(props) {
             <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
+                value={values.address}
                 required
                 fullWidth
                 onChange={handleChange('address')}
@@ -324,6 +355,7 @@ export default function EventCreateInfo(props) {
                     label="City"
                     variant="outlined"
                     onChange={handleChange}
+                    required
                     fullWidth
                     className={classes.textField}
                     value={values.city}
@@ -338,6 +370,7 @@ export default function EventCreateInfo(props) {
                     select
                     label="State"
                     variant="outlined"
+                    required
                     fullWidth
                     className={classes.textField}
                     value={values.state}
@@ -394,16 +427,17 @@ export default function EventCreateInfo(props) {
           </div>
 
           <Button
+          disabled={continueDisabled}
           fullWidth
           variant="contained"
-          color="secondary"
+          color="primary"
           className={classes.submit}
           onClick={submitEventInfo}
           >
           Choose Category ->
           </Button>
         </form>
-      </div>
+      </ThemeProvider>
     </Container>
     </Slide>
   );

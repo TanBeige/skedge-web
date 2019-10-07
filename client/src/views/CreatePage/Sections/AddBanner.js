@@ -2,18 +2,18 @@ import React from 'react';
 import Slide from '@material-ui/core/Slide';
 import Spinner from './Spinner'
 import DisplayUploadedImage from './DisplayUploadedImage';
+import ImageUpload from 'components/CustomUpload/ImageUpload.js';
 
 
-import { Button } from '@material-ui/core'
+import Button from 'components/CustomButtons/Button.js'
 
 const buttonStyle = {
     textAlign: 'center',
     display: 'block',
     margin: 'auto',
-    width: '20%',
     minWidth: '10em',
-    fontSize: 26,
-    color: '#00A896',
+    marginTop: 20,
+    marginBottom: 20,
     //fontWeight: '400'
 }
 
@@ -67,23 +67,14 @@ const AddBanner = (props) => {
         if (!values.imgSet) {
             return (
                 <Slide direction={dir} in >
-                    <div className='localOrPrivate'>
-                        <input accept="image/*" 
-                            id="banner-file-input" 
-                            type="file"
-                            style={{display: 'none'}} 
-                            onChange={fileSelectedHandler}
-                            ref={fileInput => this.fileInput = fileInput}
-                        />
-                        <label htmlFor="banner-file-input" >
-                            <Button className='InputBanner' size='large' variant='contained' color='secondary' component="span" style={buttonStyle}>
-                                Upload Photo
-                            </Button>
-                        </label>
-                        <div className='OrText'>
-                            -Or-
+                    <div className='addBanner'>
+                        <div >
+                            <ImageUpload />
                         </div>
-                        <Button size='large' variant='contained' color='secondary' style={buttonStyle} onClick={bannerChoose}>
+                        <div >
+                            <h1 className='OrText'>-Or-</h1>
+                        </div>
+                        <Button variant='contained' color='primary' style={buttonStyle} onClick={bannerChoose}>
                             Choose A Banner
                         </Button>
                     </div>

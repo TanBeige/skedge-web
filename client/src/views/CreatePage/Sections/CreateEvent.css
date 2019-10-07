@@ -1,10 +1,11 @@
-.createEvent {
+/*.createEvent {
     position: absolute;
     width: 100%;
     background-color: #25e6bd;
     height: 100%;
-}
+}*/
 
+/*
 .localOrPrivate {
     position: absolute;
     margin-top: 50%;
@@ -12,16 +13,20 @@
     top: 30%;
     margin: auto;
     text-align: center;
-}
+}*/
 
 .OrText {
+    text-align: center;
     font-family: 'Montserrat';
+    margin-top: 10px;
     font-size: 3em;
     font-weight: 900;
-    text-shadow: black -1px 1px 0px;
+    text-shadow: #02C39A -2px 2px 0px;
     color: white;
-    -webkit-text-stroke: 0.2px black;
+    -webkit-text-stroke: 1px #02C39A;
 }
+
+/*
 
 .localOrPrivate Button {
     font-family: 'Montserrat';
@@ -33,15 +38,16 @@
 .EventCreateInfo {
     background-color: white;
     border-radius: 0.5em;
-    /*width: 85%;*/
     padding: 20px;
-}
+}*/
+
 
 .weekdayCheckboxes {
-    margin-left: 0.5em;
-    width: 90%;
+    margin: auto;
+    width: 100%;
+    padding: 10px;
 }
-
+/*
 .submitButton { 
     display: block;
     width: 80%;
@@ -61,32 +67,44 @@
     width: 100%;
     text-align: center;
 }
+*/
 
 /* Tag Select */
+/*
 .TagSelect {
     background-color: white;
     border-radius: 0.5em;
     padding: 20px;
     margin: auto;
-}
+}*/
 
 /* Friend Cohost Select*/
+
 .AddCohost {
     background-color: white;
     border-radius: 0.5em;
-    padding: 20px;
     width: 100%;
 }
 
+.addBanner {
+    margin: auto
+}
+
+.imageUpload {
+   width: 100%;
+}
+
 /* Upload Banner */
+/*
 span.InputBanner {
     font-family: 'Montserrat';
     font-size: 3em;
     font-weight: 900;
     text-shadow: black -1px 1px 0px;
 }
+/*
+/*
 .uploadedImage {
-    /*position: absolute;*/
     margin-top: 1em;
     display: flex;
     justify-content: center;
@@ -102,4 +120,4 @@ span.InputBanner {
     display: flex;
     justify-content: center;
     align-items: center;
-}
+}*/

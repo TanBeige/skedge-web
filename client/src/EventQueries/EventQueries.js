@@ -62,6 +62,14 @@ const QUERY_USER_PROFILE = gql`
   ${EVENT_FRAGMENT}
 `;
 
+const FETCH_IF_ENTITY = gql`
+  query fetch_user_entity($userId: String!) {
+    users(where: {auth0_id: {_eq: $userId}}) {
+      entity
+    }
+  }
+`
+
 
 // Fetch Events
 
@@ -265,6 +273,7 @@ const QUERY_ACCEPTED_FRIENDS = gql`
 export {
   QUERY_FILTERED_EVENT,
   QUERY_USER_PROFILE,
+  FETCH_IF_ENTITY,
   QUERY_PRIVATE_EVENT,
   QUERY_LOCAL_EVENT,
   QUERY_FEED_LOCAL_EVENT,
