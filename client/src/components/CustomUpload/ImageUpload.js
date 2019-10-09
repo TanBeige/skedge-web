@@ -9,7 +9,9 @@ import defaultImage from "assets/img/image_placeholder.jpg";
 import defaultAvatar from "assets/img/placeholder.jpg";
 
 export default function ImageUpload(props) {
-  const [file, setFile] = React.useState(null);
+  //const [file, setFile] = React.useState(null);
+  const file = props.bannerImg;
+  console.log("file: ", file)
   const [imagePreviewUrl, setImagePreviewUrl] = React.useState(
     props.avatar ? defaultAvatar : defaultImage
   );
@@ -17,12 +19,12 @@ export default function ImageUpload(props) {
   const handleImageChange = e => {
     e.preventDefault();
     let reader = new FileReader();
-    let file = e.target.files[0];
+    let inFile = e.target.files[0];
     reader.onloadend = () => {
-      setFile(file);
+      props.setFile(inFile);
       setImagePreviewUrl(reader.result);
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(inFile);
   };
   // eslint-disable-next-line
   const handleSubmit = e => {
@@ -35,7 +37,7 @@ export default function ImageUpload(props) {
     fileInput.current.click();
   };
   const handleRemove = () => {
-    setFile(null);
+    props.setFile(null);
     setImagePreviewUrl(props.avatar ? defaultAvatar : defaultImage);
     fileInput.current.value = null;
   };

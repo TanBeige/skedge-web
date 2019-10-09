@@ -23,7 +23,11 @@ const storage = cloudinaryStorage({
     cloudinary: cloudinary,
     folder: "cover_images",
     allowedFormats: ["jpg", "png"],
-    //transformation: [{ width: 500, height: 500, crop: "limit" }]
+    transformation: [
+        { if: "w_gt_1900", width: 1900, crop: "scale" },
+        { if: "h_gt_1900", height: 1900, crop: "scale" },
+        { quality: "auto" }
+    ]
 });
 
 const parser = multer({ storage: storage });

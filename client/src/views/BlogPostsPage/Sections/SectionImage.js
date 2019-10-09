@@ -29,6 +29,8 @@ export default function SectionImage() {
       style={{ backgroundImage: "url(" + bg10 + ")" }}
     >
       <div className={classes.container}>
+      <h1 style={{textAlign: 'center', fontWeight: 'bold'}}>Music This Week</h1>
+
         <GridContainer>
           <GridItem xs={12} sm={6} md={6}>
             <Card profile plain className={classes.textLeft}>

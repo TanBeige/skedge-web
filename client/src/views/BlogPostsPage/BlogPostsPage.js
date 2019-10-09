@@ -154,11 +154,11 @@ export default function BlogPostsPage(props) {
               <List className={classes.list}>
                 <ListItem className={classes.inlineBlock}>
                   <a
-                    href="https://www.creative-tim.com/?ref=mkpr-blog-posts"
+                    href="/about-us"
                     target="_blank"
                     className={classes.block}
                   >
-                    Creative Tim
+                    Skedge
                   </a>
                 </ListItem>
                 <ListItem className={classes.inlineBlock}>

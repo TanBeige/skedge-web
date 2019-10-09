@@ -114,10 +114,11 @@ span.InputBanner {
     opacity: 1.0;
     visibility: visible;
 }
-
+*/
 .centerSubmit {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-}*/
+    margin-bottom: 20px;
+}

@@ -53,8 +53,8 @@ export default function SectionPills(props) {
     type: "local",
     category: "Any",
     searchText: "", //Search Text can look for Event Names, Tags, or Event Creators!
-    city: "Tallahassee",
-    state: "Florida",
+    city: "",
+    state: "",
 
     expanded: false
   })
@@ -126,9 +126,7 @@ export default function SectionPills(props) {
         </GridItem>
         <GridItem xs={12}>
 
-        <br />
-
-        <Paper elevation={10} style={{paddingLeft:20, paddingRight: 20}} color="primary">
+        <Paper elevation={10} style={{paddingLeft:20, paddingRight: 20, margin: '10px 0 20px 0'}} color="primary">
           <GridContainer>
             <GridItem xs={10}>
               <FormControl fullWidth className={classes.selectFormControl} style={{marginBottom: 0}}>            

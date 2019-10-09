@@ -23,7 +23,6 @@ const AddBanner = (props) => {
 
     const [values, setValues] = React.useState({
         loading: false,
-        imgSet: false,
         bannerImg: null
     });
 
@@ -33,27 +32,7 @@ const AddBanner = (props) => {
       setValues({ ...values, bannerImg: banner });
     };
 
-    const fileSelectedHandler = (event) => {
-        event.preventDefault();
-        setValues({
-            ...values,
-            bannerImg: event.target.files[0],
-            imgSet: true
-        });
-    }
-    /*
-    const fileUploadeHandler = () => {
-        const fd = new FormData();
-        fd.append('image', values.bannerImg, values.bannerImg.name)
-    }*/
 
-    const removeImage = () => {
-        setValues({
-            ...values,
-            imgSet: false,
-            bannerImg: null
-        })
-    }
 
     const bannerSubmit = (e) => {
         const {bannerImg} = values;
@@ -63,52 +42,43 @@ const AddBanner = (props) => {
         props.submitEvent(bannerImg);
     }
 
-    const content = () => {
-        if (!values.imgSet) {
-            return (
-                <Slide direction={dir} in >
-                    <div className='addBanner'>
-                        <div >
-                            <ImageUpload />
-                        </div>
-                        <div >
-                            <h1 className='OrText'>-Or-</h1>
-                        </div>
-                        <Button variant='contained' color='primary' style={buttonStyle} onClick={bannerChoose}>
-                            Choose A Banner
-                        </Button>
-                    </div>
-                </Slide>
-            )
-        }
-        else {
-            return (
-                <div>
-                    <DisplayUploadedImage 
-                        bannerImg={values.bannerImg}
-                        removeImage={removeImage} 
-                        onError={this.onError}
-                    />
-                    <div className="centerSubmit">
-                        <Button
-                            fullWidth
-                            type='button'
-                            variant="contained"
-                            color="secondary"
-                            style={{height: '4em', width: '90%', marginTop: '2em'}}
-                            onClick={(e)=>bannerSubmit(e)}
-                            >
-                            Finish Creating Event!
-                        </Button>
-                    </div>
-                </div>
-            )
-        }
+    console.log(values.bannerImg)
+
+    let content = "";
+    if (values.bannerImg !== null) {
+        content = (
+            <div className="centerSubmit">
+                <hr />
+                <Button
+                    fullWidth
+                    type='button'
+                    variant="contained"
+                    color="primary"
+                   // style={{height: '4em', width: '90%', marginTop: '2em'}}
+                    onClick={(e)=>bannerSubmit(e)}
+                    >
+                    Finish Creating Event!
+                </Button>
+            </div>
+        )
     }
 
     return (
         <div>
-            {content()}
+            <Slide direction={dir} in >
+                <div className='addBanner'>
+                    <div >
+                        <ImageUpload setFile={bannerChoose} bannerImg={values.bannerImg}/>
+                    </div>
+                    <div >
+                        <h1 className='OrText'>-Or-</h1>
+                    </div>
+                    <Button variant='contained' color='primary' style={buttonStyle} onClick={bannerChoose}>
+                        Choose A Banner
+                    </Button>
+                    {content}
+                </div>
+            </Slide>
         </div>
     )
 }

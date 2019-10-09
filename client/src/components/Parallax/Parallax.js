@@ -43,12 +43,45 @@ export default function Parallax(props) {
     [classes.small]: small,
     [className]: className !== undefined
   });
+
+  // Changing parallax image based on window width and Time.
+  let today = new Date();
+  let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();  
+
+    //images
+  const wideNightImage = require("assets/img/bg2.jpg");
+  const wideDayImage = require("assets/img/bg7.jpg")
+  //const image // This props is sent in
+  let useImage;
+  if (window.innerWidth >= 768){
+    // If before 6:00pm
+    if(today.getHours() < 18) {
+      useImage = `url("${wideDayImage}")`
+    }
+    // If past 6:00pm
+    else {
+      useImage = `url("${wideNightImage}")`
+    }
+
+  }
+  else {
+    // If before 6:00pm
+    if(today.getHours() < 18) {
+      useImage = `url("${wideDayImage}")`
+    }
+    // If past 6:00pm
+    else {
+      useImage = `url("${image}")`
+    }
+  }
+
+  // Render
   return (
     <div
       className={parallaxClasses}
       style={{
         ...style,
-        backgroundImage: "url(" + image + ")",
+        backgroundImage: useImage,
         transform: transform
       }}
     >

@@ -25,6 +25,11 @@ const EVENT_FRAGMENT = gql`
     user {
       name
     }
+    event_like_aggregate {
+      aggregate {
+        count
+      }
+    }
   }
 `;
 
@@ -187,19 +192,33 @@ const FETCH_TAGGED_EVENTS = gql`
 
 // Mutate Events
 const MUTATION_EVENT_ADD = gql`
-  mutation insert_events($objects: [events_insert_input!]!) {
+mutation insert_events($objects: [events_insert_input!]!) {
     insert_events(objects: $objects) {
-      affected_rows
-      returning {
+        affected_rows
+        returning {
         id
         name
         description
         created_at
         updated_at
-        event_type
-      }
-    }
-  }
+        event_cohosts {
+          event_id
+          cohost_id
+        }
+        image {
+            image_name
+        }
+        event_tags {
+            tag {
+            name
+            id
+            }
+            tag_id
+            event_id
+        }
+        }
+    } 
+}
 `;
 
 const MUTATION_EVENT_UPDATE = gql`

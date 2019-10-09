@@ -1,5 +1,6 @@
 /*eslint-disable*/
 import React, { useEffect, useState } from "react";
+import axios from 'axios'
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -24,7 +25,8 @@ import AddBanner from 'views/CreatePage/Sections/AddBanner.js';
 import pricingStyle from "assets/jss/material-kit-pro-react/views/pricingStyle.js";
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 import {
-  FETCH_IF_ENTITY
+  FETCH_IF_ENTITY,
+  MUTATION_EVENT_ADD
 } from 'EventQueries/EventQueries.js'
 
 const useStyles = makeStyles(pricingStyle);
@@ -74,7 +76,7 @@ export default function PricingPage(props) {
       category: "Sports",
       tags: [],
 
-      cohost_id: []
+      cohosts: []
   });
 
   // Functions
@@ -150,7 +152,7 @@ const handleLocalOrPrivate = (type) => {
         currentPage: values.currentPage + 1,
         goingBack: false,
 
-        cohost_id: cohostId
+        cohosts: cohostId
     });
   }
 
@@ -180,7 +182,7 @@ const handleLocalOrPrivate = (type) => {
     form_data.append('file', bannerImg)
     console.log(form_data)
 
-    // Upload file to DigitalOcean
+    // Upload file to Cloudinary
     const response = await axios.post(`/storage/upload`, form_data);
 
     // Grabs image info and adds uploaded file ID to cover_pic in events table.
@@ -190,14 +192,13 @@ const handleLocalOrPrivate = (type) => {
     //Order tags so they can be input properly
     let newTags = [];
     let i;
-
     // Adds all input tags inside these keys
     //  This is so if a tag already exists, we just grab the
     //  tag id and make the event_tags equal to that id.
-    for(i = 0; i < inTags.length; i++){
+    for(i = 0; i < values.tags.length; i++){
         newTags.push({
             tag: {
-                    data: { name: inTags[i] },
+                    data: { name: values.tags[i] },
                     "on_conflict": {
                       "constraint": "tags_name_key",
                       "update_columns": "name"
@@ -206,44 +207,27 @@ const handleLocalOrPrivate = (type) => {
             }
     )};
 
+    // Order Cohosts so they can be input into graphql
+    let newCohosts = [];
+    for(i = 0; i < values.cohosts.length; i++){
+        newCohosts.push({
+            cohost_id: values.cohosts[i]
+        });
+      }
+
     // Inputs all information into Hasura Postgres DB via GraphQL
     props.client.mutate({
-        mutation: gql`
-        mutation insert_events($objects: [events_insert_input!]!) {
-            insert_events(objects: $objects) {
-                affected_rows
-                returning {
-                id
-                name
-                description
-                created_at
-                updated_at
-                image {
-                    image_name
-                }
-                event_tags {
-                    tag {
-                    name
-                    id
-                    }
-                    tag_id
-                    event_id
-                }
-                }
-            } 
-        }
-      `,
+        mutation: MUTATION_EVENT_ADD,
         variables: {
             objects: [
                 {
-                    creator_id: auth.getSub(),
-                    cohost_id: values.cohost_id,
+                    creator_id: user.sub,
                     event_type: values.event_type,
                     name: values.name,
                     description: values.description,
-                    event_date: values.event_date,
-                    start_time: values.start_time,
-                    end_time: values.end_time,
+                    event_date: values.event_date.format('YYYY-MM-DD'),
+                    start_time: values.start_time.format('HH:mm:ssZ'),
+                    end_time: values.end_time.format('HH:mm:ssZ'),
                     price: values.price,
                     //allow_invites: values.allow_invites,
                     //host_approval: values.host_approval,
@@ -263,6 +247,9 @@ const handleLocalOrPrivate = (type) => {
                     },
                     event_tags: {
                         data: newTags
+                    },
+                    event_cohosts: {
+                      data: newCohosts
                     }
                 }
             ],
@@ -335,7 +322,7 @@ const handleLocalOrPrivate = (type) => {
       page = <AddCohost 
         goingBack={values.goingBack} 
         handleCohost={handleCohost}
-        cohosts={values.cohost_id}
+        cohosts={values.cohosts}
         client={props.client}
         userId={user.sub}
         event_type={values.event_type}

@@ -1,5 +1,5 @@
 {
-  "name": "react-apollo-skedge",
+  "name": "skedge",
   "version": "1.0.0",
   "private": true,
   "proxy": "http://localhost:9000",
