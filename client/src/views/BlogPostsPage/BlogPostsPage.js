@@ -86,10 +86,13 @@ export default function BlogPostsPage(props) {
 
 
   //Replaces ComponentDidMount() from React Components in Function Components
+
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
+  })
 
+  useEffect(() => {
     if (isAuthenticated && user) {
       // eslint-disable-next-line
       const lastSeenMutation = setInterval(
@@ -141,6 +144,7 @@ export default function BlogPostsPage(props) {
         <div className={classes.container}>
           <SectionPills 
             client={props.client}
+            userId={user.sub}
           />
           <SectionInterested />
         </div>

@@ -38,6 +38,7 @@ const AddBanner = (props) => {
         const {bannerImg} = values;
         e.preventDefault();
         console.log("Props AddBanner: ", props)
+        console.log("Banner: ", bannerImg)
 
         props.submitEvent(bannerImg);
     }

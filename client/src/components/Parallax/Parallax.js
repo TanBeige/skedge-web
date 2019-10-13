@@ -53,26 +53,32 @@ export default function Parallax(props) {
   const wideDayImage = require("assets/img/bg7.jpg")
   //const image // This props is sent in
   let useImage;
-  if (window.innerWidth >= 768){
-    // If before 6:00pm
-    if(today.getHours() < 18) {
-      useImage = `url("${wideDayImage}")`
-    }
-    // If past 6:00pm
-    else {
-      useImage = `url("${wideNightImage}")`
-    }
+  const loc = window.location.pathname 
+  if(loc.includes("/home")) {
+    if (window.innerWidth >= 768){
+      // If before 6:00pm
+      if(today.getHours() < 18) {
+        useImage = `url("${wideDayImage}")`
+      }
+      // If past 6:00pm
+      else {
+        useImage = `url("${wideNightImage}")`
+      }
 
+    }
+    else {
+      // If before 6:00pm
+      if(today.getHours() < 18) {
+        useImage = `url("${wideDayImage}")`
+      }
+      // If past 6:00pm
+      else {
+        useImage = `url("${image}")`
+      }
+    }
   }
   else {
-    // If before 6:00pm
-    if(today.getHours() < 18) {
-      useImage = `url("${wideDayImage}")`
-    }
-    // If past 6:00pm
-    else {
-      useImage = `url("${image}")`
-    }
+    useImage = `url("${image}")`;
   }
 
   // Render

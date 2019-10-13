@@ -149,6 +149,7 @@ export default function EventCardList(props) {
                     <EventCard 
                         event={event} 
                         client={props.client}
+                        userId={props.userId}
                     />
                 </GridItem>
                 )

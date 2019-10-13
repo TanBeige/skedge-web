@@ -24,6 +24,10 @@ const EVENT_FRAGMENT = gql`
     }
     user {
       name
+      picture
+    }
+    event_like{
+      user_id
     }
     event_like_aggregate {
       aggregate {
@@ -110,6 +114,88 @@ const QUERY_FILTERED_EVENT = gql`
     }
   }
   ${EVENT_FRAGMENT}
+`
+
+const FETCH_EVENT_LIKES_REBLOGS = gql`
+  query event_likes_reblogs($eventId: Int) {
+    events (where: {id: {_eq: $eventId}}) {
+      event_like{
+        user_id
+      }
+      event_like_aggregate {
+        aggregate {
+          count
+        }
+      }
+    }
+  }
+`
+
+const REFETCH_EVENT_LIKES = gql`
+  query refetch_event_likes($eventId: Int) {
+    events(where: {id:{_eq: $eventId}}) {
+      event_like_aggregate{
+        aggregate{
+          count
+        }
+      }
+      event_like {
+        user_id
+      }
+    }
+  }
+`
+
+const FETCH_EVENT_INFO = gql`
+  query fetch_event_info($eventId: Int) {
+    events(where: {id: {_eq: $eventId}}) {
+      name
+      description
+      event_type
+      event_date
+      start_time
+      end_time
+      category
+      city
+      state
+      street
+      price
+      web_url
+      allow_invites
+      host_approval
+      updated_at
+
+      image {
+        url
+      }
+      user {
+        id
+        picture
+        name
+        full_name
+      }
+      event_cohosts {
+        cohost_id
+        accepted
+      }
+      event_tags {
+        tag {
+          name
+        }
+      }
+      event_like {
+        user {
+          id
+          name
+        }
+      }
+      event_like_aggregate {
+        aggregate {
+          count
+        }
+      }
+    }
+  }
 `
 
 const QUERY_PRIVATE_EVENT = gql`
@@ -247,6 +333,35 @@ const MUTATION_EVENT_IMPRESSION = gql`
     }
   }
 `
+const MUTATION_LIKE_EVENT = gql`
+mutation like_event($eventId: Int, $userId: String) {
+  insert_event_likes(
+    objects: {
+      event_id: $eventId, 
+      user_id: $userId}, 
+      on_conflict: {
+        update_columns: 
+        time_liked, 
+        constraint: event_likes_pkey
+      }) {
+    affected_rows
+  }
+}
+`
+const MUTATION_UNLIKE_EVENT = gql`
+mutation unlike_event($eventId: Int, $userId: String) {
+  delete_event_likes(
+    where: { 
+      _and:[
+        {event_id: { _eq: $eventId }},
+        {user_id:{_eq: $userId}}
+      ]
+    }) {
+    affected_rows
+  }
+}
+`
+
 
 const SUBSCRIPTION_EVENT_LOCAL_LIST = gql`
   subscription($eventId: Int) {
@@ -293,6 +408,9 @@ export {
   QUERY_FILTERED_EVENT,
   QUERY_USER_PROFILE,
   FETCH_IF_ENTITY,
+  FETCH_EVENT_LIKES_REBLOGS,
+  REFETCH_EVENT_LIKES,
+  FETCH_EVENT_INFO,
   QUERY_PRIVATE_EVENT,
   QUERY_LOCAL_EVENT,
   QUERY_FEED_LOCAL_EVENT,
@@ -301,6 +419,8 @@ export {
   MUTATION_EVENT_ADD,
   MUTATION_EVENT_UPDATE,
   MUTATION_EVENT_DELETE,
+  MUTATION_UNLIKE_EVENT,
+  MUTATION_LIKE_EVENT,
   MUTATION_EVENT_IMPRESSION,
   SUBSCRIPTION_EVENT_LOCAL_LIST,
   QUERY_ACCEPTED_FRIENDS

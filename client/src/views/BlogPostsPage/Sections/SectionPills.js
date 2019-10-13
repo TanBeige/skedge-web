@@ -249,6 +249,7 @@ export default function SectionPills(props) {
 
       <EventCardList 
         client={props.client}
+        userId={props.userId}
         filter={filter}
       /> 
     </div>

@@ -12,9 +12,6 @@ import Favorite from "@material-ui/icons/Favorite";
 import {IconButton} from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
-// core components
-import MomentUtils from '@date-io/moment';    //uninstall if dont need this later
-
 // sections for this page
 import LocalOrPrivate from 'views/CreatePage/Sections/LocalOrPrivate.js';
 import EventCreateInfo from 'views/CreatePage/Sections/EventCreateInfo.js';
@@ -31,8 +28,10 @@ import {
 
 const useStyles = makeStyles(pricingStyle);
 
-export default function PricingPage(props) {
 
+export default function PricingPage(props) {
+  
+  var MomentUtils = require('moment');
   console.log("props blog: ", props);
 
   const { user } = useAuth0();
@@ -155,6 +154,7 @@ const handleLocalOrPrivate = (type) => {
         cohosts: cohostId
     });
   }
+  console.log("date: ", values.event_date)
 
 /**
  * This function finally submits all the information received from the user.
@@ -225,9 +225,9 @@ const handleLocalOrPrivate = (type) => {
                     event_type: values.event_type,
                     name: values.name,
                     description: values.description,
-                    event_date: values.event_date.format('YYYY-MM-DD'),
-                    start_time: values.start_time.format('HH:mm:ssZ'),
-                    end_time: values.end_time.format('HH:mm:ssZ'),
+                    event_date: MomentUtils(values.event_date).format('YYYY-MM-DD'),
+                    start_time: MomentUtils(values.start_time).format('HH:mm:ssZ'),
+                    end_time: MomentUtils(values.end_time) === null ? values.end_time.format('HH:mm:ssZ') : null,
                     price: values.price,
                     //allow_invites: values.allow_invites,
                     //host_approval: values.host_approval,

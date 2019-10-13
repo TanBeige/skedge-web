@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 // @material-ui/icons
@@ -20,7 +20,7 @@ import Warning from "components/Typography/Warning.js";
 import Fab from '@material-ui/core/Fab';
 import { ThemeProvider } from '@material-ui/styles';
 import pink from '@material-ui/core/colors/pink';
-
+import Avatar from '@material-ui/core/Avatar';
 
 
 
@@ -29,6 +29,10 @@ import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPosts
 
 import {
   MUTATION_EVENT_IMPRESSION,
+  MUTATION_LIKE_EVENT,
+  MUTATION_UNLIKE_EVENT,
+  FETCH_EVENT_LIKES_REBLOGS,
+  REFETCH_EVENT_LIKES
 } from "../../EventQueries/EventQueries";
 
 const useStyles = makeStyles(sectionPillsStyle);
@@ -44,40 +48,99 @@ const theme = createMuiTheme({
   },
 });
 
-export default function EventCard({event, client}) {
+// Reload the blogs and likes every time an event card gets loaded, this is to update the amount
+//  whenever the user goes between tabs since apollo doesn't update until page i refreshed.
+
+export default function EventCard({event, client, userId}) {
     const classes = useStyles();
+
+    const usernameStyle= {
+      float: 'right',
+      borderRadius: 5,  
+      backgroundColor: "white", 
+      color: "#02C39A",
+      padding: '0px 10px', 
+      // WebkitTextStroke: 0.5, 
+      // WebkitTextStrokeColor: "black",
+      border: '2px solid #02C39A',
+      marginTop: 7,
+      marginLeft: 5
+    }
+
+    const [values, setValues] = useState({
+
+      usersLiked: [],
+
+      ifLiked: "inherit",
+      likeAmount: event.event_like_aggregate.aggregate.count,
+      
+      ifReposted: true ? "primary" : "inherit",
+      repostAmount: 0
+    })
+
+    
+    // Handling event likes + reposts
+
+    //const ifRepost = true ? "primary" : "disabled";
+
+    const handleRepost = () => {
+      console.log('Repost!')
+    }
+
+    console.log("Liked users: ",event.event_like);
+    //const ifLiked = event.event_like.some(user  => user.user_id === userId) ? "secondary" : "";
+
+    const handleLike = () => {
+      if(values.ifLiked !== "inherit") {
+        client.mutate({
+          mutation: MUTATION_UNLIKE_EVENT,
+          refetchQueries: [{
+            query: REFETCH_EVENT_LIKES,
+            variables: {
+              eventId: event.id
+            }
+          }],
+          variables: {
+            eventId: event.id,
+            userId: userId
+          }
+        }).then((data) => {
+          console.log('UnLike!: ', data)
+          setValues({
+            ...values,
+            ifLiked: "inherit",
+            likeAmount: (values.likeAmount - 1)
+          })
+        })
+      }
+      else {
+        client.mutate({
+          mutation: MUTATION_LIKE_EVENT,
+          refetchQueries: [{
+            query: REFETCH_EVENT_LIKES,
+            variables: {
+              eventId: event.id
+            }
+          }],
+          variables: {
+            eventId: event.id,
+            userId: userId
+          }
+        }).then((data) => {
+          console.log('Like!: ', data)
+          setValues({
+            ...values,
+            ifLiked: "secondary",
+            likeAmount: (values.likeAmount + 1)
+          })
+        })
+      }
+    }
+
 
     /*
     *   Error checking the returned values before using them
-    *
-    *           Values:
-    * id
-    * name
-    * description
-    * event_type
-    * event_date
-    * start_time
-    * end_time
-    * category
-    * city
-    * state
-    * image {
-    *   url
-    * }
-    * user {
-    *   name
-    * }
-    * event_like_aggregate {
-      aggregate {
-        count
-      }
-    }
     */
-   console.log("Likes: ", event.event_like_aggregate.aggregate.count)
-
-    const ifRepost = true ? "primary" : "";
-    const ifLiked = true ? "secondary" : "";
-
     // Check Event Name
     let holdName = "";
     if(!event.name) {
@@ -117,6 +180,19 @@ export default function EventCard({event, client}) {
       holdURL = event.image.url;
     }
 
+    // Error Check if event user exists ()
+    let holdUserName = ""
+    let holdProfilePic = ""
+    console.log("eveeeent : ", event)
+    if(!event.user) {
+      holdUserName = "Unknown User";
+      holdProfilePic = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+    }
+    else {
+      holdUserName = event.user.name;
+      holdProfilePic = event.user.picture
+    }
+
     const addImpression = () => {
       client.mutate({
         mutation: MUTATION_EVENT_IMPRESSION,
@@ -125,32 +201,54 @@ export default function EventCard({event, client}) {
         }
       })
     }
+    const getLikesReblogs = () => {
+      client.query({
+        query: FETCH_EVENT_LIKES_REBLOGS,
+        variables: {
+          eventId: event.id
+        }
+      }).then((data) => {
+        console.log("like stuff: ", data.data.events[0].event_like.some(user  => user.user_id === userId))
+        setValues({
+          ...values,
+          likeAmount: data.data.events[0].event_like_aggregate.aggregate.count,
+          usersLiked: data.data.events[0].event_like,
+          ifLiked: data.data.events[0].event_like.some(user  => user.user_id === userId) ? "secondary" : "inherit",
+        })
+      })
+    }
 
     useEffect(() => {
       addImpression();
+      getLikesReblogs();
+      console.log(values)
     }, [])
     
     return(
       <ThemeProvider theme={theme}>
         <Card blog>  
           <CardHeader image>
-            <Link to={`/event#${holdName}_${event.id}`}>
+            <Link to={`/events/${event.id}`}>
               <img
                 className={classes.imgCard}
                 src={holdURL}
                 alt={holdName}
               />
               <div className={classes.imgCardOverlay}>
-                <h4
+                <h5
                   className={classes.cardTitle}
                   style={{
-                    color: "white",
+                    color: "#02C39A",
                     position: "absolute",
                     bottom: "10px",
-                    left: "15px"
+                    left: "15px",
                   }}
                 >
-                </h4>
+                  <Avatar style={{float:'left'}} alt={holdUserName} src={holdProfilePic}/>
+                  <div style={usernameStyle}>
+                    {holdUserName}
+                  </div>
+                </h5>
               </div>
             </Link>
           </CardHeader>
@@ -167,11 +265,17 @@ export default function EventCard({event, client}) {
                 <h6 className={classes.cardCategory}>{holdCategory.toUpperCase()}</h6>
               </Info>
               <div style={{position: 'absolute',right: 15}}>
-                <IconButton aria-label="Share" style={{float: 'left', margin: 0}}>
-                  <RenewIcon color={ifRepost}/> 
+                <IconButton onClick={handleRepost} aria-label="Share" style={{float: 'left', margin: 0}}>
+                  <RenewIcon color={values.ifReposted}/> 
+                  <div style={{fontSize: 14}}>
+                    {values.repostAmount}
+                  </div>
                 </IconButton>
-                <IconButton aria-label="Like" style={{float: 'right'}}>
-                  <FavoriteIcon color={ifLiked}/>
+                <IconButton onClick={handleLike} aria-label="Like" style={{float: 'right'}}>
+                  <FavoriteIcon color={values.ifLiked}/> 
+                  <div style={{fontSize: 14}}>
+                    {values.likeAmount}
+                  </div> 
                 </IconButton>
               </div>
             </CardFooter>

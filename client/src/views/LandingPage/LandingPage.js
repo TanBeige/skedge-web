@@ -55,6 +55,15 @@ export default function LandingPage(props) {
   }
   console.log(props)
 
+  //Mobile Image
+  let paraImage = ""
+  if(window.innerWidth < 768) {
+    paraImage = require("assets/img/cover1.jpg")
+  }
+  else {
+    paraImage = require("assets/img/cover2.jpg")
+  }
+
   return (
     <div>
       {/*<Header
@@ -68,7 +77,7 @@ export default function LandingPage(props) {
         }}
         {...rest}
       />*/}
-      <Parallax image={require("assets/img/cover1.jpg")} filter="dark">
+      <Parallax image={paraImage} filter="dark">
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={6} md={6}>

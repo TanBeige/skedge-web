@@ -14,41 +14,49 @@ import blog3 from "assets/img/examples/blog3.jpg";
 import blog1 from "assets/img/examples/blog1.jpg";
 
 import sectionTextStyle from "assets/jss/material-kit-pro-react/views/blogPostSections/sectionTextStyle.js";
+import { textAlign } from "@material-ui/system";
 
 const useStyles = makeStyles(sectionTextStyle);
 
-export default function SectionText() {
+export default function SectionText({ eventInfo }) {
   const classes = useStyles();
   const imgClasses = classNames(
     classes.imgRaised,
     classes.imgRounded,
     classes.imgFluid
   );
+
+  var moment = require('moment');
+  let formattedStartTime = ""
+  if(eventInfo.start_time) {
+    console.log(`start time:"${eventInfo.start_time}"`);
+    formattedStartTime = moment(eventInfo.start_time, "HH:mm:ss+-HH");
+    console.log(formattedStartTime)
+  }
+  let formattedEndTime = ""
+  if(eventInfo.end_time) {
+    console.log(`end time:"${eventInfo.end_time}"`);
+    formattedEndTime = moment(eventInfo.start_time, "HH:mm:ss+-HH");
+    console.log(formattedEndTime)
+  }
+  else {
+    formattedEndTime = "----"
+  }
+
   return (
     <div className={classes.section}>
       <GridContainer justify="center">
         <GridItem xs={12} sm={8} md={8}>
+          <div style={{textAlign: 'center', borderRadius: 5, backgroundColor="#02C39A"}}>
+            <h3>Starts at: {moment(formattedStartTime).format("h:mm A")}</h3>
+            <h3>Until: {formattedEndTime}</h3>
+          </div>
           <h3 className={classes.title}>
-            The Castle Looks Different at Night...
+            Details
           </h3>
           <p>
-            This is the paragraph where you can write more details about your
-            product. Keep you user engaged by providing meaningful information.
-            Remember that by this time, the user is curious, otherwise he wouldn
-            {"'"}t scroll to get here. Add a button if you want the user to see
-            more. We are here to make life better.
-            <br />
-            <br />
-            And now I look and look around and there’s so many Kanyes I{"'"}ve
-            been trying to figure out the bed design for the master bedroom at
-            our Hidden Hills compound... and thank you for turning my personal
-            jean jacket into a couture piece.
+            {eventInfo.description}
           </p>
-          <Quote
-            textClassName={classes.quoteText}
-            text="“And thank you for turning my personal jean jacket into a couture piece.”"
-            author="Kanye West, Producer."
-          />
         </GridItem>
         <GridItem xs={12} sm={10} md={10} className={classes.section}>
           <GridContainer>

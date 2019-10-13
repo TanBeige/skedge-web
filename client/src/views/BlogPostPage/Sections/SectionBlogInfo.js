@@ -16,7 +16,7 @@ import sectionBlogInfoStyle from "assets/jss/material-kit-pro-react/views/blogPo
 
 const useStyles = makeStyles(sectionBlogInfoStyle);
 
-export default function SectionBlogInfo() {
+export default function SectionBlogInfo(tags) {
   const classes = useStyles();
   return (
     <div className={classes.section}>
@@ -25,10 +25,12 @@ export default function SectionBlogInfo() {
           <GridContainer>
             <GridItem xs={12} sm={6} md={6}>
               <div className={classes.blogTags}>
-                Tags:
-                <Badge color="primary">Photography</Badge>
-                <Badge color="primary">Stories</Badge>
-                <Badge color="primary">Castle</Badge>
+                Tags: {` `}
+                {
+                  tags.tags.map((tag, index) => {
+                    return <Badge key={index} color="primary">{tag.tag.name}</Badge>
+                  })
+                }
               </div>
             </GridItem>
             <GridItem xs={12} sm={6} md={6}>
@@ -37,9 +39,6 @@ export default function SectionBlogInfo() {
               </Button>
               <Button color="twitter" round className={classes.buttons}>
                 <i className="fab fa-twitter" /> 910
-              </Button>
-              <Button color="facebook" round className={classes.buttons}>
-                <i className="fab fa-facebook-square" /> 872
               </Button>
             </GridItem>
           </GridContainer>
