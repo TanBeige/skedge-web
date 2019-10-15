@@ -38,18 +38,28 @@ export default function SectionText({ eventInfo }) {
     console.log(`end time:"${eventInfo.end_time}"`);
     formattedEndTime = moment(eventInfo.start_time, "HH:mm:ss+-HH");
     console.log(formattedEndTime)
-  }
-  else {
-    formattedEndTime = "----"
+    formattedEndTime = (
+      <h3>
+        Until: 
+        <div style={{borderRadius: 5, backgroundColor: "#02C39A", color: 'white'}}>
+          {moment(formattedEndTime).format("h:mm A")}
+        </div>
+      </h3>
+    )
   }
 
   return (
-    <div className={classes.section}>
+    <div className={classes.section} style={{paddingTop: 15}}>
       <GridContainer justify="center">
         <GridItem xs={12} sm={8} md={8}>
-          <div style={{textAlign: 'center', borderRadius: 5, backgroundColor="#02C39A"}}>
-            <h3>Starts at: {moment(formattedStartTime).format("h:mm A")}</h3>
-            <h3>Until: {formattedEndTime}</h3>
+          <div style={{textAlign: 'center'}}>
+            <h3>
+              Starts at: 
+              <div style={{borderRadius: 5, backgroundColor: "#02C39A", color: 'white'}}>
+                {moment(formattedStartTime).format("h:mm A")}
+              </div>
+            </h3>
+            {formattedEndTime}
           </div>
           <h3 className={classes.title}>
             Details

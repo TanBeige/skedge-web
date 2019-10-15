@@ -19,7 +19,7 @@ const useStyles = makeStyles(sectionBlogInfoStyle);
 export default function SectionBlogInfo(tags) {
   const classes = useStyles();
   return (
-    <div className={classes.section}>
+    <div className={classes.section} >
       <GridContainer justify="center">
         <GridItem xs={12} sm={10} md={8}>
           <GridContainer>

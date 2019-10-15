@@ -31,8 +31,11 @@ import {
   MUTATION_EVENT_IMPRESSION,
   MUTATION_LIKE_EVENT,
   MUTATION_UNLIKE_EVENT,
-  FETCH_EVENT_LIKES_REBLOGS,
-  REFETCH_EVENT_LIKES
+  FETCH_EVENT_LIKES_REPOSTS,
+  REFETCH_EVENT_LIKES,
+  MUTATION_REPOST_EVENT,
+  MUTATION_UNPOST_EVENT,
+  REFETCH_EVENT_REPOSTS
 } from "../../EventQueries/EventQueries";
 
 const useStyles = makeStyles(sectionPillsStyle);
@@ -70,26 +73,67 @@ export default function EventCard({event, client, userId}) {
     const [values, setValues] = useState({
 
       usersLiked: [],
+      usersReposted: [],
 
       ifLiked: "inherit",
       likeAmount: event.event_like_aggregate.aggregate.count,
       
-      ifReposted: true ? "primary" : "inherit",
-      repostAmount: 0
+      ifReposted: "inherit",
+      repostAmount: event.shared_event_aggregate.aggregate.count,
     })
 
     
     // Handling event likes + reposts
-
-    //const ifRepost = true ? "primary" : "disabled";
-
     const handleRepost = () => {
       console.log('Repost!')
+
+      if(values.ifReposted !== "inherit") {
+        client.mutate({
+          mutation: MUTATION_UNPOST_EVENT,
+          refetchQueries: [{
+            query: REFETCH_EVENT_REPOSTS,
+            variables: {
+              eventId: event.id
+            }
+          }],
+          variables: {
+            eventId: event.id,
+            userId: userId
+          }
+        }).then((data) => {
+          console.log('UnPost!: ', data)
+          setValues({
+            ...values,
+            ifReposted: "inherit",
+            repostAmount: (values.repostAmount - 1)
+          })
+        })
+      }
+      else {
+        client.mutate({
+          mutation: MUTATION_REPOST_EVENT,
+          refetchQueries: [{
+            query: REFETCH_EVENT_REPOSTS,
+            variables: {
+              eventId: event.id
+            }
+          }],
+          variables: {
+            eventId: event.id,
+            userId: userId
+          }
+        }).then((data) => {
+          console.log('Repost!: ', data)
+          setValues({
+            ...values,
+            ifReposted: "primary",
+            repostAmount: (values.repostAmount + 1)
+          })
+        })
+      }
     }
 
     console.log("Liked users: ",event.event_like);
-    //const ifLiked = event.event_like.some(user  => user.user_id === userId) ? "secondary" : "";
-
     const handleLike = () => {
       if(values.ifLiked !== "inherit") {
         client.mutate({
@@ -201,9 +245,9 @@ export default function EventCard({event, client, userId}) {
         }
       })
     }
-    const getLikesReblogs = () => {
+    const getLikesReposts = () => {
       client.query({
-        query: FETCH_EVENT_LIKES_REBLOGS,
+        query: FETCH_EVENT_LIKES_REPOSTS,
         variables: {
           eventId: event.id
         }
@@ -214,13 +258,17 @@ export default function EventCard({event, client, userId}) {
           likeAmount: data.data.events[0].event_like_aggregate.aggregate.count,
           usersLiked: data.data.events[0].event_like,
           ifLiked: data.data.events[0].event_like.some(user  => user.user_id === userId) ? "secondary" : "inherit",
+
+          repostAmount: data.data.events[0].shared_event_aggregate.aggregate.count,
+          usersReposted: data.data.events[0].shared_event,
+          ifReposted: data.data.events[0].shared_event.some(user  => user.user_id === userId) ? "primary" : "inherit",
         })
       })
     }
 
     useEffect(() => {
       addImpression();
-      getLikesReblogs();
+      getLikesReposts();
       console.log(values)
     }, [])
     

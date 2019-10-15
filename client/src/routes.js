@@ -140,7 +140,7 @@ export const MakeMainRoutes = () => {
       <Router history={hist}>
         <Switch>exact 
           <Route exact path="/about-us" render={props => provideClient(AboutUsPage, props)} />
-          <Route exact path="/event" render={props => provideClient(BlogPostPage, props)} />
+          <PrivateRoute path="/event" render={props => provideClient(BlogPostPage, props)} />
           <PrivateRoute path="/home" render={props => provideClient(BlogPostsPage, props)} />
           {/*<Route exact path="/components" render={props => provideClient(ComponentsPage, props)} />*/}
           <Route exact path="/contact-us" render={props => provideClient(ContactUsPage, props)} />
@@ -155,7 +155,7 @@ export const MakeMainRoutes = () => {
           <Route exact path="/signup-page" render={props => provideClient(SignupPage, props)} />
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
 
-          <Route path="/events/:id" render={props => provideClient(BlogPostPage, props)} />
+          <PrivateRoute path="/events/:id" render={props => provideClient(BlogPostPage, props)} />
 
           <Route path="/callback" 
                 render={props => {

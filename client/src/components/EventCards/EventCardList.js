@@ -116,6 +116,36 @@ export default function EventCardList(props) {
       grabEvents();
     }, [props.filter])
 
+    /*
+    const insertAd = (index) => {
+      if((index % 6) === 5) {
+        return (
+          <GridItem xs={12} sm={6} md={6} key={event.id}>
+            <div id="258077193">
+                <script type="text/javascript">
+                  {
+                    tryAd()
+                  }
+                </script>
+            </div>
+          </GridItem>
+        )
+      }
+      else {
+        return
+      }
+    }
+
+    const tryAd = () => {
+      try {
+          window._mNHandle.queue.push(function () {
+            window._mNDetails.loadTag("258077193", "180x150", "258077193");
+          });
+      }
+      catch (error) {}
+    }
+    */
+
     // Start Filtering Responses here. Since it's so fucking hard in GraphQL
     let finalEvents = values.events
     console.log("Events: ", values.events)
@@ -145,13 +175,17 @@ export default function EventCardList(props) {
         {
             finalEvents.map((event, index) => {
                 return (
-                <GridItem xs={12} sm={6} md={6} key={event.id}>
-                    <EventCard 
-                        event={event} 
-                        client={props.client}
-                        userId={props.userId}
-                    />
-                </GridItem>
+                  <GridItem xs={12} sm={6} md={6} key={event.id}>
+                      <EventCard 
+                          event={event} 
+                          client={props.client}
+                          userId={props.userId}
+                      />
+                      {
+                        //insertAd(index)   //Add later when Skedge.com can get ads
+                      }
+                  </GridItem>
+
                 )
             })
         }

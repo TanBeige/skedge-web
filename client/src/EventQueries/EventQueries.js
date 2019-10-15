@@ -34,6 +34,14 @@ const EVENT_FRAGMENT = gql`
         count
       }
     }
+    shared_event {
+      user_id
+    }
+    shared_event_aggregate {
+      aggregate {
+        count
+      }
+    }
   }
 `;
 
@@ -116,19 +124,27 @@ const QUERY_FILTERED_EVENT = gql`
   ${EVENT_FRAGMENT}
 `
 
-const FETCH_EVENT_LIKES_REBLOGS = gql`
-  query event_likes_reblogs($eventId: Int) {
-    events (where: {id: {_eq: $eventId}}) {
-      event_like{
-        user_id
-      }
-      event_like_aggregate {
-        aggregate {
-          count
-        }
+const FETCH_EVENT_LIKES_REPOSTS = gql`
+query event_likes_reblogs($eventId: Int) {
+  events (where: {id: {_eq: $eventId}}) {
+    event_like{
+      user_id
+    }
+    event_like_aggregate {
+      aggregate {
+        count
       }
     }
+    shared_event_aggregate {
+      aggregate {
+        count
+      }
+    }
+    shared_event {
+      user_id
+    }
   }
+}
 `
 
 const REFETCH_EVENT_LIKES = gql`
@@ -140,6 +156,20 @@ const REFETCH_EVENT_LIKES = gql`
         }
       }
       event_like {
+        user_id
+      }
+    }
+  }
+`
+const REFETCH_EVENT_REPOSTS = gql`
+  query refetch_event_reposts($eventId: Int) {
+    events(where: {id:{_eq: $eventId}}) {
+      shared_event_aggregate{
+        aggregate{
+          count
+        }
+      }
+      shared_event {
         user_id
       }
     }
@@ -362,6 +392,36 @@ mutation unlike_event($eventId: Int, $userId: String) {
 }
 `
 
+const MUTATION_REPOST_EVENT = gql`
+mutation repost_event($eventId: Int, $userId: String) {
+  insert_shared_events(
+    objects: {
+      event_id: $eventId, 
+      user_id: $userId}, 
+      on_conflict: {
+        update_columns: 
+        time_shared, 
+        constraint: shared_events_pkey
+      }) {
+    affected_rows
+  }
+}
+`
+
+const MUTATION_UNPOST_EVENT = gql`
+mutation unpost_event($eventId: Int, $userId: String) {
+  delete_shared_events(
+    where: { 
+      _and:[
+        {event_id: { _eq: $eventId }},
+        {user_id:{_eq: $userId}}
+      ]
+    }) {
+    affected_rows
+  }
+}
+`
+
 
 const SUBSCRIPTION_EVENT_LOCAL_LIST = gql`
   subscription($eventId: Int) {
@@ -408,8 +468,9 @@ export {
   QUERY_FILTERED_EVENT,
   QUERY_USER_PROFILE,
   FETCH_IF_ENTITY,
-  FETCH_EVENT_LIKES_REBLOGS,
+  FETCH_EVENT_LIKES_REPOSTS,
   REFETCH_EVENT_LIKES,
+  REFETCH_EVENT_REPOSTS,
   FETCH_EVENT_INFO,
   QUERY_PRIVATE_EVENT,
   QUERY_LOCAL_EVENT,
@@ -422,6 +483,8 @@ export {
   MUTATION_UNLIKE_EVENT,
   MUTATION_LIKE_EVENT,
   MUTATION_EVENT_IMPRESSION,
+  MUTATION_REPOST_EVENT,
+  MUTATION_UNPOST_EVENT,
   SUBSCRIPTION_EVENT_LOCAL_LIST,
   QUERY_ACCEPTED_FRIENDS
 };

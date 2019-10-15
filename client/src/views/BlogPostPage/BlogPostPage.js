@@ -7,9 +7,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 // @material-ui/icons
-import FormatAlignLeft from "@material-ui/icons/FormatAlignLeft";
 import Favorite from "@material-ui/icons/Favorite";
-import MusicNoteIcon from '@material-ui/icons/MusicNote';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+
 // core components
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
@@ -68,6 +68,11 @@ export default function BlogPostPage(props) {
     users_liked: [],
     like_amount: 0
   })
+
+  const goBack = () => {
+    console.log(props)
+    props.history.goBack()
+  }
 
   const getEvent = () => {
     props.client.query({
@@ -152,9 +157,12 @@ export default function BlogPostPage(props) {
         />
         <Parallax image={values.cover_url} filter="dark">
           <div className={classes.container}>
+            <Button onClick={goBack} justIcon round style={{position: 'absolute', top: 75,  left: 25}} color="primary">
+                <ChevronLeftIcon/>
+            </Button>
             <GridContainer justify="center">
               <GridItem md={8} className={classes.textCenter}>
-                <h1 className={classes.title}>
+                <h1 className={classes.title} style={{fontSize: '10vw'}}>
                   {values.name}
                 </h1>
                 <h4 className={classes.subtitle}>
