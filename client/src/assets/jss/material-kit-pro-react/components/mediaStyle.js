@@ -25,11 +25,11 @@ const mediaStyle = {
   },
   mediaAvatar: {
     margin: "0 auto",
-    width: "64px",
-    height: "64px",
+    width: "32px",
+    height: "32px",
     overflow: "hidden",
     borderRadius: "50%",
-    marginRight: "15px",
+    marginRight: "5px",
     boxShadow:
       "0 6px 10px 0 rgba(" +
       hexToRgb(blackColor) +

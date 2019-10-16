@@ -64,19 +64,18 @@ fragment FriendFragment on users {
 
 // Fetch Users
 const QUERY_USER_PROFILE = gql`
-  query fetch_user($userId: String!) {
+  query fetch_user($userId: Int!) {
     users(
-      where: {auth0_id: { _eq: $userId }}
+      where: {id: { _eq: $userId }}
     ) {
       ...UserFragment
-    }
-    events(
-      where: {creator_id: { _eq: $userId }}
-    ) {
-      ...EventFragment
+
+      events{
+        name
+      }
     }
   }
-  ${EVENT_FRAGMENT}
+  ${USER_FRAGMENT}
 `;
 
 const FETCH_IF_ENTITY = gql`
@@ -205,7 +204,11 @@ const FETCH_EVENT_INFO = gql`
         full_name
       }
       event_cohosts {
-        cohost_id
+        cohost {
+          name
+          id
+          picture
+        }
         accepted
       }
       event_tags {
@@ -363,6 +366,17 @@ const MUTATION_EVENT_IMPRESSION = gql`
     }
   }
 `
+const MUTATION_EVENT_VIEW = gql`
+  mutation update_events_mutation($eventId: Int) {
+    update_events(
+      where: {id: {_eq: $eventId}},
+      _inc: {views: 1}
+    ) {
+      affected_rows
+    }
+  }
+`
+
 const MUTATION_LIKE_EVENT = gql`
 mutation like_event($eventId: Int, $userId: String) {
   insert_event_likes(
@@ -483,6 +497,7 @@ export {
   MUTATION_UNLIKE_EVENT,
   MUTATION_LIKE_EVENT,
   MUTATION_EVENT_IMPRESSION,
+  MUTATION_EVENT_VIEW,
   MUTATION_REPOST_EVENT,
   MUTATION_UNPOST_EVENT,
   SUBSCRIPTION_EVENT_LOCAL_LIST,

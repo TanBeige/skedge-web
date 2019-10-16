@@ -9,7 +9,6 @@ import { persistCache } from 'apollo-cache-persist';
 
 
 import { GRAPHQL_URL, REALTIME_GRAPHQL_URL, backendUrl } from "./utils/constants";
-import auth from "./Authorization/Auth";
 
 
 const getHeaders = (tok) => {

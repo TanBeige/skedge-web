@@ -27,7 +27,8 @@ import CategoryFragment from './Sections/CategoryFragment.js'
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 import {
-  FETCH_EVENT_INFO
+  FETCH_EVENT_INFO,
+  MUTATION_EVENT_VIEW
 } from 'EventQueries/EventQueries.js'
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
 
@@ -115,6 +116,7 @@ export default function BlogPostPage(props) {
           user_pic: data.data.events[0].user.picture,
           user_name: data.data.events[0].user.name,
           user_full_name: data.data.events[0].user.full_name,
+          user_biography: data.data.events[0].user.biography,
           
           event_cohosts: data.data.events[0].event_cohosts,
           event_tags: data.data.events[0].event_tags,
@@ -125,6 +127,18 @@ export default function BlogPostPage(props) {
     })
   }
 
+  const addView = () => {
+    props.client.mutate({
+      mutation: MUTATION_EVENT_VIEW,
+      variables: {
+        eventId: eventId
+      }
+    }).then((data) =>{
+        console.log("Event Views")
+      }
+    )
+  }
+
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
@@ -132,6 +146,7 @@ export default function BlogPostPage(props) {
 
   useEffect(() => {
     getEvent();
+    addView();
   }, [])
 
   const classes = useStyles();
@@ -157,7 +172,7 @@ export default function BlogPostPage(props) {
         />
         <Parallax image={values.cover_url} filter="dark">
           <div className={classes.container}>
-            <Button onClick={goBack} justIcon round style={{position: 'absolute', top: 75,  left: 25}} color="primary">
+            <Button onClick={goBack} justIcon round style={{position: 'absolute', top: 75,  left: 22}} color="primary">
                 <ChevronLeftIcon/>
             </Button>
             <GridContainer justify="center">
@@ -177,11 +192,13 @@ export default function BlogPostPage(props) {
         <div className={classes.main}>
           <div className={classes.container}>
             <SectionText eventInfo={values}/>
-            <SectionBlogInfo  tags={values.event_tags}/>
+            <SectionBlogInfo
+              eventInfo={values}
+              />
             <SectionComments />
           </div>
         </div>
-        <SectionSimilarStories />
+        {/*<SectionSimilarStories />*/}
         <Footer
           content={
             <div>
@@ -189,11 +206,10 @@ export default function BlogPostPage(props) {
                 <List className={classes.list}>
                   <ListItem className={classes.inlineBlock}>
                     <a
-                      href="https://www.creative-tim.com/?ref=mkpr-blog-post"
-                      target="_blank"
+                      href="/home"
                       className={classes.block}
                     >
-                      Creative Tim
+                      Skedge
                     </a>
                   </ListItem>
                   <ListItem className={classes.inlineBlock}>

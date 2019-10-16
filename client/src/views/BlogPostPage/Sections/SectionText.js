@@ -7,6 +7,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Quote from "components/Typography/Quote.js";
+import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
+import TodayIcon from '@material-ui/icons/Today';
+import PlaceIcon from '@material-ui/icons/Place';
+import LocationCityIcon from '@material-ui/icons/LocationCity';
 // core components
 
 import blog4 from "assets/img/examples/blog4.jpg";
@@ -29,23 +33,25 @@ export default function SectionText({ eventInfo }) {
   var moment = require('moment');
   let formattedStartTime = ""
   if(eventInfo.start_time) {
-    console.log(`start time:"${eventInfo.start_time}"`);
     formattedStartTime = moment(eventInfo.start_time, "HH:mm:ss+-HH");
-    console.log(formattedStartTime)
   }
   let formattedEndTime = ""
   if(eventInfo.end_time) {
-    console.log(`end time:"${eventInfo.end_time}"`);
-    formattedEndTime = moment(eventInfo.start_time, "HH:mm:ss+-HH");
-    console.log(formattedEndTime)
+    const tempEndTime = moment(eventInfo.start_time, "HH:mm:ss+-HH")
     formattedEndTime = (
-      <h3>
+      <h3 style={{marginTop: 0}}>
         Until: 
         <div style={{borderRadius: 5, backgroundColor: "#02C39A", color: 'white'}}>
-          {moment(formattedEndTime).format("h:mm A")}
+          {moment(tempEndTime).format("h:mm A")}
         </div>
       </h3>
     )
+  }
+  let formattedDate = ""
+  if(eventInfo.event_date) {
+    console.log("Event Date: ", eventInfo.event_date);
+    formattedDate = moment(eventInfo.event_date, "YYYY-MM-DD")
+    console.log("formatted date: ", formattedDate)
   }
 
   return (
@@ -53,7 +59,11 @@ export default function SectionText({ eventInfo }) {
       <GridContainer justify="center">
         <GridItem xs={12} sm={8} md={8}>
           <div style={{textAlign: 'center'}}>
-            <h3>
+            <h2>
+              <TodayIcon fontSize='large' style={{verticalAlign: 'middle'}}/>
+              {moment(formattedDate).format("MMMM D, YYYY")}
+            </h2>
+            <h3 style={{marginTop: 0}}>
               Starts at: 
               <div style={{borderRadius: 5, backgroundColor: "#02C39A", color: 'white'}}>
                 {moment(formattedStartTime).format("h:mm A")}
@@ -61,55 +71,19 @@ export default function SectionText({ eventInfo }) {
             </h3>
             {formattedEndTime}
           </div>
+          <hr />
           <h3 className={classes.title}>
             Details
           </h3>
           <p>
             {eventInfo.description}
           </p>
-        </GridItem>
-        <GridItem xs={12} sm={10} md={10} className={classes.section}>
-          <GridContainer>
-            <GridItem xs={12} sm={4} md={4}>
-              <img src={blog4} alt="..." className={imgClasses} />
-            </GridItem>
-            <GridItem xs={12} sm={4} md={4}>
-              <img src={blog3} alt="..." className={imgClasses} />
-            </GridItem>
-            <GridItem xs={12} sm={4} md={4}>
-              <img src={blog1} alt="..." className={imgClasses} />
-            </GridItem>
-          </GridContainer>
-        </GridItem>
-        <GridItem xs={12} sm={8} md={8}>
-          <h3 className={classes.title}>Rest of the Story:</h3>
-          <p>
-            We are here to make life better. And now I look and look around and
-            there’s so many Kanyes I{"'"}ve been trying to figure out the bed
-            design for the master bedroom at our Hidden Hills compound... and
-            thank you for turning my personal jean jacket into a couture piece.
-            <br />I speak yell scream directly at the old guard on behalf of the
-            future. daytime All respect prayers and love to Phife’s family Thank
-            you for so much inspiration.
-          </p>
-          <p>
-            Thank you Anna for the invite thank you to the whole Vogue team And
-            I love you like Kanye loves Kanye Pand Pand Panda I{"'"}ve been
-            trying to figure out the bed design for the master bedroom at our
-            Hidden Hills compound...The Pablo pop up was almost a pop up of
-            influence. All respect prayers and love to Phife’s family Thank you
-            for so much inspiration daytime I love this new Ferg album! The Life
-            of Pablo is now available for purchase I have a dream. Thank you to
-            everybody who made The Life of Pablo the number 1 album in the
-            world! I{"'"}m so proud of the nr #1 song in the country. Panda!
-            Good music 2016!
-          </p>
-          <p>
-            I love this new Ferg album! The Life of Pablo is now available for
-            purchase I have a dream. Thank you to everybody who made The Life of
-            Pablo the number 1 album in the world! I{"'"}m so proud of the nr #1
-            song in the country. Panda! Good music 2016!
-          </p>
+          <h4>
+            <PlaceIcon style={{verticalAlign: 'top'}}/>
+            {`${eventInfo.street}`} <br />
+            <LocationCityIcon style={{verticalAlign: 'top'}}/>
+            {`${eventInfo.city}, ${eventInfo.state}`}
+          </h4>
         </GridItem>
       </GridContainer>
     </div>

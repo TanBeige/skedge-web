@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React from "react";
+import React, {useState, useEffect} from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -43,13 +43,58 @@ import cardProfile2Square from "assets/img/faces/card-profile2-square.jpg";
 
 import profilePageStyle from "assets/jss/material-kit-pro-react/views/profilePageStyle.js";
 
+import {
+  QUERY_USER_PROFILE
+} from 'EventQueries/EventQueries.js'
+
 const useStyles = makeStyles(profilePageStyle);
 
-export default function ProfilePage({ ...rest }) {
+export default function ProfilePage(props, { ...rest }) {
+
+  const userId = props.match.params.id;
+
+  const [values, setValues] = useState({
+    user_id: userId,
+    user_exists: true,
+
+    name: "",
+    biography: ""
+  })
+
+  const getUser = () =>  {
+    props.client.query({
+      query: QUERY_USER_PROFILE,
+      variables: {
+        userId: userId
+      }
+    }).then((data) => {
+      console.log("user data: ", data.data.users);
+      if(data.data.users === undefined || data.data.users.length === 0) {
+        setValues({
+          ...values,
+          user_exists: false
+        })
+      }
+      else {
+        setValues({
+          ...values,
+          user_exists: true
+
+        })
+      }
+    })
+  }
+
   React.useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   });
+
+  useEffect(() => {
+    getUser();
+  }, [])
+
+
   const classes = useStyles();
   const imageClasses = classNames(
     classes.imgRaised,

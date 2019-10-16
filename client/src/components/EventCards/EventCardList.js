@@ -185,7 +185,6 @@ export default function EventCardList(props) {
                         //insertAd(index)   //Add later when Skedge.com can get ads
                       }
                   </GridItem>
-
                 )
             })
         }

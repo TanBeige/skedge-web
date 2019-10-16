@@ -23,11 +23,10 @@ const useStyles = makeStyles(sectionCommentsStyle);
 export default function SectionComments() {
   const classes = useStyles();
   return (
-    <div className={classes.section}>
+    <div className={classes.section} style={{paddingTop: 10}}>
       <GridContainer justify="center">
         <GridItem xs={12} sm={10} md={8}>
           <div>
-            <h3 className={classes.title}>3 Comments</h3>
             <Media
               avatar={profile4}
               title={

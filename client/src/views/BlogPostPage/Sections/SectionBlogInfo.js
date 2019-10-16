@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
@@ -16,7 +17,34 @@ import sectionBlogInfoStyle from "assets/jss/material-kit-pro-react/views/blogPo
 
 const useStyles = makeStyles(sectionBlogInfoStyle);
 
-export default function SectionBlogInfo(tags) {
+export default function SectionBlogInfo({eventInfo}) {
+
+  let insertCohosts = ""
+  if(eventInfo.event_cohosts.length > 0) {
+    insertCohosts = (
+            <Card plain profile className={classes.card}>
+              <GridContainer>
+              {
+                eventInfo.event_cohosts.map((cohost) => {
+                  return(
+                      <GridItem xs={6} sm={3} md={3}>
+                        <CardAvatar plain profile style={{width: "60%"}}>
+                          <Link to={`/users/${cohost.cohost.id}`}>
+                            <img src={cohost.cohost.picture} alt={cohost.cohost.name} />
+                          </Link>
+                        </CardAvatar>
+                        <Link to={`/users/${cohost.cohost.id}`}>
+                          <h4 className={classes.cardTitle} style={{textAlign: 'center', color: "#02C39A"}}>{cohost.cohost.name}</h4>
+                        </Link>
+                      </GridItem>
+                  )
+                })
+              }
+            </GridContainer>
+          </Card>
+    )
+  } 
+
   const classes = useStyles();
   return (
     <div className={classes.section} >
@@ -27,44 +55,33 @@ export default function SectionBlogInfo(tags) {
               <div className={classes.blogTags}>
                 Tags: {` `}
                 {
-                  tags.tags.map((tag, index) => {
+                  eventInfo.event_tags.map((tag, index) => {
                     return <Badge key={index} color="primary">{tag.tag.name}</Badge>
                   })
                 }
               </div>
             </GridItem>
-            <GridItem xs={12} sm={6} md={6}>
-              <Button color="google" round className={classes.buttons}>
-                <i className="fab fa-google" /> 232
-              </Button>
-              <Button color="twitter" round className={classes.buttons}>
-                <i className="fab fa-twitter" /> 910
-              </Button>
-            </GridItem>
           </GridContainer>
           <hr />
-          <Card plain profile className={classes.card}>
+          <h2 style={{textAlign: 'center'}}>Hosts</h2>
+          <Card plain profile className={classes.card} >
             <GridContainer>
-              <GridItem xs={12} sm={2} md={2}>
+              <GridItem xs={12} sm={12} md={12}>
                 <CardAvatar plain profile>
-                  <img src={profileImage} alt="..." />
+                  <Link to={`/users/${eventInfo.user_id}`}>
+                    <img src={eventInfo.user_pic} alt={eventInfo.user_name} />
+                  </Link>
                 </CardAvatar>
-              </GridItem>
-              <GridItem xs={12} sm={8} md={8}>
-                <h4 className={classes.cardTitle}>Alec Thompson</h4>
+                <Link to={`/users/${eventInfo.user_id}`}>
+                  <h3 className={classes.cardTitle} style={{textAlign: 'center', color: "#02C39A"}}>{eventInfo.user_name}</h3>
+                </Link>
                 <p className={classes.description}>
-                  I{"'"}ve been trying to figure out the bed design for the
-                  master bedroom at our Hidden Hills compound...I like good
-                  music from Youtube.
+                  {eventInfo.user_biography}
                 </p>
-              </GridItem>
-              <GridItem xs={12} sm={2} md={2}>
-                <Button round className={classes.pullRight}>
-                  Follow
-                </Button>
               </GridItem>
             </GridContainer>
           </Card>
+            {insertCohosts}
         </GridItem>
       </GridContainer>
     </div>
