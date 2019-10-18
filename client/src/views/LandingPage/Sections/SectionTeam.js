@@ -3,6 +3,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
 // import  from "@material-ui/icons/";
+import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
+
 // core components
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -30,15 +32,14 @@ export default function SectionTeam({client}) {
     category: "",
     city: "",
     state: "",
-    limit: 8
+    limit: 3
   }
   
   return (
-    <div className={classes.section}>
-      <h2 className={classes.title}>Find Local Events</h2>
-      <div>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
+    <div className={classes.section} style={{padding: 10}}>
+      <h2 className={classes.title} style={{margin:  0, color: "#02C39A"}}><PlayForWorkIcon fontSize='large' /></h2>
+        <GridContainer style={{padding: 0}}>
+          <GridItem xs={12} sm={12} md={12} >
             <Card profile plain className={classes.card3}>
               <EventCardList 
                 client={client}
@@ -47,7 +48,6 @@ export default function SectionTeam({client}) {
             </Card>
           </GridItem>
           </GridContainer>
-      </div>
     </div>
   );
 }

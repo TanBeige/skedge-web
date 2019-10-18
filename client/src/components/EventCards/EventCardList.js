@@ -148,8 +148,6 @@ export default function EventCardList(props) {
 
     // Start Filtering Responses here. Since it's so fucking hard in GraphQL
     let finalEvents = values.events
-    console.log("Events: ", values.events)
-    console.log("eventlist props: ", props)
     
     if(values.loadingEvents) {
       return (

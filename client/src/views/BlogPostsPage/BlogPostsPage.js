@@ -49,7 +49,6 @@ export default function BlogPostsPage(props) {
   //  Called every time user enters home page.
   const getUserInfo = async() => {
     const token = await user;
-    console.log("Token: ", token)
   }
 
 
@@ -114,8 +113,6 @@ export default function BlogPostsPage(props) {
     )
   }
   else {
-    console.log(user);
-  }
   return (
     <div>
       <Header
@@ -206,4 +203,5 @@ export default function BlogPostsPage(props) {
       />
     </div>
   );
+      }
 }

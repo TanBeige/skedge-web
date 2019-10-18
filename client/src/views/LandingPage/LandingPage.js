@@ -66,33 +66,21 @@ export default function LandingPage(props) {
 
   return (
     <div>
-      {/*<Header
-        color="transparent"
-        brand="Material Kit PRO React"
-        links={<HeaderLinks dropdownHoverColor="info" />}
-        fixed
-        changeColorOnScroll={{
-          height: 300,
-          color: "info"
-        }}
-        {...rest}
-      />*/}
       <Parallax image={paraImage} filter="dark">
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={6} md={6}>
               <SectionTitle className={classes.title} />
               <h4>
-                Made to help share events with all of your friends, 
-                as well as find events you'll love near you.
+                Find, share, and create your favorite events all in one place. 
+                The social event app.
               </h4>
               <br />
               <Button
                 color="primary"
-                size="lg"
                 onClick={() => loginWithRedirect({})}
               >
-                Let's Go!
+                Log In or Sign Up
               </Button>
             </GridItem>
           </GridContainer>
@@ -100,8 +88,8 @@ export default function LandingPage(props) {
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}>
-          <SectionProduct />
           <SectionTeam client={props.client}/>
+          <hr />
           <SectionWork />
         </div>
       </div>

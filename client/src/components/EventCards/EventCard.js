@@ -21,7 +21,7 @@ import Fab from '@material-ui/core/Fab';
 import { ThemeProvider } from '@material-ui/styles';
 import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
-
+import Badge from 'components/Badge/Badge.js'
 
 
 
@@ -133,7 +133,6 @@ export default function EventCard({event, client, userId}) {
       }
     }
 
-    console.log("Liked users: ",event.event_like);
     const handleLike = () => {
       if(values.ifLiked !== "inherit") {
         client.mutate({
@@ -227,7 +226,6 @@ export default function EventCard({event, client, userId}) {
     // Error Check if event user exists ()
     let holdUserName = ""
     let holdProfilePic = ""
-    console.log("eveeeent : ", event)
     if(!event.user) {
       holdUserName = "Unknown User";
       holdProfilePic = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
@@ -252,7 +250,6 @@ export default function EventCard({event, client, userId}) {
           eventId: event.id
         }
       }).then((data) => {
-        console.log("like stuff: ", data.data.events[0].event_like.some(user  => user.user_id === userId))
         setValues({
           ...values,
           likeAmount: data.data.events[0].event_like_aggregate.aggregate.count,
@@ -269,12 +266,11 @@ export default function EventCard({event, client, userId}) {
     useEffect(() => {
       addImpression();
       getLikesReposts();
-      console.log(values)
     }, [])
     
     return(
       <ThemeProvider theme={theme}>
-        <Card blog>  
+        <Card blog raised style={{border: '2px solid lightgrey'}}>  
           <CardHeader image>
             <Link to={`/events/${event.id}`}>
               <img
@@ -310,7 +306,7 @@ export default function EventCard({event, client, userId}) {
             </CardBody>
             <CardFooter>
               <Info style={{textAlign: 'left'}}>
-                <h6 className={classes.cardCategory}>{holdCategory.toUpperCase()}</h6>
+                <h6 color='rose' className={classes.cardCategory}>{holdCategory.toUpperCase()}</h6>
               </Info>
               <div style={{position: 'absolute',right: 15}}>
                 <IconButton onClick={handleRepost} aria-label="Share" style={{float: 'left', margin: 0}}>
