@@ -76,6 +76,7 @@ export default function NavPillsSearch(props) {
         axis={direction === "rtl" ? "x-reverse" : "x"}
         index={active}
         onChangeIndex={handleChangeIndex}
+        resistance
       >
         {tabs.map((prop, key) => {
           return (

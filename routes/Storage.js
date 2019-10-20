@@ -27,17 +27,19 @@ const storage = cloudinaryStorage({
     transformation: [
         { if: "w_gt_1900", width: 1900, crop: "scale" },
         { if: "h_gt_1900", height: 1900, crop: "scale" },
-        { quality: "auto" }
+        { quality: "auto" },
+        { format: 'jpg' }
     ]
 });
 
 const parser = multer({ storage: storage });
 
 router.post('/upload', parser.single("file"), (req, res) => {
-    console.log("Upload API Called")
     console.log(req.file) // to see what is returned to you
     const image = {};
-    image.url = req.file.url;
+    //Editing URL to store jpeg version
+    let tempImageUrl = req.file.secure_url.replace(".png",".jpg");
+    image.url = tempImageUrl;
     image.id = req.file.public_id;
     res.json(image);  // Returns image url and id to be stored
 });

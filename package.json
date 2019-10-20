@@ -16,6 +16,7 @@
     "@slynova/flydrive": "^0.3.1",
     "boom": "^7.3.0",
     "cloudinary": "^1.15.0",
+    "cloudinary-react": "^1.2.1",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",

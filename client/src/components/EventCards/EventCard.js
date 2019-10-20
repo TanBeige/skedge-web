@@ -27,6 +27,9 @@ import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
 import Badge from 'components/Badge/Badge.js'
 
+import axios from 'axios'
+import { Image, Video, Transformation, CloudinaryContext } from 'cloudinary-react';
+
 
 
 import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js";
@@ -219,11 +222,11 @@ export default function EventCard({event, client, userId}) {
 
     //Change image URL if it doesn't exists
     let holdURL = "";
-    if(!event.image.url) {
-      holdURL = "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3900&q=80"
+    if(!event.image.image_uuid) {
+      holdURL = "cover_images/vs7s8bqpf9bz2qdzfpo8.png"
     }
     else {
-      holdURL = event.image.url;
+      holdURL = event.image.image_uuid;
     }
 
     // Error Check if event user exists ()
@@ -281,11 +284,14 @@ export default function EventCard({event, client, userId}) {
         <Card blog raised style={{border: '2px solid lightgrey'}}>  
           <CardHeader image>
             <Link to={`/events/${event.id}`}>
-              <img
+              {/* <img
                 className={classes.imgCard}
                 src={holdURL}
                 alt={holdName}
-              />
+              /> */}
+              <Image cloudName="skedge" publicId={holdURL} secure="true" alt={holdName}>
+                <Transformation height="400" width="400" fetchFormat="auto" crop='fill' quality="auto:good"/>
+              </Image>
             </Link>
 
               <div className={classes.imgCardOverlay}>

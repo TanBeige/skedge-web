@@ -22,7 +22,6 @@ import Typography from '@material-ui/core/Typography';
 import Collapse from '@material-ui/core/Collapse';
 
 // @material-ui/icons
-import FormatAlignLeft from "@material-ui/icons/FormatAlignLeft";
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ApartmentIcon from '@material-ui/icons/Apartment';
@@ -34,7 +33,6 @@ import GridItem from "components/Grid/GridItem.js";
 import NavPillsSearch from "components/NavPills/NavPillsSearch.js";
 import EventCardList from "components/EventCards/EventCardList.js";
 import CustomInput from 'components/CustomInput/CustomInput.js';
-import SearchFilter from 'components/NavPills/SearchFilter.js';
 import useDebounce from 'components/Debounce/Debounce.js';
 
 
@@ -58,6 +56,7 @@ export default function SectionPills(props) {
     city: "",
     state: "",
     limit: 10,
+    date: new Date(),
 
     expanded: false
   })
@@ -84,7 +83,8 @@ export default function SectionPills(props) {
     category: values.category,
     city: values.city,
     state: values.state,
-    limit: values.limit
+    limit: values.limit,
+    date: values.date
   })
 
   const [privateFilter, setPrivateFilter] = useState({
@@ -93,7 +93,8 @@ export default function SectionPills(props) {
     category: values.category,
     city: values.city,
     state: values.state,
-    limit: values.limit
+    limit: values.limit,
+    date: values.date
   })
 
   const debouncedSearchTerm = useDebounce(values, 300);
@@ -111,7 +112,8 @@ export default function SectionPills(props) {
         category: values.category,
         city: values.city,
         state: values.state,
-        limit: values.limit
+        limit: values.limit,
+        date: values.date
       });
       setPrivateFilter({
         ...privateFilter,
@@ -120,54 +122,17 @@ export default function SectionPills(props) {
         category: values.category,
         city: values.city,
         state: values.state,
-        limit: values.limit
+        limit: values.limit,
+        date: values.date
       });
 
   //    setIsSearching(false);
     }
   },[debouncedSearchTerm])
 
-  // Change Selected Buttons
-  // let localBtn;
-  // let privateBtn;
-  // if (values.type === "local") {
-  //     localBtn = true;
-  //     privateBtn = false;
-  // }
-  // else if (values.type === "private") {
-  //     localBtn = false;
-  //     privateBtn = true;
-  // }
-
-  // const localFilter = {
-  //   searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
-  //   type: "local",
-  //   category: values.category,
-  //   city: values.city,
-  //   state: values.state,
-  //   limit: values.limit   // This is how many events will show up in the eventList
-  // };
-  // const privateFilter = {
-  //   searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
-  //   type: "private",
-  //   category: values.category,
-  //   city: values.city,
-  //   state: values.state,
-  //   limit: values.limit   // This is how many events will show up in the eventList
-  // };
-
-  //  style={{paddingTop: 25}}
-  // Add above^^^ to <div className={classes.section} > if I am not using parallax
   return (
     <div className={classes.section} style={{paddingTop: 25}}>
       <GridContainer justify="center">
-        {/* <GridItem xs={12} className={classes.textCenter}>
-            <div>
-                <Button onClick={changeToLocal} simple={!localBtn} color="primary"><ApartmentIcon/>Local</Button>
-                <Button onClick={changeToPrivate} simple={!privateBtn} color="primary"><EmojiPeopleIcon/>Friends</Button>
-            </div>
-        </GridItem> */}
-
         <GridItem xs={12}>
         <Paper elevation={10} style={{paddingLeft:20, paddingRight: 20, margin: '10px 0 20px 0'}} color="primary">
           <GridContainer>

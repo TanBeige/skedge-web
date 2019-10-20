@@ -52,7 +52,8 @@ export default function EventCardList(props) {
             category: `%${cat}%`,
             city: `%${filter.city}%`,
             state: `%${filter.state}%`,
-            type: filter.type
+            type: filter.type,
+            date: filter.date
           }
         })
         .then(data => {
@@ -149,7 +150,6 @@ export default function EventCardList(props) {
 
     // Start Filtering Responses here. Since it's so fucking hard in GraphQL
     let finalEvents = values.events
-    console.log("Loading Events: ", values.loadingEvents)
     
     if(values.loadingEvents) {
       return (

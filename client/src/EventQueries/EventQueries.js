@@ -27,7 +27,7 @@ const EVENT_FRAGMENT = gql`
     city
     state
     image {
-      url
+      image_uuid
     }
     user {
       id
@@ -135,36 +135,37 @@ const FETCH_IF_ENTITY = gql`
 // Fetch Events
 
 const QUERY_FILTERED_EVENT = gql`
-  query fetch_filtered_events($eventLimit: Int, $search: String, $category: String, $city: String, $state: String, $type: String) {
-    events(
-      order_by:[{event_date: asc}, {start_time: asc}]
-      limit: $eventLimit
-      where: {
-        _or: [
-          {name: {_ilike: $search}},
-          {user: {
-            _or: [
-              {full_name: {_ilike: $search}},
-              {name: {_ilike: $search}}
-            ]}
-          },
-          {event_tags: {
-            tag: 
-              {name: {_ilike: $search}}
-          }}
-        ]
-        _and: [
-          {event_type: {_eq: $type}},
-          {category: {_like: $category}},
-          {city: {_ilike: $city}},
-          {state: {_ilike: $state}}
-        ]
-      }
-    )
-    {
-      ...EventFragment
+query fetch_filtered_events($eventLimit: Int, $search: String, $category: String, $city: String, $state: String, $type: String, $date: date) {
+  events(
+    order_by:[{event_date: asc}, {start_time: asc}]
+    limit: $eventLimit
+    where: {
+      _or: [
+        {name: {_ilike: $search}},
+        {user: {
+          _or: [
+            {full_name: {_ilike: $search}},
+            {name: {_ilike: $search}}
+          ]}
+        },
+        {event_tags: {
+          tag: 
+            {name: {_ilike: $search}}
+        }}
+      ]
+      _and: [
+        {event_type: {_eq: $type}},
+        {category: {_like: $category}},
+        {city: {_ilike: $city}},
+        {state: {_ilike: $state}},
+        {event_date: {_gte: $date}}
+      ]
     }
+  )
+  {
+    ...EventFragment
   }
+}
   ${EVENT_FRAGMENT}
 `
 
@@ -241,7 +242,7 @@ const FETCH_EVENT_INFO = gql`
       updated_at
 
       image {
-        url
+        image_uuid
       }
       user {
         id
