@@ -20,7 +20,7 @@ import styles from "assets/jss/material-kit-pro-react/components/customDropdownS
 
 const useStyles = makeStyles(styles);
 
-export default function CustomDropdown(props) {
+const CustomDropdown = React.forwardRef((props, ref) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = event => {
@@ -168,7 +168,7 @@ export default function CustomDropdown(props) {
       </Popper>
     </div>
   );
-}
+})
 
 CustomDropdown.defaultProps = {
   caret: true,
@@ -214,3 +214,5 @@ CustomDropdown.propTypes = {
   // This is a function that returns the clicked menu item
   onClick: PropTypes.func
 };
+
+export default CustomDropdown;

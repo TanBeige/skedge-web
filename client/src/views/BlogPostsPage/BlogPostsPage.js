@@ -1,3 +1,10 @@
+/*  Code Written By: Tan Arin
+*
+*   Description: 
+*     Functional Component that holds SectionPills that display all the events.
+*     Page that loads all /home page informaiton.
+*/
+
 /*eslint-disable*/
 import React, { useState, useEffect } from "react";
 import moment from "moment";
@@ -22,6 +29,7 @@ import SectionImage from "./Sections/SectionImage.js";
 import SubscribeLine from "./Sections/SubscribeLine.js";
 import LoadingPage from '../LoadingPage/LoadingPage.js'
 
+
 //import auth from "../../Authorization/Auth";
 import { useAuth0 } from "../../Authorization/react-auth0-wrapper";
 
@@ -37,6 +45,7 @@ export default function BlogPostsPage(props) {
     events: [],
     tabType: 'local',
     search: "",
+    currentUserId: 0
   });
 
   const selectValues = (id) => {
@@ -92,6 +101,28 @@ export default function BlogPostsPage(props) {
   })
 
   useEffect(() => {
+    props.client.query({
+      query: gql`
+        query fetch_user_id($userId: String) {
+          users(
+            where: {auth0_id: { _eq: $userId }}
+          ) {
+            id
+          }
+        }
+      `,
+      variables: {
+        userId: user.sub
+      }
+    }).then((data) => {
+      setValues({
+          ...values,
+          currentUserId: data.data.users[0].id
+      })
+    })
+  }, [])
+
+  useEffect(() => {
     if (isAuthenticated && user) {
       // eslint-disable-next-line
       const lastSeenMutation = setInterval(
@@ -99,10 +130,7 @@ export default function BlogPostsPage(props) {
         10000
       );
     }
-    /*
-    else if(!isAuthenticated) {
-      window.location.href = "/";
-    }*/
+
   },[loading]); // Empty array for param means effect will only run on first render.
 
   //Place this here before returning the actual page so we can determine 
@@ -117,7 +145,7 @@ export default function BlogPostsPage(props) {
     <div>
       <Header
         brand="Skedge"
-        links={<HeaderLinks dropdownHoverColor="info" />}
+        links={<HeaderLinks dropdownHoverColor="info" userId={values.currentUserId}/>}
         fixed
         color="transparent"
         changeColorOnScroll={{

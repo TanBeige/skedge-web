@@ -54,6 +54,7 @@ export default function EventCreateInfo(props) {
     // Event Creation
     name: savedValues.name,
     address: savedValues.street,
+    location_name: savedValues.location_name,
     city: savedValues.city,
     state: savedValues.state,
 
@@ -114,6 +115,7 @@ export default function EventCreateInfo(props) {
   const submitEventInfo = () => {
     props.handleEventInfo(
         values.name,
+        values.location_name,
         values.address,
         values.city,
         values.state,
@@ -288,6 +290,8 @@ export default function EventCreateInfo(props) {
 
   if(
     values.name.replace(/\s/g, '').length && 
+    values.location_name.replace(/\s/g, '').length && 
+    values.address.replace(/\s/g, '').length && 
     values.city.replace(/\s/g, '').length && 
     values.state.replace(/\s/g, '').length
     ) {
@@ -331,9 +335,24 @@ export default function EventCreateInfo(props) {
                 required
                 fullWidth
                 onChange={handleChange('name')}
-                id="name"
+                id="event_name"
                 label="Event Name"
                 autoFocus
+                placeholder="ex) Comedy Night Live"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                value={values.location_name}
+                required
+                fullWidth
+                onChange={handleChange('location_name')}
+                id="location_name"
+                label="Location Name"
+                name="location"
+                autoComplete="location"
+                placeholder="ex) Nellie's Place"
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -344,9 +363,10 @@ export default function EventCreateInfo(props) {
                 fullWidth
                 onChange={handleChange('address')}
                 id="address"
-                label="Location"
+                label="Address"
                 name="address"
                 autoComplete="address"
+                placeholder="123 Example St."
               />
             </Grid>
             <Grid item xs={6}>

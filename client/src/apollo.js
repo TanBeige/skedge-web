@@ -8,7 +8,7 @@ import { SubscriptionClient } from "subscriptions-transport-ws";
 import { persistCache } from 'apollo-cache-persist';
 
 
-import { GRAPHQL_URL, REALTIME_GRAPHQL_URL, backendUrl } from "./utils/constants";
+import { GRAPHQL_URL, REALTIME_GRAPHQL_URL } from "./utils/constants";
 
 
 const getHeaders = (tok) => {

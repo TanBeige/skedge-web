@@ -18,6 +18,7 @@ import sectionBlogInfoStyle from "assets/jss/material-kit-pro-react/views/blogPo
 const useStyles = makeStyles(sectionBlogInfoStyle);
 
 export default function SectionBlogInfo({eventInfo}) {
+  const classes = useStyles();
 
   let insertCohosts = ""
   if(eventInfo.event_cohosts.length > 0) {
@@ -25,9 +26,9 @@ export default function SectionBlogInfo({eventInfo}) {
             <Card plain profile className={classes.card}>
               <GridContainer>
               {
-                eventInfo.event_cohosts.map((cohost) => {
+                eventInfo.event_cohosts.map((cohost, index) => {
                   return(
-                      <GridItem xs={6} sm={3} md={3}>
+                      <GridItem xs={6} sm={3} md={3} key={index}>
                         <CardAvatar plain profile style={{width: "60%"}}>
                           <Link to={`/users/${cohost.cohost.id}`}>
                             <img src={cohost.cohost.picture} alt={cohost.cohost.name} />
@@ -45,7 +46,6 @@ export default function SectionBlogInfo({eventInfo}) {
     )
   } 
 
-  const classes = useStyles();
   return (
     <div className={classes.section} >
       <GridContainer justify="center">

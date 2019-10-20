@@ -7,7 +7,10 @@ import classNames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+
+import EventLoading from 'views/CreatePage/Sections/EventLoading.js'
 // @material-ui/icons
+import Close from "@material-ui/icons/Close";
 import Favorite from "@material-ui/icons/Favorite";
 import {IconButton} from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -18,6 +21,7 @@ import EventCreateInfo from 'views/CreatePage/Sections/EventCreateInfo.js';
 import TagSelect from 'views/CreatePage/Sections/TagSelect.js';
 import AddCohost from 'views/CreatePage/Sections/AddCohost/AddCohost.js';
 import AddBanner from 'views/CreatePage/Sections/AddBanner.js';
+
 
 import pricingStyle from "assets/jss/material-kit-pro-react/views/pricingStyle.js";
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
@@ -49,6 +53,7 @@ export default function PricingPage(props) {
       // Page information for display
       currentPage: 0,
       goingBack: false,
+      eventSubmitted: false,
 
       // User information
       isEntity: false,
@@ -56,6 +61,7 @@ export default function PricingPage(props) {
       // Event Information to be submitted
       event_type: "",
       street: "",
+      location_name: "",
       city: "",
       state: "",
       zip_code: 0,
@@ -116,8 +122,9 @@ const handleLocalOrPrivate = (type) => {
     });
 }
 
-  const handleEventInfo =(
+  const handleEventInfo = (
     name,
+    locationName,
     address,
     city,
     state,
@@ -133,6 +140,7 @@ const handleLocalOrPrivate = (type) => {
       goingBack: false,
 
       name: name,
+      location_name: locationName,
       description: description,
       street: address,
       city: city,
@@ -154,7 +162,18 @@ const handleLocalOrPrivate = (type) => {
         cohosts: cohostId
     });
   }
-  console.log("date: ", values.event_date)
+
+  const eventSubmitting = () => {
+    if(values.eventSubmitted) {
+      console.log("Event submitting")
+      return(
+        <EventLoading />
+      )
+    }
+    else {
+      return
+    }
+  }
 
 /**
  * This function finally submits all the information received from the user.
@@ -174,8 +193,12 @@ const handleLocalOrPrivate = (type) => {
       let path = `home`;
       props.history.push(path);
     }
-    // If no errors, store image on cloudinary.
-    console.log("SubmitEvnt Values: ", values);
+    // If no errors, store image on cloudinary, display loading bar
+
+    setValues({
+      ...values,
+      eventSubmitted: true
+    })
 
     const form_data = new FormData();
 
@@ -236,6 +259,8 @@ const handleLocalOrPrivate = (type) => {
                     street: values.street,
                     city: values.city,
                     state: values.state,
+                    location_name: values.location_name,
+
 
                     image: {
                         data: {
@@ -351,6 +376,7 @@ const handleLocalOrPrivate = (type) => {
           </IconButton>
           <h2 style={{paddingTop: 8, textAlign: 'center', fontWeight: 'bolder'}}><strong>{appBarTitle}</strong></h2>
           <hr />
+          {eventSubmitting()}
           { page }
         </div>
       </div>

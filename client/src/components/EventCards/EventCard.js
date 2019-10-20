@@ -6,6 +6,8 @@ import FormatAlignLeft from "@material-ui/icons/FormatAlignLeft";
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import RenewIcon from '@material-ui/icons/Autorenew'
 import IconButton from '@material-ui/core/IconButton';
+import PlaceIcon from '@material-ui/icons/Place';
+
 
 // core components
 import Card from "components/Card/Card.js";
@@ -17,6 +19,8 @@ import Button from "components/CustomButtons/Button.js";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import Info from "components/Typography/Info.js";
 import Warning from "components/Typography/Warning.js";
+import Success from 'components/Typography/Success.js'
+import Rose from 'components/Typography/Rose.js'
 import Fab from '@material-ui/core/Fab';
 import { ThemeProvider } from '@material-ui/styles';
 import pink from '@material-ui/core/colors/pink';
@@ -192,7 +196,6 @@ export default function EventCard({event, client, userId}) {
     else {
       holdName = event.name;
     }
-
     // Edit Description Display
     const bioMaxLength = 70;
     let eventBio = event.description;
@@ -226,13 +229,18 @@ export default function EventCard({event, client, userId}) {
     // Error Check if event user exists ()
     let holdUserName = ""
     let holdProfilePic = ""
+    let holdUserId;
     if(!event.user) {
       holdUserName = "Unknown User";
       holdProfilePic = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+      holdUserId = 0;
+    
     }
     else {
       holdUserName = event.user.name;
       holdProfilePic = event.user.picture
+      holdUserId = event.user.id;
+  
     }
 
     const addImpression = () => {
@@ -278,23 +286,26 @@ export default function EventCard({event, client, userId}) {
                 src={holdURL}
                 alt={holdName}
               />
-              <div className={classes.imgCardOverlay}>
-                <h5
-                  className={classes.cardTitle}
-                  style={{
-                    color: "#02C39A",
-                    position: "absolute",
-                    bottom: "10px",
-                    left: "15px",
-                  }}
-                >
-                  <Avatar style={{float:'left'}} alt={holdUserName} src={holdProfilePic}/>
-                  <div style={usernameStyle}>
-                    {holdUserName}
-                  </div>
-                </h5>
-              </div>
             </Link>
+
+              <div className={classes.imgCardOverlay}>
+                <Link to={`/users/${holdUserId}`}>
+                  <h5
+                    className={classes.cardTitle}
+                    style={{
+                      color: "#02C39A",
+                      position: "absolute",
+                      bottom: "10px",
+                      left: "15px",
+                    }}
+                  >
+                    <Avatar style={{float:'left'}} alt={holdUserName} src={holdProfilePic}/>
+                    <div style={usernameStyle}>
+                      @{holdUserName}
+                    </div>
+                  </h5>
+                </Link>
+              </div>
           </CardHeader>
 
             <CardBody>
@@ -302,7 +313,10 @@ export default function EventCard({event, client, userId}) {
               <p>
                 {eventBio}
               </p>
-              
+              <h5>
+                <PlaceIcon color="error" fontSize='small' style={{verticalAlign: 'top'}} />
+                {`${event.location_name}`}
+              </h5>
             </CardBody>
             <CardFooter>
               <Info style={{textAlign: 'left'}}>

@@ -1,3 +1,9 @@
+/*  Code Written By: Tan Arin
+*
+*   Description: 
+*     Stores GraphQL queries that are used often in Skedge.
+*/
+
 import gql from "graphql-tag";
 
 /*
@@ -12,6 +18,7 @@ const EVENT_FRAGMENT = gql`
     id
     name
     description
+    location_name
     event_type
     event_date
     start_time
@@ -23,6 +30,7 @@ const EVENT_FRAGMENT = gql`
       url
     }
     user {
+      id
       name
       picture
     }
@@ -47,12 +55,39 @@ const EVENT_FRAGMENT = gql`
 
 const USER_FRAGMENT = gql`
   fragment UserFragment on users {
+    auth0_id
     full_name
     name
     email
-    auth0_id
+    biography
+    picture
+    verified
   }
 `;
+
+const USER_FRIENDS_FRAGMENT = gql`
+  fragment FriendListFragment on users {
+    relationship_user_one {
+      status
+      friend_two {
+        auth0_id
+        id
+        name
+        picture
+      }
+    }
+    relationship_user_two {
+      status
+      friend_one {
+        auth0_id
+        id
+        name
+        picture
+      }
+    }
+  }
+
+`
 
 const FRIEND_FRAGMENT = gql`
 fragment FriendFragment on users {
@@ -64,18 +99,28 @@ fragment FriendFragment on users {
 
 // Fetch Users
 const QUERY_USER_PROFILE = gql`
-  query fetch_user($userId: Int!) {
+  query fetch_user($userId: Int!, $limit: Int) {
     users(
       where: {id: { _eq: $userId }}
-    ) {
+    ) {  
       ...UserFragment
-
-      events{
-        name
+    
+      events (limit: $limit){
+        ...EventFragment
       }
+    
+      shared_event (limit: $limit){
+        event{
+          ...EventFragment
+        }
+      }
+
+      ...FriendListFragment
     }
   }
   ${USER_FRAGMENT}
+  ${EVENT_FRAGMENT}
+  ${USER_FRIENDS_FRAGMENT}
 `;
 
 const FETCH_IF_ENTITY = gql`
@@ -180,6 +225,7 @@ const FETCH_EVENT_INFO = gql`
     events(where: {id: {_eq: $eventId}}) {
       name
       description
+      location_name
       event_type
       event_date
       start_time
@@ -452,6 +498,40 @@ const SUBSCRIPTION_EVENT_LOCAL_LIST = gql`
   }
 `;
 
+// Adding/Deleting Friends
+const MUTATION_FRIEND_REQUEST = gql`
+  mutation insert_relationships($objects: [relationship_insert_input!]!) {
+    insert_relationship(
+      objects: $objects, 
+      on_conflict: {
+        update_columns: status, 
+        constraint: relationship_pkey
+      }) {
+      affected_rows
+    }
+  }
+`;
+const MUTATION_FRIEND_DELETE = gql`
+  mutation delete_relationships($user_one_id: String, $user_two_id: String) {
+    delete_relationship(
+      where: {
+        _and: [
+          {user_one_id: {_eq: $user_one}},
+          {user_two_id: {_eq: $user_two}}
+        ]
+      }
+      ) {
+      affected_rows
+    }
+  }
+
+  mutation delete_events($eventId: Int) {
+    delete_events(where: { id: { _eq: $eventId } }) {
+      affected_rows
+    }
+  }
+`;
+
 // Fetching friends
 const QUERY_ACCEPTED_FRIENDS = gql`
   query fetch_accepted_friends($userId: String!) {
@@ -500,6 +580,8 @@ export {
   MUTATION_EVENT_VIEW,
   MUTATION_REPOST_EVENT,
   MUTATION_UNPOST_EVENT,
+  MUTATION_FRIEND_REQUEST,
+  MUTATION_FRIEND_DELETE,
   SUBSCRIPTION_EVENT_LOCAL_LIST,
   QUERY_ACCEPTED_FRIENDS
 };

@@ -92,11 +92,9 @@ export const MakeMainRoutes = () => {
 
   // useEffect substitutes componentDidMount() and rerenders after loading value changes
   useEffect(() => {
-    if(window.location.pathname === "/") {
-      console.log("Home")
-    }
     if(!loading) {
       console.log("Loaded");
+      console.log(values.client)
     }
     else {
       console.log("Currently Loading");
@@ -106,6 +104,7 @@ export const MakeMainRoutes = () => {
 
   //Wait for Auth0 to load
   if (loading) {
+    console.log("Loading on routes.js")
     return(
       <div>
         <LoadingPage reason="Loading" />
@@ -114,6 +113,7 @@ export const MakeMainRoutes = () => {
   }
   // Wait for token to return and client to be made.
   else if(!values.client) {
+    console.log("Getting Client")
     getIdTokenClaims().then(function(result) {
       if(isAuthenticated) {
         newToken = result.__raw;

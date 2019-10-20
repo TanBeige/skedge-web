@@ -55,7 +55,7 @@ export default function HeaderLinks(props) {
     return (-c / 2) * (t * (t - 2) - 1) + b;
   };
 
-  const { isAuthenticated, logout } = useAuth0();
+  const { logout } = useAuth0();
 
   const smoothScroll = (e, target) => {
     if (window.location.pathname === "/sections") {
@@ -89,20 +89,23 @@ export default function HeaderLinks(props) {
   };
   var onClickSections = {};
 
+
   const { dropdownHoverColor } = props;
   const classes = useStyles();
   return (
     <List className={classes.list + " " + classes.mlAuto} style={{marginTop: 10}}>
       <ListItem className={classes.listItem}>
-        <Button className={classes.dropdownLink} simple color="white">
-          <AccountBalance className={classes.dropdownIcons} /> Profile
-        </Button>
+        <Link to={`/users/${props.userId}`}>
+          <Button className={classes.dropdownLink} simple color="white">
+            <AccountBalance className={classes.dropdownIcons} /> Profile
+          </Button>
+        </Link>
       </ListItem>
       <ListItem className={classes.listItem}>
         <Link to="/create">
-        <Button className={classes.dropdownLink} simple color="white">
-          <AccountBalance className={classes.dropdownIcons} /> Create Event
-        </Button>
+          <Button className={classes.dropdownLink} simple color="white">
+            <AccountBalance className={classes.dropdownIcons} /> Create Event
+          </Button>
         </Link>
       </ListItem>
       <ListItem className={classes.listItem}>

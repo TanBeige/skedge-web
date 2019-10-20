@@ -1,4 +1,5 @@
-// Code from: https://blog.hasura.io/building-file-upload-downloads-for-your-hasura-app/
+// Code from: 
+// https://www.freecodecamp.org/news/how-to-allow-users-to-upload-images-with-node-express-mongoose-and-cloudinary-84cefbdff1d9/
 
 const express = require('express');
 var multer = require('multer');

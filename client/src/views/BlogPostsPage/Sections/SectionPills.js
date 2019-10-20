@@ -1,3 +1,9 @@
+/*  Code Written By: Tan Arin
+*
+*   Description: 
+*     Functional Component that hold the EventList that is displayed on the home page
+*/
+
 import React, { useState } from "react";
 import Button from 'components/CustomButtons/Button.js';
 import clsx from 'clsx';
@@ -55,6 +61,7 @@ export default function SectionPills(props) {
     searchText: "", //Search Text can look for Event Names, Tags, or Event Creators!
     city: "",
     state: "",
+    limit: 10,
 
     expanded: false
   })
@@ -63,7 +70,9 @@ export default function SectionPills(props) {
   const changeToLocal = () => {
     setValues({
       ...values,
-      type: "local"
+      type: "local",
+      city: "",
+      state: ""
     });
   }
   const changeToPrivate = () => {
@@ -110,7 +119,7 @@ export default function SectionPills(props) {
     category: values.category,
     city: values.city,
     state: values.state,
-    limit: 20   // This is how many events will show up in the eventList
+    limit: values.limit   // This is how many events will show up in the eventList
   };
 
   //  style={{paddingTop: 25}}
@@ -212,7 +221,7 @@ export default function SectionPills(props) {
                     id="city"
                     inputProps={{
                       onChange: handleFilters("city"),
-                      defaultValue: "Tallahassee"
+                      defaultValue: ""
                     }}
                     formControlProps={{
                       fullWidth: true
@@ -227,7 +236,7 @@ export default function SectionPills(props) {
                   id="state"
                   inputProps={{
                     onChange: handleFilters("state"),
-                    defaultValue: "Florida"
+                    defaultValue: ""
                   }}
                   formControlProps={{
                     fullWidth: true
@@ -251,6 +260,7 @@ export default function SectionPills(props) {
         client={props.client}
         userId={props.userId}
         filter={filter}
+        listType='home'
       /> 
     </div>
   );

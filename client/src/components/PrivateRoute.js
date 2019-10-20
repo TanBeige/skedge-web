@@ -7,6 +7,7 @@ const PrivateRoute = ({ component: Component, path, ...rest }) => {
 
   useEffect(() => {
     if (loading || isAuthenticated) {
+      console.log("Loading on private page")
       return;
     }
     const fn = async () => {
@@ -19,7 +20,7 @@ const PrivateRoute = ({ component: Component, path, ...rest }) => {
 
   const render = props => isAuthenticated === true ? <Component {...props} /> : null;
 
-  return <Route path={path} render={render} {...rest} />;
+  return <Route exact path={path} render={render} {...rest} />;
 };
 
 export default PrivateRoute;
