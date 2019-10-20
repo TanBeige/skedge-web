@@ -89,7 +89,7 @@ export default function SectionPills(props) {
 
   const [privateFilter, setPrivateFilter] = useState({
     searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
-    type: "local",
+    type: "private",
     category: values.category,
     city: values.city,
     state: values.state,
@@ -97,35 +97,33 @@ export default function SectionPills(props) {
   })
 
   const debouncedSearchTerm = useDebounce(values, 300);
-  const [isSearching, setIsSearching] = useState(false);
+  //const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     if(debouncedSearchTerm) {
       // Set isSearching state
-      setIsSearching(true);
+//      setIsSearching(true);
 
-      setPrivateFilter({
-        ...privateFilter,
+      setLocalFilter({
+        ...localFilter,
         searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
         type: "local",
         category: values.category,
         city: values.city,
         state: values.state,
         limit: values.limit
-      })
-      setLocalFilter({
-        ...localFilter,
+      });
+      setPrivateFilter({
+        ...privateFilter,
         searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
         type: "private",
         category: values.category,
         city: values.city,
         state: values.state,
         limit: values.limit
-      })
+      });
 
-      setIsSearching(false);
-
-    
+  //    setIsSearching(false);
     }
   },[debouncedSearchTerm])
 
