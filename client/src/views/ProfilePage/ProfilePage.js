@@ -332,11 +332,10 @@ export default function ProfilePage(props, { ...rest }) {
       }
       // If Not Friends and Didn't send request
       else if(values.relationshipType === -1) {
-        icon = <PersonAddIcon className={classes.followIcon} />
+        const icon = <PersonAddIcon className={classes.followIcon} />
         return (
           <Tooltip
             id="tooltip-top"
-            title="Add Friend"
             placement="top"
             classes={{ tooltip: classes.tooltip }}
           >
@@ -382,6 +381,8 @@ export default function ProfilePage(props, { ...rest }) {
     }
     // If Already Friends
     else {
+      const icon = <PersonIcon className={classes.followIcon} />
+
       return (
         <Tooltip
           id="tooltip-top"
@@ -436,7 +437,7 @@ export default function ProfilePage(props, { ...rest }) {
     let profileContent = ""
 
     // If user are friends
-    if (values.relationshipType === 1) {  
+    if (values.relationshipType === 1 || values.auth0Id === user.sub) {  
       profileContent = (
         <FriendProfile 
           client={props.client}
@@ -461,7 +462,7 @@ export default function ProfilePage(props, { ...rest }) {
         fixed
         changeColorOnScroll={{
           height: 200,
-          color: "info"
+          color: "primary"
         }}
         {...rest}
       />

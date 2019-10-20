@@ -44,6 +44,7 @@ export default function SectionTeam({client}) {
               <EventCardList 
                 client={client}
                 filter={filter}
+                listType="home"
               />
             </Card>
           </GridItem>
