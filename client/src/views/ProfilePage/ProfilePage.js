@@ -82,7 +82,7 @@ export default function ProfilePage(props, { ...rest }) {
     currentUserId: 0,
 
     currentUserProfile: false,
-    relationshipType: 0,
+    relationshipType: 2,
 
     auth0Id: "",
     name: "",

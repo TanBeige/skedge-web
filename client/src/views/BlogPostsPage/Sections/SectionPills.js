@@ -4,7 +4,7 @@
 *     Functional Component that hold the EventList that is displayed on the home page
 */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from 'components/CustomButtons/Button.js';
 import clsx from 'clsx';
 
@@ -31,24 +31,20 @@ import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 // core components
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import NavPills from "components/NavPills/NavPills.js";
+import NavPillsSearch from "components/NavPills/NavPillsSearch.js";
 import EventCardList from "components/EventCards/EventCardList.js";
 import CustomInput from 'components/CustomInput/CustomInput.js';
+import SearchFilter from 'components/NavPills/SearchFilter.js';
+import useDebounce from 'components/Debounce/Debounce.js';
 
 
 import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js";
 
 
-
-
 // Constants
 import { categoryList } from "utils/constants";
 
-
-
 const useStyles = makeStyles(sectionPillsStyle);
-
-
 
 export default function SectionPills(props) {
   const classes = useStyles();
@@ -66,22 +62,6 @@ export default function SectionPills(props) {
     expanded: false
   })
 
-  // Handle Event Type Button Press
-  const changeToLocal = () => {
-    setValues({
-      ...values,
-      type: "local",
-      city: "",
-      state: ""
-    });
-  }
-  const changeToPrivate = () => {
-    setValues({
-      ...values,
-      type: "private",
-    });
-  }
-
   // Handle Filter Change
 
   const handleExpandClick = () => {
@@ -98,42 +78,99 @@ export default function SectionPills(props) {
       });
   };
 
-
-
-  // Change Selected Buttons
-  let localBtn;
-  let privateBtn;
-  if (values.type === "local") {
-      localBtn = true;
-      privateBtn = false;
-  }
-  else if (values.type === "private") {
-      localBtn = false;
-      privateBtn = true;
-  }
-
-  const filter = {
+  const [localFilter, setLocalFilter] = useState({
     searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
-    type: values.type,
+    type: "local",
     category: values.category,
     city: values.city,
     state: values.state,
-    limit: values.limit   // This is how many events will show up in the eventList
-  };
+    limit: values.limit
+  })
+
+  const [privateFilter, setPrivateFilter] = useState({
+    searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
+    type: "local",
+    category: values.category,
+    city: values.city,
+    state: values.state,
+    limit: values.limit
+  })
+
+  const debouncedSearchTerm = useDebounce(values, 300);
+  const [isSearching, setIsSearching] = useState(false);
+
+  useEffect(() => {
+    if(debouncedSearchTerm) {
+      // Set isSearching state
+      setIsSearching(true);
+
+      setPrivateFilter({
+        ...privateFilter,
+        searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
+        type: "local",
+        category: values.category,
+        city: values.city,
+        state: values.state,
+        limit: values.limit
+      })
+      setLocalFilter({
+        ...localFilter,
+        searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
+        type: "private",
+        category: values.category,
+        city: values.city,
+        state: values.state,
+        limit: values.limit
+      })
+
+      setIsSearching(false);
+
+    
+    }
+  },[debouncedSearchTerm])
+
+  // Change Selected Buttons
+  // let localBtn;
+  // let privateBtn;
+  // if (values.type === "local") {
+  //     localBtn = true;
+  //     privateBtn = false;
+  // }
+  // else if (values.type === "private") {
+  //     localBtn = false;
+  //     privateBtn = true;
+  // }
+
+  // const localFilter = {
+  //   searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
+  //   type: "local",
+  //   category: values.category,
+  //   city: values.city,
+  //   state: values.state,
+  //   limit: values.limit   // This is how many events will show up in the eventList
+  // };
+  // const privateFilter = {
+  //   searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
+  //   type: "private",
+  //   category: values.category,
+  //   city: values.city,
+  //   state: values.state,
+  //   limit: values.limit   // This is how many events will show up in the eventList
+  // };
 
   //  style={{paddingTop: 25}}
   // Add above^^^ to <div className={classes.section} > if I am not using parallax
   return (
     <div className={classes.section} style={{paddingTop: 25}}>
       <GridContainer justify="center">
-        <GridItem xs={12} className={classes.textCenter}>
+        {/* <GridItem xs={12} className={classes.textCenter}>
             <div>
                 <Button onClick={changeToLocal} simple={!localBtn} color="primary"><ApartmentIcon/>Local</Button>
                 <Button onClick={changeToPrivate} simple={!privateBtn} color="primary"><EmojiPeopleIcon/>Friends</Button>
             </div>
-        </GridItem>
-        <GridItem xs={12}>
+        </GridItem> */}
 
+        <GridItem xs={12}>
         <Paper elevation={10} style={{paddingLeft:20, paddingRight: 20, margin: '10px 0 20px 0'}} color="primary">
           <GridContainer>
             <GridItem xs={10}>
@@ -255,12 +292,39 @@ export default function SectionPills(props) {
         </GridItem>
       </GridContainer>
 
-      <EventCardList 
-        client={props.client}
-        userId={props.userId}
-        filter={filter}
-        listType='home'
-      /> 
+      <div className={classes.profileTabs} style={{marginTop: 10}}>
+            <NavPillsSearch
+                alignCenter
+                color="primary"
+                client={props.client}
+                tabs={[
+                {
+                    tabButton: "Local",
+                    tabIcon: ApartmentIcon,
+                    tabContent: (
+                        <EventCardList 
+                            client={props.client}
+                            userId={props.userId}
+                            filter={localFilter}
+                            listType='home'
+                        /> 
+                    )
+                },
+                {
+                    tabButton: "Private",
+                    tabIcon: EmojiPeopleIcon,
+                    tabContent: (
+                        <EventCardList 
+                            client={props.client}
+                            userId={props.userId}
+                            filter={privateFilter}
+                            listType='home'
+                        />
+                    )
+                }
+                ]}
+            />
+        </div>
     </div>
   );
 }
