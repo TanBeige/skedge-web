@@ -24,6 +24,7 @@ import SectionBlogInfo from "./Sections/SectionBlogInfo.js";
 import SectionComments from "./Sections/SectionComments.js";
 import SectionSimilarStories from "./Sections/SectionSimilarStories.js";
 import CategoryFragment from './Sections/CategoryFragment.js'
+import LoadingPage from '../LoadingPage/LoadingPage.js'
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 import {
@@ -32,6 +33,11 @@ import {
 } from 'EventQueries/EventQueries.js'
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
 
+var cloudinary = require('cloudinary/lib/cloudinary').v2
+
+cloudinary.config({
+  cloud_name: "skedge"
+});
 
 const useStyles = makeStyles(blogPostPageStyle);
 
@@ -113,7 +119,7 @@ export default function BlogPostPage(props) {
           host_approval: data.data.events[0].host_approval,
           updated_at: data.data.events[0].updated_at,
       
-          cover_url: data.data.events[0].image.url,
+          cover_url: cloudinary.url(data.data.events[0].image.image_uuid, {secure: true, width: window.innerWidth, crop: "scale", fetch_format: "auto", quality: "auto"}),
           user_id: data.data.events[0].user.id,
           user_pic: data.data.events[0].user.picture,
           user_name: data.data.events[0].user.name,
@@ -128,6 +134,7 @@ export default function BlogPostPage(props) {
       }
     })
   }
+  console.log(values.cover_url)
 
   const addView = () => {
     props.client.mutate({
@@ -136,7 +143,7 @@ export default function BlogPostPage(props) {
         eventId: eventId
       }
     }).then((data) =>{
-        console.log("Event Views")
+        console.log("Event Views: ", data)
       }
     )
   }
@@ -146,9 +153,13 @@ export default function BlogPostPage(props) {
     document.body.scrollTop = 0;
   });
 
+  const [isLoading, setIsLoading] = useState(false)
+
   useEffect(() => {
+    setIsLoading(true);
     getEvent();
     addView();
+    setIsLoading(false);
   }, [])
 
   const classes = useStyles();
@@ -156,6 +167,23 @@ export default function BlogPostPage(props) {
   if(values.event_exists === false) {
     return <ErrorPage />
     //return <div>hello</div>
+  }
+  else if(isLoading) {
+    return (
+      <div>
+        <Header
+          brand="Skedge"
+          links={<HeaderLinks dropdownHoverColor="info" />}
+          fixed
+          color="transparent"
+          changeColorOnScroll={{
+            height: 300,
+            color: "primary"
+          }}
+        />
+        <LoadingPage reason="Loading Events"/>
+      </div>
+    )
   }
   else {
     const userLink = `/users/${values.user_id}`

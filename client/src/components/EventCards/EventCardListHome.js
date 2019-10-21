@@ -114,8 +114,14 @@ export default function EventCardList(props) {
     }
 
     // Replaces ComponentDidMount() in a Functional Component
+    const [isSearch, setIsSearch] = useState(false)
+
     useEffect(() => {
+      setIsSearch(true)
+      
       grabEvents();
+
+      setIsSearch(false)
     }, [props.filter])
 
     /*
@@ -151,7 +157,7 @@ export default function EventCardList(props) {
     // Start Filtering Responses here. Since it's so fucking hard in GraphQL
     let finalEvents = values.events
     
-    if(values.loadingEvents) {
+    if(isSearch) {
       return (
         <div>
           <CircularProgress color="primary" />
@@ -165,7 +171,7 @@ export default function EventCardList(props) {
     {
       return(
         <div>
-          <h5 style={{marginTop: 20}}>No events found.</h5>
+          <h5 style={{marginTop: 20, textAlign: 'center'}}>No events found. <span role="img" aria-label="sad">😔</span></h5>
         </div>
       )
     }

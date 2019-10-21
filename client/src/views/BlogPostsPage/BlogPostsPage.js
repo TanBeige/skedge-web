@@ -142,6 +142,7 @@ export default function BlogPostsPage(props) {
   }
   else {
   return (
+    // <div style={{backgroundColor: "#52D3B6"}}>
     <div>
       <Header
         brand="Skedge"
@@ -165,16 +166,13 @@ export default function BlogPostsPage(props) {
       </Parallax>
       // Add style={{marginTop: '5em'}} to  <div className={classes.main} > if not using parallax
       }
-      <div className={classes.main} >
-        <div className={classes.container}>
+      <div className={classes.main}  style={{backgroundColor: "white", minHeight: '80vh'}}>
+        <div className={classes.container} >
           <SectionPills 
             client={props.client}
             userId={user.sub}
           />
-          <SectionInterested />
         </div>
-        <SectionImage />
-        <SubscribeLine />
       </div>
       <Footer
         content={
@@ -200,11 +198,6 @@ export default function BlogPostsPage(props) {
                   </a>
                 </ListItem>
                 <ListItem className={classes.inlineBlock}>
-                  <a href="//blog.creative-tim.com/" className={classes.block}>
-                    Blog
-                  </a>
-                </ListItem>
-                <ListItem className={classes.inlineBlock}>
                   <a
                     href="https://www.creative-tim.com/license?ref=mkpr-blog-posts"
                     target="_blank"
@@ -217,14 +210,6 @@ export default function BlogPostsPage(props) {
             </div>
             <div className={classes.right}>
               &copy; {1900 + new Date().getYear()} , made with{" "}
-              <Favorite className={classes.icon} /> by{" "}
-              <a
-                href="https://www.creative-tim.com?ref=mkpr-blog-posts"
-                target="_blank"
-              >
-                Creative Tim
-              </a>{" "}
-              for a better web.
             </div>
           </div>
         }
