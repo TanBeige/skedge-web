@@ -21,6 +21,10 @@ import {
 
 export default function EventCardList(props) {
 
+  // Checks if we are still grabbing events
+  const [isSearch, setIsSearch] = useState(false)
+
+
   const [values, setValues] = useState({
       type: props.type,
       filter: props.filter,
@@ -29,19 +33,19 @@ export default function EventCardList(props) {
       newEventsLength: 0,
       limit: props.filter.limit,
       events: [],
-
-      loadingEvents: false
   });
 
   const grabEvents = () => {
     const { client } = props;
     const { filter } = props;
 
+    setIsSearch(true)
+
+
     let cat = filter.category;
     if(filter.category == "Any") {
       cat = ""
     }
-    // TODO: private events don't show up when "Any" category is chosen
       // query for public events
       client
         .query({
@@ -61,8 +65,11 @@ export default function EventCardList(props) {
           setValues({ 
             ...values, 
             events: data.data.events, 
-            loadingEvents: data.loading
           });
+
+          // When done grabbing events, set seraching to false
+          setIsSearch(false)
+
 
           // Commented out because subscriptions cause loading problems
           
@@ -114,15 +121,10 @@ export default function EventCardList(props) {
     }
 
     // Replaces ComponentDidMount() in a Functional Component
-    const [isSearch, setIsSearch] = useState(false)
 
     useEffect(() => {
-      setIsSearch(true)
-      
       grabEvents();
-
-      setIsSearch(false)
-    }, [props.filter])
+    }, [props.filter, values.events])
 
     /*
     const insertAd = (index) => {
@@ -159,7 +161,7 @@ export default function EventCardList(props) {
     
     if(isSearch) {
       return (
-        <div>
+        <div style={{textAlign: 'center', margin: 20}} >
           <CircularProgress color="primary" />
         </div>
       )
@@ -167,7 +169,7 @@ export default function EventCardList(props) {
 
     // Components to Render
 
-    if(values.events.length === 0)
+    if(values.events.length === 0 && !isSearch)
     {
       return(
         <div>

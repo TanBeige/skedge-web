@@ -21,7 +21,7 @@ import { Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import ErrorBoundary from  './components/Debug/ErrorBoundary'
 import { useAuth0 } from './Authorization/react-auth0-wrapper';
-
+import gql from 'graphql-tag';
 
 import "assets/scss/material-kit-pro-react.scss?v=1.8.0";
 
@@ -61,6 +61,7 @@ import ErrorPage from "views/ErrorPage/ErrorPage.js";
 import LoadingPage from "views/LoadingPage/LoadingPage.js";
 
 import CallbackPage from "views/CallbackPage/CallbackPage.js";
+import BottomNav from "components/BottomNav/BottomNav.js";
 
 
 // Creating Apollo Client When Entering Website
@@ -74,9 +75,11 @@ export const MakeMainRoutes = () => {
   
 
   // Variables/Imports from auth0-spa
-  const {loading, getTokenSilently, getIdTokenClaims, isAuthenticated } = useAuth0();
+  const {loading, getTokenSilently, getIdTokenClaims, isAuthenticated, user } = useAuth0();
   const [values, setValues] = useState({
-    client
+    client,
+    currentPage: window.location.pathname,
+    currentUserId: 0
   })
 
   let newToken = "";
@@ -138,7 +141,7 @@ export const MakeMainRoutes = () => {
   else {
     return(
       <Router history={hist}>
-        <Switch>exact 
+        <Switch>
           <Route exact path="/about-us" render={props => provideClient(AboutUsPage, props)} />
           <PrivateRoute path="/event" render={props => provideClient(BlogPostPage, props)} />
           <PrivateRoute path="/home" render={props => provideClient(BlogPostsPage, props)} />
@@ -157,13 +160,18 @@ export const MakeMainRoutes = () => {
 
           <PrivateRoute path="/events/:id" render={props => provideClient(BlogPostPage, props)} />
           <PrivateRoute path="/users/:id" render={props => provideClient(ProfilePage, props)} />
-
           <Route path="/callback" 
                 render={props => {
                   return <CallbackPage {...props} />;
                 }} />
           <Route exact path="/" render={props => provideClient(LandingPage, props)}/>
         </Switch>
+
+
+        <ApolloProvider client={values.client}>
+          <BottomNav userId={user.sub} client={values.client}/>
+        </ApolloProvider>
+        
       </Router>
     );
   }

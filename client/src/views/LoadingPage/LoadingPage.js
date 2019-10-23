@@ -35,7 +35,6 @@ class LoadingPage extends Component {
                     <h1>
                         <img src={require('assets/img/logoheader.png')} height={100} width={100}/>
                         <br />
-                        {this.props.reason}...
                         <LinearProgress color="primary"/>
 
                     </h1>

@@ -34,11 +34,14 @@ import Clearfix from "components/Clearfix/Clearfix.js";
 import Button from "components/CustomButtons/Button.js";
 import Popover from "@material-ui/core/Popover";
 
+import LoadingPage from "views/LoadingPage/LoadingPage.js"
+
 import ProfileTopSection from 'views/ProfilePage/ProfileTopSection.js';
 
 
 import FriendProfile from "views/ProfilePage/FriendStatus/FriendProfile.js"
 import NotFriendProfile from "views/ProfilePage/FriendStatus/NotFriendProfile.js"
+import ErrorPage from "views/ErrorPage/ErrorPage.js"
 import gql from 'graphql-tag'
 
 
@@ -77,7 +80,10 @@ export default function ProfilePage(props, { ...rest }) {
 
   //// Grab Current User ID and user info
   const userId = props.match.params.id;
-  const { loading, isAuthenticated, user } = useAuth0();
+  const { isAuthenticated, user } = useAuth0();
+
+  // Page is Loading variable
+  const [isLoading, setIsLoading] = useState(false)
 
   //// Set State Values
   const [values, setValues] = useState({
@@ -206,6 +212,8 @@ export default function ProfilePage(props, { ...rest }) {
 
   //// Getting Profile Info, called in useEffect()
   const getUser = () =>  {
+    setIsLoading(true);
+
     props.client.query({
       query: QUERY_USER_PROFILE,
       variables: {
@@ -263,249 +271,23 @@ export default function ProfilePage(props, { ...rest }) {
 
           relationshipType: relationship
         })
+        setIsLoading(false);
       }
     })
   }
 
-  //// Use Effects
+  //// Use Effects / Check loading
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   });
   useEffect(() => {
+
     // Get Profile age
-    getUser();
+    getUser();  
 
-    // Get Current User's database id (not auth0id) *for Profile button in Navigation*
-    props.client.query({
-      query: gql`
-        query fetch_user_id($userId: String) {
-          users(
-            where: {auth0_id: { _eq: $userId }}
-          ) {
-            id
-          }
-        }
-      `,
-      variables: {
-        userId: user.sub
-      }
-    }).then((data) => {
-      setValues({
-          ...values,
-          currentUserId: data.data.users[0].id
-      })
-    })
-  }, [loading])
+  }, [values.auth0Id])
 
-  //// Changing Profile Page Display
-
-  // Handle Bio if not set  //Not needed currently
-  //const holdBio = (values.biography === "" || values.biography === null) ? "" : values.biography;
-
-  //Changes the button icon next to User based on if friends or not
-  // const [anchorElTop, setAnchorElTop] = React.useState(null);
-
-  // const addFriendButton = () => {
-  //   //If not Friends
-  //   if (values.currentUserProfile) {
-  //     let icon = <EditIcon className={classes.followIcon} />
-  //       return (
-  //         <Tooltip
-  //           id="tooltip-top"
-  //           title="Add Friend"
-  //           placement="top"
-  //           classes={{ tooltip: classes.tooltip }}
-  //         >
-  //           <div>
-  //           <Button
-  //             justIcon
-  //             round
-  //             color="primary"
-  //             className={classes.followButton}
-  //             onClick={event => setAnchorElTop(event.currentTarget)}
-  //           >
-  //             {icon}
-  //           </Button>
-  //           <Popover
-  //             classes={{
-  //               paper: classes.popover
-  //             }}
-  //             open={Boolean(anchorElTop)}
-  //             anchorEl={anchorElTop}
-  //             onClose={() => setAnchorElTop(null)}
-  //             anchorOrigin={{
-  //               vertical: "top",
-  //               horizontal: "center"
-  //             }}
-  //             transformOrigin={{
-  //               vertical: "bottom",
-  //               horizontal: "center"
-  //             }}
-  //           >
-  //             <div style={{textAlign: 'center', padding: 10}}>
-  //               <div className={classes.popoverBody}>
-  //                 <Button round color="primary" onClick={editProfilePage}>
-  //                   Edit Profile.
-  //                 </Button>
-  //               </div>
-  //             </div>
-  //           </Popover>
-  //           </div>
-  //         </Tooltip>
-  //       )
-  //   }
-  //   if(values.relationshipType !== 1) {
-  //     let icon = ""
-
-  //     // If already sent request but not friends
-  //     if (values.relationshipType === 0) {
-  //       icon = <RecordVoiceOverIcon className={classes.followIcon} />
-  //       return (
-  //         <Tooltip
-  //           id="tooltip-top"
-  //           title="Add Friend"
-  //           placement="top"
-  //           classes={{ tooltip: classes.tooltip }}
-  //         >
-  //           <div>
-  //           <Button
-  //             justIcon
-  //             round
-  //             color="primary"
-  //             className={classes.followButton}
-  //             onClick={event => setAnchorElTop(event.currentTarget)}
-  //           >
-  //             {icon}
-  //           </Button>
-  //           <Popover
-  //             classes={{
-  //               paper: classes.popover
-  //             }}
-  //             open={Boolean(anchorElTop)}
-  //             anchorEl={anchorElTop}
-  //             onClose={() => setAnchorElTop(null)}
-  //             anchorOrigin={{
-  //               vertical: "top",
-  //               horizontal: "center"
-  //             }}
-  //             transformOrigin={{
-  //               vertical: "bottom",
-  //               horizontal: "center"
-  //             }}
-  //           >
-  //             <div style={{textAlign: 'center', padding: 10}}>
-  //               <h3 >Invite Sent</h3>
-  //               <div className={classes.popoverBody}>
-  //                 <Button round color="primary" onClick={handleUnsendRequest}>
-  //                   Click to unsend.
-  //                 </Button>
-  //               </div>
-  //             </div>
-  //           </Popover>
-  //           </div>
-  //         </Tooltip>
-  //       )
-  //     }
-  //     // If Not Friends and Didn't send request
-  //     else if(values.relationshipType === -1) {
-  //       const icon = <PersonAddIcon className={classes.followIcon} />
-  //       return (
-  //         <Tooltip
-  //           id="tooltip-top"
-  //           placement="top"
-  //           classes={{ tooltip: classes.tooltip }}
-  //         >
-  //           <div>
-  //           <Button
-  //             justIcon
-  //             round
-  //             color="primary"
-  //             className={classes.followButton}
-  //             onClick={event => setAnchorElTop(event.currentTarget)}
-  //           >
-  //             {icon}
-  //           </Button>
-  //           <Popover
-  //             classes={{
-  //               paper: classes.popover
-  //             }}
-  //             open={Boolean(anchorElTop)}
-  //             anchorEl={anchorElTop}
-  //             onClose={() => setAnchorElTop(null)}
-  //             anchorOrigin={{
-  //               vertical: "top",
-  //               horizontal: "center"
-  //             }}
-  //             transformOrigin={{
-  //               vertical: "bottom",
-  //               horizontal: "center"
-  //             }}
-  //           >
-  //             <div style={{textAlign: 'center', padding: 10}}>
-  //               <div className={classes.popoverBody}>
-  //                 <Button round color="primary" onClick={handleFriendInvite}>
-  //                   Add Friend!
-  //                 </Button>
-  //               </div>
-  //             </div>
-  //           </Popover>
-  //           </div>
-  //         </Tooltip>
-  //       )
-        
-  //     }
-  //   }
-    // If Already Friends
-  //   else {
-  //     const icon = <PersonIcon className={classes.followIcon} />
-
-  //     return (
-  //       <Tooltip
-  //         id="tooltip-top"
-  //         title="Add Friend"
-  //         placement="top"
-  //         classes={{ tooltip: classes.tooltip }}
-  //       >
-  //         <div>
-  //         <Button
-  //           justIcon
-  //           round
-  //           color="primary"
-  //           className={classes.followButton}
-  //           onClick={event => setAnchorElTop(event.currentTarget)}
-  //         >
-  //           {icon}
-  //         </Button>
-  //         <Popover
-  //           classes={{
-  //             paper: classes.popover
-  //           }}
-  //           open={Boolean(anchorElTop)}
-  //           anchorEl={anchorElTop}
-  //           onClose={() => setAnchorElTop(null)}
-  //           anchorOrigin={{
-  //             vertical: "top",
-  //             horizontal: "center"
-  //           }}
-  //           transformOrigin={{
-  //             vertical: "bottom",
-  //             horizontal: "center"
-  //           }}
-  //         >
-  //           <div style={{textAlign: 'center', padding: 10}}>
-  //             <div className={classes.popoverBody}>
-  //               <Button round color="primary" onClick={handleRemoveFriend}>
-  //                 Unfriend.
-  //               </Button>
-  //             </div>
-  //           </div>
-  //         </Popover>
-  //         </div>
-  //       </Tooltip>
-  //     )
-  //   }
-  // }
 
   if(values.user_exists === false) {
     return <ErrorPage />
@@ -549,17 +331,22 @@ export default function ProfilePage(props, { ...rest }) {
         filter="dark"
         className={classes.parallax}
       />
-      <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '50vh', marginBottom: 30}}>
-        <div className={classes.container}>
-          <ProfileTopSection 
-            values={values} 
-            friendInvite={handleFriendInvite} 
-            removeFriend={handleRemoveFriend}
-            handleProfileEdit={handleProfileEdit}
-          />    
-          {profileContent}
-        </div>
-      </div>
+      { isLoading ? (<LoadingPage />) : 
+        (
+          <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '50vh', marginBottom: 30}}>
+            <div className={classes.container}>
+              <ProfileTopSection 
+                values={values} 
+                friendInvite={handleFriendInvite} 
+                removeFriend={handleRemoveFriend}
+                handleProfileEdit={handleProfileEdit}
+              />    
+              {profileContent}
+            </div>
+          </div>
+        )
+      }
+      
     </div>
   );
 }

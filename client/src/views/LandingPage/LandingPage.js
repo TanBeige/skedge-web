@@ -90,7 +90,7 @@ export default function LandingPage(props) {
         <div className={classes.container}>
           <SectionTeam client={props.client}/>
           <hr />
-          <SectionWork />
+          {/* <SectionWork /> */}
         </div>
       </div>
       <Footer

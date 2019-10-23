@@ -69,40 +69,9 @@ export default function Header(props) {
         <Button className={classes.title}>
           <Link to="/home"><img alt='Skedge' src={require("assets/img/logoheader.png")} height={40} width={40}/></Link>
         </Button>
-        <Hidden smDown implementation="css" className={classes.hidden}>
-          <div className={classes.collapse}>{links}</div>
-        </Hidden>
-        <Hidden mdUp>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerToggle}
-          >
-            <Menu />
-          </IconButton>
-        </Hidden>
+        
       </Toolbar>
-      <Hidden mdUp implementation="js">
-        <Drawer
-          variant="temporary"
-          anchor={"right"}
-          open={mobileOpen}
-          classes={{
-            paper: classes.drawerPaper
-          }}
-          onClose={handleDrawerToggle}
-        >
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerToggle}
-            className={classes.closeButtonDrawer}
-          >
-            <Close />
-          </IconButton>
-          <div className={classes.appResponsive}>{links}</div>
-        </Drawer>
-      </Hidden>
+      
     </AppBar>
   );
 }

@@ -95,6 +95,8 @@ export default function ProfileTopSection(props) {
       })
     }, [props.values])
 
+    console.log("picture:", props.values.picture)
+
 
 
     const editProfilePage = () => {
@@ -128,6 +130,39 @@ export default function ProfileTopSection(props) {
                 >
                   {icon}
                 </Button>
+                <Button
+                justIcon
+                round
+                color="primary"
+                className={classes.followButton}
+                onClick={event => setAnchorElTop(event.currentTarget)}
+              >
+                <PersonIcon className={classes.followIcon} />
+              </Button>
+              <Popover
+                classes={{
+                  paper: classes.popover
+                }}
+                open={Boolean(anchorElTop)}
+                anchorEl={anchorElTop}
+                onClose={() => setAnchorElTop(null)}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "center"
+                }}
+                transformOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center"
+                }}
+              >
+                <div style={{textAlign: 'center', padding: 10}}>
+                  <div className={classes.popoverBody}>
+                    <Button round color="primary" onClick={props.RemoveFriend}>
+                      Logout
+                    </Button>
+                  </div>
+                </div>
+              </Popover>
               </div>
             </Tooltip>
           )
