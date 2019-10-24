@@ -98,7 +98,6 @@ export default function ProfileTopSection(props) {
       })
     }, [props.values])
 
-    console.log("picture:", props.values.picture)
 
 
 
@@ -151,7 +150,7 @@ export default function ProfileTopSection(props) {
               >
                 <div style={{textAlign: 'center', padding: 10}}>
                   <div className={classes.popoverBody}>
-                    <Button round color="primary" onClick={logout}>
+                    <Button round color="primary" onClick={editProfilePage}>
                       Edit Page
                     </Button>
                     <br/>
