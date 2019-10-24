@@ -32,6 +32,7 @@ import Parallax from "components/Parallax/Parallax.js";
 import Clearfix from "components/Clearfix/Clearfix.js";
 import Button from "components/CustomButtons/Button.js";
 import Popover from "@material-ui/core/Popover";
+import { useAuth0 } from 'Authorization/react-auth0-wrapper'
 import CustomInput from 'components/CustomInput/CustomInput.js';
 
 
@@ -39,6 +40,8 @@ import profilePageStyle from "assets/jss/material-kit-pro-react/views/profilePag
 
 
 export default function ProfileTopSection(props) {
+
+  const { logout } = useAuth0();
 
     const useStyles = makeStyles(profilePageStyle);
     const classes = useStyles();
@@ -115,21 +118,12 @@ export default function ProfileTopSection(props) {
         let icon = <EditIcon className={classes.followIcon} />
           return (
             <Tooltip
-              id="tooltip-top"
-              title="Add Friend"
-              placement="top"
+              id="tooltip-bottom"
+              title="Profile"
+              placement="bottom"
               classes={{ tooltip: classes.tooltip }}
             >
               <div>
-                <Button
-                  justIcon
-                  round
-                  color="primary"
-                  className={classes.followButton}
-                  onClick={editProfilePage}
-                >
-                  {icon}
-                </Button>
                 <Button
                 justIcon
                 round
@@ -157,7 +151,11 @@ export default function ProfileTopSection(props) {
               >
                 <div style={{textAlign: 'center', padding: 10}}>
                   <div className={classes.popoverBody}>
-                    <Button round color="primary" onClick={props.RemoveFriend}>
+                    <Button round color="primary" onClick={logout}>
+                      Edit Page
+                    </Button>
+                    <br/>
+                    <Button round color="primary" onClick={logout}>
                       Logout
                     </Button>
                   </div>

@@ -37,7 +37,6 @@ class PrimaryNav extends Component {
                 '/create',
                 '/notifications',
                 `/users/0`,
-
             ]
         };
     }
@@ -56,8 +55,6 @@ class PrimaryNav extends Component {
   }
 
   componentDidMount() {
-    let currentId = 0;
-
     if(this.props.client) {
         this.props.client.query({
             query: gql`

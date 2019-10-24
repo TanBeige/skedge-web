@@ -75,11 +75,11 @@ export const MakeMainRoutes = () => {
   
 
   // Variables/Imports from auth0-spa
-  const {loading, getTokenSilently, getIdTokenClaims, isAuthenticated, user } = useAuth0();
+  const {loading, getIdTokenClaims, isAuthenticated, user } = useAuth0();
   const [values, setValues] = useState({
     client,
-    currentPage: window.location.pathname,
-    currentUserId: 0
+    showBottomBar: false,
+    currentPage: window.location.pathname
   })
 
   let newToken = "";
@@ -102,7 +102,14 @@ export const MakeMainRoutes = () => {
     else {
       console.log("Currently Loading");
     }
-  },[loading, values.client]);
+
+    if(window.location.pathname !== "/") {
+      setValues({
+        ...values,
+        showBottomBar: true
+      })
+    }    
+  },[loading, values.client, isAuthenticated]);
 
 
   //Wait for Auth0 to load
@@ -139,8 +146,26 @@ export const MakeMainRoutes = () => {
 
   // Finally load Website
   else {
+    console.log("Path: ", window.location.pathname)
+
+
+    const bottomBar = () => {
+      console.log("Path: ", window.location.pathname)
+      if(values.showBottomBar) {
+        return (
+          <ApolloProvider client={values.client}>
+            <BottomNav client={values.client} userId={user.sub}/>
+          </ApolloProvider>
+        )
+      }
+      else {
+        return ""
+      }
+    }
+
     return(
       <Router history={hist}>
+        <div>
         <Switch>
           <Route exact path="/about-us" render={props => provideClient(AboutUsPage, props)} />
           <PrivateRoute path="/event" render={props => provideClient(BlogPostPage, props)} />
@@ -168,10 +193,8 @@ export const MakeMainRoutes = () => {
         </Switch>
 
 
-        <ApolloProvider client={values.client}>
-          <BottomNav userId={user.sub} client={values.client}/>
-        </ApolloProvider>
-        
+        {bottomBar()}
+        </div>
       </Router>
     );
   }
