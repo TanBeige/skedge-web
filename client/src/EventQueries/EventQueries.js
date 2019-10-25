@@ -135,10 +135,11 @@ const FETCH_IF_ENTITY = gql`
 // Fetch Events
 
 const QUERY_FILTERED_EVENT = gql`
-query fetch_filtered_events($eventLimit: Int, $search: String, $category: String, $city: String, $state: String, $type: String, $date: date) {
+query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String, $category: String, $city: String, $state: String, $type: String, $date: date) {
   events(
     order_by:[{event_date: asc}, {start_time: asc}]
     limit: $eventLimit
+    offset: $eventOffset
     where: {
       _or: [
         {name: {_ilike: $search}},

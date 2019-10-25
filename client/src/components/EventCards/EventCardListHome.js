@@ -18,6 +18,8 @@ import {
     QUERY_FEED_LOCAL_OLD_EVENT,
     SUBSCRIPTION_EVENT_LOCAL_LIST
 } from "../../EventQueries/EventQueries";
+import { Button } from '@material-ui/core';
+import { array } from 'prop-types';
 
 export default function EventCardList(props) {
 
@@ -29,8 +31,10 @@ export default function EventCardList(props) {
       type: props.type,
       filter: props.filter,
       showNew: false,
+      loadedAllEvents: false,
       showOlder: true,
-      newEventsLength: 0,
+      eventsLength: 0,
+      showNew: false,
       limit: props.filter.limit,
       events: [],
   });
@@ -39,19 +43,92 @@ export default function EventCardList(props) {
     const { client } = props;
     const { filter } = props;
 
-    setIsSearch(true)
+
+    if(!values.showNew) {
+
+      setIsSearch(true)
 
 
-    let cat = filter.category;
-    if(filter.category == "Any") {
-      cat = ""
+      let cat = filter.category;
+      if(filter.category == "Any") {
+        cat = ""
+      }
+        // query for public events
+        client
+          .query({
+            query: QUERY_FILTERED_EVENT,
+            variables: {
+              eventLimit: values.limit,
+              eventOffset: 0,
+              search: `%${filter.searchText}%`,
+              category: `%${cat}%`,
+              city: `%${filter.city}%`,
+              state: `%${filter.state}%`,
+              type: filter.type,
+              date: filter.date
+            }
+          })
+          .then(data => {
+            console.log(data)
+            setValues({ 
+              ...values, 
+              events: data.data.events, 
+              eventsLength: data.data.events.length
+            });
+
+            // When done grabbing events, set seraching to false
+            setIsSearch(false)
+
+
+            // Commented out because subscriptions cause loading problems
+            
+            // const latestEventId = data.data.events.length
+            //   ? data.data.events[0].id
+            //   : null;
+            // start a subscription
+            // client
+            //   .subscribe({
+            //     query: SUBSCRIPTION_EVENT_LOCAL_LIST,
+            //     variables: { eventId: latestEventId } // update subscription when eventId changes
+            //   })
+            //   .subscribe({
+            //     next(data) {
+            //       if (data.data.events.length) {
+            //         setValues({
+            //             ...values,
+            //             showNew: true,
+            //             newEventsLength:
+            //             newEventsLength + data.data.events.length,
+            //         });
+            //       }
+            //     },
+            //     error(err) {
+            //       console.error("err", err);
+            //     }
+            //   });
+          });
+      }
     }
-      // query for public events
+
+    // Update Query When new Events are added
+    const loadMoreClicked = () => {
+      console.log("Loading more Events")
+      const { client } = props;
+      const { filter } = props;
+
+      const totalEventsPrevious = values.eventsLength;
+
+      let cat = filter.category;
+      if(filter.category == "Any") {
+        cat = ""
+      }
+      console.log(values.eventsLength)
       client
         .query({
           query: QUERY_FILTERED_EVENT,
           variables: {
             eventLimit: values.limit,
+            eventOffset: values.eventsLength,
             search: `%${filter.searchText}%`,
             category: `%${cat}%`,
             city: `%${filter.city}%`,
@@ -61,63 +138,26 @@ export default function EventCardList(props) {
           }
         })
         .then(data => {
-          console.log(data)
-          setValues({ 
-            ...values, 
-            events: data.data.events, 
-          });
-
-          // When done grabbing events, set seraching to false
-          setIsSearch(false)
-
-
-          // Commented out because subscriptions cause loading problems
-          
-          // const latestEventId = data.data.events.length
-          //   ? data.data.events[0].id
-          //   : null;
-          // start a subscription
-          // client
-          //   .subscribe({
-          //     query: SUBSCRIPTION_EVENT_LOCAL_LIST,
-          //     variables: { eventId: latestEventId } // update subscription when eventId changes
-          //   })
-          //   .subscribe({
-          //     next(data) {
-          //       if (data.data.events.length) {
-          //         setValues({
-          //             ...values,
-          //             showNew: true,
-          //             newEventsLength:
-          //             newEventsLength + data.data.events.length,
-          //         });
-          //       }
-          //     },
-          //     error(err) {
-          //       console.error("err", err);
-          //     }
-          //   });
-        });
-    }
-
-    // Update Query When new Events are added
-    const loadMoreClicked = () => {
-      const { client } = this.props;
-      this.setState({ showNew: false, newEventsLength: 0 });
-      client
-        .query({
-          query: QUERY_FEED_LOCAL_EVENT,
-          variables: {
-            eventId: this.state.events.length ? this.state.events[0].id : null
-          }
-        })
-        .then(data => {
           if (data.data.events.length) {
-            const mergedEvents = data.data.events.concat(this.state.events);
+            console.log(data)
+            const mergedEvents = values.events.concat(data.data.events);
+
             // update state with new events
-            this.setState({ events: mergedEvents });
+            setValues({ 
+              ...values,
+              events: mergedEvents,
+              showNew: true,
+              eventsLength: values.events.length + data.data.events.length
+             });
           }
         });
+
+      if(totalEventsPrevious === values.eventsLength) {
+        setValues({
+          ...values,
+          loadedAllEvents: true
+        })
+      }
     }
 
     // Replaces ComponentDidMount() in a Functional Component
@@ -195,6 +235,18 @@ export default function EventCardList(props) {
                   </GridItem>
                 )
             })
+        }
+        {
+          !values.loadedAllEvents ? 
+          (
+          <GridItem xs={12} sm={6} md={6} style={{margin: 'auto'}}>
+            <div style={{margin: 'auto'}}>
+              <Button variant="outlined" onClick={loadMoreClicked}>Load More</Button>
+            </div>
+          </GridItem>
+          ) : 
+          ""
+
         }
       </GridContainer>
     )

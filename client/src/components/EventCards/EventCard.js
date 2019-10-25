@@ -25,15 +25,17 @@ import Fab from '@material-ui/core/Fab';
 import { ThemeProvider } from '@material-ui/styles';
 import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
-import Badge from 'components/Badge/Badge.js'
+import Badge from 'components/Badge/Badge.js';
 
-import axios from 'axios'
-import { Image, Video, Transformation, CloudinaryContext } from 'cloudinary-react';
-
-
-
+//Style
 import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js";
 
+//Images
+import { Image, Transformation, CloudinaryContext } from 'cloudinary-react';
+import LoadImage from 'material-ui-image'
+
+
+//Queries
 import {
   MUTATION_EVENT_IMPRESSION,
   MUTATION_LIKE_EVENT,
@@ -44,6 +46,16 @@ import {
   MUTATION_UNPOST_EVENT,
   REFETCH_EVENT_REPOSTS
 } from "../../EventQueries/EventQueries";
+
+// Cloudinary setup
+var cloudinary = require('cloudinary/lib/cloudinary').v2
+
+cloudinary.config({
+  cloud_name: "skedge"
+});
+
+// Date/Time
+var moment = require('moment');
 
 const useStyles = makeStyles(sectionPillsStyle);
 
@@ -98,6 +110,10 @@ export default function EventCard({event, client, userId}) {
       description: event.description ? event.description : "",
       category: event.category ? event.category : "No Category",
       image_id: event.image ? event.image.image_uuid : "cover_images/uzhvjyuletkpvrz5itxv",
+      image_url: cloudinary.url(event.image.image_uuid, {secure: true, width: 600, height: 400, crop: "fill" ,fetch_format: "auto", quality: "auto"}),
+      event_date: moment(event.event_date, "YYYY-MM-DD"),
+      start_time: moment(event.start_time, "HH:mm:ss+-HH"),
+      
       username: event.user ? event.user.name : "", 
       userProfilePic: event.user ? event.user.picture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       userId: event.user ? event.user.id : 0
@@ -202,64 +218,6 @@ export default function EventCard({event, client, userId}) {
       }
     }
 
-
-    /*
-    *   Error checking the returned values before using them
-    */
-    // Check Event Name
-    // let holdName = "";
-    // if(!event.name) {
-    //   holdName = <i>Unnamed</i>
-    // }
-    // else {
-    //   holdName = event.name;
-    // }
-    // // Edit Description Display
-    // let eventBio = event.description;
-  
-    // if(eventBio === "" || !eventBio) {
-    //   eventBio = <i>There is no bio.</i>
-    // }
-    // else if(eventBio.length > bioMaxLength) {
-    //     eventBio = eventBio.substring(0, bioMaxLength);
-    //     eventBio += "..."
-    // }
-
-    // // Check Event Category
-    // let holdCategory = "";
-    // if(!event.category) {
-    //   holdCategory = "Unknown"
-    // }
-    // else {
-    //   holdCategory = event.category;
-    // }
-
-    // //Change image URL if it doesn't exists
-    // let holdURL = "";
-    // if(!event.image.image_uuid) {
-    //   holdURL = "cover_images/vs7s8bqpf9bz2qdzfpo8.png"
-    // }
-    // else {
-    //   holdURL = event.image.image_uuid;
-    // }
-
-    // // Error Check if event user exists ()
-    // let holdUserName = ""
-    // let holdProfilePic = ""
-    // let holdUserId;
-    // if(!event.user) {
-    //   holdUserName = "Unknown User";
-    //   holdProfilePic = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-    //   holdUserId = 0;
-    
-    // }
-    // else {
-    //   holdUserName = event.user.name;
-    //   holdProfilePic = event.user.picture
-    //   holdUserId = event.user.id;
-  
-    // }
-
     const addImpression = () => {
       client.mutate({
         mutation: MUTATION_EVENT_IMPRESSION,
@@ -268,25 +226,6 @@ export default function EventCard({event, client, userId}) {
         }
       })
     }
-    // const getLikesReposts = () => {
-    //   client.query({
-    //     query: FETCH_EVENT_LIKES_REPOSTS,
-    //     variables: {
-    //       eventId: event.id
-    //     }
-    //   }).then((data) => {
-    //     setValues({
-    //       ...values,
-    //       likeAmount: data.data.events[0].event_like_aggregate.aggregate.count,
-    //       usersLiked: data.data.events[0].event_like,
-    //       ifLiked: data.data.events[0].event_like.some(user  => user.user_id === userId) ? "secondary" : "inherit",
-
-    //       repostAmount: data.data.events[0].shared_event_aggregate.aggregate.count,
-    //       usersReposted: data.data.events[0].shared_event,
-    //       ifReposted: data.data.events[0].shared_event.some(user  => user.user_id === userId) ? "primary" : "inherit",
-    //     })
-    //   })
-    // }
 
     useEffect(() => {
       addImpression();
@@ -319,12 +258,13 @@ export default function EventCard({event, client, userId}) {
                 src={holdURL}
                 alt={holdName}
               /> */}
-              <Image cloudName="skedge" publicId={values.image_id} secure="true" alt={values.name}>
-                <Transformation height="400" width="400" fetchFormat="jpg" crop='fill' quality="auto"/>
-              </Image>
+              <LoadImage src={values.image_url} aspectRatio={3/2}/>
+                {/* <Image cloudName="skedge" publicId={values.image_id} secure="true" alt={values.name}>
+                  <Transformation height="400" width="600" fetchFormat="jpg" crop='fill' quality="auto"/>
+                </Image> */}
             </Link>
 
-              <div className={classes.imgCardOverlay}>
+              <div className={classes.imgCardOverlay} style={{display: 'inline-block',width: '100%'}}>
                 <Link to={`/users/${values.userId}`}>
                   <h5
                     className={classes.cardTitle}
@@ -344,15 +284,21 @@ export default function EventCard({event, client, userId}) {
               </div>
           </CardHeader>
 
-            <CardBody>
-              <h3><strong>{values.name}</strong></h3>
+            <CardBody style={{padding: 10, textAlign: 'left'}}>
+              <Link to={`/events/${event.id}`}>
+                <h3 style={{margin: '5px 0px'}}><strong>{values.name}</strong></h3>
+              </Link>
               <p>
                 {values.description}
               </p>
-              <h5>
-                <PlaceIcon color="error" fontSize='small' style={{verticalAlign: 'top'}} />
-                {`${event.location_name}`}
-              </h5>
+              <div>
+                <h5>
+                  <PlaceIcon color="error" fontSize='small' style={{verticalAlign: 'top'}} />
+                  {`${event.location_name}`}
+                </h5>
+                <h4>{moment(values.event_date).format("MMMM D, YYYY")}</h4>
+                <h4>{moment(values.start_time).format("h:mm A")}</h4>
+              </div>
             </CardBody>
             <CardFooter>
               <Info style={{textAlign: 'left'}}>
@@ -373,7 +319,6 @@ export default function EventCard({event, client, userId}) {
                 </IconButton>
               </div>
             </CardFooter>
-
         </Card>
         </ThemeProvider>
     )
