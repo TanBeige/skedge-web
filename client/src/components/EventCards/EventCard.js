@@ -7,7 +7,8 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import RenewIcon from '@material-ui/icons/Autorenew'
 import IconButton from '@material-ui/core/IconButton';
 import PlaceIcon from '@material-ui/icons/Place';
-
+import TodayIcon from '@material-ui/icons/Today';
+import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 
 // core components
 import Card from "components/Card/Card.js";
@@ -47,6 +48,8 @@ import {
   REFETCH_EVENT_REPOSTS
 } from "../../EventQueries/EventQueries";
 
+require("./EventCard.css")
+
 // Cloudinary setup
 var cloudinary = require('cloudinary/lib/cloudinary').v2
 
@@ -80,15 +83,16 @@ export default function EventCard({event, client, userId}) {
 
     const usernameStyle= {
       float: 'right',
-      borderRadius: 5,  
-      backgroundColor: "white", 
+      borderRadius: 8,  
+      backgroundColor: "rgba(255,255,255,1.0)", 
       color: "#02C39A",
-      padding: '0px 10px', 
+      padding: '0px 5px', 
+      fontSize: 12,
       // WebkitTextStroke: 0.5, 
       // WebkitTextStrokeColor: "black",
-      border: '2px solid #02C39A',
-      marginTop: 7,
-      marginLeft: 5
+      border: '1px solid #02C39A',
+      marginLeft: 3,
+      //marginTop: "10px",
     }
 
     
@@ -251,7 +255,7 @@ export default function EventCard({event, client, userId}) {
     return(
       <ThemeProvider theme={theme}>
         <Card blog style={{border: "2px solid darkgrey"}} raised>  
-          <CardHeader image>
+          <CardHeader image style={{marginBottom: -30}}>
             <Link to={`/events/${event.id}`}>
               {/* <img
                 className={classes.imgCard}
@@ -271,36 +275,40 @@ export default function EventCard({event, client, userId}) {
                     style={{
                       color: "#02C39A",
                       position: "absolute",
-                      bottom: "10px",
-                      left: "15px",
+                      bottom: "15px",
+                      left: "6px",
                     }}
                   >
-                    <Avatar style={{float:'left'}} alt={values.username} src={values.userProfilePic}/>
-                    <div style={usernameStyle}>
+                    <Avatar style={{float:'left', border: '1px solid #02C39A', height: 32, width: 32}} width={32} alt={values.username} src={values.userProfilePic}/>
+                    <h5 style={usernameStyle}>
                       @{values.username}
-                    </div>
+                    </h5>
                   </h5>
                 </Link>
               </div>
           </CardHeader>
 
-            <CardBody style={{padding: 10, textAlign: 'left'}}>
+            <CardBody style={{paddingBottom: 0}}>
               <Link to={`/events/${event.id}`}>
-                <h3 style={{margin: '5px 0px'}}><strong>{values.name}</strong></h3>
+                <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center"}}>{values.name}</h3>
               </Link>
-              <p>
+              <hr style={{margin: 2}}/>
+
+              <div className="eventTimes">
+                <TodayIcon fontSize="small" style={{float:'left'}}/><p className="eventDate">{moment(values.event_date).format("MMMM D, YYYY")}</p>
+                <AccessAlarmIcon fontSize="small" style={{float:'left'}}/><p className="eventStart">Starts at {moment(values.start_time).format("h:mm A")}</p>
+              </div>
+              <p style={{textAlign: 'center', fontSize: '16px'}}>
                 {values.description}
               </p>
               <div>
-                <h5>
+                <p>
                   <PlaceIcon color="error" fontSize='small' style={{verticalAlign: 'top'}} />
                   {`${event.location_name}`}
-                </h5>
-                <h4>{moment(values.event_date).format("MMMM D, YYYY")}</h4>
-                <h4>{moment(values.start_time).format("h:mm A")}</h4>
+                </p>
               </div>
             </CardBody>
-            <CardFooter>
+            <CardFooter style={{paddingBottom: 5}}>
               <Info style={{textAlign: 'left'}}>
                 <h6 color='rose' className={classes.cardCategory}>{values.category.toUpperCase()}</h6>
               </Info>

@@ -240,8 +240,8 @@ export default function EventCardList(props) {
           !values.loadedAllEvents ? 
           (
           <GridItem xs={12} sm={6} md={6} style={{margin: 'auto'}}>
-            <div style={{margin: 'auto'}}>
-              <Button variant="outlined" onClick={loadMoreClicked}>Load More</Button>
+            <div style={{textAlign: 'center'}}>
+              <Button variant="outlined" style={{margin: 'auto'}} onClick={loadMoreClicked}>Load More</Button>
             </div>
           </GridItem>
           ) : 

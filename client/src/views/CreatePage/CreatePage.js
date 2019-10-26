@@ -367,7 +367,7 @@ const handleLocalOrPrivate = (type) => {
   //  page 2. So I have to have BOTH fontWeight: 'bolder' AND <strong> for all of them.
   //  This is probably becsue I used a material-ui theme in EventCreateInfo.js
   return (
-    <div style={{backgroundColor: "#02C39A", height: '100vh', overflowY: 'scroll'}}>
+    <div style={{backgroundColor: "#02C39A", height: '90vh', overflowY: 'scroll'}}>
       <div style={{height: 60}}></div>
       <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '90vh'}}>
         <div className={classes.container}>
@@ -380,7 +380,6 @@ const handleLocalOrPrivate = (type) => {
           { page }
         </div>
       </div>
-      <div style={{height: '2em'}}></div>
     </div>
   );
 }
