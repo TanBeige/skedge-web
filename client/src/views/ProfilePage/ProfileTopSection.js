@@ -172,9 +172,9 @@ export default function ProfileTopSection(props) {
           icon = <RecordVoiceOverIcon className={classes.followIcon} />
           return (
             <Tooltip
-              id="tooltip-top"
-              title="Add Friend"
-              placement="top"
+              id="tooltip-bottom"
+              title="Unsend"
+              placement="bottom"
               classes={{ tooltip: classes.tooltip }}
             >
               <div>
@@ -215,14 +215,14 @@ export default function ProfileTopSection(props) {
               </div>
             </Tooltip>
           )
-        }
+        }}
         // If Not Friends and Didn't send request
         else if(props.values.relationshipType === -1) {
           const icon = <PersonAddIcon className={classes.followIcon} />
           return (
             <Tooltip
-              id="tooltip-top"
-              placement="top"
+              id="tooltip-bottom"
+              placement="bottom"
               classes={{ tooltip: classes.tooltip }}
             >
               <div>
@@ -264,15 +264,17 @@ export default function ProfileTopSection(props) {
           )
           
         }
+    
+        
     // If Already Friends
     else {
       const icon = <PersonIcon className={classes.followIcon} />
 
       return (
         <Tooltip
-          id="tooltip-top"
-          title="Add Friend"
-          placement="top"
+          id="tooltip-bottom"
+          title="Unfriend"
+          placement="bottom"
           classes={{ tooltip: classes.tooltip }}
         >
           <div>
@@ -314,7 +316,8 @@ export default function ProfileTopSection(props) {
       )
     }
   }
-}
+  
+
 
 // If user is NOT editing their profile
   if(!vals.editProfile) {
@@ -406,4 +409,5 @@ export default function ProfileTopSection(props) {
       </div>
     )
   }
+
 }

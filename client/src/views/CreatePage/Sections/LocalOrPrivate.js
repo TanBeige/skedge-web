@@ -25,7 +25,7 @@ const vertStyle = {
     position: 'block',
     textAlign: 'center',
     margin: '4em 0 0 0',
-    paddingBottom: 10,
+    paddingBottom: 60,
 }
 
 

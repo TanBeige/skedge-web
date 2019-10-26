@@ -269,8 +269,8 @@ export default function EventCard({event, client, userId}) {
             </Link>
 
               <div className={classes.imgCardOverlay} style={{display: 'inline-block',width: '100%'}}>
-                <Link to={`/users/${values.userId}`}>
-                  <h5
+                <Link to={`/users/${values.userId}`} target="_self">
+                  <div
                     className={classes.cardTitle}
                     style={{
                       color: "#02C39A",
@@ -283,7 +283,7 @@ export default function EventCard({event, client, userId}) {
                     <h5 style={usernameStyle}>
                       @{values.username}
                     </h5>
-                  </h5>
+                  </div>
                 </Link>
               </div>
           </CardHeader>
