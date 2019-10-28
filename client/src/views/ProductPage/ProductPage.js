@@ -81,7 +81,7 @@ export default function ProductPage() {
         }}
       />
       <Parallax
-        image={require("assets/img/bg6.jpg")}
+        image={require("assets/img/bg7.jpg")}
         filter="rose"
         className={classes.pageHeader}
       >

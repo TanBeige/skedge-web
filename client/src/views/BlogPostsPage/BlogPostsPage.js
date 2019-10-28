@@ -29,6 +29,8 @@ import SectionImage from "./Sections/SectionImage.js";
 import SubscribeLine from "./Sections/SubscribeLine.js";
 import LoadingPage from '../LoadingPage/LoadingPage.js'
 
+import SectionTitle from 'views/LandingPage/Sections/SectionTitle.js';
+
 
 //import auth from "../../Authorization/Auth";
 import { useAuth0 } from "../../Authorization/react-auth0-wrapper";

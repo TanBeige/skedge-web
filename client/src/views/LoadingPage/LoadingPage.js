@@ -10,7 +10,6 @@ const divStyle = {
     height: '100%',
     width: '100%',
     textAlign: 'center',
-    paddingTop: '10%',
     backgroundColor: 'white'
 }
 
@@ -33,9 +32,9 @@ class LoadingPage extends Component {
             <ThemeProvider theme={theme}>
                 <div style={divStyle}>
                     <h1>
-                        <img src={require('assets/img/logoheader.png')} height={100} width={100}/>
+                        <img style={{marginTop: ((window.innerHeight / 2) - 100)}} src={require('assets/img/logoheader.png')} height={100} width={100}/>
                         <br />
-                        <LinearProgress color="primary"/>
+                        {/* <LinearProgress color="primary"/> */}
 
                     </h1>
                 </div>
