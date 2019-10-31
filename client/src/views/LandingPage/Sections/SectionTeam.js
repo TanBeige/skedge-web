@@ -32,7 +32,7 @@ export default function SectionTeam({client}) {
     category: "",
     city: "",
     state: "",
-    limit: 3
+    limit: 4
   }
   
   return (

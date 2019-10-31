@@ -18,6 +18,7 @@ import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
+import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 // sections for this page
 import SectionText from "./Sections/SectionText.js";
 import SectionBlogInfo from "./Sections/SectionBlogInfo.js";
@@ -43,6 +44,10 @@ const useStyles = makeStyles(blogPostPageStyle);
 
 export default function BlogPostPage(props) {
   const eventId = props.match.params.id;
+
+  const { user } = useAuth0();
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const [values, setValues] = useState({
     event_id: eventId,
@@ -74,7 +79,10 @@ export default function BlogPostPage(props) {
     event_cohosts: [],
     event_tags: [],
     users_liked: [],
-    like_amount: 0
+    like_amount: 0,
+
+    ifSaved: false,
+    ifGoing: false,
   })
 
   const goBack = () => {
@@ -83,13 +91,16 @@ export default function BlogPostPage(props) {
   }
 
   const getEvent = () => {
+    // Says we're loading the event
+    setIsLoading(true);
+
+
     props.client.query({
       query: FETCH_EVENT_INFO,
       variables: {
         eventId: eventId
       }
     }).then((data) => {
-      console.log("event data: ", data.data.events);
       if(data.data.events === undefined || data.data.events.length === 0) {
         setValues({
           ...values,
@@ -119,7 +130,7 @@ export default function BlogPostPage(props) {
           host_approval: data.data.events[0].host_approval,
           updated_at: data.data.events[0].updated_at,
       
-          cover_url: cloudinary.url(data.data.events[0].image.image_uuid, {secure: true, width: window.innerWidth, crop: "scale", fetch_format: "auto", quality: "auto"}),
+          cover_url: cloudinary.url(data.data.events[0].image.image_uuid, {secure: true, height: window.innerHeight, crop: "scale", fetch_format: "auto", quality: "auto"}),
           user_id: data.data.events[0].user.id,
           user_pic: data.data.events[0].user.picture,
           user_name: data.data.events[0].user.name,
@@ -129,12 +140,17 @@ export default function BlogPostPage(props) {
           event_cohosts: data.data.events[0].event_cohosts,
           event_tags: data.data.events[0].event_tags,
           users_liked: data.data.events[0].event_like,
-          like_amount: data.data.events[0].event_like_aggregate.aggregate.count
+          like_amount: data.data.events[0].event_like_aggregate.aggregate.count,
+
+          ifSaved: data.data.events[0].user_saved_events.some(user => user.user_id === user.sub),
+          ifGoing: data.data.events[0].event_going.some(user => user.user_id === user.sub),
         })
+        console.log(data)
+        //Say that we're not loading the event anymore.
+        setIsLoading(false);
       }
     })
   }
-  console.log(values.cover_url)
 
   const addView = () => {
     props.client.mutate({
@@ -142,10 +158,7 @@ export default function BlogPostPage(props) {
       variables: {
         eventId: eventId
       }
-    }).then((data) =>{
-        console.log("Event Views: ", data)
-      }
-    )
+    });
   }
 
   useEffect(() => {
@@ -153,13 +166,10 @@ export default function BlogPostPage(props) {
     document.body.scrollTop = 0;
   });
 
-  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    setIsLoading(true);
     getEvent();
     addView();
-    setIsLoading(false);
   }, [])
 
   const classes = useStyles();
@@ -221,11 +231,16 @@ export default function BlogPostPage(props) {
         </Parallax>
         <div className={classes.main}>
           <div className={classes.container}>
-            <SectionText eventInfo={values}/>
+            <SectionText 
+              eventInfo={values}
+              client={props.client}
+            />
             <SectionBlogInfo
               eventInfo={values}
+              eventId={values.event_id}
+              client={props.client}
               />
-            <SectionComments />
+            {/* <SectionComments /> */}
           </div>
         </div>
         {/*<SectionSimilarStories />*/}
@@ -270,17 +285,6 @@ export default function BlogPostPage(props) {
                     </a>
                   </ListItem>
                 </List>
-              </div>
-              <div className={classes.right}>
-                &copy; {1900 + new Date().getYear()} , made with{" "}
-                <Favorite className={classes.icon} /> by{" "}
-                <a
-                  href="https://www.creative-tim.com?ref=mkpr-blog-post"
-                  target="_blank"
-                >
-                  Creative Tim
-                </a>{" "}
-                for a better web.
               </div>
             </div>
           }

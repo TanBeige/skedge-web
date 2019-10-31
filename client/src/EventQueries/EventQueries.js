@@ -50,6 +50,7 @@ const EVENT_FRAGMENT = gql`
         count
       }
     }
+    
   }
 `;
 
@@ -134,6 +135,81 @@ const FETCH_IF_ENTITY = gql`
 
 // Fetch Events
 
+  //Event Saves
+const MUTATION_EVENT_SAVE = gql`  
+mutation save_event($eventId: Int, $userId: String) {
+  insert_user_saved_events(
+    objects: {
+      event_id: $eventId, 
+      user_id: $userId}, 
+      on_conflict: {
+        update_columns: 
+        time_saved, 
+        constraint: user_saved_events_pkey
+      }) {
+    affected_rows
+  }
+}
+`
+const MUTATION_EVENT_UNDO_SAVE = gql`  
+mutation unsave_event($eventId: Int, $userId: String) {
+  delete_user_saved_events(
+    where: { 
+      _and:[
+        {event_id: { _eq: $eventId }},
+        {user_id:{_eq: $userId}}
+      ]
+    }) {
+    affected_rows
+  }
+}
+`
+const REFETCH_EVENT_SAVES = gql`
+query refetch_event_saves($eventId: Int) {
+  user_saved_events(where: {event_id: {_eq: $eventId}}) {
+    user_id
+  }
+}
+`
+  //Event Going
+const MUTATION_EVENT_GOING = gql`
+mutation event_going($eventId: Int, $userId: String) {
+  insert_event_going(
+    objects: {
+      event_id: $eventId, 
+      user_id: $userId}, 
+      on_conflict: {
+        update_columns:
+        user_id
+        constraint: event_going_pkey
+      }) {
+    affected_rows
+  }
+}
+`
+const MUTATION_EVENT_UNDO_GOING = gql`
+mutation undo_going_event($eventId: Int, $userId: String) {
+  delete_event_going(
+    where: { 
+      _and:[
+        {event_id: { _eq: $eventId }},
+        {user_id:{_eq: $userId}}
+      ]
+    }) {
+    affected_rows
+  }
+}
+`
+const REFETCH_EVENT_GOING = gql`
+query refetch_event_going($eventId: Int) {
+  event_going(where: {event_id: {_eq: $eventId}}) {
+    user_id
+  }
+}
+`
+
+
+// Filter Event
 const QUERY_FILTERED_EVENT = gql`
 query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String, $category: String, $city: String, $state: String, $type: String, $date: date) {
   events(
@@ -251,6 +327,14 @@ const FETCH_EVENT_INFO = gql`
         name
         full_name
       }
+
+      event_going {
+        user_id
+      }
+      user_saved_events {
+        user_id
+      }
+
       event_cohosts {
         cohost {
           name
@@ -564,15 +648,25 @@ export {
   QUERY_FILTERED_EVENT,
   QUERY_USER_PROFILE,
   FETCH_IF_ENTITY,
+
+  MUTATION_EVENT_SAVE,
+  MUTATION_EVENT_UNDO_SAVE,
+  REFETCH_EVENT_SAVES,
+  MUTATION_EVENT_GOING,
+  MUTATION_EVENT_UNDO_GOING,
+  REFETCH_EVENT_GOING,
+
   FETCH_EVENT_LIKES_REPOSTS,
   REFETCH_EVENT_LIKES,
   REFETCH_EVENT_REPOSTS,
+
   FETCH_EVENT_INFO,
   QUERY_PRIVATE_EVENT,
   QUERY_LOCAL_EVENT,
   QUERY_FEED_LOCAL_EVENT,
   QUERY_FEED_LOCAL_OLD_EVENT,
   FETCH_TAGGED_EVENTS,
+
   MUTATION_EVENT_ADD,
   MUTATION_EVENT_UPDATE,
   MUTATION_EVENT_DELETE,
@@ -584,6 +678,7 @@ export {
   MUTATION_UNPOST_EVENT,
   MUTATION_FRIEND_REQUEST,
   MUTATION_FRIEND_DELETE,
+  
   SUBSCRIPTION_EVENT_LOCAL_LIST,
   QUERY_ACCEPTED_FRIENDS
 };

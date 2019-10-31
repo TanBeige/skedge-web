@@ -100,11 +100,11 @@ export default function LandingPage(props) {
               <List className={classes.list}>
                 <ListItem className={classes.inlineBlock}>
                   <a
-                    href="https://www.creative-tim.com/?ref=mkpr-landing"
+                    href="theskedge.com"
                     target="_blank"
                     className={classes.block}
                   >
-                    Creative Tim
+                    Skedge
                   </a>
                 </ListItem>
                 <ListItem className={classes.inlineBlock}>
@@ -116,27 +116,13 @@ export default function LandingPage(props) {
                     About us
                   </a>
                 </ListItem>
-                <ListItem className={classes.inlineBlock}>
-                  <a href="//blog.creative-tim.com/" className={classes.block}>
-                    Blog
-                  </a>
-                </ListItem>
-                <ListItem className={classes.inlineBlock}>
-                  <a
-                    href="https://www.creative-tim.com/license?ref=mkpr-landing"
-                    target="_blank"
-                    className={classes.block}
-                  >
-                    Licenses
-                  </a>
-                </ListItem>
               </List>
             </div>
             <div className={classes.right}>
               &copy; {1900 + new Date().getYear()} , made with{" "}
               <Favorite className={classes.icon} /> by{" "}
               <a
-                href="https://www.creative-tim.com/?ref=mkpr-landing"
+                href="/about-us"
                 target="_blank"
               >
                 Creative Tim

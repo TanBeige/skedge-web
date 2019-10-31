@@ -96,7 +96,6 @@ export const MakeMainRoutes = () => {
   useEffect(() => {
     if(!loading) {
       console.log("Loaded");
-      console.log(values.client)
     }
     else {
       console.log("Currently Loading");
@@ -145,9 +144,6 @@ export const MakeMainRoutes = () => {
 
   // Finally load Website
   else {
-    console.log("Path: ", window.location.pathname)
-
-
     const bottomBar = () => {
       console.log("Path: ", window.location.pathname)
       if(values.showBottomBar) {

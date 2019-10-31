@@ -3,4 +3,6 @@
     bottom: 0;
     z-index: 10;
     width: 100%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
