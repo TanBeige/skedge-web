@@ -168,7 +168,7 @@ export default function BlogPostsPage(props) {
       </Parallax>
       // Add style={{marginTop: '5em'}} to  <div className={classes.main} > if not using parallax
       }
-      <div className={classes.main}  style={{backgroundColor: "white", minHeight: '80vh'}}>
+      <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh'}}>
         <div className={classes.container} >
           <SectionPills 
             client={props.client}

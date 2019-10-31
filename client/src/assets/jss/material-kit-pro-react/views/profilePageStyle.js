@@ -45,10 +45,11 @@ const profilePageStyle = {
   },
 
   main: {
-    ...main
+    ...main,
   },
   mainRaised: {
-    ...mainRaised
+    ...mainRaised,
+    margin: "0px 30px 0px",
   },
   title: {
     ...title,

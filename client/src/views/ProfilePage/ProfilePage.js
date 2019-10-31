@@ -59,6 +59,7 @@ import cardProfile2Square from "assets/img/faces/card-profile2-square.jpg";
 import profilePageStyle from "assets/jss/material-kit-pro-react/views/profilePageStyle.js";
 
 import { useAuth0 } from 'Authorization/react-auth0-wrapper'
+
 import {
   QUERY_USER_PROFILE,
   MUTATION_FRIEND_REQUEST,
@@ -314,10 +315,10 @@ export default function ProfilePage(props, { ...rest }) {
     }
     
     return (
-    <div style={{minHeight: '100vh'}}>
+    <div style={{minHeight: '100vh', backgroundImage: 'linear-gradient(#52D3B6 140px, white 300px)', paddingTop: '140px'}}>
       <Header
         color="transparent"
-        brand="Material Kit PRO React"
+        brand="Skedge"
         links={<HeaderLinks dropdownHoverColor="info" userId={values.currentUserId}/>}
         fixed
         changeColorOnScroll={{
@@ -325,11 +326,6 @@ export default function ProfilePage(props, { ...rest }) {
           color: "primary"
         }}
         {...rest}
-      />
-      <Parallax
-        image={require("assets/img/examples/city.jpg")}
-        filter="dark"
-        className={classes.parallax}
       />
       { isLoading ? (<LoadingPage />) : 
         (
