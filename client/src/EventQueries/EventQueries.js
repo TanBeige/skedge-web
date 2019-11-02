@@ -602,17 +602,11 @@ const MUTATION_FRIEND_DELETE = gql`
     delete_relationship(
       where: {
         _and: [
-          {user_one_id: {_eq: $user_one}},
-          {user_two_id: {_eq: $user_two}}
+          {user_one_id: {_eq: $user_one_id}},
+          {user_two_id: {_eq: $user_two_id}}
         ]
       }
       ) {
-      affected_rows
-    }
-  }
-
-  mutation delete_events($eventId: Int) {
-    delete_events(where: { id: { _eq: $eventId } }) {
       affected_rows
     }
   }
@@ -632,6 +626,7 @@ const QUERY_ACCEPTED_FRIENDS = gql`
         ]
       }
     ) {
+      status
       friend_one {
         ...FriendFragment
       }
@@ -642,6 +637,27 @@ const QUERY_ACCEPTED_FRIENDS = gql`
   }
   ${FRIEND_FRAGMENT}
 `;
+
+const QUERY_CHECK_FRIEND = gql`
+query check_relationship ($userId: String!, $profileId: String!) {
+  relationship(
+    where: {
+      _or: [
+        {_and: [
+          {user_one_id: {_eq: $userId}},
+          {user_two_id: {_eq: $profileId}}
+        ]},
+        {_and: [
+          {user_one_id: {_eq: $profileId}},
+          {user_two_id: {_eq: $userId}}
+        ]},
+      ]
+    }
+  ) {
+    status
+  }
+}
+`
 
 
 export {
@@ -680,7 +696,8 @@ export {
   MUTATION_FRIEND_DELETE,
   
   SUBSCRIPTION_EVENT_LOCAL_LIST,
-  QUERY_ACCEPTED_FRIENDS
+  QUERY_ACCEPTED_FRIENDS,
+  QUERY_CHECK_FRIEND
 };
 
 

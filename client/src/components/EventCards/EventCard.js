@@ -269,7 +269,7 @@ export default function EventCard({event, client, userId}) {
             </Link>
 
               <div className={classes.imgCardOverlay} style={{display: 'inline-block',width: '100%'}}>
-                <Link to={`/users/${values.userId}`} target="_self">
+                <Link to={`/users/${values.userId}`}>
                   <div
                     className={classes.cardTitle}
                     style={{

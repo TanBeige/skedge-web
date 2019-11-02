@@ -287,7 +287,7 @@ export default function ProfilePage(props, { ...rest }) {
     // Get Profile age
     getUser();  
 
-  }, [values.auth0Id])
+  }, [values.auth0Id, userId])
 
 
   if(values.user_exists === false) {
@@ -302,6 +302,7 @@ export default function ProfilePage(props, { ...rest }) {
         <FriendProfile 
           client={props.client}
           userId={user.sub}
+          profileId={values.auth0Id}
           currentUserProfile={values.currentUserProfile}
         />
       )
@@ -315,7 +316,7 @@ export default function ProfilePage(props, { ...rest }) {
     }
     
     return (
-    <div style={{minHeight: '100vh', backgroundImage: 'linear-gradient(#52D3B6 140px, white 300px)', paddingTop: '140px'}}>
+    <div style={{minHeight: '100vh', backgroundImage: 'linear-gradient(#52D3B6 140px, white 250px)', paddingTop: '140px'}}>
       <Header
         color="transparent"
         brand="Skedge"

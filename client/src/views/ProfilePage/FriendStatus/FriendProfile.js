@@ -13,24 +13,10 @@ import Palette from "@material-ui/icons/Palette";   //Tab icons
 import People from "@material-ui/icons/People";
 import EventIcon from '@material-ui/icons/Event';
 import EventBusyIcon from '@material-ui/icons/EventBusy';
-
-import Add from "@material-ui/icons/Add";
-import Favorite from "@material-ui/icons/Favorite";
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import PersonIcon from '@material-ui/icons/Person';
 // core components
-import Header from "components/Header/Header.js";
-import Footer from "components/Footer/Footer.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
 import NavPills from "components/NavPills/NavPills.js";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
-import CardHeader from "components/Card/CardHeader.js";
-import Badge from "components/Badge/Badge.js";
-import Muted from "components/Typography/Muted.js";
 import EventCardList from "components/EventCards/EventCardList"
+import ProfileFriendList from './ProfileFriendList.js'
 
 import cardProfile2Square from "assets/img/faces/card-profile2-square.jpg";
 
@@ -39,8 +25,10 @@ import profilePageStyle from "assets/jss/material-kit-pro-react/views/profilePag
 import { useAuth0 } from 'Authorization/react-auth0-wrapper'
 import {
   QUERY_USER_PROFILE,
-  MUTATION_FRIEND_REQUEST
+  MUTATION_FRIEND_REQUEST,
+  QUERY_ACCEPTED_FRIENDS
 } from 'EventQueries/EventQueries.js'
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles(profilePageStyle);
 
@@ -56,10 +44,26 @@ export default function FriendProfile(props) {
         city: "",
         state: "",
         limit: 10   // This is how many events will show up in the eventList
-      };
+    };
+
+      const userFriendsEvents = () => {
+          //if(props.currentUserProfile) {
+              return (
+                  <div  style={{textAlign: 'center'}}>
+                    {/* <Button variant='outlined' style={{width: '8em', marginRight: 5}}>Events</Button> */}
+                    <ProfileFriendList 
+                        client={props.client}
+                        userId={props.userId}
+                        profileId={props.profileId}
+                    />
+                  </div>
+              )
+          //}
+      }
 
     return (
         <div className={classes.profileTabs} style={{marginTop: 10}}>
+            {userFriendsEvents()}
             <NavPills
                 alignCenter
                 color="primary"

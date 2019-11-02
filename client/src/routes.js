@@ -83,6 +83,21 @@ export const MakeMainRoutes = () => {
 
   let newToken = "";
 
+  //Create navigation bar
+  const bottomBar = () => {
+    console.log("Path: ", window.location.pathname)
+    if(values.showBottomBar && user) {
+      return (
+        <ApolloProvider client={values.client}>
+          <BottomNav client={values.client} userId={user.sub}/>
+        </ApolloProvider>
+      )
+    }
+    else {
+      return ""
+    }
+  }
+
   // Supporting Functions
   const provideClient = (Component, renderProps) => { 
     return (
@@ -101,7 +116,7 @@ export const MakeMainRoutes = () => {
       console.log("Currently Loading");
     }
 
-    if(window.location.pathname !== "/") {
+    if(window.location.pathname !== "/" && window.location.pathname !== "/error-page") {
       setValues({
         ...values,
         showBottomBar: true
@@ -112,28 +127,38 @@ export const MakeMainRoutes = () => {
 
   //Wait for Auth0 to load
   if (loading) {
-    console.log("Loading on routes.js")
     return(
+      
       <div>
         <LoadingPage reason="Loading" />
       </div>
     )
   }
   // Wait for token to return and client to be made.
-  else if(!values.client) {
+  if(!values.client) {
     console.log("Getting Client")
-    getIdTokenClaims().then(function(result) {
-      if(isAuthenticated) {
-        newToken = result.__raw;
-      }
-      else {
-        newToken = "";
-      }
+    if(!loading) {
+      getIdTokenClaims().then(function(result) {
+        if(isAuthenticated) {
+          newToken = result.__raw;
+        }
+        else {
+          newToken = "";
+        }
+        setValues({
+          ...values,
+          client: makeApolloClient(newToken)
+        })
+      });
+    }
+    else {
+      
+      newToken = "";
       setValues({
         ...values,
         client: makeApolloClient(newToken)
       })
-    });
+    }
 
     return(
       <div>
@@ -141,23 +166,8 @@ export const MakeMainRoutes = () => {
       </div>
     )
   }
-
   // Finally load Website
   else {
-    const bottomBar = () => {
-      console.log("Path: ", window.location.pathname)
-      if(values.showBottomBar) {
-        return (
-          <ApolloProvider client={values.client}>
-            <BottomNav client={values.client} userId={user.sub}/>
-          </ApolloProvider>
-        )
-      }
-      else {
-        return ""
-      }
-    }
-
     return(
       <Router history={hist}>
         <div>
