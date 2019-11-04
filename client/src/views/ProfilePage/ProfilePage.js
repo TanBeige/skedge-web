@@ -251,6 +251,7 @@ export default function ProfilePage(props, { ...rest }) {
         else {
           relationship = friend_set_one.status;
         }
+
         
         // Set Values
         setValues({

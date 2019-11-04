@@ -39,7 +39,7 @@ const useStyles = makeStyles(landingPageStyle);
 
 export default function LandingPage(props) {
 
-  const { isAuthenticated, loginWithRedirect, user } = useAuth0();
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -80,7 +80,7 @@ export default function LandingPage(props) {
                 color="primary"
                 onClick={() => loginWithRedirect({})}
               >
-                Log In or Sign Up
+                Login or Sign Up
               </Button>
             </GridItem>
           </GridContainer>
@@ -109,7 +109,7 @@ export default function LandingPage(props) {
                 </ListItem>
                 <ListItem className={classes.inlineBlock}>
                   <a
-                    href="https://www.creative-tim.com/presentation?ref=mkpr-landing"
+                    href="/about-us"
                     target="_blank"
                     className={classes.block}
                   >
@@ -117,17 +117,6 @@ export default function LandingPage(props) {
                   </a>
                 </ListItem>
               </List>
-            </div>
-            <div className={classes.right}>
-              &copy; {1900 + new Date().getYear()} , made with{" "}
-              <Favorite className={classes.icon} /> by{" "}
-              <a
-                href="/about-us"
-                target="_blank"
-              >
-                Creative Tim
-              </a>{" "}
-              for a better web.
             </div>
           </div>
         }

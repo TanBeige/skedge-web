@@ -157,13 +157,13 @@ export default function SectionText({ eventInfo, client }) {
   var moment = require('moment');
   let formattedStartTime = ""
   if(eventInfo.start_time) {
-    formattedStartTime = moment(eventInfo.start_time, "HH:mm:ss+-HH");
+    formattedStartTime = moment(eventInfo.start_time, "HH:mm:ss");
   }
   
   //style={{borderRadius: 5, backgroundColor: "#02C39A", color: 'white'}}
   let formattedEndTime = ""
   if(eventInfo.end_time) {
-    const tempEndTime = moment(eventInfo.start_time, "HH:mm:ss+-HH")
+    const tempEndTime = moment(eventInfo.start_time, "HH:mm:ss")
     formattedEndTime = (
       <h3 style={{marginTop: 0}}>
         Until: {moment(tempEndTime).format("h:mm A")}

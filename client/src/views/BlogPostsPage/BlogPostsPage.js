@@ -22,6 +22,7 @@ import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Parallax from "components/Parallax/Parallax.js";
+
 // sections for this page
 import SectionPills from "./Sections/SectionPills.js";
 import SectionInterested from "./Sections/SectionInterested.js";
@@ -47,7 +48,6 @@ export default function BlogPostsPage(props) {
     events: [],
     tabType: 'local',
     search: "",
-    currentUserId: 0
   });
 
   const selectValues = (id) => {
@@ -102,27 +102,27 @@ export default function BlogPostsPage(props) {
     document.body.scrollTop = 0;
   })
 
-  useEffect(() => {
-    props.client.query({
-      query: gql`
-        query fetch_user_id($userId: String) {
-          users(
-            where: {auth0_id: { _eq: $userId }}
-          ) {
-            id
-          }
-        }
-      `,
-      variables: {
-        userId: user.sub
-      }
-    }).then((data) => {
-      setValues({
-          ...values,
-          currentUserId: data.data.users[0].id
-      })
-    })
-  }, [])
+  // useEffect(() => {
+  //   props.client.query({
+  //     query: gql`
+  //       query fetch_user_id($userId: String) {
+  //         users(
+  //           where: {auth0_id: { _eq: $userId }}
+  //         ) {
+  //           id
+  //         }
+  //       }
+  //     `,
+  //     variables: {
+  //       userId: user.sub
+  //     }
+  //   }).then((data) => {
+  //     setValues({
+  //         ...values,
+  //         currentUserId: data.data.users[0].id
+  //     })
+  //   })
+  // }, [])
 
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -148,7 +148,7 @@ export default function BlogPostsPage(props) {
     <div>
       <Header
         brand="Skedge"
-        links={<HeaderLinks dropdownHoverColor="info" userId={values.currentUserId}/>}
+        links={<HeaderLinks dropdownHoverColor="info"/>}
         fixed
         color="transparent"
         changeColorOnScroll={{
@@ -161,7 +161,7 @@ export default function BlogPostsPage(props) {
         <div className={classes.container}>
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={8} className={classes.textCenter}>
-
+              <h2 className={classes.title}>Events</h2>
             </GridItem>
           </GridContainer>
         </div>
@@ -170,10 +170,14 @@ export default function BlogPostsPage(props) {
       }
       <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh'}}>
         <div className={classes.container} >
-          <SectionPills 
-            client={props.client}
-            userId={user.sub}
-          />
+          {
+            loading ?
+            "" :
+            <SectionPills 
+              client={props.client}
+              userId={user.sub}
+            />
+          }
         </div>
       </div>
       <Footer

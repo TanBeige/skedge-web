@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 
 import EventCard from "components/EventCards/EventCard.js"
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
 import CircularProgress from '@material-ui/core/CircularProgress';
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import gql from 'graphql-tag'
-
-//Lodash!
-import debounce from 'lodash/debounce';
 
 import {
     QUERY_FILTERED_EVENT,
@@ -19,9 +17,21 @@ import {
     SUBSCRIPTION_EVENT_LOCAL_LIST
 } from "../../EventQueries/EventQueries";
 import { Button } from '@material-ui/core';
-import { array } from 'prop-types';
+import { classes } from 'istanbul-lib-coverage';
+
+const dateHeaderStyle = {
+  textAlign: 'center',
+  color: "black",
+  backgroundColor: "#F0F3BD",
+  border: "1px solid grey",
+  borderTopLeftRadius: 8,
+  borderTopRightRadius: 8,
+}
+
 
 export default function EventCardList(props) {
+  
+  var moment = require('moment');
 
   // Checks if we are still grabbing events
   const [isSearch, setIsSearch] = useState(false)
@@ -78,34 +88,6 @@ export default function EventCardList(props) {
 
             // When done grabbing events, set seraching to false
             setIsSearch(false)
-
-
-            // Commented out because subscriptions cause loading problems
-            
-            // const latestEventId = data.data.events.length
-            //   ? data.data.events[0].id
-            //   : null;
-            // start a subscription
-            // client
-            //   .subscribe({
-            //     query: SUBSCRIPTION_EVENT_LOCAL_LIST,
-            //     variables: { eventId: latestEventId } // update subscription when eventId changes
-            //   })
-            //   .subscribe({
-            //     next(data) {
-            //       if (data.data.events.length) {
-            //         setValues({
-            //             ...values,
-            //             showNew: true,
-            //             newEventsLength:
-            //             newEventsLength + data.data.events.length,
-            //         });
-            //       }
-            //     },
-            //     error(err) {
-            //       console.error("err", err);
-            //     }
-            //   });
           });
       }
     }
@@ -218,36 +200,71 @@ export default function EventCardList(props) {
       )
     }
 
+    let eventsDate = ""
+
     return (
-      <GridContainer>
-        {
-            finalEvents.map((event, index) => {
-                return (
-                  <GridItem xs={12} sm={6} md={6} key={event.id}>
-                      <EventCard 
-                          event={event} 
-                          client={props.client}
-                          userId={props.userId}
-                      />
+      <InfiniteScroll
+          dataLength={values.eventsLength}
+          next={loadMoreClicked}
+          hasMore={!values.loadedAllEvents}
+          loader={<h4>Loading...</h4>}
+          style={{overflow: 'none'}}
+      >
+        <GridContainer>
+            {
+              finalEvents.map((event, index) => {
+                //Event Date title
+
+                  let showDate = null;
+                  // formattedDate = moment(eventInfo.event_date, "YYYY-MM-DD")
+                  // {moment(formattedDate).format("MMMM D, YYYY")}
+
+
+                  if (eventsDate !== event.event_date) {
+                    showDate = (
+                      <GridItem xs={12}>
+                        <h3 style={dateHeaderStyle}>{moment(event.event_date, "YYYY-MM-DD").format("MMMM D, YYYY")}</h3>
+                      </GridItem>
+                    )
+                    ;
+                    eventsDate = event.event_date;
+                  }
+                  else {
+                    showDate = null
+                  }
+
+                  return (
+                    <Fragment>
+                      {showDate}
+                      <GridItem xs={12} sm={6} md={6} key={event.id}>
+                        <EventCard 
+                            event={event} 
+                            client={props.client}
+                            userId={props.userId}
+                        />
+                      </GridItem>
                       {
                         //insertAd(index)   //Add later when Skedge.com can get ads
                       }
-                  </GridItem>
-                )
-            })
-        }
-        {
-          !values.loadedAllEvents ? 
-          (
-          <GridItem xs={12} sm={6} md={6} style={{margin: 'auto'}}>
-            <div style={{textAlign: 'center'}}>
-              <Button variant="outlined" style={{margin: 'auto'}} onClick={loadMoreClicked}>Load More</Button>
-            </div>
-          </GridItem>
-          ) : 
-          ""
+                    </Fragment>
+                  )
+              })
+          }
+          {
+            // Check if we can load more events
+            !values.loadedAllEvents ? 
+            (
+            <GridItem xs={12} sm={6} md={6} style={{margin: 'auto'}}>
+              <div style={{textAlign: 'center'}}>
+                <Button variant="outlined" style={{margin: 'auto'}} onClick={loadMoreClicked}>Load More</Button>
+              </div>
+            </GridItem>
+            ) : 
+            ""
 
-        }
-      </GridContainer>
+          }
+        </GridContainer>
+      </InfiniteScroll>
+
     )
 }

@@ -37,18 +37,19 @@ export default function SectionTeam({client}) {
   
   return (
     <div className={classes.section} style={{padding: 10, marginTop: -100}}>
-      <h2 className={classes.title} style={{margin:  0, color: "#02C39A"}}><PlayForWorkIcon fontSize='large' style={{fontSize: 50}}/></h2>
-        <GridContainer style={{padding: 0}}>
-          <GridItem xs={12} sm={12} md={12} >
-            <Card profile plain className={classes.card3}>
-              <EventCardList 
-                client={client}
-                filter={filter}
-                listType="home"
-              />
-            </Card>
-          </GridItem>
-          </GridContainer>
+      <h2 className={classes.title} style={{margin:  0, padding: 0, color: "#02C39A"}}><PlayForWorkIcon fontSize='large' style={{fontSize: 50}}/></h2>
+      
+      <GridContainer style={{padding: 0, marginTop: -50}}>
+        <GridItem xs={12} sm={12} md={12} >
+          <Card profile plain className={classes.card3} style={{marginBottom: 0}}>
+            <EventCardList 
+              client={client}
+              filter={filter}
+              listType="home"
+            />
+          </Card>
+        </GridItem>
+      </GridContainer>
     </div>
   );
 }

@@ -38,7 +38,18 @@ const ProfileFriendItem = ({
     else {
         currentFriend = friend.friend_one
     }
-    const friendUserName = `@${currentFriend.name}`
+
+    let maxNameLength = 16
+    console.log("width: ", window.innerWidth)
+    if(window.innerWidth < 400) {
+        maxNameLength = 10
+    }
+
+    let friendUserName = `@${currentFriend.name}`
+    if(friendUserName.length > maxNameLength) {
+        friendUserName = friendUserName.substring(0, maxNameLength);
+        friendUserName += "...";
+    }
     console.log(currentFriend)
 
 
@@ -122,21 +133,21 @@ const ProfileFriendItem = ({
     const placeFriendButton = () => {
         if(friendButton === 1) {
             return (
-                <Button onClick={handleFriend}>
+                <Button size="sm" onClick={handleFriend}>
                     Unfriend
                 </Button>
             )
         }
         else if(friendButton === 0) {
             return (
-                <Button onClick={handleFriend}>
+                <Button size="sm" onClick={handleFriend}>
                     Request Sent
                 </Button>
             )
         }
         else if(friendButton === -1) {
             return (
-                <Button color="info" onClick={handleFriend}>
+                <Button size="sm"  color="info" onClick={handleFriend}>
                     Add Friend
                 </Button>
             )
@@ -149,17 +160,18 @@ const ProfileFriendItem = ({
 
     return (
         <Fragment>
-            <ListItem key={currentFriend.auth0_id} button>
+            <ListItem key={currentFriend.auth0_id} button style={{width: '100%'}}>
                 <ListItemAvatar>
                 <Avatar
                     alt={currentFriend.name}
                     src={currentFriend.picture}
+                    style={{border: '1px solid #02C39A'}}
                 />
                 </ListItemAvatar>
                 <ListItemText id={currentFriend.name} primary={friendUserName} />
                 {placeFriendButton()}
             </ListItem>
-            <Divider variant="inset" component="li" />
+            {/* <Divider variant="inset" component="li" /> */}
         </Fragment>
     )
 }

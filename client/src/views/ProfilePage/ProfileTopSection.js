@@ -215,7 +215,7 @@ export default function ProfileTopSection(props) {
               </div>
             </Tooltip>
           )
-        }}
+        }
         // If Not Friends and Didn't send request
         else if(props.values.relationshipType === -1) {
           const icon = <PersonAddIcon className={classes.followIcon} />
@@ -223,6 +223,7 @@ export default function ProfileTopSection(props) {
             <Tooltip
               id="tooltip-bottom"
               placement="bottom"
+              title="Invite Friend"
               classes={{ tooltip: classes.tooltip }}
             >
               <div>
@@ -262,10 +263,8 @@ export default function ProfileTopSection(props) {
               </div>
             </Tooltip>
           )
-          
         }
-    
-        
+        }
     // If Already Friends
     else {
       const icon = <PersonIcon className={classes.followIcon} />

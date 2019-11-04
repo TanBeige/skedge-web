@@ -24,8 +24,9 @@ import SectionText from "./Sections/SectionText.js";
 import SectionBlogInfo from "./Sections/SectionBlogInfo.js";
 import SectionComments from "./Sections/SectionComments.js";
 import SectionSimilarStories from "./Sections/SectionSimilarStories.js";
-import CategoryFragment from './Sections/CategoryFragment.js'
-import LoadingPage from '../LoadingPage/LoadingPage.js'
+import CategoryFragment from './Sections/CategoryFragment.js';
+import LoadingPage from '../LoadingPage/LoadingPage.js';
+
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 import {
@@ -33,6 +34,7 @@ import {
   MUTATION_EVENT_VIEW
 } from 'EventQueries/EventQueries.js'
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
+
 
 var cloudinary = require('cloudinary/lib/cloudinary').v2
 
@@ -45,7 +47,7 @@ const useStyles = makeStyles(blogPostPageStyle);
 export default function BlogPostPage(props) {
   const eventId = props.match.params.id;
 
-  const { user } = useAuth0();
+  const { loading, user } = useAuth0();
 
   const [isLoading, setIsLoading] = useState(false)
 

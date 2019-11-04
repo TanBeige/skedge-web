@@ -92,7 +92,6 @@ export default function ExampleScrolling(props) {
           className={classes.modalHeader}
         >
           <Button
-            simple
             className={classes.modalCloseButton}
             key="close"
             aria-label="Close"
@@ -106,6 +105,7 @@ export default function ExampleScrolling(props) {
         <DialogContent
           id="classic-modal-slide-description"
           className={classes.modalBody}
+          style={{padding: 5}}
         >
             <List style={{width: '100%'}}>  
             {

@@ -64,7 +64,6 @@ import BottomNav from "components/BottomNav/BottomNav.js";
 
 
 // Creating Apollo Client When Entering Website
-let client;
 
 var hist = createBrowserHistory();
 
@@ -76,7 +75,7 @@ export const MakeMainRoutes = () => {
   // Variables/Imports from auth0-spa
   const {loading, getIdTokenClaims, isAuthenticated, user } = useAuth0();
   const [values, setValues] = useState({
-    client,
+    client: null,
     showBottomBar: false,
     currentPage: window.location.pathname
   })
@@ -85,7 +84,7 @@ export const MakeMainRoutes = () => {
 
   //Create navigation bar
   const bottomBar = () => {
-    console.log("Path: ", window.location.pathname)
+    //console.log("Path: ", window.location.pathname)
     if(values.showBottomBar && user) {
       return (
         <ApolloProvider client={values.client}>
@@ -109,23 +108,32 @@ export const MakeMainRoutes = () => {
 
   // useEffect substitutes componentDidMount() and rerenders after loading value changes
   useEffect(() => {
-    if(!loading) {
-      console.log("Loaded");
-    }
-    else {
-      console.log("Currently Loading");
-    }
+    // For Apollo Provider on Auth load
+    // if(!loading) {
+    //   getIdTokenClaims().then(function(result) {
+    //     if(isAuthenticated) {
+    //       newToken = result.__raw;
+    //     }
+    //     else {
+    //       newToken = "";
+    //     }
+    //     setValues({
+    //       ...values,
+    //       client: makeApolloClient(newToken)
+    //     })
+    //   });
+    // }
 
+    // For Bottom Navbar
     if(window.location.pathname !== "/" && window.location.pathname !== "/error-page") {
       setValues({
         ...values,
         showBottomBar: true
       })
     }    
-  },[loading, values.client, isAuthenticated]);
+  
+  },[loading, isAuthenticated, values.client]);
 
-
-  //Wait for Auth0 to load
   if (loading) {
     return(
       
@@ -152,7 +160,6 @@ export const MakeMainRoutes = () => {
       });
     }
     else {
-      
       newToken = "";
       setValues({
         ...values,
@@ -168,6 +175,7 @@ export const MakeMainRoutes = () => {
   }
   // Finally load Website
   else {
+  // Finally load Website
     return(
       <Router history={hist}>
         <div>
@@ -196,7 +204,6 @@ export const MakeMainRoutes = () => {
                 }} />
           <Route exact path="/" render={props => provideClient(LandingPage, props)}/>
         </Switch>
-
 
         {bottomBar()}
         </div>

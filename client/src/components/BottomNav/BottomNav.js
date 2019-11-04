@@ -3,10 +3,6 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import {Link, withRouter} from 'react-router-dom';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import LanguageIcon from '@material-ui/icons/Language';
-import GroupIcon from '@material-ui/icons/Group';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import HelpIcon from '@material-ui/icons/Help';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -58,13 +54,13 @@ class PrimaryNav extends Component {
     if(this.props.client) {
         this.props.client.query({
             query: gql`
-            query fetch_user_id($userId: String) {
-                users(
-                where: {auth0_id: { _eq: $userId }}
-                ) {
-                id
-                }
-            }
+              query fetch_user_id($userId: String) {
+                  users(
+                  where: {auth0_id: { _eq: $userId }}
+                  ) {
+                    id
+                  }
+              }
             `,
             variables: {
             userId: this.props.userId
