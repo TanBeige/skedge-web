@@ -122,9 +122,10 @@ export default function ProfilePage(props, { ...rest }) {
     props.client.mutate({
       mutation: MUTATION_EDIT_USER,
       refetchQueries: [{
-        query: REFETCH_USER_INFO,
+        query: QUERY_USER_PROFILE,
         variables: {
-          userId: user.sub
+          userId: userId,
+          limit: 10
         }
       }],
       variables: {
