@@ -36,6 +36,10 @@ import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 
 // core components
 import GridContainer from "components/Grid/GridContainer.js";
@@ -64,7 +68,6 @@ const theme = createMuiTheme({
 
 export default function SectionPills(props) {
   const classes = useStyles();
-  console.log("SectionPills New Load")
 
   // 0 is local, 1 is private
   const [values, setValues] = useState({
@@ -79,12 +82,11 @@ export default function SectionPills(props) {
     expanded: false
   })
 
+  const [expanded, setExpanded] = useState(false)
+
   // Handle Filter Change
   const handleExpandClick = () => {
-    setValues({
-      ...values,
-      expanded: !values.expanded
-    })
+    setExpanded(!expanded)
   }
 
   const handleFilters = name => event => {
@@ -98,6 +100,23 @@ export default function SectionPills(props) {
     setValues({
       ...values,
       date: date
+    })
+  }
+
+  const handleDayBack = () => {
+    const newDate = values.date.addDays(-1)
+    console.log(newDate)
+    setValues({
+      ...values,
+      date: newDate
+    })
+  }
+  const handleDayForward = () => {
+    const newDate = values.date.addDays(1)
+    console.log(newDate)
+    setValues({
+      ...values,
+      date: newDate
     })
   }
 
@@ -154,6 +173,11 @@ export default function SectionPills(props) {
     }
   },[debouncedSearchTerm])
 
+
+  //Changes day to a moment.js object so I can format easier
+  const moment = require('moment')
+  const formatDate = moment(values.date);
+
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.section} style={{paddingTop: 25, paddingBottom: '1em'}}>
@@ -161,7 +185,7 @@ export default function SectionPills(props) {
           <GridItem xs={12}>
             <Paper elevation={10} style={{paddingLeft:20, paddingRight: 20, margin: '10px 0 20px 0'}} color="primary">
               <GridContainer>
-                <GridItem xs={10}>
+                <GridItem xs={12}>
                   <FormControl fullWidth className={classes.selectFormControl} style={{marginBottom: 0}}>            
                     <CustomInput
                       labelText="Search Events"
@@ -169,74 +193,91 @@ export default function SectionPills(props) {
                       inputProps={{
                         onChange: handleFilters("searchText")
                       }}
-                      formControlProps={{
-                        fullWidth: true
-                      }}
                     />
                   </FormControl>
                 </GridItem>
                   <IconButton
                     className={clsx(classes.expand, {
-                      [classes.expandOpen]: values.expanded,
+                      [classes.expandOpen]: expanded,
                     })}
                     onClick={handleExpandClick}
-                    aria-expanded={values.expanded}
+                    aria-expanded={expanded}
                     aria-label="show more"
+                    style={{position: 'absolute', right: 20, top: 20}}
                   >
                     <ExpandMoreIcon />
                   </IconButton>
               </GridContainer>
 
-              <Collapse in={values.expanded} timeout="auto" unmountOnExit>
-                <FormControl fullWidth className={classes.selectFormControl}>            
-                  <InputLabel
-                    htmlFor="simple-select"
-                    className={classes.selectLabel}
-                  >
-                    Category
-                  </InputLabel>
-                  <Select
-                    MenuProps={{
-                      className: classes.selectMenu
-                    }}
-                    classes={{
-                      select: classes.select
-                    }}
-                    value={values.category}
-                    onChange={handleFilters("category")}
+              <Collapse in={expanded} timeout="auto" unmountOnExit style={{paddingBottom: 10}}>
+                <GridContainer>
+                  <GridItem xs={12} style={{textAlign: 'center'}}>
+                      <MuiPickersUtilsProvider utils={MomentUtils}>
+                        <DatePicker 
+                          autoOk
+                          label="Event Date"
+                          style={{width: '100%', marginBottom: 10}} 
+                          disableToolbar
+                          value={values.date} 
+                          format="MMMM D, YYYY"
+                          onChange={handleDateChange} 
+                          variant="dialog"
+                          openTo="date"
+                        />
+                    </MuiPickersUtilsProvider >  
+                  </GridItem>
+                  <GridItem xs={12}>
+                    <FormControl fullWidth className={classes.selectFormControl}>            
+                      <InputLabel
+                        htmlFor="simple-select"
+                        className={classes.selectLabel}
+                      >
+                        Category
+                      </InputLabel>
+                      <Select
+                        MenuProps={{
+                          className: classes.selectMenu
+                        }}
+                        classes={{
+                          select: classes.select
+                        }}
+                        value={values.category}
+                        onChange={handleFilters("category")}
 
-                    inputProps={{
-                      name: "category",
-                      id: "category",
-                    }}
-                  >
-                    <MenuItem
-                      disabled
-                      classes={{
-                        root: classes.selectMenuItem
-                      }}
-                    >
-                      Categories
-                    </MenuItem>
-                    {
-                      categoryList.map((category, index) => {
-                        return(
-                          <MenuItem
-                            key={index}
-                            onChange={handleFilters}
-                            classes={{
-                              root: classes.selectMenuItem,
-                              selected: classes.selectMenuItemSelected
-                            }}
-                            value={category}
-                          >
-                            {category}
-                          </MenuItem>
-                        )
-                      })
-                    }
-                  </Select>
-                </FormControl>
+                        inputProps={{
+                          name: "category",
+                          id: "category",
+                        }}
+                      >
+                        <MenuItem
+                          disabled
+                          classes={{
+                            root: classes.selectMenuItem
+                          }}
+                        >
+                          Categories
+                        </MenuItem>
+                        {
+                          categoryList.map((category, index) => {
+                            return(
+                              <MenuItem
+                                key={index}
+                                onChange={handleFilters}
+                                classes={{
+                                  root: classes.selectMenuItem,
+                                  selected: classes.selectMenuItemSelected
+                                }}
+                                value={category}
+                              >
+                                {category}
+                              </MenuItem>
+                            )
+                          })
+                        }
+                      </Select>
+                    </FormControl>
+                  </GridItem>
+                </GridContainer>
                 <GridContainer>
                   <GridItem xs={6}>
                     <FormControl fullWidth className={classes.selectFormControl}>
@@ -276,24 +317,23 @@ export default function SectionPills(props) {
           <GridItem>
             <Divider />        
           </GridItem>
-
-          <GridItem xs={12} style={{textAlign: 'center'}}>
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-              <DatePicker 
-                label="Event Date"
-                style={{marginTop: '1em'}} 
-                disableToolbar
-                value={values.date} 
-                inputVariant="outlined"
-                format="MMMM D, YYYY"
-                onChange={handleDateChange} 
-                variant="inline"
-                openTo="date"
-                />
-            </MuiPickersUtilsProvider >  
-          </GridItem>
-
         </GridContainer>
+
+        <div style={{display: "block", margin: '10px 0px'}}>
+          <IconButton 
+            onClick={handleDayBack}
+            style={{position: 'absolute', left: 5, marginTop: '-12px', padding: '12px 18px'}}
+          >
+            <ChevronLeftIcon fontSize='large'  />
+          </IconButton>
+          <IconButton 
+            onClick={handleDayForward}
+            style={{position: 'absolute', right: 5, marginTop: '-12px', padding: '12px 18px'}}
+          >
+            <ChevronRightIcon fontSize='large'  />
+          </IconButton>
+            <h3 style={{textAlign: 'center', verticalAlign: 'middle'}}>{formatDate.format("MMMM D, YYYY")}</h3>
+        </div>
 
         <div className={classes.profileTabs} style={{marginTop: 10}}>
               <NavPillsSearch
@@ -331,4 +371,11 @@ export default function SectionPills(props) {
       </div>
     </ThemeProvider>
   );
+}
+
+//Handling Day Adding
+Date.prototype.addDays = function(days) {
+  var date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
 }

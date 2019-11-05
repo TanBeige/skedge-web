@@ -41,7 +41,7 @@ import blogPostsPageStyle from "assets/jss/material-kit-pro-react/views/blogPost
 
 const useStyles = makeStyles(blogPostsPageStyle);
 
-export default function BlogPostsPage(props) {
+export default function HomePage(props) {
   const classes = useStyles();
 
   const [values, setValues] = useState({
@@ -161,7 +161,7 @@ export default function BlogPostsPage(props) {
         <div className={classes.container}>
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={8} className={classes.textCenter}>
-              <h2 className={classes.title}>Events</h2>
+              {window.innerHeight >= 725 ? <h2 className={classes.title}>Events</h2> : ""}
             </GridItem>
           </GridContainer>
         </div>

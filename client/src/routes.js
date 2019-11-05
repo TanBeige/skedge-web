@@ -44,7 +44,7 @@ import makeApolloClient from "./apollo";
 // pages for this product
 import AboutUsPage from "views/AboutUsPage/AboutUsPage.js";
 import BlogPostPage from "views/BlogPostPage/BlogPostPage.js";
-import BlogPostsPage from "views/BlogPostsPage/BlogPostsPage.js";
+import Home from "views/HomePage/HomePage.js";
 import ContactUsPage from "views/ContactUsPage/ContactUsPage.js";
 import EcommercePage from "views/EcommercePage/EcommercePage.js";
 import LandingPage from "views/LandingPage/LandingPage.js";
@@ -182,7 +182,7 @@ export const MakeMainRoutes = () => {
         <Switch>
           <Route exact path="/about-us" render={props => provideClient(AboutUsPage, props)} />
           <PrivateRoute path="/event" render={props => provideClient(BlogPostPage, props)} />
-          <PrivateRoute path="/home" render={props => provideClient(BlogPostsPage, props)} />
+          <PrivateRoute path="/home" render={props => provideClient(Home, props)} />
           {/*<Route exact path="/components" render={props => provideClient(ComponentsPage, props)} />*/}
           <Route exact path="/contact-us" render={props => provideClient(ContactUsPage, props)} />
           <Route exact path="/subscriptions" render={props => provideClient(EcommercePage, props)} />
