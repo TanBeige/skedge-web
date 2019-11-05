@@ -78,8 +78,6 @@ export default function SectionPills(props) {
     state: "",
     limit: 10,
     date: new Date(),
-
-    expanded: false
   })
 
   const [expanded, setExpanded] = useState(false)
@@ -99,7 +97,7 @@ export default function SectionPills(props) {
   const handleDateChange = date => {
     setValues({
       ...values,
-      date: date
+      date: date.toDate()
     })
   }
 
@@ -129,6 +127,7 @@ export default function SectionPills(props) {
     limit: values.limit,
     date: values.date
   })
+
 
   const [privateFilter, setPrivateFilter] = useState({
     searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
@@ -373,7 +372,9 @@ export default function SectionPills(props) {
   );
 }
 
-//Handling Day Adding
+//Handling Date Formats
+
+  // Adding Days
 Date.prototype.addDays = function(days) {
   var date = new Date(this.valueOf());
   date.setDate(date.getDate() + days);

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuth0 } from 'Authorization/react-auth0-wrapper';
+
+import GoingSaveButtons from './EventPageComponents/GoingSaveButtons.js'
 // @material-ui/icons
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -24,6 +26,8 @@ import {
   MUTATION_EVENT_GOING,
   MUTATION_EVENT_UNDO_GOING,
   REFETCH_EVENT_GOING,
+  FETCH_EVENT_INFO,
+  FETCH_EVENT_GOING_SAVE,
 } from 'EventQueries/EventQueries.js'
 
 
@@ -42,116 +46,37 @@ export default function SectionText({ eventInfo, client }) {
 
   // Mutate Events Buttons
   const [values, setValues] = useState({
-    ifGoing: eventInfo.ifGoing,
-    ifSaved: eventInfo.ifSaved
+    ifGoing: false,
+    ifSaved: false
   })
 
-  //Handle Event Going
-  const goingToEvent = () => {
-    // Change to Not Going To Event
-    if(values.ifGoing) {
-      client.mutate({
-        mutation: MUTATION_EVENT_UNDO_GOING,
-        refetchQueries: [{
-          query: REFETCH_EVENT_GOING,
-          variables: {
-            eventId: eventInfo.event_id,
-          }
-        }],
-        variables: {
-          eventId: eventInfo.event_id,
-          userId: user.sub
-        }
-      }).then(() => {
-        setValues({
-          ...values,
-          ifGoing: false,
-        })
+
+  // Getting new queries so we can refetch
+  const getUserGoingSave = () => {
+    client.query({
+      query: FETCH_EVENT_GOING_SAVE,
+      variables: {
+        eventId: eventInfo.event_id,
+        userId: user.sub
+      }
+    }).then((data) => {
+      console.log("going save data:", data)
+      const isGoing = data.data.users[0].event_goings.length === 1
+      const isSaved = data.data.users[0].user_saved_events.length === 1
+      setValues({
+        ...values,
+        ifGoing: isGoing,
+        ifSaved: isSaved
       })
-    }
-    // Change to Going To Event
-    else {
-      client.mutate({
-        mutation: MUTATION_EVENT_GOING,
-        refetchQueries: [{
-          query: REFETCH_EVENT_GOING,
-          variables: {
-            eventId: eventInfo.event_id
-          }
-        }],
-        variables: {
-          eventId: eventInfo.event_id,
-          userId: user.sub
-        }
-      }).then(() => {
-        setValues({
-          ...values,
-          ifGoing: true
-        })
-      })
-    }
-  }
-  // Handle Event Saving
-  const saveEvent = () => {
-    // Change to Not Saving To Event
-    if(values.ifSaved) {
-      client.mutate({
-        mutation: MUTATION_EVENT_UNDO_SAVE,
-        refetchQueries: [{
-          query: REFETCH_EVENT_SAVES,
-          variables: {
-            eventId: eventInfo.event_id,
-          }
-        }],
-        variables: {
-          eventId: eventInfo.event_id,
-          userId: user.sub
-        }
-      }).then(() => {
-        setValues({
-          ...values,
-          ifSaved: false,
-        })
-      })
-    }
-    else {
-    // Change to Saving To Event
-      client.mutate({
-        mutation: MUTATION_EVENT_SAVE,
-        refetchQueries: [{
-          query: REFETCH_EVENT_SAVES,
-          variables: {
-            eventId: eventInfo.event_id
-          }
-        }],
-        variables: {
-          eventId: eventInfo.event_id,
-          userId: user.sub
-        }
-      }).then(() => {
-        setValues({
-          ...values,
-          ifSaved: true
-        })
-      })
-    }
+    })
   }
 
-  let goingButton = "";
-  if(!values.ifGoing){ //going to event) {
-    goingButton = <Button color="primary" onClick={goingToEvent} style={{margin: '0px 10px', width: '40%'}}>Go!</Button>
-  }
-  else {
-    goingButton = <Button color="info" onClick={goingToEvent} style={{margin: '0px 10px', width: '40%'}}>Don't Go!</Button>
-  }
+  useEffect(() => {
+    getUserGoingSave();
+  },[])
+  console.log("going or not,", values)
 
-  let saveButton = "";
-  if(!values.ifSaved) {
-    saveButton = <Button color="rose" onClick={saveEvent} style={{margin: '0px 10px', width: '40%'}}>Save</Button>
-  }
-  else {
-    saveButton = <Button color="info" onClick={saveEvent} style={{margin: '0px 10px', width: '40%'}}>Unsave</Button>
-  }
+  
 
   // Fix date formatting
   var moment = require('moment');
@@ -193,8 +118,12 @@ export default function SectionText({ eventInfo, client }) {
           </div>
           <hr />
           <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
-            {goingButton}
-            {saveButton}
+            <GoingSaveButtons 
+              ifGoing={values.ifGoing}
+              ifSaved={values.ifSaved}
+              client={client}
+              eventId={eventInfo.event_id}
+            />
           </div>
           <h3 className={classes.title}>
             Details

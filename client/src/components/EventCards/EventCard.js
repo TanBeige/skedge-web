@@ -45,7 +45,8 @@ import {
   REFETCH_EVENT_LIKES,
   MUTATION_REPOST_EVENT,
   MUTATION_UNPOST_EVENT,
-  REFETCH_EVENT_REPOSTS
+  REFETCH_EVENT_REPOSTS,
+  QUERY_FILTERED_EVENT
 } from "../../EventQueries/EventQueries";
 
 require("./EventCard.css")
@@ -78,7 +79,7 @@ const theme = createMuiTheme({
 
 
 
-export default function EventCard({event, client, userId}) {
+export default function EventCard({event, client, userId, filter}) {
     const classes = useStyles();
 
     const usernameStyle= {
@@ -127,14 +128,16 @@ export default function EventCard({event, client, userId}) {
     const handleRepost = () => {
       console.log('Repost!')
 
+      let cat = filter.category;
+      if(filter.category == "Any") {
+        cat = ""
+      }
+
       if(values.ifReposted !== "inherit") {
         client.mutate({
           mutation: MUTATION_UNPOST_EVENT,
           refetchQueries: [{
-            query: REFETCH_EVENT_REPOSTS,
-            variables: {
-              eventId: event.id
-            }
+            query: QUERY_FILTERED_EVENT
           }],
           variables: {
             eventId: event.id,
@@ -153,10 +156,7 @@ export default function EventCard({event, client, userId}) {
         client.mutate({
           mutation: MUTATION_REPOST_EVENT,
           refetchQueries: [{
-            query: REFETCH_EVENT_REPOSTS,
-            variables: {
-              eventId: event.id
-            }
+            query: QUERY_FILTERED_EVENT
           }],
           variables: {
             eventId: event.id,
@@ -174,14 +174,17 @@ export default function EventCard({event, client, userId}) {
     }
 
     const handleLike = () => {
+
+      let cat = filter.category;
+      if(filter.category == "Any") {
+        cat = ""
+      }
+
       if(values.ifLiked !== "inherit") {
         client.mutate({
           mutation: MUTATION_UNLIKE_EVENT,
           refetchQueries: [{
-            query: REFETCH_EVENT_LIKES,
-            variables: {
-              eventId: event.id
-            }
+            query: QUERY_FILTERED_EVENT
           }],
           variables: {
             eventId: event.id,
@@ -200,10 +203,7 @@ export default function EventCard({event, client, userId}) {
         client.mutate({
           mutation: MUTATION_LIKE_EVENT,
           refetchQueries: [{
-            query: REFETCH_EVENT_LIKES,
-            variables: {
-              eventId: event.id
-            }
+            query: QUERY_FILTERED_EVENT
           }],
           variables: {
             eventId: event.id,

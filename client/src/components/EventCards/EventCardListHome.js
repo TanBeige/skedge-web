@@ -28,11 +28,24 @@ const dateHeaderStyle = {
   borderTopRightRadius: 8,
 }
 
+// Formatting Date Filter
+Date.prototype.formatDate = function() {
+  var d = new Date(this.valueOf()),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
 
+  if (month.length < 2) 
+      month = '0' + month;
+  if (day.length < 2) 
+      day = '0' + day;
+
+  return [year, month, day].join('-');
+}
+
+// Functional Component
 export default function EventCardList(props) {
   
-  var moment = require('moment');
-
   // Checks if we are still grabbing events
   const [isSearch, setIsSearch] = useState(false)
 
@@ -53,11 +66,9 @@ export default function EventCardList(props) {
     const { client } = props;
     const { filter } = props;
 
-
     if(!values.showNew) {
 
       setIsSearch(true)
-
 
       let cat = filter.category;
       if(filter.category == "Any") {
@@ -75,11 +86,11 @@ export default function EventCardList(props) {
               city: `%${filter.city}%`,
               state: `%${filter.state}%`,
               type: filter.type,
-              date: filter.date
+              date: filter.date ? filter.date.formatDate() : null
             }
           })
           .then(data => {
-            console.log(data)
+            console.log("Events Grabbed. Data: ", data)
             setValues({ 
               ...values, 
               events: data.data.events, 
@@ -104,7 +115,7 @@ export default function EventCardList(props) {
       if(filter.category == "Any") {
         cat = ""
       }
-      console.log(values.eventsLength)
+      console.log("Amount of Events: ", values.eventsLength)
       client
         .query({
           query: QUERY_FILTERED_EVENT,
@@ -116,12 +127,11 @@ export default function EventCardList(props) {
             city: `%${filter.city}%`,
             state: `%${filter.state}%`,
             type: filter.type,
-            date: filter.date
+            date: filter.date ? filter.date.formatDate() : null
           }
         })
         .then(data => {
           if (data.data.events.length) {
-            console.log(data)
             const mergedEvents = values.events.concat(data.data.events);
 
             // update state with new events
@@ -200,8 +210,6 @@ export default function EventCardList(props) {
       )
     }
 
-    let eventsDate = ""
-
     return (
       <InfiniteScroll
           dataLength={values.eventsLength}
@@ -213,34 +221,14 @@ export default function EventCardList(props) {
         <GridContainer>
             {
               finalEvents.map((event, index) => {
-                //Event Date title
-
-                  let showDate = null;
-                  // formattedDate = moment(eventInfo.event_date, "YYYY-MM-DD")
-                  // {moment(formattedDate).format("MMMM D, YYYY")}
-
-
-                  if (eventsDate !== event.event_date) {
-                    showDate = (
-                      <GridItem xs={12}>
-                        <h3 style={dateHeaderStyle}>{moment(event.event_date, "YYYY-MM-DD").format("MMMM D, YYYY")}</h3>
-                      </GridItem>
-                    )
-                    ;
-                    eventsDate = event.event_date;
-                  }
-                  else {
-                    showDate = null
-                  }
-
                   return (
-                    <Fragment>
-                      {showDate}
-                      <GridItem xs={12} sm={6} md={6} key={event.id}>
+                    <Fragment key={event.id}> 
+                      <GridItem xs={12} sm={6} md={6} >
                         <EventCard 
                             event={event} 
                             client={props.client}
                             userId={props.userId}
+                            filter={props.filter}
                         />
                       </GridItem>
                       {
@@ -249,19 +237,6 @@ export default function EventCardList(props) {
                     </Fragment>
                   )
               })
-          }
-          {
-            // Check if we can load more events
-            !values.loadedAllEvents ? 
-            (
-            <GridItem xs={12} sm={6} md={6} style={{margin: 'auto'}}>
-              <div style={{textAlign: 'center'}}>
-                <Button variant="outlined" style={{margin: 'auto'}} onClick={loadMoreClicked}>Load More</Button>
-              </div>
-            </GridItem>
-            ) : 
-            ""
-
           }
         </GridContainer>
       </InfiniteScroll>

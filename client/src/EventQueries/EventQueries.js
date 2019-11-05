@@ -100,7 +100,7 @@ fragment FriendFragment on users {
 
 // Fetch Users
 const QUERY_USER_PROFILE = gql`
-  query fetch_user($userId: Int!, $limit: Int) {
+  query fetch_user($userId: bigint!, $limit: Int) {
     users(
       where: {id: { _eq: $userId }}
     ) {  
@@ -132,8 +132,42 @@ const FETCH_IF_ENTITY = gql`
   }
 `
 
+const MUTATION_EDIT_USER = gql`
+  mutation edit_user($authId: String, $changes: users_set_input) {
+    update_users(where: {auth0_id: {_eq: $authId}}, _set: $changes) {
+      affected_rows
+      returning{
+        full_name
+        id
+      }
+    }
+  }
+`
+const REFETCH_USER_INFO = gql`
+  query fetch_user_info($userId: String!) {
+    users(where: {auth0_id: {_eq: $userId}}) {
+      full_name
+      biography
+      picture
+    }
+  }
+`
+
 
 // Fetch Events
+
+const FETCH_EVENT_GOING_SAVE = gql`
+  query fetch_event_going_save($eventId: Int, $userId: String) {
+    users(where: {auth0_id: {_eq: $userId}}) {
+      user_saved_events(where:{event_id:{_eq: $eventId}}) {
+        time_saved
+      }
+      event_goings(where:{event_id:{_eq: $eventId}}) {
+        event_id
+      }
+    }
+  }
+`
 
   //Event Saves
 const MUTATION_EVENT_SAVE = gql`  
@@ -165,7 +199,7 @@ mutation unsave_event($eventId: Int, $userId: String) {
 }
 `
 const REFETCH_EVENT_SAVES = gql`
-query refetch_event_saves($eventId: Int) {
+query fetch_event_saves($eventId: Int) {
   user_saved_events(where: {event_id: {_eq: $eventId}}) {
     user_id
   }
@@ -201,7 +235,7 @@ mutation undo_going_event($eventId: Int, $userId: String) {
 }
 `
 const REFETCH_EVENT_GOING = gql`
-query refetch_event_going($eventId: Int) {
+query fetch_event_going($eventId: Int) {
   event_going(where: {event_id: {_eq: $eventId}}) {
     user_id
   }
@@ -235,7 +269,7 @@ query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String
         {category: {_like: $category}},
         {city: {_ilike: $city}},
         {state: {_ilike: $state}},
-        {event_date: {_gte: $date}}
+        {event_date: {_eq: $date}}
       ]
     }
   )
@@ -664,6 +698,8 @@ export {
   QUERY_FILTERED_EVENT,
   QUERY_USER_PROFILE,
   FETCH_IF_ENTITY,
+  MUTATION_EDIT_USER,
+  REFETCH_USER_INFO,
 
   MUTATION_EVENT_SAVE,
   MUTATION_EVENT_UNDO_SAVE,
@@ -671,6 +707,8 @@ export {
   MUTATION_EVENT_GOING,
   MUTATION_EVENT_UNDO_GOING,
   REFETCH_EVENT_GOING,
+
+  FETCH_EVENT_GOING_SAVE,
 
   FETCH_EVENT_LIKES_REPOSTS,
   REFETCH_EVENT_LIKES,

@@ -63,7 +63,9 @@ import { useAuth0 } from 'Authorization/react-auth0-wrapper'
 import {
   QUERY_USER_PROFILE,
   MUTATION_FRIEND_REQUEST,
-  MUTATION_FRIEND_DELETE
+  MUTATION_FRIEND_DELETE,
+  MUTATION_EDIT_USER,
+  REFETCH_USER_INFO
 } from 'EventQueries/EventQueries.js'
 import { getArgumentValues } from "graphql/execution/values";
 
@@ -118,17 +120,13 @@ export default function ProfilePage(props, { ...rest }) {
     // })
 
     props.client.mutate({
-      mutation: gql`
-      mutation edit_user($authId: String, $changes: users_set_input) {
-        update_users(where: {auth0_id: {_eq: $authId}}, _set: $changes) {
-          affected_rows
-          returning{
-            full_name
-            id
-          }
+      mutation: MUTATION_EDIT_USER,
+      refetchQueries: [{
+        query: REFETCH_USER_INFO,
+        variables: {
+          userId: user.sub
         }
-      }
-      `,
+      }],
       variables: {
         authId: user.sub,
         changes: {

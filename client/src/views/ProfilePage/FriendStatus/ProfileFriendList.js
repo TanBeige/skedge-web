@@ -58,22 +58,22 @@ export default function ExampleScrolling(props) {
 
   const [friendData, setFriendData] = useState([]);
 
-    const friendList = () => {
-        setScrollingModal(true)
-        props.client.query({
-            query: QUERY_ACCEPTED_FRIENDS,
-            variables: {
-                userId: props.profileId
-            }
-        }).then((data) => {
-            setFriendData(data.data.relationship);
-            console.log(friendData);
-        })
-    }
+  const friendList = () => {
+      setScrollingModal(true)
+      props.client.query({
+          query: QUERY_ACCEPTED_FRIENDS,
+          variables: {
+              userId: props.profileId
+          }
+      }).then((data) => {
+          setFriendData(data.data.relationship);
+          console.log(friendData);
+      })
+  }
 
   return (
     <div>
-      <Button color="info" onClick={friendList} variant='outlined' style={{width: '8em', marginLeft: 5}}>Friends</Button>
+      <Button onClick={friendList} variant='outlined' style={{width: '8em', marginLeft: 5}}>Friends</Button>
       <Dialog
         classes={{
           root: `${classes.modalRoot} ${classes.modalRootExample}`,
