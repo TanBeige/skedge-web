@@ -162,6 +162,13 @@ export default function ProfilePage(props, { ...rest }) {
     
     props.client.mutate({
       mutation: MUTATION_FRIEND_REQUEST,
+      refetchQueries: [{
+        query: QUERY_USER_PROFILE,
+        variables: {
+          userId: userId,
+          limit: 10
+        }
+      }],
       variables: {
         objects: {
           user_one_id: user_one,
@@ -196,15 +203,23 @@ export default function ProfilePage(props, { ...rest }) {
     
     props.client.mutate({
       mutation: MUTATION_FRIEND_DELETE,
+      refetchQueries: [{
+        query: QUERY_USER_PROFILE,
+        variables: {
+          userId: userId,
+          limit: 10
+        }
+      }],
       variables: {
           user_one_id: user_one,
           user_two_id: user_two
         }
-    }).then(() => {
+    }).then((data) => {
       //Change relationship type for button to change
+      console.log(data)
       setValues({
         ...values,
-        relationshipType: 0
+        relationshipType: -1
       })
     })
   }

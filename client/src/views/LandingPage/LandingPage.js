@@ -19,6 +19,9 @@ import Button from "components/CustomButtons/Button.js";
 //import HeaderLinks from "components/Header/HeaderLinks.js";
 import Parallax from "components/Parallax/Parallax.js";
 
+import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
+
+
 
 import landingPageStyle from "assets/jss/material-kit-pro-react/views/landingPageStyle.js";
 
@@ -66,6 +69,7 @@ export default function LandingPage(props) {
 
   return (
     <div>
+      <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={50} width={50} src={require('assets/img/logoheader.png')} />
       <Parallax image={paraImage} filter="dark">
         <div className={classes.container}>
           <GridContainer>
@@ -84,6 +88,8 @@ export default function LandingPage(props) {
               </Button>
             </GridItem>
           </GridContainer>
+      <h2 style={{position: 'absolute', color: "#02C39A", zIndex: 10, left: '50%', marginLeft: -25, bottom: 80}}><PlayForWorkIcon fontSize='large' style={{fontSize: 50}}/></h2>
+
         </div>
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>

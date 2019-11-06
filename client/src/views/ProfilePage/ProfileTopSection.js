@@ -206,7 +206,7 @@ export default function ProfileTopSection(props) {
                 <div style={{textAlign: 'center', padding: 10}}>
                   <h3 >Invite Sent</h3>
                   <div className={classes.popoverBody}>
-                    <Button round color="primary" onClick={props.RemoveFriend}>
+                    <Button round color="primary" onClick={props.removeFriend}>
                       Click to unsend.
                     </Button>
                   </div>

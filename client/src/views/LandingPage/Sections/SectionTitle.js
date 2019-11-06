@@ -21,7 +21,7 @@ class SectionTitle extends Component {
     }
 
     render() { 
-        return <h1 className='homeTitle'>Skedge{(this.state.showBlink)?this.state.dot:''}</h1>
+        return <h1 style={{fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif"}}>Skedge{(this.state.showBlink)?this.state.dot:''}</h1>
     }
 }
  
