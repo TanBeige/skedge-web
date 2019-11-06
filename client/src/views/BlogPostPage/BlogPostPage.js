@@ -219,7 +219,7 @@ export default function BlogPostPage(props) {
             </Button>
             <GridContainer justify="center">
               <GridItem md={8} className={classes.textCenter}>
-                <h1 className={classes.title} style={{fontSize: '10vw'}}>
+                <h1 className={classes.title} style={{fontSize: '10vw', wordWrap: 'break-word'}}>
                   {values.name}
                 </h1>
                 <h4 className={classes.subtitle}>

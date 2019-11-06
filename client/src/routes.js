@@ -125,7 +125,7 @@ export const MakeMainRoutes = () => {
     // }
 
     // For Bottom Navbar
-    if(window.location.pathname !== "/" && window.location.pathname !== "/error-page") {
+    if(window.location.pathname !== "/") {
       setValues({
         ...values,
         showBottomBar: true

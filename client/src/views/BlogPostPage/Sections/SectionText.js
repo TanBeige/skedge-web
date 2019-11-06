@@ -14,6 +14,7 @@ import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import TodayIcon from '@material-ui/icons/Today';
 import PlaceIcon from '@material-ui/icons/Place';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import Button from 'components/CustomButtons/Button.js'
 // style components
 import sectionTextStyle from "assets/jss/material-kit-pro-react/views/blogPostSections/sectionTextStyle.js";
@@ -133,7 +134,9 @@ export default function SectionText({ eventInfo, client }) {
           </p>
           <h4>
             <PlaceIcon style={{verticalAlign: 'top'}}/>
-            {`${eventInfo.street}`} <br />
+            {`${eventInfo.location_name}`} <br />
+            <HomeWorkIcon style={{verticalAlign: 'top'}}/>
+            {`${eventInfo.street} `} <br />
             <LocationCityIcon style={{verticalAlign: 'top'}}/>
             {`${eventInfo.city}, ${eventInfo.state}`}
           </h4>

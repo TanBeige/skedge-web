@@ -25,6 +25,7 @@ export const categoryList = [
   "Any",
   "Arts/Culture",
   "Business",
+  "Comedy",
   "Education",
   "Food",
   "Games",

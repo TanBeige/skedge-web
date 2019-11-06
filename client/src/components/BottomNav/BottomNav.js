@@ -33,7 +33,8 @@ class PrimaryNav extends Component {
                 '/create',
                 '/notifications',
                 `/users/0`,
-            ]
+            ],
+            showBar: true
         };
     }
 
@@ -42,6 +43,19 @@ class PrimaryNav extends Component {
     const {pathMap} = this.state;
 
     const value = pathMap.indexOf(pathname);
+
+    console.log("Pathname: ", pathname)
+
+    if (pathname === "/create" || pathname === "/" || pathname === "/error-page") {
+      this.setState({
+        showBar: false
+      })
+    }
+    else {
+      this.setState({
+        showBar: true
+      })
+    }
 
     if (value > -1) {
       this.setState({
@@ -85,22 +99,26 @@ class PrimaryNav extends Component {
   };
 
   render() {
-    const {value, pathMap} = this.state;
-
-    return (
-        <ThemeProvider theme={theme}>
-            <BottomNavigation
-                value={value}
-                onChange={this.handleChange}
-                className="nav primary"
-            >
-                <BottomNavigationAction label="Feed" icon={<DynamicFeedIcon />} component={Link} to={pathMap[0]} />
-                <BottomNavigationAction label="Create" icon={<AddCircleOutlineIcon />} component={Link} to={pathMap[1]} />
-                <BottomNavigationAction label="Notifications" icon={<NotificationsIcon />} component={Link} to={pathMap[2]} />
-                <BottomNavigationAction label="Profile" icon={<AccountCircleIcon />} component={Link} to={pathMap[3]} />
-            </BottomNavigation>
-        </ThemeProvider>
-    );
+    const {value, pathMap, showBar} = this.state;
+    if (showBar) {
+      return (
+          <ThemeProvider theme={theme}>
+              <BottomNavigation
+                  value={value}
+                  onChange={this.handleChange}
+                  className="nav primary"
+              >
+                  <BottomNavigationAction label="Feed" icon={<DynamicFeedIcon />} component={Link} to={pathMap[0]} />
+                  <BottomNavigationAction label="Create" icon={<AddCircleOutlineIcon />} component={Link} to={pathMap[1]} />
+                  <BottomNavigationAction label="Notifications" icon={<NotificationsIcon />} component={Link} to={pathMap[2]} />
+                  <BottomNavigationAction label="Profile" icon={<AccountCircleIcon />} component={Link} to={pathMap[3]} />
+              </BottomNavigation>
+          </ThemeProvider>
+      );
+    }
+    else {
+      return null;
+    }
   }
 }
 

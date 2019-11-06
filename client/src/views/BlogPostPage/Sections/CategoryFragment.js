@@ -11,6 +11,7 @@ import WhatshotIcon from '@material-ui/icons/Whatshot';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import SportsBasketballIcon from '@material-ui/icons/SportsBasketball';
+import MicNoneIcon from '@material-ui/icons/MicNone';
 
 import Button from 'components/CustomButtons/Button.js'
 
@@ -36,6 +37,13 @@ export default function CategoryFragment({category}) {
         genre = (
           <Button color="rose" size="lg" round>
             <DomainIcon /> {category}
+          </Button>
+        )
+        break;
+    case "Business": 
+        genre = (
+          <Button color="rose" size="lg" round>
+            <MicNoneIcon /> {category}
           </Button>
         )
         break;

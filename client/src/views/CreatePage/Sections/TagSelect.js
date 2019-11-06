@@ -12,6 +12,8 @@ import Container from '@material-ui/core/Container';
 import TagsInput from "react-tagsinput";
 import TextField from '@material-ui/core/TextField'
 import { ThemeProvider } from '@material-ui/styles';
+import { categoryList } from "utils/constants";
+
 
 
 import Button from 'components/CustomButtons/Button.js';
@@ -45,6 +47,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function TagSelect(props) {
     const classes = useStyles();
+
+
 
     const [values, setValues] = React.useState({
         category: props.savedCategory,
@@ -120,42 +124,15 @@ const EventTags = ({values, onRadioChange}) => {
             onChange={onRadioChange}
             >
             <Grid container>
-                <Grid item xs={6}>
-                    <FormControlLabel value="Sports" control={<Radio color='primary'/>} label="Sports" />
-                </Grid>
-                <Grid item xs={6}>
-                    <FormControlLabel value="Music" control={<Radio color='primary'/>} label="Music" />
-                </Grid>
-                <Grid item xs={6}>
-                    <FormControlLabel value="Arts/Culture" control={<Radio color='primary'/>} label="Arts/Culture" />
-                </Grid>
-                <Grid item xs={6}>
-                    <FormControlLabel value="Games" control={<Radio color='primary'/>} label="Games" />
-                </Grid>
-                <Grid item xs={6}>
-                    <FormControlLabel value="Politics" control={<Radio color='primary'/>} label="Politics" />
-                </Grid>
-                <Grid item xs={6}>
-                    <FormControlLabel value="Food" control={<Radio color='primary'/>} label="Food" />
-                </Grid>
-                <Grid item xs={6}>
-                    <FormControlLabel value="Education" control={<Radio color='primary'/>} label="Education" />
-                </Grid>
-                <Grid item xs={6}>
-                    <FormControlLabel value="Movies/Theater" control={<Radio color='primary'/>} label="Movies/Theater" />
-                </Grid>
-                <Grid item xs={6}>
-                    <FormControlLabel value="Business" control={<Radio color='primary'/>} label="Business" />
-                </Grid>
-                <Grid item xs={6}>
-                    <FormControlLabel value="Seasonal" control={<Radio color='primary'/>} label="Seasonal" />
-                </Grid>
-                <Grid item xs={6}>
-                    <FormControlLabel value="Party" control={<Radio color='primary'/>} label="Party" />
-                </Grid>
-                <Grid item xs={6}>
-                    <FormControlLabel value="Miscellaneous" control={<Radio color='primary'/>} label="Miscellaneous" />
-                </Grid>
+                {
+                    categoryList.map((cat) => {
+                        return(
+                            <Grid item xs={6}>
+                                <FormControlLabel value={cat} control={<Radio color='primary'/>} label={cat} />
+                            </Grid>
+                        )
+                    })
+                }
             </Grid>
             </RadioGroup>
         </div>
