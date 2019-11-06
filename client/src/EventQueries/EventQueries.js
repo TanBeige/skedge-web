@@ -14,44 +14,48 @@ import gql from "graphql-tag";
 
 // Fragments
 const EVENT_FRAGMENT = gql`
-  fragment EventFragment on events {
+fragment EventFragment on events {
+  id
+  name
+  description
+  location_name
+  event_type
+  event_date {
+    start_date
+    is_recurring
+    weekday
+  }
+  start_time
+  end_time
+  category
+  city
+  state
+  image {
+    image_uuid
+  }
+  user {
     id
     name
-    description
-    location_name
-    event_type
-    event_date
-    start_time
-    end_time
-    category
-    city
-    state
-    image {
-      image_uuid
-    }
-    user {
-      id
-      name
-      picture
-    }
-    event_like{
-      user_id
-    }
-    event_like_aggregate {
-      aggregate {
-        count
-      }
-    }
-    shared_event {
-      user_id
-    }
-    shared_event_aggregate {
-      aggregate {
-        count
-      }
-    }
-    
+    picture
   }
+  event_like{
+    user_id
+  }
+  event_like_aggregate {
+    aggregate {
+      count
+    }
+  }
+  shared_event {
+    user_id
+  }
+  shared_event_aggregate {
+    aggregate {
+      count
+    }
+  }
+  
+}
 `;
 
 const USER_FRAGMENT = gql`
@@ -245,9 +249,9 @@ query fetch_event_going($eventId: Int) {
 
 // Filter Event
 const QUERY_FILTERED_EVENT = gql`
-query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String, $category: String, $city: String, $state: String, $type: String, $date: date) {
+query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String, $category: String, $city: String, $state: String, $type: String, $date: date, $weekday: String) {
   events(
-    order_by:[{event_date: asc}, {start_time: asc}]
+    order_by:[{start_time: asc}, {event_like_aggregate: {count: desc_nulls_last}}]
     limit: $eventLimit
     offset: $eventOffset
     where: {
@@ -269,7 +273,24 @@ query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String
         {category: {_like: $category}},
         {city: {_ilike: $city}},
         {state: {_ilike: $state}},
-        {event_date: {_eq: $date}}
+        {event_date:{
+          _or:[
+            {
+              _and: [
+                {is_recurring: {_eq: false}},
+                {start_date: {_eq: $date}}
+           		]
+            },
+            {
+              _and: [
+                {is_recurring: {_eq: true}},
+                {start_date: {_lte: $date}},
+              	{end_date: {_gte: $date}},
+                {weekday: {_like: $weekday}}
+              ]
+            }
+          ]
+        }}
       ]
     }
   )
@@ -478,32 +499,36 @@ const FETCH_TAGGED_EVENTS = gql`
 // Mutate Events
 const MUTATION_EVENT_ADD = gql`
 mutation insert_events($objects: [events_insert_input!]!) {
-    insert_events(objects: $objects) {
-        affected_rows
-        returning {
-        id
-        name
-        description
-        created_at
-        updated_at
-        event_cohosts {
-          event_id
-          cohost_id
+  insert_events(objects: $objects) {
+    affected_rows
+    returning {
+      id
+      name
+      description
+      created_at
+      updated_at
+      event_cohosts {
+        event_id
+        cohost_id
+      }
+      image {
+        image_name
+        image_uuid
+        url
+        content_type
+      }
+      event_tags {
+        tag {
+          name
+          id
         }
-        image {
-            image_name
-        }
-        event_tags {
-            tag {
-            name
-            id
-            }
-            tag_id
-            event_id
-        }
-        }
-    } 
+        tag_id
+        event_id
+      }
+    }
+  }
 }
+
 `;
 
 const MUTATION_EVENT_UPDATE = gql`

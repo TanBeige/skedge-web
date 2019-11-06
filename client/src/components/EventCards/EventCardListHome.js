@@ -69,6 +69,8 @@ export default function EventCardList(props) {
     if(!values.showNew) {
 
       setIsSearch(true)
+      console.log("Eventcard home, ", filter.weekday)
+
 
       let cat = filter.category;
       if(filter.category == "Any") {
@@ -86,7 +88,8 @@ export default function EventCardList(props) {
               city: `%${filter.city}%`,
               state: `%${filter.state}%`,
               type: filter.type,
-              date: filter.date ? filter.date.formatDate() : null
+              date: filter.date ? filter.date.formatDate() : null,
+              weekday: filter.weekday ? `%${filter.weekday}%` : null
             }
           })
           .then(data => {
@@ -127,7 +130,8 @@ export default function EventCardList(props) {
             city: `%${filter.city}%`,
             state: `%${filter.state}%`,
             type: filter.type,
-            date: filter.date ? filter.date.formatDate() : null
+            date: filter.date ? filter.date.formatDate() : null,
+            weekday: filter.weekday ? `%${filter.weekday}%` : null
           }
         })
         .then(data => {

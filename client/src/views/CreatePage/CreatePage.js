@@ -76,7 +76,8 @@ export default function PricingPage(props) {
       host_approval: false,
       web_url: "",
       cover_pic: "",
-      repeat_days: false,
+      is_recurring: false,
+      weekday: "",
 
       category: "Sports",
       tags: [],
@@ -122,33 +123,83 @@ const handleLocalOrPrivate = (type) => {
     });
 }
 
-  const handleEventInfo = (
-    name,
-    locationName,
-    address,
-    city,
-    state,
-    event_date,
-    start_time,
-    end_time,
-    description,
-    repeat_days
-  ) => {
+  const handleEventInfo = (valuesInfo) => {
+
+    let weekdayString = ""
+    if(valuesInfo.monday) {
+      if(weekdayString === "") {
+        weekdayString += "1"
+      }
+      else {
+        weekdayString += " 1"
+      }
+    }
+    if(valuesInfo.tuesday) {
+      if(weekdayString === "") {
+        weekdayString += "2"
+      }
+      else {
+        weekdayString += " 2"
+      }
+    }
+    if(valuesInfo.wednesday) {
+      if(weekdayString === "") {
+        weekdayString += "3"
+      }
+      else {
+        weekdayString += " 3"
+      }
+    }
+    if(valuesInfo.thursday) {
+      if(weekdayString === "") {
+        weekdayString += "4"
+      }
+      else {
+        weekdayString += " 4"
+      }
+    }
+    if(valuesInfo.friday) {
+      if(weekdayString === "") {
+        weekdayString += "5"
+      }
+      else {
+        weekdayString += " 5"
+      }
+    }
+    if(valuesInfo.saturday) {
+      if(weekdayString === "") {
+        weekdayString += "6"
+      }
+      else {
+        weekdayString += " 6"
+      }
+    }
+    if(valuesInfo.sunday) {
+      if(weekdayString === "") {
+        weekdayString += "0"
+      }
+      else {
+        weekdayString += " 0"
+      }
+    }
+    
+    console.log("weekday string: ", weekdayString)
+
     setValues({
       ...values, 
       currentPage: values.currentPage + 1,
       goingBack: false,
 
-      name: name,
-      location_name: locationName,
-      description: description,
-      street: address,
-      city: city,
-      state: state,
-      event_date: event_date,
-      start_time: start_time,
-      end_time: end_time,
-      repeat_days: repeat_days,
+      name: valuesInfo.name,
+      location_name: valuesInfo.location_name,
+      description: valuesInfo.description,
+      street: valuesInfo.address,
+      city: valuesInfo.city,
+      state: valuesInfo.state,
+      event_date: valuesInfo.event_date,
+      start_time: valuesInfo.start_time,
+      end_time: valuesInfo.end_time,
+      is_recurring: valuesInfo.repeat_days,
     });
   }
 
@@ -260,6 +311,17 @@ const handleLocalOrPrivate = (type) => {
                     city: values.city,
                     state: values.state,
                     location_name: values.location_name,
+
+                    event_date: {
+                      data: {
+                        start_date: "",
+                        end_date: "",
+                        start_time: "",
+                        end_time: "",
+                        is_recurring: true,
+                        weekday: values.weekday
+                      }
+                    },
 
 
                     image: {

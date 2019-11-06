@@ -113,18 +113,7 @@ export default function EventCreateInfo(props) {
       })
   }
   const submitEventInfo = () => {
-    props.handleEventInfo(
-        values.name,
-        values.location_name,
-        values.address,
-        values.city,
-        values.state,
-        values.selectedDay,
-        values.startTime,
-        values.endTime,
-        values.description,
-        values.repeatCheck
-    )
+    props.handleEventInfo(values);
   }
 
 

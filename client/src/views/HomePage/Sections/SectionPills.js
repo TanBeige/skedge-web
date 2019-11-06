@@ -55,6 +55,7 @@ import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPosts
 
 // Constants
 import { categoryList } from "utils/constants";
+import { dataTable } from "AdminDashboard/variables/general";
 
 const useStyles = makeStyles(sectionPillsStyle);
 
@@ -78,6 +79,7 @@ export default function SectionPills(props) {
     state: "",
     limit: 10,
     date: new Date(),
+    weekday: new Date().getDay()
   })
 
   const [expanded, setExpanded] = useState(false)
@@ -95,26 +97,36 @@ export default function SectionPills(props) {
   };
 
   const handleDateChange = date => {
+    const day = date.toDate().getDay();
+    
     setValues({
       ...values,
-      date: date.toDate()
+      date: date.toDate(),
+      weekday: day
     })
   }
 
   const handleDayBack = () => {
     const newDate = values.date.addDays(-1)
-    console.log(newDate)
+    const day = newDate.getDay()
+
+    console.log(day)
     setValues({
       ...values,
-      date: newDate
+      date: newDate,
+      weekday: day
     })
   }
   const handleDayForward = () => {
     const newDate = values.date.addDays(1)
-    console.log(newDate)
+    const day = newDate.getDay();
+
+    console.log(day)
     setValues({
       ...values,
-      date: newDate
+      date: newDate,
+      weekday: day
+
     })
   }
 
@@ -125,7 +137,9 @@ export default function SectionPills(props) {
     city: values.city,
     state: values.state,
     limit: values.limit,
-    date: values.date
+    date: values.date,
+    weekday: values.weekday
+
   })
 
 
@@ -136,7 +150,8 @@ export default function SectionPills(props) {
     city: values.city,
     state: values.state,
     limit: values.limit,
-    date: values.date
+    date: values.date,
+    weekday: values.weekday
   })
 
   const debouncedSearchTerm = useDebounce(values, 300);
@@ -155,7 +170,9 @@ export default function SectionPills(props) {
         city: values.city,
         state: values.state,
         limit: values.limit,
-        date: values.date
+        date: values.date,
+        weekday: values.weekday
+
       });
       setPrivateFilter({
         ...privateFilter,
@@ -165,7 +182,9 @@ export default function SectionPills(props) {
         city: values.city,
         state: values.state,
         limit: values.limit,
-        date: values.date
+        date: values.date,
+        weekday: values.weekday
+
       });
 
   //    setIsSearching(false);
