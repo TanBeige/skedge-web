@@ -34,5 +34,6 @@ export const categoryList = [
   "Party",
   "Politics",
   "Seasonal",
-  "Sports"
+  "Sports",
+  "Miscellaneous"
 ]

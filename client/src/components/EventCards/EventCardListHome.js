@@ -89,7 +89,7 @@ export default function EventCardList(props) {
               state: `%${filter.state}%`,
               type: filter.type,
               date: filter.date ? filter.date.formatDate() : null,
-              weekday: filter.weekday ? `%${filter.weekday}%` : null
+              weekday: filter.weekday !== null ? `%${filter.weekday}%` : null
             }
           })
           .then(data => {
@@ -131,7 +131,7 @@ export default function EventCardList(props) {
             state: `%${filter.state}%`,
             type: filter.type,
             date: filter.date ? filter.date.formatDate() : null,
-            weekday: filter.weekday ? `%${filter.weekday}%` : null
+            weekday: filter.weekday !== null ? `%${filter.weekday}%` : null
           }
         })
         .then(data => {

@@ -126,11 +126,17 @@ const EventTags = ({values, onRadioChange}) => {
             <Grid container>
                 {
                     categoryList.map((cat) => {
-                        return(
-                            <Grid item xs={6}>
-                                <FormControlLabel value={cat} control={<Radio color='primary'/>} label={cat} />
-                            </Grid>
-                        )
+                        console.log(cat)
+                        if(cat === "Any") {
+                            return
+                        }
+                        else {
+                            return(
+                                <Grid item xs={6}>
+                                    <FormControlLabel value={cat} control={<Radio color='primary'/>} label={cat} />
+                                </Grid>
+                            )
+                        }
                     })
                 }
             </Grid>

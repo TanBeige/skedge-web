@@ -79,7 +79,7 @@ export default function PricingPage(props) {
       is_recurring: false,
       weekday: "",
 
-      category: "Sports",
+      category: "Arts/Culture",
       tags: [],
 
       cohosts: []
@@ -198,8 +198,9 @@ const handleLocalOrPrivate = (type) => {
       state: valuesInfo.state,
       event_date: valuesInfo.event_date,
       start_time: valuesInfo.start_time,
-      end_time: valuesInfo.end_time,
-      is_recurring: valuesInfo.repeat_days,
+      end_time: valuesInfo.endTimeExists ? valuesInfo.end_time : null,
+      is_recurring: valuesInfo.repeatCheck,
+      weekday: weekdayString
     });
   }
 
@@ -299,7 +300,6 @@ const handleLocalOrPrivate = (type) => {
                     event_type: values.event_type,
                     name: values.name,
                     description: values.description,
-                    event_date: MomentUtils(values.event_date).format('YYYY-MM-DD'),
                     start_time: MomentUtils(values.start_time).format('HH:mm:ssZ'),
                     end_time: MomentUtils(values.end_time) === null ? values.end_time.format('HH:mm:ssZ') : null,
                     price: values.price,
@@ -314,11 +314,9 @@ const handleLocalOrPrivate = (type) => {
 
                     event_date: {
                       data: {
-                        start_date: "",
-                        end_date: "",
-                        start_time: "",
-                        end_time: "",
-                        is_recurring: true,
+                        start_date: MomentUtils(values.event_date).format('YYYY-MM-DD'),
+                        end_date: MomentUtils(values.event_date).add(1, 'y').format('YYYY-MM-DD'),
+                        is_recurring: values.is_recurring,
                         weekday: values.weekday
                       }
                     },

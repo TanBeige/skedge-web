@@ -66,7 +66,7 @@ export default function EventCreateInfo(props) {
     price: savedValues.price,
     description: savedValues.description,
 
-    repeatCheck: savedValues.repeat_days,
+    repeatCheck: savedValues.is_recurring,
     monday: false,
     tuesday: false,
     wednesday: false,
@@ -315,7 +315,7 @@ export default function EventCreateInfo(props) {
         <form className={classes.form} noValidate>
         <div className='EventCreateInfo'>
           <Grid container spacing={2} >
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <TextField
                 className={classes.input}
                 name="name"
