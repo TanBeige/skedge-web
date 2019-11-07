@@ -116,8 +116,11 @@ export default function EventCard({event, client, userId, filter}) {
       category: event.category ? event.category : "No Category",
       image_id: event.image ? event.image.image_uuid : "cover_images/uzhvjyuletkpvrz5itxv",
       image_url: cloudinary.url(event.image.image_uuid, {secure: true, width: 600, height: 400, crop: "fill" ,fetch_format: "auto", quality: "auto"}),
-      event_date: moment(event.event_date, "YYYY-MM-DD"),
+      start_date: moment(event.event_date[0].start_date, "YYYY-MM-DD"),
+      end_date: moment(event.event_date[0].end_date, "YYYY-MM-DD"),
       start_time: moment(event.start_time, "HH:mm:ss"),
+
+      isRecurring: event.event_date[0].is_recurring,
       
       username: event.user ? event.user.name : "", 
       userProfilePic: event.user ? event.user.picture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
@@ -293,7 +296,8 @@ export default function EventCard({event, client, userId, filter}) {
               <hr style={{margin: 2}}/>
 
               <div className="eventTimes">
-                <TodayIcon fontSize="small" style={{float:'left'}}/><p className="eventDate">{moment(values.event_date).format("MMMM D, YYYY")}</p>
+                {values.isRecurring ? "Recurring Event" : ""}
+                <TodayIcon fontSize="small" style={{float:'left'}}/><p className="eventDate">{moment(values.start_date).format("MMMM D, YYYY")}</p>
                 <AccessAlarmIcon fontSize="small" style={{float:'left'}}/><p className="eventStart">Starts at {values.start_time.format("h:mm A")}</p>
               </div>
               <p style={{textAlign: 'center', fontSize: '16px'}}>

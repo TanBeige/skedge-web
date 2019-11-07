@@ -26,13 +26,16 @@ const useStyles = makeStyles(style);
 
 export default function SectionTeam({client}) {
   const classes = useStyles();
+
   const filter = {
     searchText: "", //Search Text can look for Event Names, Tags, or Event Creators!
     type: "local",
     category: "",
     city: "",
     state: "",
-    limit: 4
+    limit: 4,
+    date: new Date(),
+    weekday: new Date().getDay()
   }
   
   return (
