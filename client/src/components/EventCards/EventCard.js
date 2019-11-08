@@ -79,9 +79,12 @@ const theme = createMuiTheme({
 
 
 
-export default function EventCard({event, client, userId, filter}) {
+export default function EventCard({event, client, userId, filter, currentDate}) {
     const classes = useStyles();
+    const bioMaxLength = 100;
 
+
+    //Styling Card
     const usernameStyle= {
       float: 'right',
       borderRadius: 8,  
@@ -96,10 +99,24 @@ export default function EventCard({event, client, userId, filter}) {
       //marginTop: "10px",
     }
 
+    const timeStyle = {
+      display: "inline",
+      textAlign: 'center',
+      borderRadius: 3,  
+      backgroundColor: "#02C39A", 
+      color: "white",
+      padding: '0px 5px', 
+      //fontSize: 12,
+      // WebkitTextStroke: 0.5, 
+      // WebkitTextStrokeColor: "black",
+      border: '1px solid #02C39A',
+      marginLeft: 3,
+      //marginTop: "10px",
+    }
+
     
-    const bioMaxLength = 70;
 
-
+    // Setting Event Info
     const [values, setValues] = useState({
 
       likeAmount: event.event_like_aggregate.aggregate.count,
@@ -119,8 +136,10 @@ export default function EventCard({event, client, userId, filter}) {
       start_date: moment(event.event_date[0].start_date, "YYYY-MM-DD"),
       end_date: moment(event.event_date[0].end_date, "YYYY-MM-DD"),
       start_time: moment(event.start_time, "HH:mm:ss"),
+      end_time: moment(event.end_time, "HH:mm:ss"),
 
       isRecurring: event.event_date[0].is_recurring,
+      weekday: event.event_date[0].weekday,
       
       username: event.user ? event.user.name : "", 
       userProfilePic: event.user ? event.user.picture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
@@ -241,8 +260,8 @@ export default function EventCard({event, client, userId, filter}) {
           eventBio = <i>There is no bio.</i>
       }
       else if(values.description.length > bioMaxLength) {
-          eventBio = values.description.substring(0, bioMaxLength);
-          eventBio += "..."
+        eventBio += values.description.substring(0, bioMaxLength);
+        eventBio += "..."
       }
       else {
         eventBio = values.description;
@@ -252,7 +271,56 @@ export default function EventCard({event, client, userId, filter}) {
         description: eventBio
       })
     }, [])
-    
+
+    // Setting Display Variables    
+    //let displayDate = "";
+    // if(values.isRecurring) {
+    //   if(values.weekday.includes("1")) {
+    //     displayDate += "Mon";
+    //   }
+    //   if(values.weekday.includes("2")) {
+    //     if(displayDate.length > 0) {
+    //       displayDate += " "
+    //     }
+    //     displayDate += "Tue";
+    //   }
+    //   if(values.weekday.includes("3")) {
+    //     if(displayDate.length > 0) {
+    //       displayDate += " "
+    //     }
+    //     displayDate += "Wed";
+    //   }
+    //   if(values.weekday.includes("4")) {
+    //     if(displayDate.length > 0) {
+    //       displayDate += " "
+    //     }
+    //     displayDate += "Thur";
+    //   }
+    //   if(values.weekday.includes("5")) {
+    //     if(displayDate.length > 0) {
+    //       displayDate += " "
+    //     }
+    //     displayDate += "Fri";
+    //   }
+    //   if(values.weekday.includes("6")) {
+    //     if(displayDate.length > 0) {
+    //       displayDate += " "
+    //     }
+    //     displayDate += "Sat";
+    //   }
+    //   if(values.weekday.includes("0")) {
+    //     if(displayDate.length > 0) {
+    //       displayDate += " "
+    //     }
+    //     displayDate += "Sun";
+    //   }
+    // }
+    //else {
+      const displayMonth = moment(currentDate).format("MMM")
+      const displayDay = moment(currentDate).format("D")
+    //}
+
+    // Rendering Card
     return(
       <ThemeProvider theme={theme}>
         <Card blog style={{border: "2px solid darkgrey"}} raised>  
@@ -273,22 +341,24 @@ export default function EventCard({event, client, userId, filter}) {
                 <div
                   style={{
                     color: "#02C39A",
+                    textAlign: 'center',
                     position: "absolute",
-                    display: 'inline',
+                    //display: 'inline',
                     top: "3px",
                     left: "0px",
-                    //width: '100%',
-                    borderRadius: 8,  
-                    backgroundColor: "rgba(255,255,255,1.0)", 
-                    //color: "#02C39A",
-                    padding: '3px 5px 0px 5px', 
-                    // WebkitTextStroke: 0.5, 
-                    // WebkitTextStrokeColor: "black",
-                    //border: '1px solid #02C39A',
+                    borderRadius: 3,  
+                    backgroundColor: "#02C39A", 
+                    color: "white",
+                    padding: '0px 8px 0px 8px', 
+                    border: '1px solid #02C39A',
                     marginLeft: 3,
+                    lineHeight: 0,
+                    
                   }}
                 >
-                  <p style={{display: 'inline', width: '100%', fontSize: 12}} className="eventDate">{moment(values.start_date).format("MMMM D, YYYY")}</p>
+                  {/* <TodayIcon /> < br /> */}
+                  <h5 style={{margin: 0, padding: 0, fontSize: 12, fontWeight: "600"}}>{displayMonth}</h5>
+                  <h5 style={{margin: '-5px 0px -2px 0px', fontSize: 12, fontWeight: "600"}}>{displayDay}</h5>
                 </div>
 
                 <Link to={`/users/${values.userId}`}>
@@ -314,23 +384,29 @@ export default function EventCard({event, client, userId, filter}) {
               <Link to={`/events/${event.id}`}>
                 <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center"}}>{values.name}</h3>
               </Link>
+              
               <hr style={{margin: 2}}/>
 
-              <div className="eventTimes">
-                {values.isRecurring ? "Recurring Event" : ""}
-                <TodayIcon fontSize="small" style={{float:'left'}}/><p className="eventDate">{moment(values.start_date).format("MMMM D, YYYY")}</p>
-                <AccessAlarmIcon fontSize="small" style={{float:'left'}}/><p className="eventStart">Starts at {values.start_time.format("h:mm A")}</p>
+              <div style={{width: '100%', textAlign: 'left'}}>
+                <p style={{fontSize: 16}}>
+                  <AccessAlarmIcon fontSize='small' style={{verticalAlign: 'top'}}/>
+                  {` ${values.start_time.format("h:mma")}`}
+                  {values.end_time ? ` - ${values.end_time.format("h:mma")}` : ""}
+                </p>
               </div>
-              <p style={{textAlign: 'center', fontSize: '16px'}}>
-                {values.description}
-              </p>
-              <div>
-                <p>
+
+              <div >
+                <p style={{display: 'inline', width: '100%', fontSize: 16}}>
                   <PlaceIcon color="error" fontSize='small' style={{verticalAlign: 'top'}} />
                   {`${event.location_name}`}
                 </p>
               </div>
+
+              <p style={{textAlign: 'left', fontSize: '12px', lineHeight: 1.2, marginTop: 5}}>
+                {values.description}
+              </p>
             </CardBody>
+
             <CardFooter style={{paddingBottom: 5}}>
               <Info style={{textAlign: 'left'}}>
                 <h6 color='rose' className={classes.cardCategory}>{values.category.toUpperCase()}</h6>

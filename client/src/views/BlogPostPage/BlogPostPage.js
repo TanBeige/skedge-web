@@ -183,7 +183,7 @@ export default function BlogPostPage(props) {
         state: newInfo.state,
         startDate: newInfo.start_date,
         startTime: moment(newInfo.start_time).format("HH:mm:ssZ"),
-        endTime: moment(newInfo.end_time).format("HH:mm:ssZ"),
+        endTime: newInfo.end_time ? moment(newInfo.end_time).format("HH:mm:ssZ") : null,
         description: newInfo.description,
         category: newInfo.category
       }

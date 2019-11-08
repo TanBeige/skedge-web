@@ -233,6 +233,7 @@ export default function EventCardList(props) {
                             client={props.client}
                             userId={props.userId}
                             filter={props.filter}
+                            currentDate={props.filter.date}
                         />
                       </GridItem>
                       {
