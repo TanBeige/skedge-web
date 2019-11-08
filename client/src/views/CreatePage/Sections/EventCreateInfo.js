@@ -279,6 +279,7 @@ export default function EventCreateInfo(props) {
 
   if(
     values.name.replace(/\s/g, '').length && 
+    values.name.replace(/\s/g, '').length <= 50 && 
     values.location_name.replace(/\s/g, '').length && 
     values.address.replace(/\s/g, '').length && 
     values.city.replace(/\s/g, '').length && 
@@ -317,6 +318,7 @@ export default function EventCreateInfo(props) {
           <Grid container spacing={2} >
             <Grid item xs={12} sm={12}>
               <TextField
+                error={values.name.length > 50}
                 className={classes.input}
                 name="name"
                 variant="outlined"
@@ -327,7 +329,7 @@ export default function EventCreateInfo(props) {
                 id="event_name"
                 label="Event Name"
                 autoFocus
-                placeholder="ex) Comedy Night Live"
+                placeholder="50 character max."
               />
             </Grid>
             <Grid item xs={12} sm={6}>

@@ -165,215 +165,232 @@ export default function ExampleLiveDemo(props) {
         console.log("AAAAAAAAAA")
     }, [isEditing])
 
-  return (
-    <div>
+    // Check Values
+    let continueDisabled = true;
+    if(
+        eventInfo.name.replace(/\s/g, '').length && 
+        eventInfo.name.replace(/\s/g, '').length <= 50 && 
+        eventInfo.location_name.replace(/\s/g, '').length && 
+        eventInfo.address.replace(/\s/g, '').length && 
+        eventInfo.city.replace(/\s/g, '').length && 
+        eventInfo.state.replace(/\s/g, '').length
+    ) {
+        continueDisabled = false;
+    }
+    else {
+        continueDisabled = true;
+    }
 
-        {editButton}
+    //return
+     return (
+        <div>
 
-        <Dialog
-            classes={{
-                root: classes.modalRoot,
-                paper: classes.modal
-            }}
-            open={isEditing}
-            TransitionComponent={Transition}
-            keepMounted
-            onClose={() => setIsEditing(false)}
-            aria-labelledby="classic-modal-slide-title"
-            aria-describedby="classic-modal-slide-description"
-        >
-            <DialogTitle
-                id="classic-modal-slide-title"
-                disableTypography
-                className={classes.modalHeader}
+            {editButton}
+
+            <Dialog
+                classes={{
+                    root: classes.modalRoot,
+                    paper: classes.modal
+                }}
+                open={isEditing}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={() => setIsEditing(false)}
+                aria-labelledby="classic-modal-slide-title"
+                aria-describedby="classic-modal-slide-description"
             >
-            <Button
-                simple
-                className={classes.modalCloseButton}
-                key="close"
-                aria-label="Close"
-                onClick={() => setIsEditing(false)}
-            >
-                {" "}
-                <Close className={classes.modalClose} />
-            </Button>
-                <h4 className={classes.modalTitle}>Edit Event</h4>
-            </DialogTitle>
-            <DialogContent
-                id="classic-modal-slide-description"
-                className={classes.modalBody}
-            >
-
-                <GridItem xs={12} sm={12}>
-                    <TextField
-                        name="name"
-                        value={eventInfo.name}
-                        required
-                        fullWidth
-                        onChange={handleChange('name')}
-                        id="event_name"
-                        label="Name"
-                        placeholder="Name"
-                    />
-                </GridItem>
-                <GridItem xs={12} sm={12}>
-                    <TextField
-                        name="location_name"
-                        value={eventInfo.location_name}
-                        required
-                        fullWidth
-                        onChange={handleChange('location_name')}
-                        id="location_name"
-                        label="Location Name"
-                        placeholder="Location Name"
-                        margin="normal"
-
-                    />
-                </GridItem>
-                <GridItem xs={12} sm={12}>
-                    <TextField
-                        name="address"
-                        value={eventInfo.address}
-                        required
-                        fullWidth
-                        onChange={handleChange('address')}
-                        id="address"
-                        label="Address"
-                        placeholder="Address"
-                        margin="normal"
-
-                    />
-                </GridItem>
-                <GridItem xs={12} sm={12}>
-                    <TextField
-                        name="city"
-                        value={eventInfo.city}
-                        required
-                        fullWidth
-                        onChange={handleChange('city')}
-                        id="city"
-                        label="City"
-                        placeholder="City"
-                        margin="normal"
-
-                    />
-                </GridItem>
-                <GridItem xs={12} sm={12}>
-                    <TextField
-                        id="state"
-                        select
-                        label="State"
-                        required
-                        fullWidth
-                        value={eventInfo.state}
-                        onChange={handleChange('state')}
-                        SelectProps={{
-                            MenuProps: {
-                                className: classes.menu,
-                            },
-                        }}
-                        margin="normal"
-                    >
-                        {
-                        states.map(value => 
-                            (<MenuItem key={value} value={value}>{value}</MenuItem>)
-                        )}
-                    </TextField>
-                </GridItem>
-
-                <MuiPickersUtilsProvider utils={MomentUtils}>
-                    <GridItem xs={12}>
-                        <DatePicker
-                            variant="dialog"
-                            label="Event Date"
-                            format="dddd, MMMM Do YYYY"
-                            fullWidth
-                            value={eventInfo.start_date}
-                            onChange={handleDayClick}
-                            margin="normal"
-
-                        />
-                    </GridItem>
-                
-                    <GridItem xs={12}>
-                        <TimePicker
-                            label="Start Time"
-                            fullWidth
-                            value={eventInfo.start_time}
-                            onChange={handleTimeClick}
-                            margin="normal"
-
-                        />
-                    </GridItem>
-                    <GridItem xs={12}>
-                        {endTimeJS}
-                    </GridItem>
-                </MuiPickersUtilsProvider>
-
-                <GridItem xs={12} sm={12}>
-                    <TextField
-                        id="category"
-                        select
-                        label="Category"
-                        required
-                        fullWidth
-                        value={eventInfo.category}
-                        onChange={handleChange('category')}
-                        SelectProps={{
-                            MenuProps: {
-                                className: classes.menu,
-                            },
-                        }}
-                        margin="normal"
-
-                    >
-                        {
-                            categoryList.map(value => {
-                                if(value === "Any") {
-                                    return;
-                                }
-                                else{
-                                    return (<MenuItem key={value} value={value}>{value}</MenuItem>)
-                                }
-                            }
-                        )}
-                    </TextField>
-                </GridItem>
-
-
-
-
-
-                <GridItem xs={12} sm={12}>
-                    <TextField 
-                        id="description"
-                        label="Event Description"
-                        variant="outlined"
-                        fullWidth
-                        multiline
-                        rows="3"
-                        className={classes.textField}
-                        value={eventInfo.description}
-                        fullWidth
-                        onChange={handleChange('description')}
-                        margin="normal"
-                    />
-                </GridItem>
-
-
-
-
-
-                
-            </DialogContent>
-            <DialogActions className={classes.modalFooter}>
-                <Button onClick={() => setIsEditing(false)} color="secondary">
-                    Close
+                <DialogTitle
+                    id="classic-modal-slide-title"
+                    disableTypography
+                    className={classes.modalHeader}
+                >
+                <Button
+                    simple
+                    className={classes.modalCloseButton}
+                    key="close"
+                    aria-label="Close"
+                    onClick={() => setIsEditing(false)}
+                >
+                    {" "}
+                    <Close className={classes.modalClose} />
                 </Button>
-            <Button color="primary" onClick={submitChanges}>Save changes</Button>
-            </DialogActions>
-        </Dialog>
-    </div>
+                    <h4 className={classes.modalTitle}>Edit Event</h4>
+                </DialogTitle>
+                <DialogContent
+                    id="classic-modal-slide-description"
+                    className={classes.modalBody}
+                >
+
+                    <GridItem xs={12} sm={12}>
+                        <TextField
+                            name="name"
+                            value={eventInfo.name}
+                            required
+                            fullWidth
+                            onChange={handleChange('name')}
+                            id="event_name"
+                            label="Name"
+                            placeholder="Name"
+                        />
+                    </GridItem>
+                    <GridItem xs={12} sm={12}>
+                        <TextField
+                            name="location_name"
+                            value={eventInfo.location_name}
+                            required
+                            fullWidth
+                            onChange={handleChange('location_name')}
+                            id="location_name"
+                            label="Location Name"
+                            placeholder="Location Name"
+                            margin="normal"
+
+                        />
+                    </GridItem>
+                    <GridItem xs={12} sm={12}>
+                        <TextField
+                            name="address"
+                            value={eventInfo.address}
+                            required
+                            fullWidth
+                            onChange={handleChange('address')}
+                            id="address"
+                            label="Address"
+                            placeholder="Address"
+                            margin="normal"
+
+                        />
+                    </GridItem>
+                    <GridItem xs={12} sm={12}>
+                        <TextField
+                            name="city"
+                            value={eventInfo.city}
+                            required
+                            fullWidth
+                            onChange={handleChange('city')}
+                            id="city"
+                            label="City"
+                            placeholder="City"
+                            margin="normal"
+
+                        />
+                    </GridItem>
+                    <GridItem xs={12} sm={12}>
+                        <TextField
+                            id="state"
+                            select
+                            label="State"
+                            required
+                            fullWidth
+                            value={eventInfo.state}
+                            onChange={handleChange('state')}
+                            SelectProps={{
+                                MenuProps: {
+                                    className: classes.menu,
+                                },
+                            }}
+                            margin="normal"
+                        >
+                            {
+                            states.map(value => 
+                                (<MenuItem key={value} value={value}>{value}</MenuItem>)
+                            )}
+                        </TextField>
+                    </GridItem>
+
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                        <GridItem xs={12}>
+                            <DatePicker
+                                variant="dialog"
+                                label="Event Date"
+                                format="dddd, MMMM Do YYYY"
+                                fullWidth
+                                value={eventInfo.start_date}
+                                onChange={handleDayClick}
+                                margin="normal"
+
+                            />
+                        </GridItem>
+                    
+                        <GridItem xs={12}>
+                            <TimePicker
+                                label="Start Time"
+                                fullWidth
+                                value={eventInfo.start_time}
+                                onChange={handleTimeClick}
+                                margin="normal"
+
+                            />
+                        </GridItem>
+                        <GridItem xs={12}>
+                            {endTimeJS}
+                        </GridItem>
+                    </MuiPickersUtilsProvider>
+
+                    <GridItem xs={12} sm={12}>
+                        <TextField
+                            id="category"
+                            select
+                            label="Category"
+                            required
+                            fullWidth
+                            value={eventInfo.category}
+                            onChange={handleChange('category')}
+                            SelectProps={{
+                                MenuProps: {
+                                    className: classes.menu,
+                                },
+                            }}
+                            margin="normal"
+
+                        >
+                            {
+                                categoryList.map(value => {
+                                    if(value === "Any") {
+                                        return;
+                                    }
+                                    else{
+                                        return (<MenuItem key={value} value={value}>{value}</MenuItem>)
+                                    }
+                                }
+                            )}
+                        </TextField>
+                    </GridItem>
+
+
+
+
+
+                    <GridItem xs={12} sm={12}>
+                        <TextField 
+                            id="description"
+                            label="Event Description"
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            rows="3"
+                            className={classes.textField}
+                            value={eventInfo.description}
+                            fullWidth
+                            onChange={handleChange('description')}
+                            margin="normal"
+                        />
+                    </GridItem>
+
+
+
+
+
+                    
+                </DialogContent>
+                <DialogActions className={classes.modalFooter}>
+                    <Button onClick={() => setIsEditing(false)} color="secondary">
+                        Close
+                    </Button>
+                <Button color="primary" disabled={continueDisabled} onClick={submitChanges}>Save changes</Button>
+                </DialogActions>
+            </Dialog>
+        </div>
   );
 }
 

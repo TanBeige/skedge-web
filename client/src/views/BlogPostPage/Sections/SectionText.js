@@ -129,14 +129,14 @@ export default function SectionText({ eventInfo, client }) {
           <h3 className={classes.title}>
             Details
           </h3>
-          <p>
+          <p style={{wordWrap: 'break-word'}}>
             {eventInfo.description}
           </p>
           <h4>
             <PlaceIcon style={{verticalAlign: 'top'}}/>
             {`${eventInfo.location_name}`} <br />
             <HomeWorkIcon style={{verticalAlign: 'top'}}/>
-            {`${eventInfo.street} `} <br />
+            { eventInfo.street ? `${eventInfo.street} ` : ""} <br />
             <LocationCityIcon style={{verticalAlign: 'top'}}/>
             {`${eventInfo.city}, ${eventInfo.state}`}
           </h4>

@@ -233,6 +233,8 @@ const handleLocalOrPrivate = (type) => {
  */
   const submitEvent = async (bannerImg) => {
 
+    let errorOccurred = false;
+
     // Error Check event creation first
     if(
       !values.name.replace(/\s/g, '').length && 
@@ -258,7 +260,19 @@ const handleLocalOrPrivate = (type) => {
     console.log(form_data)
 
     // Upload file to Cloudinary
-    const response = await axios.post(`/storage/upload`, form_data);
+    const response = await axios.post(`/storage/upload`, form_data).catch((error => {
+      alert("Error Occurred: ", error.name)
+      setValues({
+        ...values,
+        eventSubmitted: false
+      })
+      errorOccurred = true;
+      return;
+    }))
+    
+    if (errorOccurred) {
+      return
+    }
 
     // Grabs image info and adds uploaded file ID to cover_pic in events table.
     console.log(response);
@@ -343,6 +357,14 @@ const handleLocalOrPrivate = (type) => {
     }).then(() =>{
         let path = `home`;
         props.history.push(path);
+    }).catch(error => {
+      console.log(error)
+      alert("Error Occurred: ", error.name)
+      setValues({
+        ...values,
+        eventSubmitted: false
+      })
+      return
     })
 
     // If returning to the Homepage becomes a problem:

@@ -232,6 +232,12 @@ export default function BlogPostPage(props) {
     addView();
   }, [])
 
+  let titleSize = '10vw'
+
+  if (window.innerWidth > 1000) {
+    titleSize = '7vw'
+  }
+
   const classes = useStyles();
   console.log("Event cohosts: ", values.event_cohosts)
 
@@ -300,8 +306,8 @@ export default function BlogPostPage(props) {
                 <ChevronLeftIcon/>
             </Button>
             <GridContainer justify="center">
-              <GridItem md={8} className={classes.textCenter}>
-                <h1 className={classes.title} style={{fontSize: '10vw', wordWrap: 'break-word'}}>
+              <GridItem md={10} className={classes.textCenter}>
+                <h1 className={classes.title} style={{fontSize: titleSize, wordWrap: 'break-word'}}>
                   {values.name}
                 </h1>
                 <h4 className={classes.subtitle}>
