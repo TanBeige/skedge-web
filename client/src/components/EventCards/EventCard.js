@@ -395,7 +395,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
                 </p>
               </div>
 
-              <div >
+              <div style={{textAlign: 'left'}}>
                 <p style={{display: 'inline', width: '100%', fontSize: 16}}>
                   <PlaceIcon color="error" fontSize='small' style={{verticalAlign: 'top'}} />
                   {`${event.location_name}`}

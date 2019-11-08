@@ -235,7 +235,7 @@ export default function BlogPostPage(props) {
   let titleSize = '10vw'
 
   if (window.innerWidth > 1000) {
-    titleSize = '7vw'
+    titleSize = '5vw'
   }
 
   const classes = useStyles();
