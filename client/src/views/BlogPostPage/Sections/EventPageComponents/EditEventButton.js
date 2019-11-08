@@ -66,7 +66,7 @@ export default function ExampleLiveDemo(props) {
     const [eventInfo, setEventInfo] = React.useState({
         name: props.oldEvent.name,
         location_name: props.oldEvent.location_name,
-        address: props.oldEvent.address,
+        street: props.oldEvent.street,
         city: props.oldEvent.city,
         state: props.oldEvent.state,
         start_date: props.oldEvent.start_date,
@@ -147,7 +147,7 @@ export default function ExampleLiveDemo(props) {
         setEventInfo({
             name: props.oldEvent.name,
             location_name: props.oldEvent.location_name,
-            address: props.oldEvent.address,
+            street: props.oldEvent.street,
             city: props.oldEvent.city,
             state: props.oldEvent.state,
             start_date: props.oldEvent.start_date,
@@ -167,11 +167,12 @@ export default function ExampleLiveDemo(props) {
 
     // Check Values
     let continueDisabled = true;
+    console.log(eventInfo)
     if(
         eventInfo.name.replace(/\s/g, '').length && 
-        eventInfo.name.replace(/\s/g, '').length <= 50 && 
+        eventInfo.name.length <= 50 && 
         eventInfo.location_name.replace(/\s/g, '').length && 
-        eventInfo.address.replace(/\s/g, '').length && 
+        eventInfo.street.replace(/\s/g, '').length && 
         eventInfo.city.replace(/\s/g, '').length && 
         eventInfo.state.replace(/\s/g, '').length
     ) {
@@ -249,14 +250,14 @@ export default function ExampleLiveDemo(props) {
                     </GridItem>
                     <GridItem xs={12} sm={12}>
                         <TextField
-                            name="address"
-                            value={eventInfo.address}
+                            name="street"
+                            value={eventInfo.street}
                             required
                             fullWidth
-                            onChange={handleChange('address')}
-                            id="address"
-                            label="Address"
-                            placeholder="Address"
+                            onChange={handleChange('street')}
+                            id="street"
+                            label="Street"
+                            placeholder="Street"
                             margin="normal"
 
                         />
