@@ -49,7 +49,7 @@ const useStyles = makeStyles(blogPostPageStyle);
 export default function BlogPostPage(props) {
   const eventId = props.match.params.id;
 
-  const { loading, user } = useAuth0();
+  const { loading, user, isAuthenticated} = useAuth0();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -242,13 +242,16 @@ export default function BlogPostPage(props) {
   console.log("Event cohosts: ", values.event_cohosts)
 
   let editEventButton = "";
-  if(user.sub === values.user_auth0_id || values.event_cohosts) {
-    editEventButton = (
-      <Button color="info" round onClick={() => setIsEditing(!isEditing)}>Edit Event</Button>
-    )
+  if(isAuthenticated) {
+    if(user.sub === values.user_auth0_id || values.event_cohosts) {
+      editEventButton = (
+        <Button color="info" round onClick={() => setIsEditing(!isEditing)}>Edit Event</Button>
+      )
+    }
   }
   const editingEvent = () => {
     //if(props.currentUserProfile) {
+      if(isAuthenticated) {
         return (
             <div  style={{textAlign: 'center'}}>
               <EditEventButton 
@@ -260,8 +263,9 @@ export default function BlogPostPage(props) {
               />
             </div>
         )
+      }
     //}
-}
+  }
   console.log("is editing?: ", isEditing)
 
   if(values.event_exists === false) {

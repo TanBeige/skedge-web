@@ -136,14 +136,13 @@ export const MakeMainRoutes = () => {
 
   if (loading) {
     return(
-      
       <div>
         <LoadingPage reason="Loading" />
       </div>
     )
   }
   // Wait for token to return and client to be made.
-  if(!values.client) {
+  else if(!values.client) {
     console.log("Getting Client")
     if(!loading) {
       getIdTokenClaims().then(function(result) {
