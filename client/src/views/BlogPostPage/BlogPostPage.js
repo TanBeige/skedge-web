@@ -26,15 +26,17 @@ import SectionComments from "./Sections/SectionComments.js";
 import SectionSimilarStories from "./Sections/SectionSimilarStories.js";
 import CategoryFragment from './Sections/CategoryFragment.js';
 import LoadingPage from '../LoadingPage/LoadingPage.js';
-
+import EditEventButton from './Sections/EventPageComponents/EditEventButton.js'
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 import {
   FETCH_EVENT_INFO,
-  MUTATION_EVENT_VIEW
+  MUTATION_EVENT_VIEW,
+  MUTATION_EVENT_UPDATE
 } from 'EventQueries/EventQueries.js'
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
 
+var moment = require("moment")
 
 var cloudinary = require('cloudinary/lib/cloudinary').v2
 
@@ -49,7 +51,9 @@ export default function BlogPostPage(props) {
 
   const { loading, user } = useAuth0();
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const [values, setValues] = useState({
     event_id: eventId,
@@ -58,7 +62,7 @@ export default function BlogPostPage(props) {
     name: "",
     description: "",
     event_type: "",
-    event_date: "",
+    start_date: "",
     start_time: "",
     end_time: "",
     category: "",
@@ -96,7 +100,7 @@ export default function BlogPostPage(props) {
     // Says we're loading the event
     setIsLoading(true);
 
-
+    //Get Event Info from Database
     props.client.query({
       query: FETCH_EVENT_INFO,
       variables: {
@@ -118,7 +122,10 @@ export default function BlogPostPage(props) {
           name: data.data.events[0].name,
           description: data.data.events[0].description,
           event_type: data.data.events[0].event_type,
-          event_date: data.data.events[0].event_date,
+
+          start_date: data.data.events[0].event_date[0].start_date,
+          end_date: data.data.events[0].event_date[0].start_date,
+
           start_time: data.data.events[0].start_time,
           end_time: data.data.events[0].end_time,
           category: data.data.events[0].category,
@@ -138,6 +145,7 @@ export default function BlogPostPage(props) {
           user_name: data.data.events[0].user.name,
           user_full_name: data.data.events[0].user.full_name,
           user_biography: data.data.events[0].user.biography,
+          user_auth0_id: data.data.events[0].user.auth0_id,
           
           event_cohosts: data.data.events[0].event_cohosts,
           event_tags: data.data.events[0].event_tags,
@@ -154,6 +162,54 @@ export default function BlogPostPage(props) {
     })
   }
 
+  //Submit Changes
+  const handleEventChange = (newInfo) => {
+    console.log(newInfo);
+
+    props.client.mutate({
+      mutation: MUTATION_EVENT_UPDATE,
+      refetchQueries: [{
+        query: FETCH_EVENT_INFO,
+        variables: {
+          eventId: eventId
+        }
+      }],
+      variables: {
+        eventId: values.event_id,
+        name: newInfo.name,
+        locationName: newInfo.location_name,
+        address: newInfo.address,
+        city: newInfo.city,
+        state: newInfo.state,
+        startDate: newInfo.start_date,
+        startTime: moment(newInfo.start_time).format("HH:mm:ssZ"),
+        description: newInfo.description,
+        category: newInfo.category
+      }
+    }).then(()=> {
+      console.log("Success!")
+    }).catch(error => {
+      console.error(error);
+    });
+
+    setValues({
+      ...values,
+      name: newInfo.name,
+      location_name: newInfo.location_name,
+      address: newInfo.address,
+      city: newInfo.city,
+      state: newInfo.state,
+      start_date: newInfo.start_date,
+      //end_date: ,
+      //is_recurring: newInfo.is_recurring,
+      start_time: newInfo.start_time,
+      //end_time: newInfo.end_time,
+      description: newInfo.description,
+      category: newInfo.category
+    })
+  }
+
+  // Add a View to the event
   const addView = () => {
     props.client.mutate({
       mutation: MUTATION_EVENT_VIEW,
@@ -175,6 +231,30 @@ export default function BlogPostPage(props) {
   }, [])
 
   const classes = useStyles();
+  console.log("Event cohosts: ", values.event_cohosts)
+
+  let editEventButton = "";
+  if(user.sub === values.user_auth0_id || values.event_cohosts) {
+    editEventButton = (
+      <Button color="info" round onClick={() => setIsEditing(!isEditing)}>Edit Event</Button>
+    )
+  }
+  const editingEvent = () => {
+    //if(props.currentUserProfile) {
+        return (
+            <div  style={{textAlign: 'center'}}>
+              <EditEventButton 
+                  client={props.client}
+                  userId={user.sub}
+                  creatorId={values.user_auth0_id}
+                  handleEventChange={handleEventChange}
+                  oldEvent={values}
+              />
+            </div>
+        )
+    //}
+}
+  console.log("is editing?: ", isEditing)
 
   if(values.event_exists === false) {
     return <ErrorPage />
@@ -227,6 +307,10 @@ export default function BlogPostPage(props) {
                 </h4>
                 <br />
                <CategoryFragment category={values.category}/>
+               <br />
+
+               {editingEvent()}
+
               </GridItem>
             </GridContainer>
           </div>

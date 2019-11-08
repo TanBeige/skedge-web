@@ -139,7 +139,6 @@ export default function SectionPills(props) {
     limit: values.limit,
     date: values.date,
     weekday: values.weekday
-
   })
 
 
@@ -172,7 +171,6 @@ export default function SectionPills(props) {
         limit: values.limit,
         date: values.date,
         weekday: values.weekday
-
       });
       setPrivateFilter({
         ...privateFilter,
@@ -184,7 +182,6 @@ export default function SectionPills(props) {
         limit: values.limit,
         date: values.date,
         weekday: values.weekday
-
       });
 
   //    setIsSearching(false);

@@ -10,6 +10,7 @@ const modalStyle = theme => ({
       maxWidth: "500px",
       margin: "auto"
     },
+    margin: 10,
     borderRadius: "6px",
     overflow: "visible",
     maxHeight: "unset",

@@ -126,7 +126,6 @@ const EventTags = ({values, onRadioChange}) => {
             <Grid container>
                 {
                     categoryList.map((cat) => {
-                        console.log(cat)
                         if(cat === "Any") {
                             return
                         }

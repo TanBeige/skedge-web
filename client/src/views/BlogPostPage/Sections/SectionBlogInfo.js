@@ -50,7 +50,7 @@ export default function SectionBlogInfo({eventInfo}) {
     <div className={classes.section} >
       <GridContainer justify="center">
         <GridItem xs={12} sm={10} md={8}>
-          <GridContainer>
+          {/* <GridContainer>
             <GridItem xs={12} sm={6} md={6}>
               <div className={classes.blogTags}>
                 Tags: {` `}
@@ -61,7 +61,7 @@ export default function SectionBlogInfo({eventInfo}) {
                 }
               </div>
             </GridItem>
-          </GridContainer>
+          </GridContainer> */}
           <hr />
           <h2 style={{textAlign: 'center'}}>Hosts</h2>
           <Card plain profile className={classes.card} >

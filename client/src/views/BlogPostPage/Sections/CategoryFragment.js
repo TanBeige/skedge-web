@@ -40,7 +40,7 @@ export default function CategoryFragment({category}) {
           </Button>
         )
         break;
-    case "Business": 
+    case "Comedy": 
         genre = (
           <Button color="rose" size="lg" round>
             <MicNoneIcon /> {category}

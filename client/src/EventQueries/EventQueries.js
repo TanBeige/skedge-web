@@ -360,7 +360,13 @@ const FETCH_EVENT_INFO = gql`
       description
       location_name
       event_type
-      event_date
+
+      event_date {
+        start_date
+        is_recurring
+        weekday
+      }
+
       start_time
       end_time
       category
@@ -378,6 +384,7 @@ const FETCH_EVENT_INFO = gql`
       }
       user {
         id
+        auth0_id
         picture
         name
         full_name
@@ -393,6 +400,7 @@ const FETCH_EVENT_INFO = gql`
       event_cohosts {
         cohost {
           name
+          auth0_id
           id
           picture
         }
@@ -532,11 +540,31 @@ mutation insert_events($objects: [events_insert_input!]!) {
 `;
 
 const MUTATION_EVENT_UPDATE = gql`
-  mutation update_events($eventId: Int, $set: events_set_input!) {
-    update_events(where: { id: { _eq: $eventId } }, _set: $set) {
-      affected_rows
+mutation update_event($eventId: Int, $name: String, $locationName: String, $address: String, $city: String, $state: String, $startDate: date, $startTime: timetz, $description: String, $category: String){
+  update_events(
+    where: {id: {_eq: $eventId}}
+    _set: {
+      name: $name,
+      location_name: $locationName,
+      street: $address,
+      city: $city,
+      state: $state,
+      start_time: $startTime,
+      description: $description,
+      category: $category
     }
+  ) {
+    affected_rows
   }
+  update_event_dates(
+    where: {event_id: {_eq: $eventId}}
+    _set: {
+			start_date: $startDate
+    }
+  ){
+    affected_rows
+  }
+}
 `;
 
 const MUTATION_EVENT_DELETE = gql`

@@ -97,8 +97,8 @@ export default function SectionText({ eventInfo, client }) {
     )
   }
   let formattedDate = ""
-  if(eventInfo.event_date) {
-    formattedDate = moment(eventInfo.event_date, "YYYY-MM-DD")
+  if(eventInfo.start_date) {
+    formattedDate = moment(eventInfo.start_date, "YYYY-MM-DD").format("MMMM D, YYYY")
   }
 
   return (
@@ -108,7 +108,7 @@ export default function SectionText({ eventInfo, client }) {
           <div style={{textAlign: 'center'}}>
             <h2>
               <TodayIcon fontSize='large' style={{verticalAlign: 'middle'}}/>
-              {moment(formattedDate).format("MMMM D, YYYY")}
+              {formattedDate}
             </h2>
             <div>
               <h3 style={{marginTop: 0}}>
