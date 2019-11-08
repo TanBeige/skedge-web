@@ -26,13 +26,16 @@ import SectionComments from "./Sections/SectionComments.js";
 import SectionSimilarStories from "./Sections/SectionSimilarStories.js";
 import CategoryFragment from './Sections/CategoryFragment.js';
 import LoadingPage from '../LoadingPage/LoadingPage.js';
-import EditEventButton from './Sections/EventPageComponents/EditEventButton.js'
+import EditEventButton from './Sections/EventPageComponents/EditEventButton.js';
+import DeleteEventButton from './Sections/EventPageComponents/DeleteEventButton.js';
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 import {
   FETCH_EVENT_INFO,
   MUTATION_EVENT_VIEW,
-  MUTATION_EVENT_UPDATE
+  MUTATION_EVENT_UPDATE,
+  MUTATION_EVENT_DELETE,
+  QUERY_FILTERED_EVENT
 } from 'EventQueries/EventQueries.js'
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
 
@@ -164,8 +167,6 @@ export default function BlogPostPage(props) {
 
   //Submit Changes
   const handleEventChange = (newInfo) => {
-    console.log(newInfo);
-
     props.client.mutate({
       mutation: MUTATION_EVENT_UPDATE,
       refetchQueries: [{
@@ -209,6 +210,24 @@ export default function BlogPostPage(props) {
       category: newInfo.category
     })
   }
+  //DELETE EVENT
+  const handleDeleteEvent = () => {
+    props.client.mutate({
+      mutation: MUTATION_EVENT_DELETE,
+      refetchQueries: [{
+        query: QUERY_FILTERED_EVENT
+      }],
+      variables: {
+        eventId: values.event_id
+      }
+    }).then(()=> {
+      console.log("Success!");
+      props.history.push("/home")
+    }).catch(error => {
+      console.error(error);
+      alert("Error Deleted Event Occurred")
+    });
+  }
 
   // Add a View to the event
   const addView = () => {
@@ -241,19 +260,9 @@ export default function BlogPostPage(props) {
   const classes = useStyles();
   console.log("Event cohosts: ", values.event_cohosts)
 
-  let editEventButton = "";
-  if(isAuthenticated) {
-    if(user.sub === values.user_auth0_id || values.event_cohosts) {
-      editEventButton = (
-        <Button color="info" round onClick={() => setIsEditing(!isEditing)}>Edit Event</Button>
-      )
-    }
-  }
   const editingEvent = () => {
-    //if(props.currentUserProfile) {
       if(isAuthenticated) {
         return (
-            <div  style={{textAlign: 'center'}}>
               <EditEventButton 
                   client={props.client}
                   userId={user.sub}
@@ -261,10 +270,19 @@ export default function BlogPostPage(props) {
                   handleEventChange={handleEventChange}
                   oldEvent={values}
               />
-            </div>
         )
       }
-    //}
+  }
+  const deleteButton = () => {
+    if(isAuthenticated) {
+      return (
+        <DeleteEventButton 
+          userId={user.sub}
+          creatorId={values.user_auth0_id}
+          handleDeleteEvent={handleDeleteEvent}
+        />
+      )
+    }
   }
   console.log("is editing?: ", isEditing)
 
@@ -318,11 +336,13 @@ export default function BlogPostPage(props) {
                   Created by: <Link to={userLink}>{values.user_name}</Link>
                 </h4>
                 <br />
-               <CategoryFragment category={values.category}/>
-               <br />
+                  <CategoryFragment category={values.category}/>
+                <br />
 
-               {editingEvent()}
-
+              <div style={{display: 'inline-block', textAlign: 'center'}}>
+                {editingEvent()}
+                {deleteButton()}
+              </div>
               </GridItem>
             </GridContainer>
           </div>

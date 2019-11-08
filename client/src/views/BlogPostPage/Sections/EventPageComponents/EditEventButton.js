@@ -57,10 +57,10 @@ const useStyles = makeStyles(style);
 var moment = require("moment")
 
 
-export default function ExampleLiveDemo(props) {
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [endTimeExists, setEndTimeExists] = React.useState(props.oldEvent.end_time ? true : false)
-  const classes = useStyles();
+export default function EditEventButton(props) {
+    const [isEditing, setIsEditing] = React.useState(false);
+    const [endTimeExists, setEndTimeExists] = React.useState(props.oldEvent.end_time ? true : false)
+    const classes = useStyles();
 
 
     const [eventInfo, setEventInfo] = React.useState({
@@ -119,7 +119,7 @@ export default function ExampleLiveDemo(props) {
     let editButton = "";
     if(props.userId === props.creatorId) {
         editButton = (
-            <Button style={{marginTop: 20, marginBottom: 8}} color="info" round onClick={() => setIsEditing(!isEditing)}>
+            <Button style={{marginTop: 20, marginBottom: 8}} color="info" onClick={() => setIsEditing(!isEditing)}>
                 Edit Event
             </Button>
         )

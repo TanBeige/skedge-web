@@ -219,7 +219,7 @@ export default function EventCardList(props) {
           dataLength={values.eventsLength}
           next={loadMoreClicked}
           hasMore={!values.loadedAllEvents}
-          loader={<h4>Loading...</h4>}
+          //loader={<h4>Loading...</h4>}
           style={{overflow: 'none'}}
       >
         <GridContainer>
