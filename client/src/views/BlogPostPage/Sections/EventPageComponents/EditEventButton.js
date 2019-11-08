@@ -168,15 +168,20 @@ export default function ExampleLiveDemo(props) {
     // Check Values
     let continueDisabled = true;
     console.log(eventInfo)
-    if(
-        eventInfo.name.replace(/\s/g, '').length && 
-        eventInfo.name.length <= 50 && 
-        eventInfo.location_name.replace(/\s/g, '').length && 
-        eventInfo.street.replace(/\s/g, '').length && 
-        eventInfo.city.replace(/\s/g, '').length && 
-        eventInfo.state.replace(/\s/g, '').length
-    ) {
-        continueDisabled = false;
+    if(eventInfo.name && eventInfo.location_name && eventInfo.street && eventInfo.city && eventInfo.state) {
+        if(
+            eventInfo.name.replace(/\s/g, '').length && 
+            eventInfo.name.length <= 50 && 
+            eventInfo.location_name.replace(/\s/g, '').length && 
+            eventInfo.street.replace(/\s/g, '').length && 
+            eventInfo.city.replace(/\s/g, '').length && 
+            eventInfo.state.replace(/\s/g, '').length
+        ) {
+            continueDisabled = false;
+        }
+        else {
+            continueDisabled = true;
+        }
     }
     else {
         continueDisabled = true;
@@ -388,7 +393,7 @@ export default function ExampleLiveDemo(props) {
                     <Button onClick={() => setIsEditing(false)} color="secondary">
                         Close
                     </Button>
-                <Button color="primary" disabled={continueDisabled} onClick={submitChanges}>Save changes</Button>
+                <Button color={continueDisabled ? "" : "primary"} disabled={continueDisabled} onClick={submitChanges}>Save changes</Button>
                 </DialogActions>
             </Dialog>
         </div>

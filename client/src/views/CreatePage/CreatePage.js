@@ -68,7 +68,7 @@ export default function PricingPage(props) {
 
       name: "",
       description: "",
-      event_date: new Date(),
+      start_date: new Date(),
       start_time: new Date(),
       end_time: null,
       price: "0.00",
@@ -84,6 +84,8 @@ export default function PricingPage(props) {
 
       cohosts: []
   });
+  console.log("Stat time: ", MomentUtils(values.start_time).format('HH:mm:ssZ'))
+
 
   // Functions
   const handleGoBack = () => {
@@ -193,10 +195,10 @@ const handleLocalOrPrivate = (type) => {
       name: valuesInfo.name,
       location_name: valuesInfo.location_name,
       description: valuesInfo.description,
-      street: valuesInfo.address,
+      street: valuesInfo.street,
       city: valuesInfo.city,
       state: valuesInfo.state,
-      event_date: valuesInfo.event_date,
+      start_date: valuesInfo.start_date,
       start_time: valuesInfo.start_time,
       end_time: valuesInfo.endTimeExists ? valuesInfo.end_time : null,
       is_recurring: valuesInfo.repeatCheck,
@@ -304,6 +306,7 @@ const handleLocalOrPrivate = (type) => {
         });
       }
 
+
     // Inputs all information into Hasura Postgres DB via GraphQL
     props.client.mutate({
         mutation: MUTATION_EVENT_ADD,
@@ -328,8 +331,8 @@ const handleLocalOrPrivate = (type) => {
 
                     event_date: {
                       data: {
-                        start_date: MomentUtils(values.event_date).format('YYYY-MM-DD'),
-                        end_date: MomentUtils(values.event_date).add(1, 'y').format('YYYY-MM-DD'),
+                        start_date: MomentUtils(values.start_date).format('YYYY-MM-DD'),
+                        end_date: MomentUtils(values.start_date).add(1, 'y').format('YYYY-MM-DD'),
                         is_recurring: values.is_recurring,
                         weekday: values.weekday
                       }

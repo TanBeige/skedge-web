@@ -53,13 +53,13 @@ export default function EventCreateInfo(props) {
   const [values, setValues] = React.useState({
     // Event Creation
     name: savedValues.name,
-    address: savedValues.street,
+    street: savedValues.street,
     location_name: savedValues.location_name,
     city: savedValues.city,
     state: savedValues.state,
 
-    selectedDay: savedValues.event_date,
-    startTime: savedValues.start_time,
+    start_date: savedValues.start_date,
+    start_time: savedValues.start_time,
     endTimeExists: savedValues.end_time === null ? false : true,
     endTime: savedValues.end_time,
 
@@ -88,14 +88,14 @@ export default function EventCreateInfo(props) {
   const handleDayClick = (day) => {
       setValues({
           ...values,
-          selectedDay: day
+          start_date: day
       })
   }
 
   const handleTimeClick = (time) => {
       setValues({
           ...values,
-          startTime: time
+          start_time: time
       })
   }
 
@@ -166,7 +166,7 @@ export default function EventCreateInfo(props) {
                             format="dddd, MMMM Do YYYY"
                             variant="outlined"
                             fullWidth
-                            value={values.selectedDay}
+                            value={values.start_date}
                             onChange={handleDayClick}
                         />
                     </Grid>
@@ -175,7 +175,7 @@ export default function EventCreateInfo(props) {
                             label="Start Time"
                             variant="outlined"
                             fullWidth
-                            value={values.startTime}
+                            value={values.start_time}
                             onChange={handleTimeClick}
                         />
                     </Grid>
@@ -262,7 +262,7 @@ export default function EventCreateInfo(props) {
                 label="Start Time"
                 variant="outlined"
                 fullWidth
-                value={values.startTime}
+                value={values.start_time}
                 onChange={handleTimeClick}
             />
         </Grid>
@@ -281,7 +281,7 @@ export default function EventCreateInfo(props) {
     values.name.replace(/\s/g, '').length && 
     values.name.replace(/\s/g, '').length <= 50 && 
     values.location_name.replace(/\s/g, '').length && 
-    values.address.replace(/\s/g, '').length && 
+    values.street.replace(/\s/g, '').length && 
     values.city.replace(/\s/g, '').length && 
     values.state.replace(/\s/g, '').length
     ) {
@@ -342,21 +342,19 @@ export default function EventCreateInfo(props) {
                 id="location_name"
                 label="Location Name"
                 name="location"
-                autoComplete="location"
                 placeholder="ex) Nellie's Place"
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
-                value={values.address}
+                value={values.street}
                 required
                 fullWidth
-                onChange={handleChange('address')}
-                id="address"
+                onChange={handleChange('street')}
+                id="street"
                 label="Address"
-                name="address"
-                autoComplete="address"
+                name="street"
                 placeholder="123 Example St."
               />
             </Grid>

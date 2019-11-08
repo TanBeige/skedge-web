@@ -270,6 +270,27 @@ export default function EventCard({event, client, userId, filter}) {
             </Link>
 
               <div className={classes.imgCardOverlay} style={{display: 'inline-block',width: '100%'}}>
+                <div
+                  style={{
+                    color: "#02C39A",
+                    position: "absolute",
+                    display: 'inline',
+                    top: "3px",
+                    left: "0px",
+                    //width: '100%',
+                    borderRadius: 8,  
+                    backgroundColor: "rgba(255,255,255,1.0)", 
+                    //color: "#02C39A",
+                    padding: '3px 5px 0px 5px', 
+                    // WebkitTextStroke: 0.5, 
+                    // WebkitTextStrokeColor: "black",
+                    //border: '1px solid #02C39A',
+                    marginLeft: 3,
+                  }}
+                >
+                  <p style={{display: 'inline', width: '100%', fontSize: 12}} className="eventDate">{moment(values.start_date).format("MMMM D, YYYY")}</p>
+                </div>
+
                 <Link to={`/users/${values.userId}`}>
                   <div
                     className={classes.cardTitle}
