@@ -183,6 +183,7 @@ export default function BlogPostPage(props) {
         state: newInfo.state,
         startDate: newInfo.start_date,
         startTime: moment(newInfo.start_time).format("HH:mm:ssZ"),
+        endTime: moment(newInfo.end_time).format("HH:mm:ssZ"),
         description: newInfo.description,
         category: newInfo.category
       }
@@ -203,7 +204,7 @@ export default function BlogPostPage(props) {
       //end_date: ,
       //is_recurring: newInfo.is_recurring,
       start_time: newInfo.start_time,
-      //end_time: newInfo.end_time,
+      end_time: newInfo.end_time,
       description: newInfo.description,
       category: newInfo.category
     })
@@ -218,6 +219,7 @@ export default function BlogPostPage(props) {
       }
     });
   }
+  console.log(values.end_time)
 
   useEffect(() => {
     window.scrollTo(0, 0);

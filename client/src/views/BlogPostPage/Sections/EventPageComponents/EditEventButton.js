@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useEffect} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Slide from "@material-ui/core/Slide";
@@ -59,6 +59,7 @@ var moment = require("moment")
 
 export default function ExampleLiveDemo(props) {
   const [isEditing, setIsEditing] = React.useState(false);
+  const [endTimeExists, setEndTimeExists] = React.useState(props.oldEvent.end_time ? true : false)
   const classes = useStyles();
 
 
@@ -72,7 +73,7 @@ export default function ExampleLiveDemo(props) {
         end_date: props.oldEvent.end_date,
         is_recurring: props.oldEvent.is_recurring,
         start_time: moment(props.oldEvent.start_time, "HH:mm:ss"),
-        end_time: moment(props.oldEvent.end_time, "HH:mm:ss"),
+        end_time: props.oldEvent.end_time ? moment(props.oldEvent.end_time, "HH:mm:ss") : null,
         description: props.oldEvent.description,
         category: props.oldEvent.category,
         tags: [],
@@ -126,9 +127,43 @@ export default function ExampleLiveDemo(props) {
 
     //If Event has an end time, toggle it here
     let endTimeJS = ""
-    //if() {
-        endTimeJS = <Button style={{width: '100%'}}>End Time</Button>
-    //}
+    if(endTimeExists) {
+        endTimeJS = (
+            <TimePicker
+                label="End Time"
+                fullWidth
+                value={eventInfo.end_time}
+                onChange={handleEndTime}
+                margin="normal"
+            />
+        )
+    }
+    else {
+        endTimeJS = <Button onClick={() => setEndTimeExists(!endTimeExists)} style={{width: '100%'}}>End Time</Button>
+    }
+
+    useEffect(() => {
+        //Reload
+        setEventInfo({
+            name: props.oldEvent.name,
+            location_name: props.oldEvent.location_name,
+            address: props.oldEvent.address,
+            city: props.oldEvent.city,
+            state: props.oldEvent.state,
+            start_date: props.oldEvent.start_date,
+            end_date: props.oldEvent.end_date,
+            is_recurring: props.oldEvent.is_recurring,
+            start_time: moment(props.oldEvent.start_time, "HH:mm:ss"),
+            end_time: props.oldEvent.end_time ? moment(props.oldEvent.end_time, "HH:mm:ss") : null,
+            description: props.oldEvent.description,
+            category: props.oldEvent.category,
+            tags: [],
+            cohosts: [],
+            cover_pic: ""
+        })
+        setEndTimeExists(props.oldEvent.end_time ? true : false);
+        console.log("AAAAAAAAAA")
+    }, [isEditing])
 
   return (
     <div>

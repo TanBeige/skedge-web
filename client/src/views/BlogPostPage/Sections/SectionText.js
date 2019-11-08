@@ -89,7 +89,7 @@ export default function SectionText({ eventInfo, client }) {
   //style={{borderRadius: 5, backgroundColor: "#02C39A", color: 'white'}}
   let formattedEndTime = ""
   if(eventInfo.end_time) {
-    const tempEndTime = moment(eventInfo.start_time, "HH:mm:ss")
+    const tempEndTime = moment(eventInfo.end_time, "HH:mm:ss")
     formattedEndTime = (
       <h3 style={{marginTop: 0}}>
         Until: {moment(tempEndTime).format("h:mm A")}
