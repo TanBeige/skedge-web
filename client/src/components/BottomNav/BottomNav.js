@@ -44,8 +44,6 @@ class PrimaryNav extends Component {
 
     const value = pathMap.indexOf(pathname);
 
-    console.log("Pathname: ", pathname)
-
     if (pathname === "/create" || pathname === "/" || pathname === "/error-page") {
       this.setState({
         showBar: false
@@ -80,14 +78,16 @@ class PrimaryNav extends Component {
             userId: this.props.userId
             }
         }).then((data) => {
-            this.setState({
-                pathMap: [
-                    '/home',
-                    '/create',
-                    '/notifications',
-                    `/users/${data.data.users[0].id}`
-                ]
-            })
+            if(data.data.users[0]){
+              this.setState({
+                  pathMap: [
+                      '/home',
+                      '/create',
+                      '/notifications',
+                      `/users/${data.data.users[0].id}`
+                  ]
+              })
+            }
         });
     }
   }

@@ -80,7 +80,6 @@ export default function EditEventButton(props) {
         cohosts: [],
         cover_pic: ""
     })
-    console.log("Times: ", eventInfo.start_time)
     // Submit Changes:
     const submitChanges = () => {
         props.handleEventChange(eventInfo);
@@ -162,12 +161,10 @@ export default function EditEventButton(props) {
             cover_pic: ""
         })
         setEndTimeExists(props.oldEvent.end_time ? true : false);
-        console.log("AAAAAAAAAA")
     }, [isEditing])
 
     // Check Values
     let continueDisabled = true;
-    console.log(eventInfo)
     if(eventInfo.name && eventInfo.location_name && eventInfo.street && eventInfo.city && eventInfo.state) {
         if(
             eventInfo.name.replace(/\s/g, '').length && 
@@ -393,7 +390,7 @@ export default function EditEventButton(props) {
                     <Button onClick={() => setIsEditing(false)} color="secondary">
                         Close
                     </Button>
-                <Button color={continueDisabled ? "" : "primary"} disabled={continueDisabled} onClick={submitChanges}>Save changes</Button>
+                <Button color={continueDisabled ? "white" : "primary"} disabled={continueDisabled} onClick={submitChanges}>Save changes</Button>
                 </DialogActions>
             </Dialog>
         </div>

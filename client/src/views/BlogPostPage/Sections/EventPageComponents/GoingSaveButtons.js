@@ -22,7 +22,6 @@ export default function GoingSaveButtons (props) {
         ifGoing: false,
         ifSaved: false
     })
-    console.log("values: ",values)
 
     //Handle Event Going    
     const goingToEvent = () => {

@@ -1,7 +1,5 @@
 import React from 'react';
 import Slide from '@material-ui/core/Slide';
-import Spinner from './Spinner'
-import DisplayUploadedImage from './DisplayUploadedImage';
 import ImageUpload from 'components/CustomUpload/ImageUpload.js';
 
 
@@ -37,13 +35,10 @@ const AddBanner = (props) => {
     const bannerSubmit = (e) => {
         const {bannerImg} = values;
         e.preventDefault();
-        console.log("Props AddBanner: ", props)
         console.log("Banner: ", bannerImg)
 
         props.submitEvent(bannerImg);
     }
-
-    console.log(values.bannerImg)
 
     let content = "";
     if (values.bannerImg !== null) {

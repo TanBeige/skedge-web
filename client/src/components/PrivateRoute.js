@@ -5,23 +5,17 @@ import LoadingPage from "views/LoadingPage/LoadingPage.js"
 
 const PrivateRoute = ({ component: Component, path, ...rest }) => {
   const { loading, isAuthenticated, loginWithRedirect } = useAuth0();
-  console.log("Loadning? : ", loading)
 
   useEffect(() => {
-    console.log("not logged innnn: " )
-
-    if (isAuthenticated) {
-      console.log("Loading on private page")
+    if (loading || isAuthenticated) {
       return;
     }
-    console.log("not logged innnn: " )
 
     const fn = async () => {
       await loginWithRedirect({
         appState: { targetUrl: path }
       });
     };
-    console.log("not logged in: ", fn)
     fn();
   }, [loading, isAuthenticated, loginWithRedirect, path]);
 

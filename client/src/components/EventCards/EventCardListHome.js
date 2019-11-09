@@ -69,7 +69,6 @@ export default function EventCardList(props) {
     if(!values.showNew) {
 
       setIsSearch(true)
-      console.log("Eventcard home, ", filter.weekday)
 
 
       let cat = filter.category;
@@ -93,7 +92,6 @@ export default function EventCardList(props) {
             }
           })
           .then(data => {
-            console.log("Events Grabbed. Data: ", data)
             setValues({ 
               ...values, 
               events: data.data.events, 
@@ -108,7 +106,7 @@ export default function EventCardList(props) {
 
     // Update Query When new Events are added
     const loadMoreClicked = () => {
-      console.log("Loading more Events")
+      console.log("Loading more Events.")
       const { client } = props;
       const { filter } = props;
 

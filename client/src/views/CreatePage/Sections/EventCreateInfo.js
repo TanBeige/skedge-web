@@ -60,8 +60,8 @@ export default function EventCreateInfo(props) {
 
     start_date: savedValues.start_date,
     start_time: savedValues.start_time,
-    endTimeExists: savedValues.end_time === null ? false : true,
-    endTime: savedValues.end_time,
+    endTimeExists: savedValues.end_time !== null ? true : false,
+    end_time: savedValues.end_time,
 
     price: savedValues.price,
     description: savedValues.description,
@@ -102,7 +102,7 @@ export default function EventCreateInfo(props) {
   const handleEndTime = (time) => {
     setValues({
         ...values,
-        endTime: time
+        end_time: time
     })
   }
 
@@ -133,7 +133,7 @@ export default function EventCreateInfo(props) {
                       label="End Time"
                       variant="outlined"
                       fullWidth
-                      value={values.endTime}
+                      value={values.end_time}
                       onChange={handleEndTime}
                     />
                   </Grid>

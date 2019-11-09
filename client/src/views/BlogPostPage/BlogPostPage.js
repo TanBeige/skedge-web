@@ -95,7 +95,6 @@ export default function BlogPostPage(props) {
   })
 
   const goBack = () => {
-    console.log(props)
     props.history.goBack()
   }
 
@@ -158,7 +157,7 @@ export default function BlogPostPage(props) {
           ifSaved: data.data.events[0].user_saved_events.some(user => user.user_id === user.sub),
           ifGoing: data.data.events[0].event_going.some(user => user.user_id === user.sub),
         })
-        console.log(data)
+        console.log("Get Event Data: ", data)
         //Say that we're not loading the event anymore.
         setIsLoading(false);
       }
@@ -238,7 +237,6 @@ export default function BlogPostPage(props) {
       }
     });
   }
-  console.log(values.end_time)
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -284,7 +282,6 @@ export default function BlogPostPage(props) {
       )
     }
   }
-  console.log("is editing?: ", isEditing)
 
   if(values.event_exists === false) {
     return <ErrorPage />

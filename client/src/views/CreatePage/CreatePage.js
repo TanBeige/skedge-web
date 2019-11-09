@@ -36,12 +36,8 @@ const useStyles = makeStyles(pricingStyle);
 export default function PricingPage(props) {
   
   var MomentUtils = require('moment');
-  console.log("props blog: ", props);
 
   const { user } = useAuth0();
-
-  console.log("user: ", user)
-
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -84,8 +80,6 @@ export default function PricingPage(props) {
 
       cohosts: []
   });
-  console.log("Stat time: ", MomentUtils(values.start_time).format('HH:mm:ssZ'))
-
 
   // Functions
   const handleGoBack = () => {
@@ -185,8 +179,6 @@ const handleLocalOrPrivate = (type) => {
       }
     }
     
-    console.log("weekday string: ", weekdayString)
-
     setValues({
       ...values, 
       currentPage: values.currentPage + 1,
@@ -207,7 +199,6 @@ const handleLocalOrPrivate = (type) => {
   }
 
   const handleCohost = (cohostId) => {
-    console.log(cohostId)
     setValues({
         ...values,
         currentPage: values.currentPage + 1,
@@ -219,7 +210,6 @@ const handleLocalOrPrivate = (type) => {
 
   const eventSubmitting = () => {
     if(values.eventSubmitted) {
-      console.log("Event submitting")
       return(
         <EventLoading />
       )
@@ -277,8 +267,6 @@ const handleLocalOrPrivate = (type) => {
     }
 
     // Grabs image info and adds uploaded file ID to cover_pic in events table.
-    console.log(response);
-    console.log(response.data)
 
     //Order tags so they can be input properly
     let newTags = [];
@@ -318,7 +306,7 @@ const handleLocalOrPrivate = (type) => {
                     name: values.name,
                     description: values.description,
                     start_time: MomentUtils(values.start_time).format('HH:mm:ssZ'),
-                    end_time: MomentUtils(values.end_time) === null ? values.end_time.format('HH:mm:ssZ') : null,
+                    end_time: values.end_time !== null ? MomentUtils(values.end_time).format('HH:mm:ssZ') : null,
                     price: values.price,
                     //allow_invites: values.allow_invites,
                     //host_approval: values.host_approval,

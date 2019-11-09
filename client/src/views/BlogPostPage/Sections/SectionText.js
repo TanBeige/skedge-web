@@ -62,7 +62,6 @@ export default function SectionText({ eventInfo, client }) {
         userId: user.sub
       }
     }).then((data) => {
-      console.log("going save data:", data)
       const isGoing = data.data.users[0].event_goings.length === 1
       const isSaved = data.data.users[0].user_saved_events.length === 1
       setValues({
@@ -76,10 +75,8 @@ export default function SectionText({ eventInfo, client }) {
   useEffect(() => {
     getUserGoingSave();
   },[])
-  console.log("going or not,", values)
 
   
-
   // Fix date formatting
   var moment = require('moment');
   let formattedStartTime = ""

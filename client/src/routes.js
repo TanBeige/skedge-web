@@ -25,21 +25,8 @@ import gql from 'graphql-tag';
 
 import "assets/scss/material-kit-pro-react.scss?v=1.8.0";
 
-
-/////// From Old Skedge
-//Styling
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-//import theme from './styles/theme';
-
-//import auth from "./Authorization/Auth";
-//import LandingPage from "./components/LandingPage/LandingPage";
-import history from "./utils/history";
-
 import { ApolloProvider } from "react-apollo";
 import makeApolloClient from "./apollo";
-//import BottomBar from "./components/BottomBar/BottomBar";
-///////
 
 // pages for this product
 import AboutUsPage from "views/AboutUsPage/AboutUsPage.js";
@@ -63,14 +50,16 @@ import CallbackPage from "views/CallbackPage/CallbackPage.js";
 import BottomNav from "components/BottomNav/BottomNav.js";
 
 
-// Creating Apollo Client When Entering Website
+//For Google Analytics
+import ReactGA from 'react-ga';
+
 
 var hist = createBrowserHistory();
 
-// ******BlogPostsPage is our /home for now******
-
 export const MakeMainRoutes = () => {
   
+  ReactGA.initialize('UA-151937222-1');
+  hist.listen(location => ReactGA.pageview(location.pathname));
 
   // Variables/Imports from auth0-spa
   const {loading, getIdTokenClaims, isAuthenticated, user } = useAuth0();
@@ -84,7 +73,6 @@ export const MakeMainRoutes = () => {
 
   //Create navigation bar
   const bottomBar = () => {
-    //console.log("Path: ", window.location.pathname)
     if(values.showBottomBar && user) {
       return (
         <ApolloProvider client={values.client}>
@@ -142,7 +130,7 @@ export const MakeMainRoutes = () => {
     )
   }
   // Wait for token to return and client to be made.
-  else if(!values.client) {
+  if(!values.client) {
     console.log("Getting Client")
     if(!loading) {
       getIdTokenClaims().then(function(result) {

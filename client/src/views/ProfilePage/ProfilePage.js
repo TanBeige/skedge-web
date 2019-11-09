@@ -137,7 +137,10 @@ export default function ProfilePage(props, { ...rest }) {
         }
       }
     }).then(data => {
-      console.log("data: ", data)
+      console.log("Success!")
+    }).catch( error =>{
+      console.error(error)
+      alert("Couldn't update profile, try again later or report error to info@theskedge.com")
     })
   }
 

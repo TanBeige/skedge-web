@@ -136,7 +136,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
       start_date: moment(event.event_date[0].start_date, "YYYY-MM-DD"),
       end_date: moment(event.event_date[0].end_date, "YYYY-MM-DD"),
       start_time: moment(event.start_time, "HH:mm:ss"),
-      end_time: moment(event.end_time, "HH:mm:ss"),
+      end_time: event.end_time ? moment(event.end_time, "HH:mm:ss") : null,
 
       isRecurring: event.event_date[0].is_recurring,
       weekday: event.event_date[0].weekday,
@@ -145,6 +145,8 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
       userProfilePic: event.user ? event.user.picture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       userId: event.user ? event.user.id : 0
     })
+
+    console.log("End Time: ", values.end_time)
     
     // Handling event likes + reposts
     const handleRepost = () => {
