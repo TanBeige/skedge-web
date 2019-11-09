@@ -35,6 +35,8 @@ import SectionTitle from "./Sections/SectionTitle.js"
 import { useAuth0 } from '../../Authorization/react-auth0-wrapper';
 //import history from "../../utils/history";
 
+//Google Analytics
+import ReactGA from 'react-ga';
 
 const useStyles = makeStyles(landingPageStyle);
 
@@ -56,7 +58,18 @@ export default function LandingPage(props) {
     //return(<Redirect to="/home"/>)
     window.location.reload();
   }
-  console.log(props)
+
+  const handleLogin = () => {
+    //Google Analytics Record when someone Clicks this
+    ReactGA.initialize('UA-151937222-1');
+    ReactGA.event({
+      category: 'User',
+      action: 'Created an Account/Logged In'
+    });
+    console.log("recorded event")
+    //Then Login/Sign up
+    loginWithRedirect({})
+  }
 
   //Mobile Image
   let paraImage = ""
@@ -82,7 +95,7 @@ export default function LandingPage(props) {
               <br />
               <Button
                 color="primary"
-                onClick={() => loginWithRedirect({})}
+                onClick={handleLogin}
               >
                 Login or Sign Up
               </Button>
