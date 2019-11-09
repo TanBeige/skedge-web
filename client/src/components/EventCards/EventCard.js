@@ -244,6 +244,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
     }
 
     const addImpression = () => {
+      console.log("Added Impression for ", values.name)
       client.mutate({
         mutation: MUTATION_EVENT_IMPRESSION,
         variables: {

@@ -36,6 +36,10 @@ import SectionTitle from 'views/LandingPage/Sections/SectionTitle.js';
 //import auth from "../../Authorization/Auth";
 import { useAuth0 } from "../../Authorization/react-auth0-wrapper";
 
+//For Google Analytics
+import ReactGA from 'react-ga';
+
+
 //Styles
 import blogPostsPageStyle from "assets/jss/material-kit-pro-react/views/blogPostsPageStyle.js";
 
@@ -133,8 +137,11 @@ export default function HomePage(props) {
         updateLastSeen,
         10000
       );
-
-
+    }
+    if(!loading) {
+      console.log("ReactGA Called: ", window.location.pathname)
+      ReactGA.initialize('UA-151937222-1');
+      ReactGA.pageview(window.location.pathname)
     }
 
   },[loading, props.client]); // Empty array for param means effect will only run on first render.

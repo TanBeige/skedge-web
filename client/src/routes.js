@@ -111,7 +111,6 @@ export const MakeMainRoutes = () => {
     // }
 
     console.log("Routes.js Rendered, loading status: ", loading)
-    console.log("Routes.js Rendered, isAuthenticated status: ", isAuthenticated)
 
 
     // For Bottom Navbar
@@ -123,14 +122,6 @@ export const MakeMainRoutes = () => {
     }    
   
   },[loading]);
-
-  useEffect(() => {
-    //Initializing and recording for Google Analytics
-    console.log("React Google Analytics Recording", hist.location.pathname)
-    ReactGA.initialize('UA-151937222-1');
-    hist.listen(location => ReactGA.pageview(location.pathname));
-
-  }, [values.currentPage])
 
   if (loading) {
     return(

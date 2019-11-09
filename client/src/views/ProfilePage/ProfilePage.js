@@ -69,6 +69,10 @@ import {
 } from 'EventQueries/EventQueries.js'
 import { getArgumentValues } from "graphql/execution/values";
 
+//Google analytics import
+import ReactGA from 'react-ga';
+
+
 const useStyles = makeStyles(profilePageStyle);
 
 export default function ProfilePage(props, { ...rest }) {
@@ -301,11 +305,17 @@ export default function ProfilePage(props, { ...rest }) {
     document.body.scrollTop = 0;
   });
   useEffect(() => {
-
     // Get Profile age
     getUser();  
-
   }, [values.auth0Id, userId])
+
+  //Google Analytics useEffects
+  useEffect(()=>{
+    //For Google Analytics 
+    console.log("ReactGA Called: ", window.location.pathname)
+    ReactGA.initialize('UA-151937222-1');
+    ReactGA.pageview(window.location.pathname)
+  }, [])
 
 
   if(values.user_exists === false) {

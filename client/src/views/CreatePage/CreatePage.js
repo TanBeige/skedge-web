@@ -30,6 +30,9 @@ import {
   MUTATION_EVENT_ADD
 } from 'EventQueries/EventQueries.js'
 
+//For Google Analytics
+import ReactGA from 'react-ga';
+
 const useStyles = makeStyles(pricingStyle);
 
 
@@ -367,6 +370,13 @@ const handleLocalOrPrivate = (type) => {
 
   useEffect(() => {
     const userId = user.sub;
+
+    //Record page view on Google analytics
+    console.log("ReactGA Called: ", window.location.pathname)
+    ReactGA.initialize('UA-151937222-1');
+    ReactGA.pageview(window.location.pathname)
+
+    //Check if user is an entity
     if (props.client) {
       props.client.query({
           query: FETCH_IF_ENTITY,

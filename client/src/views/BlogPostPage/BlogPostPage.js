@@ -39,6 +39,9 @@ import {
 } from 'EventQueries/EventQueries.js'
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
 
+//Google analytics import
+import ReactGA from 'react-ga';
+
 var moment = require("moment")
 
 var cloudinary = require('cloudinary/lib/cloudinary').v2
@@ -247,6 +250,11 @@ export default function BlogPostPage(props) {
   useEffect(() => {
     getEvent();
     addView();
+    
+    //For Google Analytics 
+    console.log("ReactGA Called: ", window.location.pathname)
+    ReactGA.initialize('UA-151937222-1');
+    ReactGA.pageview(window.location.pathname)
   }, [])
 
   let titleSize = '10vw'
