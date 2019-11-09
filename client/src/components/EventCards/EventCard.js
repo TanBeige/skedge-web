@@ -146,7 +146,6 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
       userId: event.user ? event.user.id : 0
     })
 
-    console.log("End Time: ", values.end_time)
     
     // Handling event likes + reposts
     const handleRepost = () => {

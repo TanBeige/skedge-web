@@ -58,8 +58,6 @@ var hist = createBrowserHistory();
 
 export const MakeMainRoutes = () => {
   
-  ReactGA.initialize('UA-151937222-1');
-  hist.listen(location => ReactGA.pageview(location.pathname));
 
   // Variables/Imports from auth0-spa
   const {loading, getIdTokenClaims, isAuthenticated, user } = useAuth0();
@@ -73,7 +71,7 @@ export const MakeMainRoutes = () => {
 
   //Create navigation bar
   const bottomBar = () => {
-    if(values.showBottomBar && user) {
+    if(values.showBottomBar && !loading) {
       return (
         <ApolloProvider client={values.client}>
           <BottomNav client={values.client} userId={user.sub}/>
@@ -112,6 +110,10 @@ export const MakeMainRoutes = () => {
     //   });
     // }
 
+    console.log("Routes.js Rendered, loading status: ", loading)
+    console.log("Routes.js Rendered, isAuthenticated status: ", isAuthenticated)
+
+
     // For Bottom Navbar
     if(window.location.pathname !== "/") {
       setValues({
@@ -120,7 +122,15 @@ export const MakeMainRoutes = () => {
       })
     }    
   
-  },[loading, isAuthenticated, values.client]);
+  },[loading]);
+
+  useEffect(() => {
+    //Initializing and recording for Google Analytics
+    console.log("React Google Analytics Recording", hist.location.pathname)
+    ReactGA.initialize('UA-151937222-1');
+    hist.listen(location => ReactGA.pageview(location.pathname));
+
+  }, [values.currentPage])
 
   if (loading) {
     return(

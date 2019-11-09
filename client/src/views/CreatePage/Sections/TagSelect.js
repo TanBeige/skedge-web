@@ -17,6 +17,7 @@ import { categoryList } from "utils/constants";
 
 
 import Button from 'components/CustomButtons/Button.js';
+import { width } from '@material-ui/system';
 
 
 const theme = createMuiTheme({
@@ -89,9 +90,13 @@ export default function TagSelect(props) {
                     <Grid item xs={12}>
                         <div style={{border: '2px solid #02C39A', borderRadius: 10, marginTop: '1em'}}>
                             <TagsInput 
+                            style={{width: '100%'}}
+                            addKeys={[9, 13, 188]}
                             value={values.tags}
                             onChange={handleTags}
                             tagProps={{ className: "react-tagsinput-tag primary" }}
+                            //inputProps={{ placeholder: 'Press enter between tags.'}}
+                            place
                             />
                         </div>
                     </Grid>
@@ -125,14 +130,14 @@ const EventTags = ({values, onRadioChange}) => {
             >
             <Grid container>
                 {
-                    categoryList.map((cat) => {
+                    categoryList.map((cat, index) => {
                         if(cat === "Any") {
                             return
                         }
                         else {
                             return(
                                 <Grid item xs={6}>
-                                    <FormControlLabel value={cat} control={<Radio color='primary'/>} label={cat} />
+                                    <FormControlLabel key={index} value={cat} control={<Radio color='primary'/>} label={cat} />
                                 </Grid>
                             )
                         }

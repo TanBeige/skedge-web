@@ -34,7 +34,8 @@ class PrimaryNav extends Component {
                 '/notifications',
                 `/users/0`,
             ],
-            showBar: true
+            showBar: true,
+            authenticated: props.isAuthenticated
         };
     }
 

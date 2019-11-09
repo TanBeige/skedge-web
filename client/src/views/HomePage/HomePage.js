@@ -124,6 +124,8 @@ export default function HomePage(props) {
   //   })
   // }, [])
 
+  console.log(user)
+
   useEffect(() => {
     if (isAuthenticated && user) {
       // eslint-disable-next-line
@@ -131,9 +133,11 @@ export default function HomePage(props) {
         updateLastSeen,
         10000
       );
+
+
     }
 
-  },[loading]); // Empty array for param means effect will only run on first render.
+  },[loading, props.client]); // Empty array for param means effect will only run on first render.
 
   //Place this here before returning the actual page so we can determine 
   // what displays while loadinh
