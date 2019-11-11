@@ -17,6 +17,18 @@ const modalStyle = theme => ({
     width: "100%",
     marginTop: "80px !important"
   },
+  modalEdit: {
+    [theme.breakpoints.up("sm")]: {
+      maxWidth: "500px",
+      margin: "auto"
+    },
+    margin: 10,
+    borderRadius: "6px",
+    overflow: "visible",
+    maxHeight: "unset",
+    width: "100%",
+    marginTop: "150px !important"
+  },
   modalHeader: {
     borderBottom: "none",
     paddingTop: "24px",

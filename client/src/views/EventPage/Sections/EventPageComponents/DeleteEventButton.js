@@ -74,7 +74,7 @@ export default function DeleteEventButton(props) {
 
     //return
      return (
-        <div>
+        <div style={{textAlign: 'center', marginTop: 10, marginBottom: 20}}>
 
             {deleteButton}
 

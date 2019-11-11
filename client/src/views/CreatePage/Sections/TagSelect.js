@@ -10,14 +10,11 @@ import FormGroup from '@material-ui/core/FormGroup';
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import TagsInput from "react-tagsinput";
-import TextField from '@material-ui/core/TextField'
+//import TextField from '@material-ui/core/TextField'
 import { ThemeProvider } from '@material-ui/styles';
 import { categoryList } from "utils/constants";
 
-
-
 import Button from 'components/CustomButtons/Button.js';
-import { width } from '@material-ui/system';
 
 
 const theme = createMuiTheme({

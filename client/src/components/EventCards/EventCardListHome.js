@@ -7,17 +7,9 @@ import GridItem from "components/Grid/GridItem.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import gql from 'graphql-tag'
-
 import {
-    QUERY_FILTERED_EVENT,
-    QUERY_LOCAL_EVENT,
-    QUERY_FEED_LOCAL_EVENT,
-    QUERY_FEED_LOCAL_OLD_EVENT,
-    SUBSCRIPTION_EVENT_LOCAL_LIST
+    QUERY_FILTERED_EVENT
 } from "../../EventQueries/EventQueries";
-import { Button } from '@material-ui/core';
-import { classes } from 'istanbul-lib-coverage';
 
 const dateHeaderStyle = {
   textAlign: 'center',

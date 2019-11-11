@@ -29,15 +29,18 @@ import { ApolloProvider } from "react-apollo";
 import makeApolloClient from "./apollo";
 
 // pages for this product
-import AboutUsPage from "views/AboutUsPage/AboutUsPage.js";
-import BlogPostPage from "views/BlogPostPage/BlogPostPage.js";
+import LandingPage from "views/LandingPage/LandingPage.js";
+import EventPage from "views/EventPage/EventPage.js";
 import Home from "views/HomePage/HomePage.js";
+import CreatePage from "views/CreatePage/CreatePage.js";  //Create Event
+
+import AboutUsPage from "views/AboutUsPage/AboutUsPage.js";
+
+
+//Pages I need to either remove, change, or use later
 import ContactUsPage from "views/ContactUsPage/ContactUsPage.js";
 import EcommercePage from "views/EcommercePage/EcommercePage.js";
-import LandingPage from "views/LandingPage/LandingPage.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
-//import PresentationPage from "views/PresentationPage/PresentationPage.js";
-import CreatePage from "views/CreatePage/CreatePage.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import ProductPage from "views/ProductPage/ProductPage.js";
 import SectionsPage from "views/SectionsPage/SectionsPage.js";
@@ -169,7 +172,7 @@ export const MakeMainRoutes = () => {
         <div>
         <Switch>
           <Route exact path="/about-us" render={props => provideClient(AboutUsPage, props)} />
-          <PrivateRoute path="/event" render={props => provideClient(BlogPostPage, props)} />
+          <PrivateRoute path="/event" render={props => provideClient(EventPage, props)} />
           <PrivateRoute path="/home" render={props => provideClient(Home, props)} />
           {/*<Route exact path="/components" render={props => provideClient(ComponentsPage, props)} />*/}
           <Route exact path="/contact-us" render={props => provideClient(ContactUsPage, props)} />
@@ -184,7 +187,7 @@ export const MakeMainRoutes = () => {
           <Route exact path="/signup-page" render={props => provideClient(SignupPage, props)} />
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
 
-          <PrivateRoute path="/events/:id" render={props => provideClient(BlogPostPage, props)} />
+          <PrivateRoute path="/events/:id" render={props => provideClient(EventPage, props)} />
           <PrivateRoute path="/users/:id" render={props => provideClient(ProfilePage, props)} />
           <Route path="/callback" 
                 render={props => {

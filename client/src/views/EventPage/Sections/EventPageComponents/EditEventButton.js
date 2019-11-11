@@ -27,11 +27,12 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import People from '@material-ui/icons/People';
 // core components
 import TextField from '@material-ui/core/TextField';
-import GridContainer from "components/Grid/GridContainer.js";
+//import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import CustomInput from 'components/CustomInput/CustomInput.js';
+//import CustomInput from 'components/CustomInput/CustomInput.js';
 import { MenuItem } from '@material-ui/core';
 import { categoryList } from "utils/constants";
+import DeleteEventButton from './DeleteEventButton.js';
 
 
 // Time/Date Selections Imports
@@ -193,9 +194,10 @@ export default function EditEventButton(props) {
             <Dialog
                 classes={{
                     root: classes.modalRoot,
-                    paper: classes.modal
+                    paper: classes.modalEdit
                 }}
                 open={isEditing}
+                style={{ paddingTop: 30}}
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={() => setIsEditing(false)}
@@ -379,6 +381,12 @@ export default function EditEventButton(props) {
                             margin="normal"
                         />
                     </GridItem>
+
+                    <DeleteEventButton 
+                        userId={props.userId}
+                        creatorId={props.creatorId}
+                        handleDeleteEvent={props.handleDeleteEvent}
+                    />
 
 
 

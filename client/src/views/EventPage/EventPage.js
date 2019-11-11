@@ -52,7 +52,7 @@ cloudinary.config({
 
 const useStyles = makeStyles(blogPostPageStyle);
 
-export default function BlogPostPage(props) {
+export default function EventPage(props) {
   const eventId = props.match.params.id;
 
   const { loading, user, isAuthenticated} = useAuth0();
@@ -275,6 +275,7 @@ export default function BlogPostPage(props) {
                   creatorId={values.user_auth0_id}
                   handleEventChange={handleEventChange}
                   oldEvent={values}
+                  handleDeleteEvent={handleDeleteEvent}
               />
         )
       }
@@ -344,10 +345,8 @@ export default function BlogPostPage(props) {
                   <CategoryFragment category={values.category}/>
                 <br />
 
-              <div style={{display: 'inline-block', textAlign: 'center'}}>
                 {editingEvent()}
-                {deleteButton()}
-              </div>
+                
               </GridItem>
             </GridContainer>
           </div>
