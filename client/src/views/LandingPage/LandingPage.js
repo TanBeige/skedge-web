@@ -1,4 +1,4 @@
-/*eslint-disable*/ import React, { useState } from "react";
+/*eslint-disable*/ import React, { useState, useRef } from "react";
 import { Redirect } from 'react-router-dom'
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
@@ -40,11 +40,16 @@ import ReactGA from 'react-ga';
 
 const useStyles = makeStyles(landingPageStyle);
 
-// TODO: Adding local events to homepage to make a more dynamic look
+//Scrolling down when arrow is clicked
+const scrollToRef = (ref) => ref.current.scrollIntoView({behavior: 'smooth'})   
+
 
 export default function LandingPage(props) {
 
   const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const myRef = useRef(null)
+  const executeScroll = () => scrollToRef(myRef)
+
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -53,9 +58,7 @@ export default function LandingPage(props) {
   const classes = useStyles();
 
   if (isAuthenticated) {
-    console.log("landingpage auth: ", isAuthenticated)
     props.history.push("/home");
-    //return(<Redirect to="/home"/>)
     window.location.reload();
   }
 
@@ -102,7 +105,7 @@ export default function LandingPage(props) {
             </GridItem>
           </GridContainer>
 
-        <h2 style={{position: 'absolute', color: "#02C39A", zIndex: 10, left: '50%', marginLeft: -25, bottom: 50}}><PlayForWorkIcon fontSize='large' style={{fontSize: 50}}/></h2>
+        <div ref={myRef} style={{position: 'absolute', color: "#02C39A", zIndex: 10, left: '50%', marginLeft: -35, bottom: 60}}><PlayForWorkIcon onClick={executeScroll} fontSize='large' style={{fontSize: 70}}/></div>
 
         </div>
       </Parallax>
