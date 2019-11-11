@@ -54,7 +54,7 @@ export default function CategoryFragment({category}) {
           </Button>
         )
         break;
-    case "Food": 
+    case "Food/Drink": 
         genre = (
           <Button color="rose" size="lg" round>
             <FastfoodIcon /> {category}
@@ -69,6 +69,13 @@ export default function CategoryFragment({category}) {
         )
         break;
     case "Movies/Theater": 
+        genre = (
+          <Button color="rose" size="lg" round>
+            <TheatersIcon /> {category}
+          </Button>
+        )
+        break;
+    case "Night Life": 
         genre = (
           <Button color="rose" size="lg" round>
             <TheatersIcon /> {category}

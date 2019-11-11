@@ -76,7 +76,7 @@ class PrimaryNav extends Component {
               }
             `,
             variables: {
-            userId: this.props.userId
+              userId: this.props.userId
             }
         }).then((data) => {
             if(data.data.users[0]){
@@ -109,7 +109,7 @@ class PrimaryNav extends Component {
                   onChange={this.handleChange}
                   className="nav primary"
               >
-                  <BottomNavigationAction label="Feed" icon={<DynamicFeedIcon />} component={Link} to={pathMap[0]} />
+                  <BottomNavigationAction label="Feeds" icon={<DynamicFeedIcon />} component={Link} to={pathMap[0]} />
                   <BottomNavigationAction label="Create" icon={<AddCircleOutlineIcon />} component={Link} to={pathMap[1]} />
                   <BottomNavigationAction label="Notifications" icon={<NotificationsIcon />} component={Link} to={pathMap[2]} />
                   <BottomNavigationAction label="Profile" icon={<AccountCircleIcon />} component={Link} to={pathMap[3]} />

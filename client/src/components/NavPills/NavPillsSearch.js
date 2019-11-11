@@ -80,7 +80,7 @@ export default function NavPillsSearch(props) {
       >
         {tabs.map((prop, key) => {
           return (
-            <div className={classes.tabContent} key={key}>
+            <div className={classes.tabContent} key={key} >
               {prop.tabContent}
             </div>
           );
