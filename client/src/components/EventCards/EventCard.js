@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 // @material-ui/icons
-import FormatAlignLeft from "@material-ui/icons/FormatAlignLeft";
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import RenewIcon from '@material-ui/icons/Autorenew'
 import IconButton from '@material-ui/core/IconButton';
 import PlaceIcon from '@material-ui/icons/Place';
-import TodayIcon from '@material-ui/icons/Today';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 
 // core components
@@ -15,24 +13,24 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from 'components/Card/CardFooter';
-import CardActions from '@material-ui/core/CardActions';
-import Button from "components/CustomButtons/Button.js";
+// import CardActions from '@material-ui/core/CardActions';
+// import Button from "components/CustomButtons/Button.js";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import Info from "components/Typography/Info.js";
-import Warning from "components/Typography/Warning.js";
-import Success from 'components/Typography/Success.js'
-import Rose from 'components/Typography/Rose.js'
-import Fab from '@material-ui/core/Fab';
+// import Warning from "components/Typography/Warning.js";
+// import Success from 'components/Typography/Success.js'
+// import Rose from 'components/Typography/Rose.js'
+// import Fab from '@material-ui/core/Fab';
 import { ThemeProvider } from '@material-ui/styles';
 import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
-import Badge from 'components/Badge/Badge.js';
+// import Badge from 'components/Badge/Badge.js';
 
 //Style
 import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js";
 
 //Images
-import { Image, Transformation, CloudinaryContext } from 'cloudinary-react';
+// import { Image, Transformation, CloudinaryContext } from 'cloudinary-react';
 import LoadImage from 'material-ui-image'
 
 

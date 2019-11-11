@@ -55,7 +55,7 @@ import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPosts
 
 // Constants
 import { categoryList } from "utils/constants";
-import { dataTable } from "AdminDashboard/variables/general";
+// import { dataTable } from "AdminDashboard/variables/general";
 
 const useStyles = makeStyles(sectionPillsStyle);
 

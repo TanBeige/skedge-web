@@ -101,7 +101,8 @@ export default function LandingPage(props) {
               </Button>
             </GridItem>
           </GridContainer>
-      <h2 style={{position: 'absolute', color: "#02C39A", zIndex: 10, left: '50%', marginLeft: -25, bottom: 80}}><PlayForWorkIcon fontSize='large' style={{fontSize: 50}}/></h2>
+
+        <h2 style={{position: 'absolute', color: "#02C39A", zIndex: 10, left: '50%', marginLeft: -25, bottom: 50}}><PlayForWorkIcon fontSize='large' style={{fontSize: 50}}/></h2>
 
         </div>
       </Parallax>

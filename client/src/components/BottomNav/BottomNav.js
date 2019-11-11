@@ -28,6 +28,7 @@ class PrimaryNav extends Component {
     
         this.state = {
             value: 0,
+            path: props.location.pathname,
             pathMap: [
                 '/home',
                 '/create',
@@ -35,17 +36,78 @@ class PrimaryNav extends Component {
                 `/users/0`,
             ],
             showBar: true,
-            authenticated: props.isAuthenticated
         };
     }
 
-  componentWillReceiveProps(newProps) {
-    const {pathname} = newProps.location;
-    const {pathMap} = this.state;
+  static getDerivedStateFromProps(nextProps, prevState) {
+    //const {pathname} = nextProps.location;
+    //const {pathMap} = this.state;
+    console.log(nextProps)
 
-    const value = pathMap.indexOf(pathname);
+    if(nextProps.location.pathname !== prevState.path) {
+      console.log("np",nextProps.location.pathname)
+      return {path: nextProps.location.pathname}
+    }
+    else {
+      return null
+    }
 
-    if (pathname === "/create" || pathname === "/" || pathname === "/error-page") {
+
+    //if(nextProps.location)
+
+    //const value = pathMap.indexOf(pathname);
+
+    // if (pathname === "/create" || pathname === "/" || pathname === "/error-page") {
+    //   this.setState({
+    //     showBar: false
+    //   })
+    // }
+    // else {
+    //   this.setState({
+    //     showBar: true
+    //   })
+    // }
+
+    // if (value > -1) {
+    //   this.setState({
+    //     value
+    //   });
+    // }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+
+    if (prevState.path !== this.state.path) {
+      console.log("run")
+      const pathname = this.state.path;
+      const {pathMap} = this.state;
+      console.log(pathname)
+
+      const value = pathMap.indexOf(pathname);
+
+      if (pathname === "/create" || pathname === "/" || pathname === "/error-page") {
+        this.setState({
+          showBar: false
+        })
+      }
+      else {
+        this.setState({
+          showBar: true
+        })
+      }
+      if (value > -1) {
+        this.setState({
+          value
+        });
+      }
+
+    }
+  }
+
+  componentDidMount() {
+    console.log("Mounting BottomNav")
+
+    if (this.props.location.pathname === "/create" || this.props.location.pathname === "/" || this.props.location.pathname === "/error-page") {
       this.setState({
         showBar: false
       })
@@ -55,15 +117,15 @@ class PrimaryNav extends Component {
         showBar: true
       })
     }
-
+    //Set current Page View
+    const {pathMap} = this.state  
+    const value = pathMap.indexOf(this.state.path);
     if (value > -1) {
-      this.setState({
-        value
-      });
+      this.setState({value});
     }
-  }
 
-  componentDidMount() {
+
+    //let newPathMap = [];
     if(this.props.client) {
         this.props.client.query({
             query: gql`
@@ -80,6 +142,15 @@ class PrimaryNav extends Component {
             }
         }).then((data) => {
             if(data.data.users[0]){
+              //Set Current Variable
+            //   newPathMap = [
+            //     '/home',
+            //     '/create',
+            //     '/notifications',
+            //     `/users/${data.data.users[0].id}`
+            // ]
+
+              //Set State variable
               this.setState({
                   pathMap: [
                       '/home',
@@ -88,12 +159,19 @@ class PrimaryNav extends Component {
                       `/users/${data.data.users[0].id}`
                   ]
               })
+
+              //Set current Page View
+              if(this.state.path.includes("/users/")) {
+                const {pathMap} = this.state  
+                const value = pathMap.indexOf(this.state.path);
+                if (value > -1) {
+                  this.setState({value});
+                }
+              }
             }
         });
     }
   }
-
-
 
   handleChange = (event, value) => {
     this.setState({ value });

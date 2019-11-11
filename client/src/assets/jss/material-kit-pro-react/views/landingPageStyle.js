@@ -30,7 +30,8 @@ const landingPageStyle = {
     ...main
   },
   mainRaised: {
-    ...mainRaised
+    ...mainRaised,
+    margin: "-50px 30px 0px",
   },
   block: {
     color: "inherit",

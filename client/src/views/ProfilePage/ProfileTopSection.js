@@ -34,6 +34,8 @@ import Button from "components/CustomButtons/Button.js";
 import Popover from "@material-ui/core/Popover";
 import { useAuth0 } from 'Authorization/react-auth0-wrapper'
 import CustomInput from 'components/CustomInput/CustomInput.js';
+import LoadImage from 'material-ui-image'
+
 
 
 import profilePageStyle from "assets/jss/material-kit-pro-react/views/profilePageStyle.js";
@@ -316,7 +318,7 @@ export default function ProfileTopSection(props) {
     }
   }
   
-
+//------------------ START RENDERING PAGE ---------------------
 
 // If user is NOT editing their profile
   if(!vals.editProfile) {
@@ -327,6 +329,7 @@ export default function ProfileTopSection(props) {
             <div className={classes.profile}>
               <div>
                 <img src={vals.picture} alt="..." className={imageClasses} />
+                {/* <LoadImage src={vals.picture} alt={vals.name} className={imageClasses} /> */}
               </div>
               <div className={classes.name}>
                 <h3 className={classes.title} style={{margin: 0}}>
