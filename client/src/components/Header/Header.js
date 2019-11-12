@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-// nodejs library that concatenates classes
-import classNames from "classnames";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -9,13 +7,34 @@ import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
+import Popover from '@material-ui/core/Popover';
+import CustomButton from "components/CustomButtons/Button.js";
+// nodejs library that concatenates classes
+import classNames from "classnames";
+// @material-ui/core components
+import IconButton from "@material-ui/core/IconButton";
+import Hidden from "@material-ui/core/Hidden";
+import Drawer from "@material-ui/core/Drawer";
+import PersonIcon from '@material-ui/icons/Person';
+// @material-ui/icons
+import Menu from "@material-ui/icons/Menu";
+import Close from "@material-ui/icons/Close";
+
+import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
+
 // core components
 import styles from "assets/jss/material-kit-pro-react/components/headerStyle.js";
+
+
 
 const useStyles = makeStyles(styles);
 
 export default function Header(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [anchorElTop, setAnchorElTop] = useState(null);
+
+  const { logout } = useAuth0();
+
   const classes = useStyles();
   React.useEffect(() => {
     if (props.changeColorOnScroll) {
@@ -63,9 +82,34 @@ export default function Header(props) {
         <Button className={classes.title}>
           <Link to="/home"><img alt='Skedge' src={require("assets/img/logoheader.png")} height={40} width={40}/></Link>
         </Button>
-        
+        <CustomButton round justIcon color="primary">
+          <PersonIcon style={{color: "white"}} onClick={event => setAnchorElTop(event.currentTarget)} className={classes.followIcon} />
+        </CustomButton>
+        <Popover
+          classes={{
+            paper: classes.popover
+          }}
+          open={Boolean(anchorElTop)}
+          anchorEl={anchorElTop}
+          onClose={() => setAnchorElTop(null)}
+          anchorOrigin={{
+            vertical: "center",
+            horizontal: "left"
+          }}
+          transformOrigin={{
+            vertical: "center",
+            horizontal: "right"
+          }}
+        >
+          <div style={{textAlign: 'center'}}>
+            <div className={classes.popoverBody}>
+              <CustomButton round color="info" onClick={logout}>
+                Logout
+              </CustomButton>
+            </div>
+          </div>
+        </Popover>
       </Toolbar>
-      
     </AppBar>
   );
 }
@@ -111,3 +155,4 @@ Header.propTypes = {
     ]).isRequired
   })
 };
+

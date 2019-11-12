@@ -309,8 +309,9 @@ export default function ProfilePage(props, { ...rest }) {
       profileContent = <NotFriendProfile />
     }
     
+    // Gradient colors: 'linear-gradient(#02C39A 200px, white 400px)'
     return (
-    <div style={{minHeight: '100vh', backgroundImage: 'linear-gradient(#02C39A 200px, white 400px)', paddingTop: '30px'}}>
+    <div style={{minHeight: '100vh', backgroundImage: 'linear-gradient(#52D3B6 300px, white 400px)' , paddingTop: '20px'}}>
       <Header
         color="transparent"
         brand="Skedge"
@@ -324,7 +325,7 @@ export default function ProfilePage(props, { ...rest }) {
       />
       { isLoading ? (<LoadingPage />) : 
         (
-          <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '50vh', marginBottom: '4em'}}>
+          <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '85vh', marginBottom: '4em'}}>
             <div className={classes.container}>
               <ProfileTopSection 
                 values={values} 

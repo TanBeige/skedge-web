@@ -15,7 +15,7 @@ const getHeaders = (tok) => {
 
   const headers = {};
   //const token = auth.getIdToken();
-  const token=tok
+  const token = tok;
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
@@ -26,6 +26,7 @@ const getHeaders = (tok) => {
 // await before instantiating ApolloClient, else queries might run before the cache is persisted
 
 const makeApolloClient = (token) => {
+  console.log("imaking apollo")
   // Create an http link:
   const httpLink = new HttpLink({
     uri: GRAPHQL_URL,
@@ -48,6 +49,18 @@ const makeApolloClient = (token) => {
       }
     })
   );
+  // const wsLink = new WebSocketLink({
+  //   uri: REALTIME_GRAPHQL_URL,
+  //   connectionParams: {
+  //     headers: {
+  //       'Authorization': `Bearer ${token}`
+  //      }
+  //   },
+  //   options: {
+  //     reconnect: true,
+  //     timeout: 60000
+  //   }
+  // });
 
   // chose the link to use based on operation
   const link = split(

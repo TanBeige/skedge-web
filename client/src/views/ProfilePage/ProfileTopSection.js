@@ -3,9 +3,6 @@ import React, { useEffect, useState } from 'react';
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import Tooltip from "@material-ui/core/Tooltip";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 // @material-ui/icons
 import Camera from "@material-ui/icons/Camera";
 import Palette from "@material-ui/icons/Palette";
@@ -21,15 +18,15 @@ import Header from "components/Header/Header.js";
 import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
-import NavPills from "components/NavPills/NavPills.js";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
-import CardHeader from "components/Card/CardHeader.js";
-import Badge from "components/Badge/Badge.js";
-import Muted from "components/Typography/Muted.js";
-import Parallax from "components/Parallax/Parallax.js";
-import Clearfix from "components/Clearfix/Clearfix.js";
+// import HeaderLinks from "components/Header/HeaderLinks.js";
+// import NavPills from "components/NavPills/NavPills.js";
+// import Card from "components/Card/Card.js";
+// import CardBody from "components/Card/CardBody.js";
+// import CardHeader from "components/Card/CardHeader.js";
+// import Badge from "components/Badge/Badge.js";
+// import Muted from "components/Typography/Muted.js";
+// import Parallax from "components/Parallax/Parallax.js";
+// import Clearfix from "components/Clearfix/Clearfix.js";
 import Button from "components/CustomButtons/Button.js";
 import Popover from "@material-ui/core/Popover";
 import { useAuth0 } from 'Authorization/react-auth0-wrapper'
@@ -53,7 +50,6 @@ export default function ProfileTopSection(props) {
       classes.imgFluid
     );
 
-    const [anchorElTop, setAnchorElTop] = useState(null);
 
     // Editing Profile Page
 
@@ -100,9 +96,6 @@ export default function ProfileTopSection(props) {
       })
     }, [props.values])
 
-
-
-
     const editProfilePage = () => {
       setValues({
         ...vals,
@@ -113,215 +106,38 @@ export default function ProfileTopSection(props) {
       })
     }
 
-    const addFriendButton = () => {
-      //If not Friends
-      if (props.values.currentUserProfile) {
-        let icon = <EditIcon className={classes.followIcon} />
-          return (
-            <Tooltip
-              id="tooltip-bottom"
-              title="Profile"
-              placement="bottom"
-              classes={{ tooltip: classes.tooltip }}
-            >
-              <div>
-                <Button
-                justIcon
-                round
-                color="info"
-                className={classes.followButton}
-                onClick={event => setAnchorElTop(event.currentTarget)}
-              >
-                <PersonIcon className={classes.followIcon} />
-              </Button>
-              <Popover
-                classes={{
-                  paper: classes.popover
-                }}
-                open={Boolean(anchorElTop)}
-                anchorEl={anchorElTop}
-                onClose={() => setAnchorElTop(null)}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "center"
-                }}
-                transformOrigin={{
-                  vertical: "bottom",
-                  horizontal: "center"
-                }}
-              >
-                <div style={{textAlign: 'center', padding: 10}}>
-                  <div className={classes.popoverBody}>
-                    <Button round color="info" onClick={editProfilePage}>
-                      Edit Page
-                    </Button>
-                    <br/>
-                    <Button round color="info" onClick={logout}>
-                      Logout
-                    </Button>
-                  </div>
-                </div>
-              </Popover>
-              </div>
-            </Tooltip>
-          )
-      }
-      if(props.values.relationshipType !== 1) {
-        let icon = ""
-  
-        // If already sent request but not friends
-        if (props.values.relationshipType === 0) {
-          icon = <RecordVoiceOverIcon className={classes.followIcon} />
-          return (
-            <Tooltip
-              id="tooltip-bottom"
-              title="Unsend"
-              placement="bottom"
-              classes={{ tooltip: classes.tooltip }}
-            >
-              <div>
-              <Button
-                justIcon
-                round
-                color="info"
-                className={classes.followButton}
-                onClick={event => setAnchorElTop(event.currentTarget)}
-              >
-                {icon}
-              </Button>
-              <Popover
-                classes={{
-                  paper: classes.popover
-                }}
-                open={Boolean(anchorElTop)}
-                anchorEl={anchorElTop}
-                onClose={() => setAnchorElTop(null)}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "center"
-                }}
-                transformOrigin={{
-                  vertical: "bottom",
-                  horizontal: "center"
-                }}
-              >
-                <div style={{textAlign: 'center', padding: 10}}>
-                  <h3 >Invite Sent</h3>
-                  <div className={classes.popoverBody}>
-                    <Button round color="info" onClick={props.removeFriend}>
-                      Click to unsend.
-                    </Button>
-                  </div>
-                </div>
-              </Popover>
-              </div>
-            </Tooltip>
-          )
-        }
-        // If Not Friends and Didn't send request
-        else if(props.values.relationshipType === -1) {
-          const icon = <PersonAddIcon className={classes.followIcon} />
-          return (
-            <Tooltip
-              id="tooltip-bottom"
-              placement="bottom"
-              title="Invite Friend"
-              classes={{ tooltip: classes.tooltip }}
-            >
-              <div>
-              <Button
-                justIcon
-                round
-                color="info"
-                className={classes.followButton}
-                onClick={event => setAnchorElTop(event.currentTarget)}
-              >
-                {icon}
-              </Button>
-              <Popover
-                classes={{
-                  paper: classes.popover
-                }}
-                open={Boolean(anchorElTop)}
-                anchorEl={anchorElTop}
-                onClose={() => setAnchorElTop(null)}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "center"
-                }}
-                transformOrigin={{
-                  vertical: "bottom",
-                  horizontal: "center"
-                }}
-              >
-                <div style={{textAlign: 'center', padding: 10}}>
-                  <div className={classes.popoverBody}>
-                    <Button round color="info" onClick={props.friendInvite}>
-                      Add Friend!
-                    </Button>
-                  </div>
-                </div>
-              </Popover>
-              </div>
-            </Tooltip>
-          )
-        }
-        }
-    // If Already Friends
-    else {
-      const icon = <PersonIcon className={classes.followIcon} />
+    const displayName = vals.editProfile ? 
+    (
+      <CustomInput 
+        id="regular"
+        labelText="Name"
+        inputProps={{
+          value:  vals.full_name,
+        }}
+        formControlProps={{
+          onChange: changeName
+        }}
+      />
+    ) : vals.full_name
+    const displayBio = vals.editProfile ?
+    (
+      <CustomInput 
+        id="regular"
+        labelText="Bio"
+        inputProps={{
+          value:  vals.biography
+        }}
+        formControlProps={{
+          fullWidth: true,
+          onChange: changeBio
+        }}
+      />
+    ) : <p>{vals.biography}</p>
 
-      return (
-        <Tooltip
-          id="tooltip-bottom"
-          title="Unfriend"
-          placement="bottom"
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <div>
-          <Button
-            justIcon
-            round
-            color="info"
-            className={classes.followButton}
-            onClick={event => setAnchorElTop(event.currentTarget)}
-          >
-            {icon}
-          </Button>
-          <Popover
-            classes={{
-              paper: classes.popover
-            }}
-            open={Boolean(anchorElTop)}
-            anchorEl={anchorElTop}
-            onClose={() => setAnchorElTop(null)}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "center"
-            }}
-            transformOrigin={{
-              vertical: "bottom",
-              horizontal: "center"
-            }}
-          >
-            <div style={{textAlign: 'center', padding: 10}}>
-              <div className={classes.popoverBody}>
-                <Button round color="info" onClick={props.RemoveFriend}>
-                  Unfriend.
-                </Button>
-              </div>
-            </div>
-          </Popover>
-          </div>
-        </Tooltip>
-      )
-    }
-  }
   
 //------------------ START RENDERING PAGE ---------------------
 
 // If user is NOT editing their profile
-  if(!vals.editProfile) {
     return (
       <div>
         <GridContainer justify="center">
@@ -333,18 +149,15 @@ export default function ProfileTopSection(props) {
               </div>
               <div className={classes.name}>
                 <h3 className={classes.title} style={{margin: 0}}>
-                  <CheckCircleOutlineIcon style={{textAlign: 'center', verticalAlign: 'middle'}} />
-                  <br />
-                  {vals.full_name} 
+                  {/* <CheckCircleOutlineIcon style={{textAlign: 'center', verticalAlign: 'middle'}} />
+                  <br /> */}
+                  {displayName}
                 </h3>
                 <h4 style={{margin: 0}}>
                   @{vals.name}
                 </h4>
                 {/*<h6>DESIGNER</h6> add this in for entities*/}
               </div>
-            </div>
-            <div className={classes.follow}>
-              {addFriendButton()}
             </div>
           </GridItem>
         </GridContainer>
@@ -356,60 +169,57 @@ export default function ProfileTopSection(props) {
       </div>
       )
   }
-// If user IS editing their profile
-  else {
-    return (
-      <div style={{textAlign: 'center'}}>
-        <GridContainer justify="center">
-          <GridItem xs={12} sm={12} md={6}>
-            <div className={classes.profile}>
-              <div>
-                <img src={vals.picture} alt="..." className={imageClasses} />
-              </div>
-              <div className={classes.name}>
-                <h3>
-                  <CheckCircleOutlineIcon style={{textAlign: 'center', verticalAlign: 'middle'}} />
-                  <br />
-                  <CustomInput 
-                    id="regular"
-                    labelText="Name"
-                    inputProps={{
-                      value:  vals.full_name,
-                    }}
-                    formControlProps={{
-                      onChange: changeName
-                    }}
-                  />
-                </h3>
-                <h4 style={{margin: 0}}>
-                  @{vals.name}
-                </h4>
-                {/*<h6>DESIGNER</h6> add this in for entities*/}
-            </div>
-            </div>
-            <div className={classes.follow}>
-              {addFriendButton()}
-            </div>
-          </GridItem>
-        </GridContainer>
-        <div className={classNames(classes.description, classes.textCenter)}>
-          <CustomInput 
-            id="regular"
-            labelText="Bio"
-            inputProps={{
-              value:  vals.biography
-            }}
-            formControlProps={{
-              fullWidth: true,
-              onChange: changeBio
-            }}
-          />
-        </div>
-        <Button color="primary" onClick={handleProfileEdit}>
-          Save
-        </Button>
-      </div>
-    )
-  }
+// // If user IS editing their profile
+//   else {
+//     return (
+//       <div style={{textAlign: 'center'}}>
+//         <GridContainer justify="center">
+//           <GridItem xs={12} sm={12} md={6}>
+//             <div className={classes.profile}>
+//               <div>
+//                 <img src={vals.picture} alt="..." className={imageClasses} />
+//               </div>
+//               <div className={classes.name}>
+//                 <h3>
+//                   {/* <CheckCircleOutlineIcon style={{textAlign: 'center', verticalAlign: 'middle'}} /> */}
+//                   <br />
+//                   <CustomInput 
+//                     id="regular"
+//                     labelText="Name"
+//                     inputProps={{
+//                       value:  vals.full_name,
+//                     }}
+//                     formControlProps={{
+//                       onChange: changeName
+//                     }}
+//                   />
+//                 </h3>
+//                 <h4 style={{margin: 0}}>
+//                   @{vals.name}
+//                 </h4>
+//                 {/*<h6>DESIGNER</h6> add this in for entities*/}
+//               </div>
+//             </div>
+//           </GridItem>
+//         </GridContainer>
+//         <div className={classNames(classes.description, classes.textCenter)}>
+//           <CustomInput 
+//             id="regular"
+//             labelText="Bio"
+//             inputProps={{
+//               value:  vals.biography
+//             }}
+//             formControlProps={{
+//               fullWidth: true,
+//               onChange: changeBio
+//             }}
+//           />
+//         </div>
+//         <Button color="primary" onClick={handleProfileEdit}>
+//           Save
+//         </Button>
+//       </div>
+//     )
+//   }
 
-}
+// }
