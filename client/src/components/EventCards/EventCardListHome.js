@@ -36,7 +36,7 @@ Date.prototype.formatDate = function() {
 }
 
 // Functional Component
-export default function EventCardList(props) {
+export default function EventCardListHome(props) {
   
   // Checks if we are still grabbing events
   const [isSearch, setIsSearch] = useState(false)
@@ -98,7 +98,6 @@ export default function EventCardList(props) {
 
     // Update Query When new Events are added
     const loadMoreClicked = () => {
-      console.log("Loading more Events.")
       const { client } = props;
       const { filter } = props;
 
@@ -149,6 +148,7 @@ export default function EventCardList(props) {
     // Replaces ComponentDidMount() in a Functional Component
 
     useEffect(() => {
+      console.log("Ass");
       grabEvents();
     }, [props.filter, values.events])
 

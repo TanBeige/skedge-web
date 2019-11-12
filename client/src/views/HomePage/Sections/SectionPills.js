@@ -158,6 +158,7 @@ export default function SectionPills(props) {
 
   useEffect(() => {
     if(debouncedSearchTerm) {
+      console.log("Test debounce")
       // Set isSearching state
 //      setIsSearching(true);
 
