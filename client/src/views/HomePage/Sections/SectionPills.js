@@ -203,7 +203,7 @@ export default function SectionPills(props) {
                 <GridItem xs={12}>
                   <FormControl fullWidth className={classes.selectFormControl} style={{marginBottom: 0}}>            
                     <CustomInput
-                      labelText="Search Events"
+                      labelText="Search by name, date, category, etc."
                       id="search"
                       inputProps={{
                         onChange: handleFilters("searchText")

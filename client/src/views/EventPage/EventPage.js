@@ -388,24 +388,6 @@ export default function EventPage(props) {
                       About us
                     </a>
                   </ListItem>
-                  <ListItem className={classes.inlineBlock}>
-                    <a
-                      href="https://blog.creative-tim.com/?ref=mkpr-blog-post"
-                      target="_blank"
-                      className={classes.block}
-                    >
-                      Blog
-                    </a>
-                  </ListItem>
-                  <ListItem className={classes.inlineBlock}>
-                    <a
-                      href="https://www.creative-tim.com/license?ref=mkpr-blog-post"
-                      target="_blank"
-                      className={classes.block}
-                    >
-                      Licenses
-                    </a>
-                  </ListItem>
                 </List>
               </div>
             </div>

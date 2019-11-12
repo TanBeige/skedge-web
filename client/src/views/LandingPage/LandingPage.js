@@ -1,15 +1,13 @@
 /*eslint-disable*/ import React, { useState, useRef } from "react";
 import { Redirect } from 'react-router-dom'
 // nodejs library to set properties for components
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-// @material-ui/icons
-import Favorite from "@material-ui/icons/Favorite";
 // core components
 //import Header from "components/Header/Header.js";
 import Footer from "components/Footer/Footer.js";
@@ -18,17 +16,18 @@ import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 //import HeaderLinks from "components/Header/HeaderLinks.js";
 import Parallax from "components/Parallax/Parallax.js";
+// import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
 
-import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
-
+//Smooth Scrolling
+//import { Link, animateScroll as scroll } from "react-scroll";
 
 
 import landingPageStyle from "assets/jss/material-kit-pro-react/views/landingPageStyle.js";
 
 // Sections for this page
-import SectionProduct from "./Sections/SectionProduct.js";
+// import SectionProduct from "./Sections/SectionProduct.js";
 import SectionTeam from "./Sections/SectionTeam.js";
-import SectionWork from "./Sections/SectionWork.js";
+// import SectionWork from "./Sections/SectionWork.js";
 import SectionTitle from "./Sections/SectionTitle.js"
 
 //Authorization
@@ -41,14 +40,14 @@ import ReactGA from 'react-ga';
 const useStyles = makeStyles(landingPageStyle);
 
 //Scrolling down when arrow is clicked
-const scrollToRef = (ref) => ref.current.scrollIntoView({behavior: 'smooth'})   
+//const scrollToRef = (ref) => ref.current.scrollIntoView({behavior: 'smooth'})   
 
 
 export default function LandingPage(props) {
 
   const { isAuthenticated, loginWithRedirect } = useAuth0();
-  const myRef = useRef(null)
-  const executeScroll = () => scrollToRef(myRef)
+  // const myRef = useRef(null)
+  // const executeScroll = () => scrollToRef(myRef)
 
 
   React.useEffect(() => {
@@ -105,7 +104,9 @@ export default function LandingPage(props) {
             </GridItem>
           </GridContainer>
 
-        <div ref={myRef} style={{position: 'absolute', color: "#02C39A", zIndex: 10, left: '50%', marginLeft: -35, bottom: 60}}><PlayForWorkIcon onClick={executeScroll} fontSize='large' style={{fontSize: 70}}/></div>
+        {/* <div style={{position: 'absolute', color: "#02C39A", zIndex: 10, left: '50%', marginLeft: -35, bottom: 60}}>
+          <PlayForWorkIcon onClick={executeScroll} fontSize='large' style={{fontSize: 70}}/>
+        </div> */}
 
         </div>
       </Parallax>

@@ -330,7 +330,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
                 src={holdURL}
                 alt={holdName}
               /> */}
-              <LoadImage src={values.image_url} aspectRatio={3/2}/>
+              <LoadImage color='white' src={values.image_url} aspectRatio={3/2}/>
                 {/* <Image cloudName="skedge" publicId={values.image_id} secure="true" alt={values.name}>
                   <Transformation height="400" width="600" fetchFormat="jpg" crop='fill' quality="auto"/>
                 </Image> */}

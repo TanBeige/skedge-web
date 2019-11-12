@@ -128,7 +128,7 @@ export default function ProfileTopSection(props) {
                 <Button
                 justIcon
                 round
-                color="primary"
+                color="info"
                 className={classes.followButton}
                 onClick={event => setAnchorElTop(event.currentTarget)}
               >
@@ -152,11 +152,11 @@ export default function ProfileTopSection(props) {
               >
                 <div style={{textAlign: 'center', padding: 10}}>
                   <div className={classes.popoverBody}>
-                    <Button round color="primary" onClick={editProfilePage}>
+                    <Button round color="info" onClick={editProfilePage}>
                       Edit Page
                     </Button>
                     <br/>
-                    <Button round color="primary" onClick={logout}>
+                    <Button round color="info" onClick={logout}>
                       Logout
                     </Button>
                   </div>
@@ -183,7 +183,7 @@ export default function ProfileTopSection(props) {
               <Button
                 justIcon
                 round
-                color="primary"
+                color="info"
                 className={classes.followButton}
                 onClick={event => setAnchorElTop(event.currentTarget)}
               >
@@ -208,7 +208,7 @@ export default function ProfileTopSection(props) {
                 <div style={{textAlign: 'center', padding: 10}}>
                   <h3 >Invite Sent</h3>
                   <div className={classes.popoverBody}>
-                    <Button round color="primary" onClick={props.removeFriend}>
+                    <Button round color="info" onClick={props.removeFriend}>
                       Click to unsend.
                     </Button>
                   </div>
@@ -232,7 +232,7 @@ export default function ProfileTopSection(props) {
               <Button
                 justIcon
                 round
-                color="primary"
+                color="info"
                 className={classes.followButton}
                 onClick={event => setAnchorElTop(event.currentTarget)}
               >
@@ -256,7 +256,7 @@ export default function ProfileTopSection(props) {
               >
                 <div style={{textAlign: 'center', padding: 10}}>
                   <div className={classes.popoverBody}>
-                    <Button round color="primary" onClick={props.friendInvite}>
+                    <Button round color="info" onClick={props.friendInvite}>
                       Add Friend!
                     </Button>
                   </div>
@@ -282,7 +282,7 @@ export default function ProfileTopSection(props) {
           <Button
             justIcon
             round
-            color="primary"
+            color="info"
             className={classes.followButton}
             onClick={event => setAnchorElTop(event.currentTarget)}
           >
@@ -306,7 +306,7 @@ export default function ProfileTopSection(props) {
           >
             <div style={{textAlign: 'center', padding: 10}}>
               <div className={classes.popoverBody}>
-                <Button round color="primary" onClick={props.RemoveFriend}>
+                <Button round color="info" onClick={props.RemoveFriend}>
                   Unfriend.
                 </Button>
               </div>

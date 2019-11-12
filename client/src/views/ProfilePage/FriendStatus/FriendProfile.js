@@ -43,6 +43,7 @@ export default function FriendProfile(props) {
         category: "",
         city: "",
         state: "",
+        //date: new Date(),
         limit: 10   // This is how many events will show up in the eventList
     };
 

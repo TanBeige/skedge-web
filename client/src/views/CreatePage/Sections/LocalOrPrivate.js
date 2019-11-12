@@ -25,7 +25,7 @@ const vertStyle = {
     position: 'block',
     textAlign: 'center',
     margin: '4em 0 0 0',
-    paddingBottom: 60,
+    paddingBottom: 30,
 }
 
 
@@ -104,10 +104,24 @@ export default function LocalOrPrivate(props) {
                     <Button variant='contained' color='primary' style={buttonStyle} onClick={handlePrivate}>
                         Private
                     </Button>
-                    <div >
+                    {/* <div >
                         <h1 className='OrText'>-Or-</h1>
-                    </div>
+                    </div> */}
+                    <div style={{margin: '2.5em'}}></div>
                     {localEntityButton}
+                    <div style={{textAlign: 'left', marginTop: '3em'}}> 
+                        <hr />
+
+                        <h3>Private: </h3>
+                        <ul>
+                            <li>You have the option of either sharing your event to all of your followers or just the followers you invite.</li>
+                        </ul>
+                        <h3>Local: </h3>
+                        <ul>
+                            <li>Every Skedge user in your city will be able to see your event.</li>
+                            <li>Only “Entity/Business” accounts can post events to this Feed.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </Slide>

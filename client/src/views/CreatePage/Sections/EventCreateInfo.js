@@ -66,6 +66,7 @@ export default function EventCreateInfo(props) {
     price: savedValues.price,
     description: savedValues.description,
 
+    //Recurring Events
     repeatCheck: savedValues.is_recurring,
     monday: false,
     tuesday: false,
@@ -74,6 +75,8 @@ export default function EventCreateInfo(props) {
     friday: false,
     saturday: false,
     sunday: false,
+
+    end_date: savedValues.end_date
 
   });
 
@@ -90,6 +93,12 @@ export default function EventCreateInfo(props) {
           ...values,
           start_date: day
       })
+  }
+  const handleEndDateClick = (day) => {
+    setValues({
+        ...values,
+        end_date: day
+    })
   }
 
   const handleTimeClick = (time) => {
@@ -127,8 +136,12 @@ export default function EventCreateInfo(props) {
 
   if (values.endTimeExists) {
     endTimeJS = (<div>
+
                 <Grid container>
-                  <Grid item xs={8}>
+                  <Grid item xs={11}>
+                    {/* <div style={{position: 'absolute', right: 10}}>
+                      <Button variant='outlined' style={{marginTop: 8, minWidth: 32}} size='small' color='primary' onClick={handleEndTimeClick}>X</Button>
+                    </div> */}
                     <TimePicker 
                       label="End Time"
                       variant="outlined"
@@ -136,9 +149,9 @@ export default function EventCreateInfo(props) {
                       value={values.end_time}
                       onChange={handleEndTime}
                     />
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant='outlined' style={{marginTop: 8}} size='small' color='primary' onClick={handleEndTimeClick}>X</Button>
+                      <Button variant='outlined' style={{position: 'absolute', marginTop: 8, marginRight: 16, minWidth: 32}} size='small' color='primary' onClick={handleEndTimeClick}>X</Button>
+
+                    
                   </Grid>
                 </Grid>
 
@@ -149,7 +162,7 @@ export default function EventCreateInfo(props) {
     endTimeJS = (<Button 
                   variant="contained" 
                   color='primary' 
-                  style={{width: '100%', height: '80%'}}
+                  style={{width: '100%', height: '80%', color: 'white'}}
                   onClick={handleEndTimeClick}
                   >
                     End Time
@@ -256,20 +269,42 @@ export default function EventCreateInfo(props) {
         </FormGroup>
       </FormControl>
       <MuiPickersUtilsProvider utils={MomentUtils} >
-      <Grid container spacing={2}>
+        <Grid container spacing={2}>
         <Grid item xs={6}>
-            <TimePicker
-                label="Start Time"
+          <DatePicker
+              variant="inline"
+              label="Event Starting Date"
+              format="MMMM Do YYYY"
+              variant="outlined"
+              fullWidth
+              value={values.start_date}
+              onChange={handleDayClick}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <DatePicker
+                variant="inline"
+                label="Event Ending Date"
+                format="MMMM Do YYYY"
                 variant="outlined"
                 fullWidth
-                value={values.start_time}
-                onChange={handleTimeClick}
-            />
+                value={values.end_date}
+                onChange={handleEndDateClick}
+          />
         </Grid>
-        <Grid item xs={6}>
-            {endTimeJS}
+          <Grid item xs={6}>
+              <TimePicker
+                  label="Start Time"
+                  variant="outlined"
+                  fullWidth
+                  value={values.start_time}
+                  onChange={handleTimeClick}
+              />
+          </Grid>
+          <Grid item xs={6}>
+              {endTimeJS}
+          </Grid>
         </Grid>
-      </Grid>
       </MuiPickersUtilsProvider>
       </div>
     )

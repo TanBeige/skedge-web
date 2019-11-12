@@ -199,7 +199,7 @@ export default function EventCardList(props) {
     {
       return(
         <div>
-          <h5 style={{marginTop: 20, textAlign: 'center'}}>No events found. <span role="img" aria-label="sad">😔</span></h5>
+          <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no events today.</h5>
         </div>
       )
     }
@@ -212,7 +212,7 @@ export default function EventCardList(props) {
           //loader={<h4>Loading...</h4>}
           style={{overflow: 'none'}}
       >
-        <GridContainer>
+        <GridContainer style={{minHeight: '8em'}}>
             {
               finalEvents.map((event, index) => {
                   return (

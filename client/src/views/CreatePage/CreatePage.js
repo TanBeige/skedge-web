@@ -68,6 +68,7 @@ export default function PricingPage(props) {
       name: "",
       description: "",
       start_date: new Date(),
+      end_date: new Date(),
       start_time: new Date(),
       end_time: null,
       price: "0.00",
@@ -194,6 +195,7 @@ const handleLocalOrPrivate = (type) => {
       city: valuesInfo.city,
       state: valuesInfo.state,
       start_date: valuesInfo.start_date,
+      end_date: valuesInfo.end_date,
       start_time: valuesInfo.start_time,
       end_time: valuesInfo.endTimeExists ? valuesInfo.end_time : null,
       is_recurring: valuesInfo.repeatCheck,
@@ -323,7 +325,7 @@ const handleLocalOrPrivate = (type) => {
                     event_date: {
                       data: {
                         start_date: MomentUtils(values.start_date).format('YYYY-MM-DD'),
-                        end_date: MomentUtils(values.start_date).add(1, 'y').format('YYYY-MM-DD'),
+                        end_date: MomentUtils(values.end_date).format('YYYY-MM-DD'),
                         is_recurring: values.is_recurring,
                         weekday: values.weekday
                       }
@@ -452,7 +454,7 @@ const handleLocalOrPrivate = (type) => {
   return (
     <div style={{backgroundColor: "#02C39A",height: '100vh',  overflowY: 'scroll'}}>
       <div style={{height: 60}}></div>
-      <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '70vh'}}>
+      <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '70vh', marginBottom: '2em'}}>
         <div className={classes.container}>
           <IconButton style={{position: 'absolute', left: 0}} onClick={handleGoBack}>
             <ChevronLeftIcon style={{fontSize: '2em'}} />

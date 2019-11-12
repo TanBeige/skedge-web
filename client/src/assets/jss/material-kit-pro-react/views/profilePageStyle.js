@@ -27,9 +27,12 @@ const profilePageStyle = {
     textAlign: "center",
     "& img": {
       maxWidth: "160px",
-      width: "100%",
+      //width: "100%",
+      width: 100,
+      height: 100,
       margin: "0 auto",
-      transform: "translate3d(0, -50%, 0)"
+      marginTop: 20
+      //transform: "translate3d(0, -50%, 0)"
     }
   },
   description: {
@@ -41,7 +44,7 @@ const profilePageStyle = {
     textAlign: "center !important"
   },
   name: {
-    marginTop: "-80px"
+    //marginTop: "-80px"
   },
 
   main: {

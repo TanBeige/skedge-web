@@ -179,7 +179,7 @@ export default function HomePage(props) {
       </Parallax>
       // Add style={{marginTop: '5em'}} to  <div className={classes.main} > if not using parallax
       }
-      <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh'}}>
+      <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '4em'}}>
         <div className={classes.container} >
           {
             loading ?
@@ -191,46 +191,6 @@ export default function HomePage(props) {
           }
         </div>
       </div>
-      <Footer
-        content={
-          <div>
-            <div className={classes.left}>
-              <List className={classes.list}>
-                <ListItem className={classes.inlineBlock}>
-                  <a
-                    href="/about-us"
-                    target="_blank"
-                    className={classes.block}
-                  >
-                    Skedge
-                  </a>
-                </ListItem>
-                <ListItem className={classes.inlineBlock}>
-                  <a
-                    href="https://www.creative-tim.com/presentation?ref=mkpr-blog-posts"
-                    target="_blank"
-                    className={classes.block}
-                  >
-                    About us
-                  </a>
-                </ListItem>
-                <ListItem className={classes.inlineBlock}>
-                  <a
-                    href="https://www.creative-tim.com/license?ref=mkpr-blog-posts"
-                    target="_blank"
-                    className={classes.block}
-                  >
-                    Licenses
-                  </a>
-                </ListItem>
-              </List>
-            </div>
-            <div className={classes.right}>
-              &copy; {1900 + new Date().getYear()} , made with{" "}
-            </div>
-          </div>
-        }
-      />
     </div>
   );
       }
