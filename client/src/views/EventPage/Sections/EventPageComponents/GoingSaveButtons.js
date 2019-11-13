@@ -128,10 +128,10 @@ export default function GoingSaveButtons (props) {
 
     let goingButton = "";
     if(!values.ifGoing){ //going to event) {
-      goingButton = <Button color="primary" onClick={goingToEvent} style={{margin: '0px 10px', width: '40%'}}>Go!</Button>
+      goingButton = <Button color="primary" onClick={goingToEvent} style={{margin: '0px 10px', width: '40%'}}>Not Going</Button>
     }
     else {
-      goingButton = <Button color="info" onClick={goingToEvent} style={{margin: '0px 10px', width: '40%'}}>Don't Go!</Button>
+      goingButton = <Button color="info" onClick={goingToEvent} style={{margin: '0px 10px', width: '40%'}}>Going</Button>
     }
   
     let saveButton = "";
@@ -139,7 +139,7 @@ export default function GoingSaveButtons (props) {
       saveButton = <Button color="rose" onClick={saveEvent} style={{margin: '0px 10px', width: '40%'}}>Save</Button>
     }
     else {
-      saveButton = <Button color="info" onClick={saveEvent} style={{margin: '0px 10px', width: '40%'}}>Unsave</Button>
+      saveButton = <Button color="info" onClick={saveEvent} style={{margin: '0px 10px', width: '40%'}}>Saved</Button>
     }
 
     return (

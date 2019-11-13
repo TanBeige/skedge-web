@@ -11,28 +11,25 @@ import moment from "moment";
 import gql from "graphql-tag";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 // @material-ui/icons
-import Favorite from "@material-ui/icons/Favorite";
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 // core components
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
-import Footer from "components/Footer/Footer.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import Parallax from "components/Parallax/Parallax.js";
+// import Footer from "components/Footer/Footer.js";
+// import GridContainer from "components/Grid/GridContainer.js";
+// import GridItem from "components/Grid/GridItem.js";
+// import Parallax from "components/Parallax/Parallax.js";
+import Button from "components/CustomButtons/Button.js";
 
 // sections for this page
 import SectionPills from "./Sections/SectionPills.js";
-import SectionInterested from "./Sections/SectionInterested.js";
-import SectionImage from "./Sections/SectionImage.js";
-import SubscribeLine from "./Sections/SubscribeLine.js";
-import LoadingPage from '../LoadingPage/LoadingPage.js'
+// import SectionInterested from "./Sections/SectionInterested.js";
+// import SectionImage from "./Sections/SectionImage.js";
+// import SubscribeLine from "./Sections/SubscribeLine.js";
+// import LoadingPage from '../LoadingPage/LoadingPage.js'
 
-import SectionTitle from 'views/LandingPage/Sections/SectionTitle.js';
-
-import './HomePageStyle.css';
+// import SectionTitle from 'views/LandingPage/Sections/SectionTitle.js';
 
 //import auth from "../../Authorization/Auth";
 import { useAuth0 } from "../../Authorization/react-auth0-wrapper";
@@ -40,9 +37,12 @@ import { useAuth0 } from "../../Authorization/react-auth0-wrapper";
 //For Google Analytics
 import ReactGA from 'react-ga';
 
+// Fro Scrolling to top
+import { animateScroll as scroll} from 'react-scroll'
 
 //Styles
 import blogPostsPageStyle from "assets/jss/material-kit-pro-react/views/blogPostsPageStyle.js";
+import './HomePageStyle.css';
 
 const useStyles = makeStyles(blogPostsPageStyle);
 
@@ -74,6 +74,11 @@ export default function HomePage(props) {
   };
 
   const { loading, isAuthenticated, user } = useAuth0();
+
+  //Scroll To Top of the page
+  const scrollToTop = () => {
+    scroll.scrollToTop();
+  }
 
   //When called, updates last time user was seen on website.
   //  Called every time user enters home page.
@@ -194,6 +199,9 @@ export default function HomePage(props) {
       // Add style={{marginTop: '5em'}} to  <div className={classes.main} > if not using parallax
       }
       <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '4em', marginTop: '5em'}}>
+        <Button style={{position: 'fixed', bottom: 55, right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
+              <ArrowUpwardIcon style={{color: "white"}} />
+        </Button>
         <div className={classes.container} >
           {/* <h1 className='homeTitle'>Skedge</h1> */}
           {
