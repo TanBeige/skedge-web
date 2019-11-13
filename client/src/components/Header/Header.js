@@ -36,39 +36,39 @@ export default function Header(props) {
   const { logout } = useAuth0();
 
   const classes = useStyles();
-  React.useEffect(() => {
-    if (props.changeColorOnScroll) {
-      window.addEventListener("scroll", headerColorChange);
-    }
-    return function cleanup() {
-      if (props.changeColorOnScroll) {
-        window.removeEventListener("scroll", headerColorChange);
-      }
-    };
-  });
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-  const headerColorChange = () => {
-    const { color, changeColorOnScroll } = props;
+  // React.useEffect(() => {
+  //   if (props.changeColorOnScroll) {
+  //     window.addEventListener("scroll", headerColorChange);
+  //   }
+  //   return function cleanup() {
+  //     if (props.changeColorOnScroll) {
+  //       window.removeEventListener("scroll", headerColorChange);
+  //     }
+  //   };
+  // });
+  // const handleDrawerToggle = () => {
+  //   setMobileOpen(!mobileOpen);
+  // };
+  // const headerColorChange = () => {
+  //   const { color, changeColorOnScroll } = props;
 
-    const windowsScrollTop = window.pageYOffset;
-    if (windowsScrollTop > changeColorOnScroll.height) {
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.remove(classes[color]);
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.add(classes[changeColorOnScroll.color]);
-    } else {
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.add(classes[color]);
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.remove(classes[changeColorOnScroll.color]);
-    }
-  };
+  //   const windowsScrollTop = window.pageYOffset;
+  //   if (windowsScrollTop > changeColorOnScroll.height) {
+  //     document.body
+  //       .getElementsByTagName("header")[0]
+  //       .classList.remove(classes[color]);
+  //     document.body
+  //       .getElementsByTagName("header")[0]
+  //       .classList.add(classes[changeColorOnScroll.color]);
+  //   } else {
+  //     document.body
+  //       .getElementsByTagName("header")[0]
+  //       .classList.add(classes[color]);
+  //     document.body
+  //       .getElementsByTagName("header")[0]
+  //       .classList.remove(classes[changeColorOnScroll.color]);
+  //   }
+  // };
   const { color, links, brand, fixed, absolute } = props;
   const appBarClasses = classNames({
     [classes.appBar]: true,

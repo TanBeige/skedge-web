@@ -1,0 +1,11 @@
+.homeTitle {
+    text-align: center;
+    margin-bottom: 0;
+    padding-top: 10;
+    font-style: "Roboto Slab", "Times New Roman", serif;
+    font-weight: 500;
+    color: #02C39A;
+    -webkit-text-fill-color: #02C39A; 
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}

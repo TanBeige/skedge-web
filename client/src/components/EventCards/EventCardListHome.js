@@ -37,15 +37,12 @@ Date.prototype.formatDate = function() {
 
 // Functional Component
 export default function EventCardListHome(props) {
-  
   // Checks if we are still grabbing events
   const [isSearch, setIsSearch] = useState(false)
-
 
   const [values, setValues] = useState({
       type: props.type,
       filter: props.filter,
-      showNew: false,
       loadedAllEvents: false,
       showOlder: true,
       eventsLength: 0,
@@ -61,7 +58,6 @@ export default function EventCardListHome(props) {
     if(!values.showNew) {
 
       setIsSearch(true)
-
 
       let cat = filter.category;
       if(filter.category == "Any") {
@@ -87,9 +83,10 @@ export default function EventCardListHome(props) {
             setValues({ 
               ...values, 
               events: data.data.events, 
-              eventsLength: data.data.events.length
+              eventsLength: data.data.events.length,
+              showNew: false,
+              loadedAllEvents: false,
             });
-
             // When done grabbing events, set seraching to false
             setIsSearch(false)
           });
@@ -149,6 +146,11 @@ export default function EventCardListHome(props) {
 
     useEffect(() => {
       console.log("Ass");
+      console.log(values.loadedAllEvents)
+      setValues({
+        ...values,
+        showNew: false,
+      })
       grabEvents();
     }, [props.filter, values.events])
 

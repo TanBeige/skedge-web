@@ -82,54 +82,7 @@ export default function SectionPills(props) {
     weekday: new Date().getDay()
   })
 
-  const [expanded, setExpanded] = useState(false)
-
-  // Handle Filter Change
-  const handleExpandClick = () => {
-    setExpanded(!expanded)
-  }
-
-  const handleFilters = name => event => {
-      setValues({
-        ...values,
-        [name]: event.target.value,
-      });
-  };
-
-  const handleDateChange = date => {
-    const day = date.toDate().getDay();
-    
-    setValues({
-      ...values,
-      date: date.toDate(),
-      weekday: day
-    })
-  }
-
-  const handleDayBack = () => {
-    const newDate = values.date.addDays(-1)
-    const day = newDate.getDay()
-
-    console.log(day)
-    setValues({
-      ...values,
-      date: newDate,
-      weekday: day
-    })
-  }
-  const handleDayForward = () => {
-    const newDate = values.date.addDays(1)
-    const day = newDate.getDay();
-
-    console.log(day)
-    setValues({
-      ...values,
-      date: newDate,
-      weekday: day
-
-    })
-  }
-
+  //Search filters for list
   const [localFilter, setLocalFilter] = useState({
     searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
     type: "local",
@@ -153,41 +106,141 @@ export default function SectionPills(props) {
     weekday: values.weekday
   })
 
-  const debouncedSearchTerm = useDebounce(values, 300);
-  //const [isSearching, setIsSearching] = useState(false);
+  const [expanded, setExpanded] = useState(false)
 
-  useEffect(() => {
-    if(debouncedSearchTerm) {
-      console.log("Test debounce")
-      // Set isSearching state
-//      setIsSearching(true);
+  // Handle Filter Change
+  const handleExpandClick = () => {
+    setExpanded(!expanded)
+  }
 
-      setLocalFilter({
-        ...localFilter,
-        searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
-        type: "local",
-        category: values.category,
-        city: values.city,
-        state: values.state,
-        limit: values.limit,
-        date: values.date,
-        weekday: values.weekday
+  const handleFilters = name => event => {
+      setValues({
+        ...values,
+        [name]: event.target.value,
       });
-      setPrivateFilter({
-        ...privateFilter,
-        searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
-        type: "private",
-        category: values.category,
-        city: values.city,
-        state: values.state,
-        limit: values.limit,
-        date: values.date,
-        weekday: values.weekday
-      });
+  };
 
-  //    setIsSearching(false);
-    }
-  },[debouncedSearchTerm])
+  const handleDateChange = date => {
+    const day = date.toDate().getDay();
+    
+    setValues({
+      ...values,
+      date: date.toDate(),
+      weekday: day
+    })
+    setLocalFilter({
+      ...localFilter,
+      date: date.toDate(),
+      weekday: day
+    });
+    setPrivateFilter({
+      ...privateFilter,
+      date: date.toDate(),
+      weekday: day
+    });
+  }
+
+  const handleDayBack = () => {
+    const newDate = values.date.addDays(-1)
+    const day = newDate.getDay()
+
+    setValues({
+      ...values,
+      date: newDate,
+      weekday: day
+    });
+    setLocalFilter({
+      ...localFilter,
+      date: newDate,
+      weekday: day
+    });
+    setPrivateFilter({
+      ...privateFilter,
+      date: newDate,
+      weekday: day
+    });
+  }
+
+  const handleDayForward = () => {
+    const newDate = values.date.addDays(1)
+    const day = newDate.getDay();
+
+    setValues({
+      ...values,
+      date: newDate,
+      weekday: day
+    });
+    setLocalFilter({
+      ...localFilter,
+      date: newDate,
+      weekday: day
+    });
+    setPrivateFilter({
+      ...privateFilter,
+      date: newDate,
+      weekday: day
+    });
+  }
+
+  
+
+  const submitSearch = () => {
+    setLocalFilter({
+      ...localFilter,
+      searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
+      type: "local",
+      category: values.category,
+      city: values.city,
+      state: values.state,
+      limit: values.limit,
+      date: values.date,
+      weekday: values.weekday
+    });
+    setPrivateFilter({
+      ...privateFilter,
+      searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
+      type: "private",
+      category: values.category,
+      city: values.city,
+      state: values.state,
+      limit: values.limit,
+      date: values.date,
+      weekday: values.weekday
+    });
+  }
+
+  
+
+  // const debouncedSearchTerm = useDebounce(values, 300);
+
+  // useEffect(() => {
+  //   if(debouncedSearchTerm) {
+  //     console.log("Test debounce")
+
+  //     setLocalFilter({
+  //       ...localFilter,
+  //       searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
+  //       type: "local",
+  //       category: values.category,
+  //       city: values.city,
+  //       state: values.state,
+  //       limit: values.limit,
+  //       date: values.date,
+  //       weekday: values.weekday
+  //     });
+  //     setPrivateFilter({
+  //       ...privateFilter,
+  //       searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
+  //       type: "private",
+  //       category: values.category,
+  //       city: values.city,
+  //       state: values.state,
+  //       limit: values.limit,
+  //       date: values.date,
+  //       weekday: values.weekday
+  //     });
+  //   }
+  // },[debouncedSearchTerm])
 
 
   //Changes day to a moment.js object so I can format easier
@@ -196,7 +249,7 @@ export default function SectionPills(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.section} style={{paddingTop: 25, paddingBottom: '1em'}}>
+      <div className={classes.section} style={{paddingTop: 0, paddingBottom: '1em'}}>
         <GridContainer justify="center">
           <GridItem xs={12}>
             <Paper elevation={10} style={{paddingLeft:20, paddingRight: 20, margin: '10px 0 20px 0'}} color="primary">
@@ -324,6 +377,11 @@ export default function SectionPills(props) {
                       }}
                     />
                     </FormControl>
+                  </GridItem>
+                </GridContainer>
+                <GridContainer>
+                  <GridItem xs={12} style={{textAlign: 'center'}}>
+                    <Button color='info' onClick={submitSearch}>Search</Button>
                   </GridItem>
                 </GridContainer>
               </Collapse>

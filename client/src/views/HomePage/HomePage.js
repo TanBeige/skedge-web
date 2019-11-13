@@ -32,6 +32,7 @@ import LoadingPage from '../LoadingPage/LoadingPage.js'
 
 import SectionTitle from 'views/LandingPage/Sections/SectionTitle.js';
 
+import './HomePageStyle.css';
 
 //import auth from "../../Authorization/Auth";
 import { useAuth0 } from "../../Authorization/react-auth0-wrapper";
@@ -46,8 +47,22 @@ import blogPostsPageStyle from "assets/jss/material-kit-pro-react/views/blogPost
 const useStyles = makeStyles(blogPostsPageStyle);
 
 export default function HomePage(props) {
+  //Styling
   const classes = useStyles();
 
+  const homeTitle = {
+    textAlign: 'center',
+    marginBottom: 0,
+    paddingTop: 10,
+    fontStyle: '"Roboto Slab", "Times New Roman", serif',
+    fontWeight: '700',
+    color: '#02C39A',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 1,
+    textShadowColor: '#000',
+  }
+
+  //Variables
   const [values, setValues] = useState({
     events: [],
     tabType: 'local',
@@ -161,26 +176,26 @@ export default function HomePage(props) {
         brand="Skedge"
         links={<HeaderLinks dropdownHoverColor="info"/>}
         fixed
-        color="transparent"
+        color="primary"//"transparent"
         changeColorOnScroll={{
           height: 100,
           color: "primary"
         }}
       />
       {
-      <Parallax image={require("assets/img/cover1.jpg")} filter="dark" small>
-        <div className={classes.container}>
-          <GridContainer justify="center">
-            <GridItem xs={12} sm={12} md={8} className={classes.textCenter}>
-              {window.innerHeight >= 725 ? <h2 className={classes.title}>Events</h2> : ""}
-            </GridItem>
-          </GridContainer>
-        </div>
-      </Parallax>
+      // <Parallax image={require("assets/img/cover1.jpg")} filter="dark" small>
+      //   <div className={classes.container}>
+      //     <GridContainer justify="center">
+      //       <GridItem xs={12} sm={12} md={8} className={classes.textCenter}>
+      //       </GridItem>
+      //     </GridContainer>
+      //   </div>
+      // </Parallax>
       // Add style={{marginTop: '5em'}} to  <div className={classes.main} > if not using parallax
       }
-      <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '4em'}}>
+      <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '4em', marginTop: '5em'}}>
         <div className={classes.container} >
+          {/* <h1 className='homeTitle'>Skedge</h1> */}
           {
             loading ?
             "" :

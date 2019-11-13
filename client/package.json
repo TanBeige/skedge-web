@@ -61,8 +61,10 @@
     "map-sass": "node-sass src/assets/scss/material-kit-pro-react.scss src/assets/css/material-kit-pro-react.css --source-map true"
   },
   "devDependencies": {
+    "css-loader": "^3.2.0",
     "gulp": "4.0.2",
-    "gulp-append-prepend": "1.0.8"
+    "gulp-append-prepend": "1.0.8",
+    "style-loader": "^1.0.0"
   },
   "optionalDependencies": {
     "@types/googlemaps": "3.37.3",
