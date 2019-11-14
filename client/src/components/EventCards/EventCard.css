@@ -18,3 +18,18 @@ p {
     color: #FFFFFF;
     padding: 3px 8px; */
 }
+
+.saveButton {
+    /* color: #02C39A; */
+    text-align: center;
+    position: absolute;
+    /* display: 'inline', */
+    top: 3px;
+    right: 3px;
+    border-radius: 3px;  
+    background-color: transparent; 
+    color: white;
+    padding: 2px 5px; 
+    margin-left: 3;
+    line-height: 0;
+}

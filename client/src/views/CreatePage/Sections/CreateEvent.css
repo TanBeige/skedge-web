@@ -87,7 +87,9 @@
 }
 
 .addBanner {
-    margin: auto
+    margin: auto;
+    padding-bottom: 20px;
+    min-height: 60vh;
 }
 
 .imageUpload {
@@ -121,4 +123,9 @@ span.InputBanner {
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
+}
+
+.selectImage:hover {
+    color: red;
+    opacity: 0.6;
 }

@@ -251,24 +251,28 @@ const handleLocalOrPrivate = (type) => {
       eventSubmitted: true
     })
 
-    const form_data = new FormData();
+    let response;
 
-    form_data.append('file', bannerImg)
-    console.log(form_data)
+    if(typeof bannerImg !== "number") {
+      const form_data = new FormData();
 
-    // Upload file to Cloudinary
-    const response = await axios.post(`/storage/upload`, form_data).catch((error => {
-      alert("Error Occurred: ", error.name)
-      setValues({
-        ...values,
-        eventSubmitted: false
-      })
-      errorOccurred = true;
-      return;
-    }))
-    
-    if (errorOccurred) {
-      return
+      form_data.append('file', bannerImg)
+      console.log(form_data)
+
+      // Upload file to Cloudinary
+      response = await axios.post(`/storage/upload`, form_data).catch((error => {
+        alert("Error Occurred: ", error.name)
+        setValues({
+          ...values,
+          eventSubmitted: false
+        })
+        errorOccurred = true;
+        return;
+      }))
+      
+      if (errorOccurred) {
+        return
+      }
     }
 
     // Grabs image info and adds uploaded file ID to cover_pic in events table.
@@ -301,7 +305,74 @@ const handleLocalOrPrivate = (type) => {
 
 
     // Inputs all information into Hasura Postgres DB via GraphQL
-    props.client.mutate({
+    //If user submits their own image
+    if(typeof bannerImg !== "number") {
+      console.log("Not a number")
+      props.client.mutate({
+          mutation: MUTATION_EVENT_ADD,
+          variables: {
+              objects: [
+                  {
+                      creator_id: user.sub,
+                      event_type: values.event_type,
+                      name: values.name,
+                      description: values.description,
+                      start_time: MomentUtils(values.start_time).format('HH:mm:ssZ'),
+                      end_time: values.end_time !== null ? MomentUtils(values.end_time).format('HH:mm:ssZ') : null,
+                      price: values.price,
+                      //allow_invites: values.allow_invites,
+                      //host_approval: values.host_approval,
+                      category: values.category,
+
+                      street: values.street,
+                      city: values.city,
+                      state: values.state,
+                      location_name: values.location_name,
+
+                      event_date: {
+                        data: {
+                          start_date: MomentUtils(values.start_date).format('YYYY-MM-DD'),
+                          end_date: MomentUtils(values.end_date).format('YYYY-MM-DD'),
+                          is_recurring: values.is_recurring,
+                          weekday: values.weekday
+                        }
+                      },
+                      image: {
+                          data: {
+                              image_name: bannerImg.name,
+                              image_uuid: response.data.id,
+                              url: response.data.url,
+                              content_type: bannerImg.type,
+                          }
+                      },
+                      event_tags: {
+                          data: newTags
+                      },
+                      event_cohosts: {
+                        data: newCohosts
+                      }
+                  }
+              ],
+              
+          },
+      }).then(() =>{
+          let path = `home`;
+          props.history.push(path);
+      }).catch(error => {
+        console.log(error)
+        alert("Error Occurred: ", error.name)
+        setValues({
+          ...values,
+          eventSubmitted: false
+        })
+        return
+      });
+    }
+
+    //If user selects one of our images
+    if(typeof bannerImg === "number") {
+      console.log("selected image")
+      props.client.mutate({
         mutation: MUTATION_EVENT_ADD,
         variables: {
             objects: [
@@ -330,16 +401,7 @@ const handleLocalOrPrivate = (type) => {
                         weekday: values.weekday
                       }
                     },
-
-
-                    image: {
-                        data: {
-                            image_name: bannerImg.name,
-                            image_uuid: response.data.id,
-                            url: response.data.url,
-                            content_type: bannerImg.type,
-                        }
-                    },
+                    cover_pic: bannerImg,
                     event_tags: {
                         data: newTags
                     },
@@ -361,7 +423,8 @@ const handleLocalOrPrivate = (type) => {
         eventSubmitted: false
       })
       return
-    })
+    });
+  }
 
     // If returning to the Homepage becomes a problem:
     /*let path = `home`;

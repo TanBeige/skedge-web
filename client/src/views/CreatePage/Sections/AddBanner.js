@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Slide from '@material-ui/core/Slide';
 import ImageUpload from 'components/CustomUpload/ImageUpload.js';
+import gql from 'graphql-tag';
 
 
 import Button from 'components/CustomButtons/Button.js'
+
+
+// Cloudinary setup
+var cloudinary = require('cloudinary/lib/cloudinary').v2
+
+cloudinary.config({
+    cloud_name: "skedge"
+  });
 
 const buttonStyle = {
     textAlign: 'center',
@@ -11,7 +20,7 @@ const buttonStyle = {
     margin: 'auto',
     minWidth: '10em',
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 20
     //fontWeight: '400'
 }
 
@@ -21,15 +30,23 @@ const AddBanner = (props) => {
 
     const [values, setValues] = React.useState({
         loading: false,
-        bannerImg: null
+        bannerImg: null,
+        selectingBanner: false,
+        selectBanners: []
     });
 
     // For Create Event Mutation
     
-    const bannerChoose = (banner) => {
-      setValues({ ...values, bannerImg: banner });
+    const bannerSelect = (banner) => {
+        setValues({
+            ...values,
+            selectingBanner: !values.selectingBanner
+        })
     };
 
+    const bannerChoose = (banner) => {
+        setValues({ ...values, bannerImg: banner });
+    };
 
 
     const bannerSubmit = (e) => {
@@ -59,6 +76,61 @@ const AddBanner = (props) => {
         )
     }
 
+    //Get banner pics before they show up
+    const getBannerPics = () => {
+        props.client.query({
+            query: gql`
+                query bannerPics {
+                    images(where: {_and: [{id: {_gte: 184}}, {id: {_lte: 191}}]}
+                    ){
+                    id
+                    image_uuid
+                    }
+                }
+                `
+        }).then((data) => {
+            console.log("Image data: ", data)
+            setValues({
+                ...values,
+                selectBanners: data.data.images
+            })
+        })
+    }
+
+    const selectBanners = () => {
+        if (values.selectingBanner) {
+            return (
+                <div style={{textAlign: 'center'}}>
+                    <h3 >Click image to select and submit event.</h3>
+                    {
+                        values.selectBanners.map(image => {
+                            return  (
+                                <img
+                                    key ={image.id}
+                                    src={cloudinary.url(image.image_uuid, {secure: true, width: 600, height: 400, crop: "fill" ,fetch_format: "auto", quality: "auto"})} className='selectImage' 
+                                    style={{width: '100%', margin: '10px 0px', maxWidth: 500, borderRadius: 3}} 
+                                    onClick={()=>bannerChosen(image.id)}
+                                />
+                            )
+                        })
+                    }
+                </div>
+            )
+        }
+        else {
+            return
+        }
+    }
+
+    //As soon as a user click on an image
+    const bannerChosen = (imageId) => {
+        props.submitEvent(imageId);
+    }
+
+    useEffect(() => {
+        getBannerPics();
+    }, [])
+
     return (
         <div>
             <Slide direction={dir} in >
@@ -69,9 +141,10 @@ const AddBanner = (props) => {
                     <div >
                         <h1 className='OrText'>-Or-</h1>
                     </div>
-                    <Button variant='contained' color='primary' style={buttonStyle} onClick={bannerChoose}>
+                    <Button variant='contained' color='primary' style={buttonStyle} onClick={bannerSelect}>
                         Choose A Banner
                     </Button>
+                    {selectBanners()}
                     {content}
                 </div>
             </Slide>

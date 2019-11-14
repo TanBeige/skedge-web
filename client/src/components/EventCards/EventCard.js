@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 // @material-ui/icons
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import StarIcon from '@material-ui/icons/Star';
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import RenewIcon from '@material-ui/icons/Autorenew'
 import IconButton from '@material-ui/core/IconButton';
@@ -110,6 +112,22 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
       border: '1px solid #02C39A',
       marginLeft: 3,
       //marginTop: "10px",
+    }
+
+    const dateStyle = {
+      //color: "#02C39A",
+      textAlign: 'center',
+      position: "absolute",
+      //display: 'inline',
+      top: "3px",
+      left: "0px",
+      borderRadius: 3,  
+      backgroundColor: "#02C39A", 
+      color: "white",
+      padding: '0px 8px 0px 8px', 
+      border: '1px solid #02C39A',
+      marginLeft: 3,
+      lineHeight: 0,
     }
 
     
@@ -337,28 +355,13 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
             </Link>
 
               <div className={classes.imgCardOverlay} style={{display: 'inline-block',width: '100%'}}>
-                <div
-                  style={{
-                    color: "#02C39A",
-                    textAlign: 'center',
-                    position: "absolute",
-                    //display: 'inline',
-                    top: "3px",
-                    left: "0px",
-                    borderRadius: 3,  
-                    backgroundColor: "#02C39A", 
-                    color: "white",
-                    padding: '0px 8px 0px 8px', 
-                    border: '1px solid #02C39A',
-                    marginLeft: 3,
-                    lineHeight: 0,
-                    
-                  }}
-                >
-                  {/* <TodayIcon /> < br /> */}
+                <div style={dateStyle}>
                   <h5 style={{margin: 0, padding: 0, fontSize: 12, fontWeight: "600"}}>{displayMonth}</h5>
                   <h5 style={{margin: '-5px 0px -2px 0px', fontSize: 12, fontWeight: "600"}}>{displayDay}</h5>
                 </div>
+                {/* <div className='saveButton'>
+                  <FavoriteIcon color={values.ifLiked} fontSize='small'/>
+                </div> */}
 
                 <Link to={`/users/${values.userId}`}>
                   <div
@@ -418,7 +421,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
                   </div>
                 </IconButton>
                 <IconButton onClick={handleLike} aria-label="Like" style={{float: 'right'}}>
-                  <FavoriteIcon color={values.ifLiked}/> 
+                  <StarIcon color={values.ifLiked}/> 
                   <div style={{fontSize: 14}}>
                     {values.likeAmount}
                   </div> 
