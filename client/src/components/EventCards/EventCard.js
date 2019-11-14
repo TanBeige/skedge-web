@@ -167,11 +167,6 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
     const handleRepost = () => {
       console.log('Repost!')
 
-      let cat = filter.category;
-      if(filter.category == "Any") {
-        cat = ""
-      }
-
       if(values.ifReposted !== "inherit") {
         client.mutate({
           mutation: MUTATION_UNPOST_EVENT,
@@ -213,11 +208,6 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
     }
 
     const handleLike = () => {
-
-      let cat = filter.category;
-      if(filter.category == "Any") {
-        cat = ""
-      }
 
       if(values.ifLiked !== "inherit") {
         client.mutate({
@@ -333,8 +323,18 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
     //   }
     // }
     //else {
+    let displayCornerDate = ""
+    if(currentDate) {
       const displayMonth = moment(currentDate).format("MMM")
       const displayDay = moment(currentDate).format("D")
+
+      displayCornerDate = (
+        <div style={dateStyle}>
+          <h5 style={{margin: 0, padding: 0, fontSize: 12, fontWeight: "600"}}>{displayMonth}</h5>
+          <h5 style={{margin: '-5px 0px -2px 0px', fontSize: 12, fontWeight: "600"}}>{displayDay}</h5>
+        </div>
+      )
+    }
     //}
 
     // Rendering Card
@@ -355,10 +355,12 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
             </Link>
 
               <div className={classes.imgCardOverlay} style={{display: 'inline-block',width: '100%'}}>
-                <div style={dateStyle}>
+                
+                {/* <div style={dateStyle}>
                   <h5 style={{margin: 0, padding: 0, fontSize: 12, fontWeight: "600"}}>{displayMonth}</h5>
                   <h5 style={{margin: '-5px 0px -2px 0px', fontSize: 12, fontWeight: "600"}}>{displayDay}</h5>
-                </div>
+                </div> */}
+                {displayCornerDate}
                 {/* <div className='saveButton'>
                   <FavoriteIcon color={values.ifLiked} fontSize='small'/>
                 </div> */}

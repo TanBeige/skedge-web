@@ -54,7 +54,6 @@ fragment EventFragment on events {
       count
     }
   }
-  
 }
 `;
 
@@ -504,6 +503,23 @@ const FETCH_TAGGED_EVENTS = gql`
   ${EVENT_FRAGMENT}
 `
 
+const FETCH_SAVED_EVENTS = gql`
+  query savedEvents($eventLimit: Int, $eventOffset: Int, $userId: String) {
+    user_saved_events(
+      where: {user_id: {_eq: $userId}}
+      limit: $eventLimit
+      offset: $eventOffset
+      )
+    {
+      event{
+        ...EventFragment
+      }
+    }
+  }
+
+  ${EVENT_FRAGMENT}
+`
+
 // Mutate Events
 const MUTATION_EVENT_ADD = gql`
 mutation insert_events($objects: [events_insert_input!]!) {
@@ -774,6 +790,7 @@ export {
   QUERY_FEED_LOCAL_EVENT,
   QUERY_FEED_LOCAL_OLD_EVENT,
   FETCH_TAGGED_EVENTS,
+  FETCH_SAVED_EVENTS,
 
   MUTATION_EVENT_ADD,
   MUTATION_EVENT_UPDATE,

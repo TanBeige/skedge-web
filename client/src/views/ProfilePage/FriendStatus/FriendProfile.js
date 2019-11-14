@@ -26,7 +26,7 @@ import { useAuth0 } from 'Authorization/react-auth0-wrapper'
 import {
   QUERY_USER_PROFILE,
   MUTATION_FRIEND_REQUEST,
-  QUERY_ACCEPTED_FRIENDS
+  QUERY_ACCEPTED_FRIENDS,
 } from 'EventQueries/EventQueries.js'
 import { Button } from "@material-ui/core";
 
@@ -82,14 +82,13 @@ export default function FriendProfile(props) {
                     )
                 },
                 {
-                    tabButton: "Past Events",
+                    tabButton: "Saved Events",
                     tabIcon: EventBusyIcon,
                     tabContent: (
                         <EventCardList 
                             client={props.client}
                             userId={props.userId}
-                            filter={filter}
-                            listType='home'
+                            listType='saved'
                         />
                     )
                 }
