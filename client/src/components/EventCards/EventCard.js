@@ -70,6 +70,9 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: pink[600]
+    },
+    error: {
+      main: "#f6da63"
     }
   },
 });
@@ -137,7 +140,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
 
       likeAmount: event.event_like_aggregate.aggregate.count,
       usersLiked: event.event_like,
-      ifLiked: event.event_like.some(user  => user.user_id === userId) ? "secondary" : "inherit",
+      ifLiked: event.event_like.some(user  => user.user_id === userId) ? "error" : "inherit",
 
       repostAmount: event.shared_event_aggregate.aggregate.count,
       usersReposted: event.shared_event,
@@ -242,7 +245,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
           console.log('Like!: ', data)
           setValues({
             ...values,
-            ifLiked: "secondary",
+            ifLiked: "error",
             likeAmount: (values.likeAmount + 1)
           })
         })
@@ -401,7 +404,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
 
               <div style={{textAlign: 'left'}}>
                 <p style={{display: 'inline', width: '100%', fontSize: 16}}>
-                  <PlaceIcon color="error" fontSize='small' style={{verticalAlign: 'top'}} />
+                  <PlaceIcon color="secondary" fontSize='small' style={{verticalAlign: 'top'}} />
                   {`${event.location_name}`}
                 </p>
               </div>
