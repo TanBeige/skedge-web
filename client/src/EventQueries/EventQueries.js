@@ -54,6 +54,9 @@ fragment EventFragment on events {
       count
     }
   }
+  user_saved_events{
+    user_id
+  }
 }
 `;
 

@@ -9,7 +9,9 @@ import RenewIcon from '@material-ui/icons/Autorenew'
 import IconButton from '@material-ui/core/IconButton';
 import PlaceIcon from '@material-ui/icons/Place';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
-
+import TurnedInNotIcon from '@material-ui/icons/TurnedInNot';
+import TurnedInIcon from '@material-ui/icons/TurnedIn';
+import TurnedInTwoToneIcon from '@material-ui/icons/TurnedInTwoTone';
 // core components
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -46,7 +48,9 @@ import {
   MUTATION_REPOST_EVENT,
   MUTATION_UNPOST_EVENT,
   REFETCH_EVENT_REPOSTS,
-  QUERY_FILTERED_EVENT
+  QUERY_FILTERED_EVENT,
+  MUTATION_EVENT_SAVE,
+  MUTATION_EVENT_UNDO_SAVE
 } from "../../EventQueries/EventQueries";
 
 require("./EventCard.css")
@@ -72,7 +76,7 @@ const theme = createMuiTheme({
       main: pink[600]
     },
     error: {
-      main: "#f6da63"
+      main: "#F5DA5F"
     }
   },
 });
@@ -140,12 +144,13 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
 
       likeAmount: event.event_like_aggregate.aggregate.count,
       usersLiked: event.event_like,
-      ifLiked: event.event_like.some(user  => user.user_id === userId) ? "error" : "inherit",
+      ifLiked: event.event_like.some(user  => user.user_id === userId) ? "secondary" : "inherit",
 
       repostAmount: event.shared_event_aggregate.aggregate.count,
       usersReposted: event.shared_event,
       ifReposted: event.shared_event.some(user  => user.user_id === userId) ? "primary" : "inherit",
 
+      ifSaved: event.user_saved_events.some(user  => user.user_id === userId) ? true : false,
 
       name: event.name ? event.name : "",
       description: event.description ? event.description : "",
@@ -166,7 +171,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
     })
 
     
-    // Handling event likes + reposts
+    // Handling event likes + reposts + saves
     const handleRepost = () => {
       console.log('Repost!')
 
@@ -245,13 +250,54 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
           console.log('Like!: ', data)
           setValues({
             ...values,
-            ifLiked: "error",
+            ifLiked: "secondary",
             likeAmount: (values.likeAmount + 1)
           })
         })
       }
     }
 
+    const handleSave = () => {
+      if(values.ifSaved === true) {
+        client.mutate({
+          mutation: MUTATION_EVENT_UNDO_SAVE,
+          refetchQueries: [{
+            query: QUERY_FILTERED_EVENT
+          }],
+          variables: {
+            eventId: event.id,
+            userId: userId
+          }
+        }).then((data) => {
+          console.log('Unsave!: ', data)
+          setValues({
+            ...values,
+            ifSaved: false,
+          })
+        })
+      }
+      else {
+        client.mutate({
+          mutation: MUTATION_EVENT_SAVE,
+          refetchQueries: [{
+            query: QUERY_FILTERED_EVENT
+          }],
+          variables: {
+            eventId: event.id,
+            userId: userId
+          }
+        }).then((data) => {
+          console.log('Save!: ', data)
+          setValues({
+            ...values,
+            ifSaved: true,
+          })
+        })
+      }
+    }
+
+
+    // Adding Impress
     const addImpression = () => {
       client.mutate({
         mutation: MUTATION_EVENT_IMPRESSION,
@@ -340,6 +386,8 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
     }
     //}
 
+    console.log(values.ifSaved)
+
     // Rendering Card
     return(
       <ThemeProvider theme={theme}>
@@ -364,9 +412,13 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
                   <h5 style={{margin: '-5px 0px -2px 0px', fontSize: 12, fontWeight: "600"}}>{displayDay}</h5>
                 </div> */}
                 {displayCornerDate}
-                {/* <div className='saveButton'>
-                  <FavoriteIcon color={values.ifLiked} fontSize='small'/>
-                </div> */}
+                <div className='saveButton' onClick={handleSave}>
+                  {
+                    values.ifSaved === true ? <TurnedInIcon fontSize='small'/>
+                      :
+                      <TurnedInNotIcon fontSize='small'/>
+                  }
+                </div>
 
                 <Link to={`/users/${values.userId}`}>
                   <div
@@ -426,7 +478,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
                   </div>
                 </IconButton>
                 <IconButton onClick={handleLike} aria-label="Like" style={{float: 'right'}}>
-                  <StarIcon color={values.ifLiked}/> 
+                  <FavoriteIcon color={values.ifLiked}/>
                   <div style={{fontSize: 14}}>
                     {values.likeAmount}
                   </div> 

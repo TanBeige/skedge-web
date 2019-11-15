@@ -21,15 +21,18 @@ p {
 
 .saveButton {
     /* color: #02C39A; */
+
     text-align: center;
     position: absolute;
     /* display: 'inline', */
     top: 3px;
     right: 3px;
     border-radius: 3px;  
-    background-color: transparent; 
+    background-color: #5F60F5; 
     color: white;
     padding: 2px 5px; 
     margin-left: 3;
     line-height: 0;
+    cursor: pointer;
 }
+

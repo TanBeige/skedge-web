@@ -127,7 +127,7 @@ export default function SectionText({ eventInfo, client }) {
           <h3 className={classes.title}>
             Details
           </h3>
-          <p style={{wordWrap: 'break-word'}}>
+          <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
             {eventInfo.description}
           </p>
           <h4>
