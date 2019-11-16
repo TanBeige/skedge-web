@@ -48,6 +48,7 @@ import ShoppingCartPage from "views/ShoppingCartPage/ShoppingCartPage.js";
 import SignupPage from "views/SignupPage/SignupPage.js";
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
 import LoadingPage from "views/LoadingPage/LoadingPage.js";
+import TodoPage from "todotest.js"
 
 import CallbackPage from "views/CallbackPage/CallbackPage.js";
 import BottomNav from "components/BottomNav/BottomNav.js";
@@ -117,7 +118,7 @@ export const MakeMainRoutes = () => {
 
 
     // For Bottom Navbar
-    if(window.location.pathname !== "/") {
+    if(window.location.pathname !== "/" && window.location.pathname !== "/shopping-cart-page") {
       setValues({
         ...values,
         showBottomBar: true
@@ -183,7 +184,7 @@ export const MakeMainRoutes = () => {
           <Route exact path="/user" render={props => provideClient(ProfilePage, props)} />
           <Route exact path="/product-page" render={props => provideClient(ProductPage, props)} />
           <Route exact path="/sections" render={props => provideClient(SectionsPage, props)} />
-          <Route exact path="/shopping-cart-page" render={props => provideClient(ShoppingCartPage, props)} />
+          <Route exact path="/shopping-cart-page" render={props => provideClient(TodoPage, props)} />
           <Route exact path="/signup-page" render={props => provideClient(SignupPage, props)} />
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
 

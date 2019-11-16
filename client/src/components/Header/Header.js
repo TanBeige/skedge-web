@@ -82,8 +82,8 @@ export default function Header(props) {
         <Button className={classes.title}>
           <Link to="/home"><img alt='Skedge' src={require("assets/img/logoheader.png")} height={40} width={40}/></Link>
         </Button>
-        <CustomButton round justIcon color="primary">
-          <PersonIcon style={{color: "white"}} onClick={event => setAnchorElTop(event.currentTarget)} className={classes.followIcon} />
+        <CustomButton round onClick={event => setAnchorElTop(event.currentTarget)} justIcon color="primary">
+          <PersonIcon style={{color: "white"}} className={classes.followIcon} />
         </CustomButton>
         <Popover
           classes={{

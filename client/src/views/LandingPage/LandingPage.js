@@ -124,7 +124,7 @@ export default function LandingPage(props) {
               <List className={classes.list}>
                 <ListItem className={classes.inlineBlock}>
                   <a
-                    href="theskedge.com"
+                    href="/"
                     target="_blank"
                     className={classes.block}
                   >

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
@@ -26,6 +26,8 @@ const useStyles = makeStyles(style);
 
 export default function SectionTeam({client}) {
   const classes = useStyles();
+  const [futureEvents, setFutureEvents] = useState(false)
+
 
   const filter = {
     searchText: "", //Search Text can look for Event Names, Tags, or Event Creators!
@@ -51,6 +53,7 @@ export default function SectionTeam({client}) {
               client={client}
               filter={filter}
               listType="home"
+              //futureEvents={setFutureEvents}
             />
           </Card>
         </GridItem>
