@@ -128,8 +128,8 @@ export default function EventPage(props) {
           description: data.data.events[0].description,
           event_type: data.data.events[0].event_type,
 
-          start_date: data.data.events[0].event_date[0].start_date,
-          end_date: data.data.events[0].event_date[0].start_date,
+          start_date: data.data.events[0].event_date.start_date,
+          end_date: data.data.events[0].event_date.end_date,
 
           start_time: data.data.events[0].start_time,
           end_time: data.data.events[0].end_time,

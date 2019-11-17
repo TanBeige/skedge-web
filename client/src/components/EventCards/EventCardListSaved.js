@@ -208,7 +208,7 @@ export default function EventCardListSaved(props) {
               finalEvents.map((event, index) => {
                   return (
                     <Fragment key={event.id}> 
-                      <GridItem xs={12} sm={6} md={6} >
+                      <GridItem xs={12} sm={6} md={4} >
                         <EventCard 
                             event={event} 
                             client={props.client}

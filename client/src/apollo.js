@@ -26,7 +26,6 @@ const getHeaders = (tok) => {
 // await before instantiating ApolloClient, else queries might run before the cache is persisted
 
 const makeApolloClient = (token) => {
-  console.log("imaking apollo")
   // Create an http link:
   const httpLink = new HttpLink({
     uri: GRAPHQL_URL,

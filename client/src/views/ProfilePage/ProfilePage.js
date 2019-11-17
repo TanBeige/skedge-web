@@ -313,19 +313,16 @@ export default function ProfilePage(props, { ...rest }) {
     return (
     <div style={{minHeight: '100vh', backgroundImage: 'linear-gradient(#52D3B6 300px, white 400px)' , paddingTop: '20px'}}>
       <Header
-        color="transparent"
+        color="primary"
         brand="Skedge"
         links={<HeaderLinks dropdownHoverColor="info" userId={values.currentUserId}/>}
         fixed
-        changeColorOnScroll={{
-          height: 200,
-          color: "primary"
-        }}
+        
         {...rest}
       />
       { isLoading ? (<LoadingPage />) : 
         (
-          <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '85vh', marginBottom: '4em'}}>
+          <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '85vh', marginBottom: '4em', marginTop: '4em'}}>
             <div className={classes.container}>
               <ProfileTopSection 
                 values={values} 

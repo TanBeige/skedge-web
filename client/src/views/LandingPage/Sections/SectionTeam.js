@@ -49,7 +49,7 @@ export default function SectionTeam({client}) {
       <GridContainer style={{padding: 0, marginTop: -45}}>
         <GridItem xs={12} sm={12} md={12} >
           <Card profile plain className={classes.card3} style={{marginBottom: 0}}>
-            <EventCardList 
+            <EventCardList
               client={client}
               filter={filter}
               listType="home"

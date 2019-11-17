@@ -49,6 +49,8 @@ import EventCardList from "components/EventCards/EventCardList.js";
 import CustomInput from 'components/CustomInput/CustomInput.js';
 import useDebounce from 'components/Debounce/Debounce.js';
 
+import EventCardListFuture from "components/EventCards/EventCardListFuture.js"
+
 
 import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js";
 
@@ -398,7 +400,7 @@ export default function SectionPills(props) {
             onClick={handleDayBack}
             style={{position: 'absolute', left: 5, marginTop: '-12px', padding: '12px 18px'}}
           >
-            <ChevronLeftIcon fontSize='large'  />
+            <ChevronLeftIcon fontSize='large' />
           </IconButton>
           <IconButton 
             onClick={handleDayForward}
@@ -419,24 +421,28 @@ export default function SectionPills(props) {
                       tabButton: "Local",
                       tabIcon: ApartmentIcon,
                       tabContent: (
+                        <div>
                           <EventCardList 
                               client={props.client}
                               userId={props.userId}
                               filter={localFilter}
                               listType='home'
-                          /> 
+                          />
+                        </div>
                       )
                   },
                   {
                       tabButton: "Following",
                       tabIcon: EmojiPeopleIcon,
                       tabContent: (
+                        <div>
                           <EventCardList 
                               client={props.client}
                               userId={props.userId}
                               filter={privateFilter}
                               listType='home'
                           />
+                        </div>
                       )
                   }
                   ]}

@@ -96,7 +96,7 @@ export default function NavPillsSearch(props) {
   ) : (
     <div>
       <GridContainer justify="center">
-        <GridItem xs={12} sm={12} md={8} className={classes.textCenter}>
+        <GridItem xs={12} sm={12} md={12} className={classes.textCenter}>
           {tabButtons}      
           {tabContent}
         </GridItem>

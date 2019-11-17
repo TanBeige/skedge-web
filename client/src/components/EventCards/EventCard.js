@@ -157,15 +157,16 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
       category: event.category ? event.category : "No Category",
       image_id: event.image ? event.image.image_uuid : "cover_images/uzhvjyuletkpvrz5itxv",
       image_url: cloudinary.url(event.image.image_uuid, {secure: true, width: 800, height: 533, crop: "fill" ,fetch_format: "auto", quality: "auto"}),
-      start_date: moment(event.event_date.start_date, "YYYY-MM-DD"),
-      end_date: moment(event.event_date.end_date, "YYYY-MM-DD"),
+      
+      start_date:  event.event_date ? moment(event.event_date.start_date, "YYYY-MM-DD") : "No Date",
+      end_date: event.event_date ? moment(event.event_date.end_date, "YYYY-MM-DD") : "No Date",
       start_time: moment(event.start_time, "HH:mm:ss"),
       end_time: event.end_time ? moment(event.end_time, "HH:mm:ss") : null,
 
-      isRecurring: event.event_date.is_recurring,
-      weekday: event.event_date.weekday,
+      isRecurring: event.event_date ? event.event_date.is_recurring : false,
+      weekday: event.event_date ? event.event_date.weekday : "",
       
-      username: event.user ? event.user.name : "", 
+      username: event.user ? event.user.name : "",
       userProfilePic: event.user ? event.user.picture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       userId: event.user ? event.user.id : 0
     })
@@ -385,8 +386,6 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
       )
     }
     //}
-
-    console.log(values.ifSaved)
 
     // Rendering Card
     return(

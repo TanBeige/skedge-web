@@ -59,6 +59,8 @@ export default function EventCreateInfo(props) {
     state: savedValues.state,
 
     start_date: savedValues.start_date,
+    end_date: savedValues.end_date,
+
     start_time: savedValues.start_time,
     endTimeExists: savedValues.end_time !== null ? true : false,
     end_time: savedValues.end_time,
@@ -75,8 +77,6 @@ export default function EventCreateInfo(props) {
     friday: false,
     saturday: false,
     sunday: false,
-
-    end_date: savedValues.end_date
 
   });
 

@@ -69,6 +69,7 @@ export default function PricingPage(props) {
       description: "",
       start_date: new Date(),
       end_date: new Date(),
+
       start_time: new Date(),
       end_time: null,
       price: "0.00",
@@ -307,7 +308,6 @@ const handleLocalOrPrivate = (type) => {
     // Inputs all information into Hasura Postgres DB via GraphQL
     //If user submits their own image
     if(typeof bannerImg !== "number") {
-      console.log("Not a number")
       props.client.mutate({
           mutation: MUTATION_EVENT_ADD,
           variables: {
@@ -317,8 +317,8 @@ const handleLocalOrPrivate = (type) => {
                       event_type: values.event_type,
                       name: values.name,
                       description: values.description,
-                      start_time: MomentUtils(values.start_time).format('HH:mm:ssZ'),
-                      end_time: values.end_time !== null ? MomentUtils(values.end_time).format('HH:mm:ssZ') : null,
+                      start_time: MomentUtils(values.start_time).format('HH:mm:ss'),
+                      end_time: values.end_time !== null ? MomentUtils(values.end_time).format('HH:mm:ss') : null,
                       price: values.price,
                       //allow_invites: values.allow_invites,
                       //host_approval: values.host_approval,
@@ -332,7 +332,7 @@ const handleLocalOrPrivate = (type) => {
                       event_date: {
                         data: {
                           start_date: MomentUtils(values.start_date).format('YYYY-MM-DD'),
-                          end_date: MomentUtils(values.end_date).format('YYYY-MM-DD'),
+                          end_date: values.is_recurring ? MomentUtils(values.end_date).format('YYYY-MM-DD') : values.start_date,
                           is_recurring: values.is_recurring,
                           weekday: values.weekday
                         }
@@ -381,8 +381,8 @@ const handleLocalOrPrivate = (type) => {
                     event_type: values.event_type,
                     name: values.name,
                     description: values.description,
-                    start_time: MomentUtils(values.start_time).format('HH:mm:ssZ'),
-                    end_time: values.end_time !== null ? MomentUtils(values.end_time).format('HH:mm:ssZ') : null,
+                    start_time: MomentUtils(values.start_time).format('HH:mm:ss'),
+                    end_time: values.end_time !== null ? MomentUtils(values.end_time).format('HH:mm:ss') : null,
                     price: values.price,
                     //allow_invites: values.allow_invites,
                     //host_approval: values.host_approval,

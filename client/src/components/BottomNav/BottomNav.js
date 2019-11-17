@@ -42,7 +42,6 @@ class PrimaryNav extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     //const {pathname} = nextProps.location;
     //const {pathMap} = this.state;
-    console.log(nextProps)
 
     if(nextProps.location.pathname !== prevState.path) {
       console.log("np",nextProps.location.pathname)

@@ -7,6 +7,9 @@ import GridItem from "components/Grid/GridItem.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import EventCardListFuture from './EventCardListFuture.js';
+import FutureContainer from './FutureContainer.js';
+
 import {
     QUERY_FILTERED_EVENT
 } from "../../EventQueries/EventQueries";
@@ -38,7 +41,9 @@ Date.prototype.formatDate = function() {
 // Functional Component
 export default function EventCardListHome(props) {
   // Checks if we are still grabbing events
-  const [isSearch, setIsSearch] = useState(false)
+  const [isSearch, setIsSearch] = useState(false);
+  let isMounted = true;
+
 
   const [values, setValues] = useState({
       type: props.type,
@@ -51,50 +56,85 @@ export default function EventCardListHome(props) {
       events: [],
   });
 
-  const grabEvents = () => {
-    const { client } = props;
-    const { filter } = props;
 
-    if(!values.showNew) {
+    // Update Query When new Events are added
+    const loadMoreClicked = () => {
+      const { client } = props;
+      const { filter } = props;
+      console.log("load more")
 
-      setIsSearch(true)
+      const totalEventsPrevious = values.eventsLength;
 
       let cat = filter.category;
       if(filter.category == "Any") {
         cat = ""
       }
-        // query for public events
-        client
-          .query({
-            query: QUERY_FILTERED_EVENT,
-            variables: {
-              eventLimit: values.limit,
-              eventOffset: 0,
-              search: `%${filter.searchText}%`,
-              category: `%${cat}%`,
-              city: `%${filter.city}%`,
-              state: `%${filter.state}%`,
-              type: filter.type,
-              date: filter.date ? filter.date.formatDate() : null,
-              weekday: filter.weekday !== null ? `%${filter.weekday}%` : null
+      console.log("Amount of Events: ", values.eventsLength)
+      client
+        .query({
+          query: QUERY_FILTERED_EVENT,
+          variables: {
+            eventLimit: values.limit,
+            eventOffset: values.eventsLength,
+            search: `%${filter.searchText}%`,
+            category: `%${cat}%`,
+            city: `%${filter.city}%`,
+            state: `%${filter.state}%`,
+            type: filter.type,
+            date: filter.date ? filter.date.formatDate() : null,
+            weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
+          }
+        })
+        .then(data => {
+          if (data.data.events.length) {
+            const mergedEvents = values.events.concat(data.data.events);
+            console.log("loaded more data: ", data)
+
+            // update state with new events
+            if(isMounted) {
+              setValues({
+                ...values,
+                events: mergedEvents,
+                showNew: true,
+                eventsLength: values.events.length + data.data.events.length
+              });
+              if(totalEventsPrevious === (values.events.length + data.data.events.length)) {
+                setValues({
+                  ...values,
+                  loadedAllEvents: true
+                })
+              }
             }
-          })
-          .then(data => {
-            setValues({ 
-              ...values, 
-              events: data.data.events, 
-              eventsLength: data.data.events.length,
-              showNew: false,
-              loadedAllEvents: false,
-            });
-            // When done grabbing events, set seraching to false
-            setIsSearch(false)
-          });
-      }
+          }
+        }).catch(error => {
+          console.log(error)
+        });
+
+        setValues({
+          ...values,
+          loadedAllEvents: true
+        })
+
+      
     }
 
-    // Update Query When new Events are added
-    const loadMoreClicked = () => {
+    // Replaces ComponentDidMount() in a Functional Component
+
+    useEffect(() => {
+
+      console.log("Current List date: ", props.filter.date)
+
+      //Restart the get events
+      setValues({
+        ...values,
+        showNew: false,
+      })
+
+      //setIsMounted(true)
+
+      //grabEvents();
+      // ----------------------------GRABBING EVENTS IF MOUNTED--------------------------------
+      isMounted = true;
       const { client } = props;
       const { filter } = props;
 
@@ -117,7 +157,7 @@ export default function EventCardListHome(props) {
             state: `%${filter.state}%`,
             type: filter.type,
             date: filter.date ? filter.date.formatDate() : null,
-            weekday: filter.weekday !== null ? `%${filter.weekday}%` : null
+            weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
           }
         })
         .then(data => {
@@ -125,34 +165,27 @@ export default function EventCardListHome(props) {
             const mergedEvents = values.events.concat(data.data.events);
 
             // update state with new events
-            setValues({ 
-              ...values,
-              events: mergedEvents,
-              showNew: true,
-              eventsLength: values.events.length + data.data.events.length
-             });
+            if(isMounted) {
+              setValues({
+                ...values,
+                events: mergedEvents,
+                showNew: true,
+                eventsLength: values.events.length + data.data.events.length
+              });
+              if(totalEventsPrevious === values.events.length + data.data.events.length) {
+                setValues({
+                  ...values,
+                  loadedAllEvents: true
+                })
+              }
+            }
           }
         });
 
-      if(totalEventsPrevious === values.eventsLength) {
-        setValues({
-          ...values,
-          loadedAllEvents: true
-        })
+      return () => {
+        isMounted = false;
       }
-    }
-
-    // Replaces ComponentDidMount() in a Functional Component
-
-    useEffect(() => {
-      console.log("Ass");
-      console.log(values.loadedAllEvents)
-      setValues({
-        ...values,
-        showNew: false,
-      })
-      grabEvents();
-    }, [props.filter, values.events])
+    }, [props.filter])
 
     /*
     const insertAd = (index) => {
@@ -196,6 +229,21 @@ export default function EventCardListHome(props) {
     }
 
     // Components to Render
+    const futureEvents = () => {
+      console.log()
+      if(values.loadedAllEvents) {
+//        <h1>Future Events</h1>
+        return(
+          <FutureContainer
+            client={props.client}
+            filter={props.filter}
+          />
+        )
+      }
+      else {
+        return ""
+      }
+    }
 
     if(values.events.length === 0 && !isSearch)
     {
@@ -206,37 +254,42 @@ export default function EventCardListHome(props) {
       )
     }
 
-    return (
-      <InfiniteScroll
-          dataLength={values.eventsLength}
-          next={loadMoreClicked}
-          hasMore={!values.loadedAllEvents}
-          //loader={<h4>Loading...</h4>}
-          style={{overflow: 'none'}}
-      >
-        <GridContainer style={{minHeight: '8em'}}>
-            {
-              finalEvents.map((event, index) => {
-                  return (
-                    <Fragment key={event.id}> 
-                      <GridItem xs={12} sm={6} md={6} >
-                        <EventCard 
-                            event={event} 
-                            client={props.client}
-                            userId={props.userId}
-                            filter={props.filter}
-                            currentDate={props.filter.date}
-                        />
-                      </GridItem>
-                      {
-                        //insertAd(index)   //Add later when Skedge.com can get ads
-                      }
-                    </Fragment>
-                  )
-              })
-          }
-        </GridContainer>
-      </InfiniteScroll>
+    console.log("Total Events for now: ", values.eventsLength)
+    console.log("Loaded All events: ", values.loadedAllEvents)
 
+    return (
+      <div className='EventCardListHomeContainer'>
+        <InfiniteScroll
+            dataLength={values.eventsLength}
+            next={loadMoreClicked}
+            hasMore={!values.loadedAllEvents}
+            loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
+            style={{overflow: 'none'}}
+        >
+          <GridContainer style={{minHeight: '8em'}}>
+              {
+                finalEvents.map((event, index) => {
+                    return (
+                      <Fragment key={event.id}> 
+                        <GridItem xs={12} sm={6} md={6} >
+                          <EventCard 
+                              event={event} 
+                              client={props.client}
+                              userId={props.userId}
+                              filter={props.filter}
+                              currentDate={props.filter.date}
+                          />
+                        </GridItem>
+                        {
+                          //insertAd(index)   //Add later when Skedge.com can get ads
+                        }
+                      </Fragment>
+                    )
+                })
+            }
+          </GridContainer>
+        </InfiniteScroll>
+        {futureEvents()}
+      </div>
     )
 }
