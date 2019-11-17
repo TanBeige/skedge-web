@@ -43,6 +43,10 @@ export default function EventCardListHome(props) {
   // Checks if we are still grabbing events
   const [isSearch, setIsSearch] = useState(false);
   let isMounted = true;
+  let currentKey;
+  let futureEvents = "";
+
+
 
 
   const [values, setValues] = useState({
@@ -61,15 +65,17 @@ export default function EventCardListHome(props) {
     const loadMoreClicked = () => {
       const { client } = props;
       const { filter } = props;
-      console.log("load more")
 
       const totalEventsPrevious = values.eventsLength;
+      setValues({
+        ...values,
+        loadedAllEvents: false
+      })
 
       let cat = filter.category;
       if(filter.category == "Any") {
         cat = ""
       }
-      console.log("Amount of Events: ", values.eventsLength)
       client
         .query({
           query: QUERY_FILTERED_EVENT,
@@ -88,7 +94,7 @@ export default function EventCardListHome(props) {
         .then(data => {
           if (data.data.events.length) {
             const mergedEvents = values.events.concat(data.data.events);
-            console.log("loaded more data: ", data)
+            console.log("load more")
 
             // update state with new events
             if(isMounted) {
@@ -98,37 +104,49 @@ export default function EventCardListHome(props) {
                 showNew: true,
                 eventsLength: values.events.length + data.data.events.length
               });
-              if(totalEventsPrevious === (values.events.length + data.data.events.length)) {
-                setValues({
-                  ...values,
-                  loadedAllEvents: true
-                })
-              }
             }
+          }
+          else {
+            setValues({
+              ...values,
+              loadedAllEvents: true
+            })
           }
         }).catch(error => {
           console.log(error)
         });
 
-        setValues({
-          ...values,
-          loadedAllEvents: true
-        })
-
       
     }
 
     // Replaces ComponentDidMount() in a Functional Component
+    console.log("loaded all: ", values.loadedAllEvents)
+    if (values.loadedAllEvents) {
+      futureEvents = (
+        <FutureContainer
+          client={props.client}
+          filter={props.filter}
+          userId={props.userId}
+        />
+      )
+    }
 
     useEffect(() => {
 
-      console.log("Current List date: ", props.filter.date)
-
       //Restart the get events
       setValues({
-        ...values,
+        type: props.type,
+        filter: props.filter,
+        loadedAllEvents: false,
+        showOlder: true,
+        eventsLength: 0,
         showNew: false,
-      })
+        limit: props.filter.limit,
+        events: [],
+      });
+
+      currentKey = Math.floor(Math.random() * Math.floor(1000))
+      console.log(currentKey)
 
       //setIsMounted(true)
 
@@ -137,53 +155,54 @@ export default function EventCardListHome(props) {
       isMounted = true;
       const { client } = props;
       const { filter } = props;
-
-      const totalEventsPrevious = values.eventsLength;
+      console.log(props)
 
       let cat = filter.category;
       if(filter.category == "Any") {
         cat = ""
       }
-      console.log("Amount of Events: ", values.eventsLength)
+
       client
         .query({
           query: QUERY_FILTERED_EVENT,
           variables: {
             eventLimit: values.limit,
-            eventOffset: values.eventsLength,
+            eventOffset: 0,
             search: `%${filter.searchText}%`,
             category: `%${cat}%`,
             city: `%${filter.city}%`,
             state: `%${filter.state}%`,
             type: filter.type,
-            date: filter.date ? filter.date.formatDate() : null,
+            date: filter.date !== null ? filter.date.formatDate() : null,
             weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
           }
         })
         .then(data => {
           if (data.data.events.length) {
-            const mergedEvents = values.events.concat(data.data.events);
-
+            //const mergedEvents = values.events.concat(data.data.events);
             // update state with new events
             if(isMounted) {
+              console.log("Home Data Events:", data.data.events)
               setValues({
                 ...values,
-                events: mergedEvents,
-                showNew: true,
-                eventsLength: values.events.length + data.data.events.length
+                events: data.data.events,
+                eventsLength: data.data.events.length
               });
-              if(totalEventsPrevious === values.events.length + data.data.events.length) {
-                setValues({
-                  ...values,
-                  loadedAllEvents: true
-                })
-              }
             }
           }
+          else {
+            setValues({
+              ...values,
+              loadedAllEvents: true
+            })
+          }
+        }).catch(error => {
+          console.log(error)
         });
 
       return () => {
         isMounted = false;
+        console.log("home unmounting")
       }
     }, [props.filter])
 
@@ -228,22 +247,26 @@ export default function EventCardListHome(props) {
       )
     }
 
-    // Components to Render
-    const futureEvents = () => {
-      console.log()
-      if(values.loadedAllEvents) {
-//        <h1>Future Events</h1>
-        return(
-          <FutureContainer
-            client={props.client}
-            filter={props.filter}
-          />
-        )
-      }
-      else {
-        return ""
-      }
-    }
+    // // Components to Render
+    // const futureEvents = () => {
+    //   console.log("LoadedAll: ", values.loadedAllEvents)
+    //   console.log("showNew: ", values.showNew)
+    //   //if(values.loadedAllEvents) {
+    //     return(
+    //       <div>
+    //         <FutureContainer
+    //           client={props.client}
+    //           filter={props.filter}
+    //           userId={props.userId}
+    //         />
+    //       </div>
+    //     )
+    //   // }
+    //   // else {
+    //   //   return ""
+    //   // }
+    // }
+
 
     if(values.events.length === 0 && !isSearch)
     {
@@ -254,11 +277,9 @@ export default function EventCardListHome(props) {
       )
     }
 
-    console.log("Total Events for now: ", values.eventsLength)
-    console.log("Loaded All events: ", values.loadedAllEvents)
 
     return (
-      <div className='EventCardListHomeContainer'>
+      <div className='EventCardListHomeContainer' key={currentKey}>
         <InfiniteScroll
             dataLength={values.eventsLength}
             next={loadMoreClicked}
@@ -289,7 +310,7 @@ export default function EventCardListHome(props) {
             }
           </GridContainer>
         </InfiniteScroll>
-        {futureEvents()}
+        {futureEvents}
       </div>
     )
 }

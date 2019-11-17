@@ -44,6 +44,9 @@ export default function EventCardListHome(props) {
   // Checks if we are still grabbing events
   const [isSearch, setIsSearch] = useState(false);
 
+  //Check if mounted
+  let isMounted = true;
+
   const [values, setValues] = useState({
       type: props.type,
       filter: props.filter,
@@ -66,7 +69,6 @@ export default function EventCardListHome(props) {
     if(filter.category == "Any") {
       cat = ""
     }
-    console.log("Amount of Events: ", values.eventsLength)
     client
       .query({
         query: QUERY_FILTERED_EVENT,
@@ -83,45 +85,57 @@ export default function EventCardListHome(props) {
         }
       })
       .then(data => {
-        if (data.data.events.length) {
-          const mergedEvents = values.events.concat(data.data.events);
+        if (data.data.events.length ) {
 
-          // update state with new events
+          if(isMounted) {
+            const mergedEvents = values.events.concat(data.data.events);
+            // update state with new events
+            setValues({
+              ...values,
+              events: mergedEvents,
+              showNew: true,
+              eventsLength: values.events.length + data.data.events.length
+              });
+              if(totalEventsPrevious === (values.events.length + data.data.events.length)) {
+                setValues({
+                  ...values,
+                  loadedAllEvents: true
+                })
+              }
+            }
+        }
+        else {
           setValues({
             ...values,
-            events: mergedEvents,
-            showNew: true,
-            eventsLength: values.events.length + data.data.events.length
-            });
-
-            if(totalEventsPrevious === (values.events.length + data.data.events.length)) {
-              setValues({
-                ...values,
-                loadedAllEvents: true
-              })
-            }
+            loadedAllEvents: true
+          })
         }
       }).catch(error => {
         console.log(error);
       });
-
-      setValues({
-        ...values,
-        loadedAllEvents: true
-      })
+    
   }
 
     // Replaces ComponentDidMount() in a Functional Component
 
     useEffect(() => {
+      console.log("Future Events")
+
       //Restart the get events
+
       setValues({
-        ...values,
+        type: props.type,
+        filter: props.filter,
+        loadedAllEvents: false,
+        showOlder: true,
+        eventsLength: 0,
         showNew: false,
-      })
+        limit: props.filter.limit,
+        events: [],
+      });
 
       // ----------------------------TESTING UNMOUNTING--------------------------------
-      let isMounted = true;
+      isMounted = true;
       const { client } = props;
       const { filter } = props;
 
@@ -132,13 +146,12 @@ export default function EventCardListHome(props) {
       if(filter.category == "Any") {
         cat = ""
       }
-      console.log("Amount of Events: ", values.eventsLength)
       client
         .query({
           query: QUERY_FILTERED_EVENT,
           variables: {
             eventLimit: values.limit,
-            eventOffset: values.eventsLength,
+            eventOffset: 0,
             search: `%${filter.searchText}%`,
             category: `%${cat}%`,
             city: `%${filter.city}%`,
@@ -150,24 +163,24 @@ export default function EventCardListHome(props) {
         })
         .then(data => {
           if (data.data.events.length) {
-            const mergedEvents = values.events.concat(data.data.events);
+           // const mergedEvents = values.events.concat(data.data.events);
 
             // update state with new events
             if(isMounted) {
               setValues({
                 ...values,
-                events: mergedEvents,
+                events: data.data.events,
                 showNew: true,
-                eventsLength: values.events.length + data.data.events.length
+                eventsLength: data.data.events.length
               });
-              if(totalEventsPrevious === values.events.length + data.data.events.length) {
-                setValues({
-                  ...values,
-                  loadedAllEvents: true
-                })
-              }
               setIsSearch(false)
             }
+          }
+          else {
+            setValues({
+              ...values,
+              loadedAllEvents: true
+            })
           }
         });
 
@@ -175,7 +188,7 @@ export default function EventCardListHome(props) {
 
       return () => {
         //setIsMounted(false);
-        isMounted = false;
+        isMounted = false;        
       }
     }, [props.filter])
 
@@ -246,15 +259,6 @@ export default function EventCardListHome(props) {
         )
       }
     }
-
-    if(values.events.length === 0 && !isSearch)
-      {
-        return(
-          <div>
-            <h5 style={{marginTop: 20, textAlign: 'center'}}></h5>
-          </div>
-        )
-      }
 
     return (
       <Fragment>

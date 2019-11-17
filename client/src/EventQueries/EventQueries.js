@@ -257,24 +257,27 @@ query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String
     limit: $eventLimit
     offset: $eventOffset
     where: {
-      _or: [
-        {name: {_ilike: $search}},
-        {user: {
-          _or: [
-            {full_name: {_ilike: $search}},
-            {name: {_ilike: $search}}
-          ]}
-        },
-        {event_tags: {
-          tag: 
-            {name: {_ilike: $search}}
-        }}
-      ]
+      
       _and: [
         {event_type: {_eq: $type}},
         {category: {_like: $category}},
         {city: {_ilike: $city}},
         {state: {_ilike: $state}},
+        {
+          _or: [
+            {name: {_ilike: $search}},
+            {user: {
+              _or: [
+                {full_name: {_ilike: $search}},
+                {name: {_ilike: $search}}
+              ]}
+            },
+            {event_tags: {
+              tag: 
+                {name: {_ilike: $search}}
+            }}
+          ]
+        }
         {event_date:{
           _or:[
             {

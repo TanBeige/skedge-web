@@ -47,7 +47,8 @@
     "react-slick": "0.25.2",
     "react-swipeable-views": "0.13.3",
     "react-tagsinput": "3.19.0",
-    "subscriptions-transport-ws": "^0.9.15"
+    "subscriptions-transport-ws": "^0.9.15",
+    "uuid": "^3.3.3"
   },
   "scripts": {
     "start": "react-scripts start",

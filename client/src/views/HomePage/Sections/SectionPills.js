@@ -215,6 +215,7 @@ export default function SectionPills(props) {
 
   // const debouncedSearchTerm = useDebounce(values, 300);
 
+
   // useEffect(() => {
   //   if(debouncedSearchTerm) {
   //     console.log("Test debounce")

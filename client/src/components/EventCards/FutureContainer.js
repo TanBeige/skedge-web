@@ -35,13 +35,19 @@ export default function EventCardListHome(props) {
     date: props.filter.date.addDays(1),
   })
 
-  console.log("Future Events Filter: ", filter)
+  useEffect(() => {
+    setFilter({
+        ...filter,
+        date: props.filter.date.addDays(1),
+    })
+  }, [props.filter])
 
   return (
     <Fragment>
       <EventCardListFuture
         client={props.client}
         filter={filter}
+        userId={props.userId}
         listType="home"
       />
     </Fragment>
