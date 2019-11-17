@@ -70,7 +70,7 @@ export default function FriendProfile(props) {
                 color="primary"
                 tabs={[
                 {
-                    tabButton: "Future Events",
+                    tabButton: "My Events",
                     tabIcon: EventIcon,
                     tabContent: (
                         <EventCardList 
