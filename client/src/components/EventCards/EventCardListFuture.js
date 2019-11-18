@@ -105,10 +105,12 @@ export default function EventCardListHome(props) {
             }
         }
         else {
-          setValues({
-            ...values,
-            loadedAllEvents: true
-          })
+          if(isMounted) {
+            setValues({
+              ...values,
+              loadedAllEvents: true
+            })
+          }
         }
       }).catch(error => {
         console.log(error);
@@ -139,7 +141,6 @@ export default function EventCardListHome(props) {
       const { client } = props;
       const { filter } = props;
 
-      const totalEventsPrevious = values.eventsLength;
       setIsSearch(true);
 
       let cat = filter.category;
@@ -171,7 +172,8 @@ export default function EventCardListHome(props) {
                 ...values,
                 events: data.data.events,
                 showNew: true,
-                eventsLength: data.data.events.length
+                eventsLength: data.data.events.length,
+                loadedAllEvents: data.data.events.length < props.filter.limit
               });
               setIsSearch(false)
             }
@@ -179,8 +181,12 @@ export default function EventCardListHome(props) {
           else {
             setValues({
               ...values,
+              events: data.data.events,
+              eventsLength: data.data.events.length,
               loadedAllEvents: true
             })
+            // TURN THIS ON TO MAKE IT WORK, BUT FIX BUG WHERE IT QUEUES INFINITELY
+            //setIsSearch(false);
           }
         });
 
@@ -226,6 +232,7 @@ export default function EventCardListHome(props) {
     let finalEvents = values.events
     
     if(isSearch) {
+      console.log("searching")
       return (
         <div style={{textAlign: 'center'}}>
           <CircularProgress size={20} color='primary'/>

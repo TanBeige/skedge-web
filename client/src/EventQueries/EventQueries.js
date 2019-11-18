@@ -257,7 +257,6 @@ query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String
     limit: $eventLimit
     offset: $eventOffset
     where: {
-      
       _and: [
         {event_type: {_eq: $type}},
         {category: {_like: $category}},

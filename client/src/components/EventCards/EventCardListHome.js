@@ -132,7 +132,7 @@ export default function EventCardListHome(props) {
     }
 
     useEffect(() => {
-
+      console.log("filter", props.filter)
       //Restart the get events
       setValues({
         type: props.type,
@@ -178,6 +178,7 @@ export default function EventCardListHome(props) {
           }
         })
         .then(data => {
+          console.log(props.filter.type)
           if (data.data.events.length) {
             //const mergedEvents = values.events.concat(data.data.events);
             // update state with new events
@@ -190,11 +191,16 @@ export default function EventCardListHome(props) {
               });
             }
           }
-          else {
-            setValues({
-              ...values,
-              loadedAllEvents: true
-            })
+          else {console.log(data)
+            if(isMounted) {
+              setValues({
+                ...values,
+                events: data.data.events,
+                eventsLength: data.data.events.length,
+                loadedAllEvents: true
+              })
+              setIsSearch(false)
+            }
           }
         }).catch(error => {
           console.log(error)

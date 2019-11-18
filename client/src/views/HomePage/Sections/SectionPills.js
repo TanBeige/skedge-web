@@ -107,6 +107,7 @@ export default function SectionPills(props) {
     date: values.date,
     weekday: values.weekday
   })
+  console.log("private filter: ", privateFilter)
 
   const [expanded, setExpanded] = useState(false)
 
