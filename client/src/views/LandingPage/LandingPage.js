@@ -34,6 +34,11 @@ import SectionTitle from "./Sections/SectionTitle.js"
 import { useAuth0 } from '../../Authorization/react-auth0-wrapper';
 //import history from "../../utils/history";
 
+// Fro Scrolling to top
+import { animateScroll as scroll} from 'react-scroll'
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+
+
 //Google Analytics
 import ReactGA from 'react-ga';
 
@@ -59,6 +64,11 @@ export default function LandingPage(props) {
   if (isAuthenticated) {
     props.history.push("/home");
     window.location.reload();
+  }
+
+  //Scroll To Top of the page
+  const scrollToTop = () => {
+    scroll.scrollToTop();
   }
 
   const handleLogin = () => {
@@ -111,6 +121,9 @@ export default function LandingPage(props) {
         </div>
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
+      <Button style={{position: 'fixed', bottom: 55, right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
+              <ArrowUpwardIcon style={{color: "white"}} />
+        </Button>
         <div className={classes.container}>
           <SectionTeam client={props.client}/>
           <hr />
