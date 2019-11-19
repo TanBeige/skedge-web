@@ -72,29 +72,6 @@ const USER_FRAGMENT = gql`
   }
 `;
 
-const USER_FRIENDS_FRAGMENT = gql`
-  fragment FriendListFragment on users {
-    relationship_user_one {
-      status
-      friend_two {
-        auth0_id
-        id
-        name
-        picture
-      }
-    }
-    relationship_user_two {
-      status
-      friend_one {
-        auth0_id
-        id
-        name
-        picture
-      }
-    }
-  }
-
-`
 
 const FRIEND_FRAGMENT = gql`
 fragment FriendFragment on users {
@@ -112,22 +89,10 @@ const QUERY_USER_PROFILE = gql`
     ) {  
       ...UserFragment
     
-      events (limit: $limit){
-        ...EventFragment
-      }
-    
-      shared_event (limit: $limit){
-        event{
-          ...EventFragment
-        }
-      }
-
-      ...FriendListFragment
     }
   }
   ${USER_FRAGMENT}
   ${EVENT_FRAGMENT}
-  ${USER_FRIENDS_FRAGMENT}
 `;
 
 const FETCH_IF_ENTITY = gql`
@@ -512,6 +477,7 @@ const FETCH_SAVED_EVENTS = gql`
   query savedEvents($eventLimit: Int, $eventOffset: Int, $userId: String) {
     user_saved_events(
       where: {user_id: {_eq: $userId}}
+      order_by: {time_saved: desc}
       limit: $eventLimit
       offset: $eventOffset
       )

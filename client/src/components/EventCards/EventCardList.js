@@ -2,6 +2,7 @@ import React from 'react'
 
 import EventCardListHome from 'components/EventCards/EventCardListHome.js'
 import EventCardListSaved from 'components/EventCards/EventCardListSaved.js'
+import EventCardListProfile from 'components/EventCards/EventCardListProfile.js'
 
 export default function EventCardList(props) {
 
@@ -11,6 +12,9 @@ export default function EventCardList(props) {
     }
     else if(props.listType == 'saved'){
       return (<EventCardListSaved {...props}/>)
+    }
+    else if(props.listType == 'profile'){
+      return (<EventCardListProfile {...props}/>)
     }
     else {
       return <h1>Not Home</h1>

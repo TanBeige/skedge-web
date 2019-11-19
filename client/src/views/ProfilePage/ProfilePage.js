@@ -42,6 +42,9 @@ import ReactGA from 'react-ga';
 const useStyles = makeStyles(profilePageStyle);
 
 export default function ProfilePage(props, { ...rest }) {
+
+  // is Mounted variable
+  let isMounted = true;
   
   //// Get Page Styling
   const classes = useStyles();
@@ -210,59 +213,44 @@ export default function ProfilePage(props, { ...rest }) {
       }
     }).then((data) => {
       console.log("user data: ", data.data.users);
-      if(data.data.users === undefined || data.data.users.length === 0) {
-        setValues({
-          ...values,
-          user_exists: false
-        })
-      }
-      else {
-        //Find the relationship between Current User and Profile User
-        let relationship = 0
-
-        //Search through relationship friend_one to see if current user is in there
-        const friend_set_one = data.data.users[0].relationship_user_one.find(friends => friends.friend_two.auth0_id === user.sub) 
-        console.log("friend set one", friend_set_one)
-        if (!friend_set_one) {
-          //If not in friend_one, Search through relationship friend_two to see if current user is in there
-          const friend_set_two = data.data.users[0].relationship_user_two.find(friends => friends.friend_one.auth0_id === user.sub)
-          console.log("friend set two", friend_set_two)          
-          if(!friend_set_two) {
-            //Not friends
-            relationship = -1
-          }
-          else {
-            relationship = friend_set_two.status
+      if(isMounted) {
+        if(data.data.users === undefined || data.data.users.length === 0) {
+          if (isMounted) {
+            setValues({
+              ...values,
+              user_exists: false
+            })
           }
         }
         else {
-          relationship = friend_set_one.status;
+          //Find the relationship between Current User and Profile User
+          let relationship = 0
+
+          
+          // Set Values
+          setValues({
+            ...values,
+            user_exists: true,
+
+            userEvents: data.data.users[0].events,
+            userReposts: data.data.users[0].shared_event,
+
+            name: data.data.users[0].name,
+            biography: data.data.users[0].biography,
+            full_name: data.data.users[0].full_name,
+            email: data.data.users[0].email,
+            picture: data.data.users[0].picture,
+            verified: data.data.users[0].verified,
+            auth0Id: data.data.users[0].auth0_id,
+
+            currentUserProfile: (user.sub === data.data.users[0].auth0_id) ? true : false,
+
+            //relationshipType: relationship
+          })
+          setIsLoading(false);
         }
-
-        
-        // Set Values
-        setValues({
-          ...values,
-          user_exists: true,
-
-          userEvents: data.data.users[0].events,
-          userReposts: data.data.users[0].shared_event,
-
-          name: data.data.users[0].name,
-          biography: data.data.users[0].biography,
-          full_name: data.data.users[0].full_name,
-          email: data.data.users[0].email,
-          picture: data.data.users[0].picture,
-          verified: data.data.users[0].verified,
-          auth0Id: data.data.users[0].auth0_id,
-
-          currentUserProfile: (user.sub === data.data.users[0].auth0_id) ? true : false,
-
-          relationshipType: relationship
-        })
-        setIsLoading(false);
       }
-    })
+    });
   }
 
   //// Use Effects / Check loading
@@ -272,7 +260,12 @@ export default function ProfilePage(props, { ...rest }) {
   });
   useEffect(() => {
     // Get Profile age
+    isMounted = true;
     getUser();  
+
+    return () => {
+      isMounted = false;
+    }
   }, [values.auth0Id, userId])
 
   //Google Analytics useEffects
@@ -291,23 +284,14 @@ export default function ProfilePage(props, { ...rest }) {
     let profileContent = ""
 
     // If user are friends
-    if (values.relationshipType === 1 || values.currentUserProfile) {  
-      profileContent = (
-        <FriendProfile 
-          client={props.client}
-          userId={user.sub}
-          profileId={values.auth0Id}
-          currentUserProfile={values.currentUserProfile}
-        />
-      )
-    }
-    //If user is blocked
-    else if (values.relationshipType === 2) {
-      profileContent = <h1>Blocked</h1>
-    }
-    else {
-      profileContent = <NotFriendProfile />
-    }
+    profileContent = (
+      <FriendProfile 
+        client={props.client}
+        userId={user.sub}
+        profileId={values.auth0Id}
+        currentUserProfile={values.currentUserProfile}
+      />
+    )
     
     // Gradient colors: 'linear-gradient(#02C39A 200px, white 400px)'
     return (

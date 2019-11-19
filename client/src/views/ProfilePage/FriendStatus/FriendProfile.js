@@ -39,7 +39,7 @@ export default function FriendProfile(props) {
 
     const filter = {
         searchText: "", //Search Text can look for Event Names, Tags, or Event Creators!
-        type: "private",
+        //type: "private",
         category: "",
         city: "",
         state: "",
@@ -77,7 +77,7 @@ export default function FriendProfile(props) {
                             client={props.client}
                             userId={props.userId}
                             filter={filter}
-                            listType='home'
+                            listType='profile'
                         /> 
                     )
                 },

@@ -100,40 +100,27 @@ export default function EventCardListSaved(props) {
 
       const totalEventsPrevious = values.eventsLength;
 
-      client
-        .query({
-            query: FETCH_SAVED_EVENTS,
-            variables: {
-                userId: user.sub,
-                eventLimit: values.limit,
-                eventOffset: values.eventsLength,
-            }
-          }).then(data => {
-          if (data.data.user_saved_events) {
-            let tempEvents = [];
-            for(let i = 0; i < data.data.user_saved_events.length; ++i) {
-              tempEvents.push(data.data.user_saved_events[i].event)
-            }
-            const mergedEvents = values.events.concat(tempEvents);
+    //   client
+    //     .query({
+    //         query: FETCH_SAVED_EVENTS,
+    //         variables: {
+    //             userId: user.sub,
+    //             eventLimit: values.limit,
+    //             eventOffset: 0,
+    //         }
+    //       }).then(data => {
+    //       if (data.data.events.length) {
+    //         const mergedEvents = values.events.concat(data.data.events);
 
-
-            // update state with new events
-            setValues({ 
-              ...values,
-              events: mergedEvents,
-              showNew: true,
-              eventsLength: values.events.length + data.data.user_saved_events.length
-             });
-          }
-          else {
-            setValues({ 
-              ...values,
-              events: values.events,
-              eventsLength: values.events.length + data.data.user_saved_events.length,
-              loadedAllEvents: true
-             });
-          }
-        });
+    //         // update state with new events
+    //         setValues({ 
+    //           ...values,
+    //           events: mergedEvents,
+    //           showNew: true,
+    //           eventsLength: values.events.length + data.data.events.length
+    //          });
+    //       }
+    //     });
 
       if(totalEventsPrevious === values.eventsLength) {
         setValues({
