@@ -232,7 +232,6 @@ export default function EventCardListHome(props) {
     let finalEvents = values.events
     
     if(isSearch) {
-      console.log("searching")
       return (
         <div style={{textAlign: 'center'}}>
           <CircularProgress size={20} color='primary'/>

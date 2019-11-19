@@ -94,7 +94,6 @@ export default function EventCardListHome(props) {
         .then(data => {
           if (data.data.events.length) {
             const mergedEvents = values.events.concat(data.data.events);
-            console.log("load more")
 
             // update state with new events
             if(isMounted) {
@@ -132,7 +131,6 @@ export default function EventCardListHome(props) {
     }
 
     useEffect(() => {
-      console.log("filter", props.filter)
       //Restart the get events
       setValues({
         type: props.type,
@@ -146,8 +144,6 @@ export default function EventCardListHome(props) {
       });
 
       currentKey = Math.floor(Math.random() * Math.floor(1000))
-      console.log(currentKey)
-
       //setIsMounted(true)
 
       //grabEvents();
@@ -155,7 +151,6 @@ export default function EventCardListHome(props) {
       isMounted = true;
       const { client } = props;
       const { filter } = props;
-      console.log(props)
 
       let cat = filter.category;
       if(filter.category == "Any") {
@@ -179,7 +174,7 @@ export default function EventCardListHome(props) {
         })
         .then(data => {
           console.log(props.filter.type)
-          if (data.data.events.length) {
+          if (data.data.events.length > 0) {
             //const mergedEvents = values.events.concat(data.data.events);
             // update state with new events
             if(isMounted) {
@@ -187,12 +182,15 @@ export default function EventCardListHome(props) {
               setValues({
                 ...values,
                 events: data.data.events,
-                eventsLength: data.data.events.length
+                showNew: true,
+                eventsLength: data.data.events.length,
+                loadedAllEvents: data.data.events.length < props.filter.limit
               });
             }
           }
-          else {console.log(data)
+          else {
             if(isMounted) {
+              console.log("there are no events")
               setValues({
                 ...values,
                 events: data.data.events,
@@ -208,7 +206,6 @@ export default function EventCardListHome(props) {
 
       return () => {
         isMounted = false;
-        console.log("home unmounting")
       }
     }, [props.filter])
 

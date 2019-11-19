@@ -18,10 +18,6 @@ import Button from "components/CustomButtons/Button.js";
 import Parallax from "components/Parallax/Parallax.js";
 // import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
 
-//Smooth Scrolling
-//import { Link, animateScroll as scroll } from "react-scroll";
-
-
 import landingPageStyle from "assets/jss/material-kit-pro-react/views/landingPageStyle.js";
 
 // Sections for this page
@@ -34,7 +30,7 @@ import SectionTitle from "./Sections/SectionTitle.js"
 import { useAuth0 } from '../../Authorization/react-auth0-wrapper';
 //import history from "../../utils/history";
 
-// Fro Scrolling to top
+// For Smooth Scrolling to top
 import { animateScroll as scroll} from 'react-scroll'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
