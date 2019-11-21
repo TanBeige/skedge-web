@@ -7,9 +7,10 @@ import GridItem from "components/Grid/GridItem.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from "react-infinite-scroll-component";
 import FutureContainer from './FutureContainer.js';
+import ProfileListFuture from "./ProfileListFuture.js"
 
 import {
-    QUERY_FILTERED_EVENT
+    QUERY_PROFILE_EVENTS
 } from "../../EventQueries/EventQueries";
 
 const dateHeaderStyle = {
@@ -48,20 +49,24 @@ export default function EventCardListHome(props) {
   let isMounted = true;
 
   const [values, setValues] = useState({
-      type: props.type,
-      filter: props.filter,
-      loadedAllEvents: false,
-      showOlder: true,
-      eventsLength: 0,
-      showNew: false,
-      limit: props.filter.limit,
-      events: [],
+    filter: {
+        date: props.filter.date.addDays(1),
+        weekday: props.filter.date.addDays(1).getDay(),
+        limit: 10
+    },
+    loadedAllEvents: false,
+    showOlder: true,
+    eventsLength: 0,
+    showNew: false,
+    limit: 10,
+    events: [],
   });
 
   // Update Query When new Events are added
   const loadMoreClicked = () => {
     const { client } = props;
-    const { filter } = props;
+    const { filter } = values;
+    console.log("Loading more")
 
     const totalEventsPrevious = values.eventsLength;
 
@@ -71,17 +76,13 @@ export default function EventCardListHome(props) {
     }
     client
       .query({
-        query: QUERY_FILTERED_EVENT,
+        query: QUERY_PROFILE_EVENTS,
         variables: {
           eventLimit: values.limit,
           eventOffset: values.eventsLength,
-          search: `%${filter.searchText}%`,
-          category: `%${cat}%`,
-          city: `%${filter.city}%`,
-          state: `%${filter.state}%`,
-          type: filter.type,
-          date: filter.date ? filter.date.formatDate() : null,
-          weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
+          profileId: props.profileId,
+          date:values.filter.date ? values.filter.date.formatDate() : null,
+          weekday: values.filter.date !== null ? `%${values.filter.date.getDay()}%` : null
         }
       })
       .then(data => {
@@ -121,13 +122,17 @@ export default function EventCardListHome(props) {
     // Replaces ComponentDidMount() in a Functional Component
 
     useEffect(() => {
-      console.log("Future Events")
-
       //Restart the get events
+      console.log("asshole")
+
 
       setValues({
         type: props.type,
-        filter: props.filter,
+        filter: {
+          date: props.filter.date.addDays(1),
+          weekday: props.filter.date.addDays(1).getDay(),
+          limit: 10
+        },
         loadedAllEvents: false,
         showOlder: true,
         eventsLength: 0,
@@ -139,7 +144,7 @@ export default function EventCardListHome(props) {
       // ----------------------------TESTING UNMOUNTING--------------------------------
       isMounted = true;
       const { client } = props;
-      const { filter } = props;
+      const { filter } = values;
 
       setIsSearch(true);
 
@@ -149,17 +154,13 @@ export default function EventCardListHome(props) {
       }
       client
         .query({
-          query: QUERY_FILTERED_EVENT,
+          query: QUERY_PROFILE_EVENTS,
           variables: {
             eventLimit: values.limit,
             eventOffset: 0,
-            search: `%${filter.searchText}%`,
-            category: `%${cat}%`,
-            city: `%${filter.city}%`,
-            state: `%${filter.state}%`,
-            type: filter.type,
-            date: filter.date ? filter.date.formatDate() : null,
-            weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
+            profileId: props.profileId,
+            date: values.filter.date ? values.filter.date.formatDate() : null,
+            weekday: values.filter.date !== null ? `%${values.filter.date.getDay()}%` : null
           }
         })
         .then(data => {
@@ -173,7 +174,7 @@ export default function EventCardListHome(props) {
                 events: data.data.events,
                 showNew: true,
                 eventsLength: data.data.events.length,
-                loadedAllEvents: data.data.events.length < props.filter.limit
+                //loadedAllEvents: data.data.events.length < values.filter.limit
               });
               setIsSearch(false)
             }
@@ -183,14 +184,12 @@ export default function EventCardListHome(props) {
               ...values,
               events: data.data.events,
               eventsLength: data.data.events.length,
-              loadedAllEvents: true
+              //loadedAllEvents: true
             })
             // TURN THIS ON TO MAKE IT WORK, BUT FIX BUG WHERE IT QUEUES INFINITELY
-            //setIsSearch(false);
+            setIsSearch(false);
           }
         });
-
-      
 
       return () => {
         //setIsMounted(false);
@@ -244,9 +243,14 @@ export default function EventCardListHome(props) {
       if(values.loadedAllEvents) {
 //        <h1>Future Events</h1>
         return(
-          <FutureContainer
+          <ProfileListFuture
             client={props.client}
-            filter={props.filter}
+            filter={{
+              date: values.filter.date,
+              weekday: values.filter.date,
+              limit: 10
+            }}
+            profileId={props.profileId}
             userId={props.userId}
           />
         )
@@ -260,8 +264,8 @@ export default function EventCardListHome(props) {
       if(values.events.length === 0 && !isSearch)
       {
         return(
-          <div>
-            <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no events today.</h5>
+          <div style={{margin: 'auto', textAlign: 'center'}}>
+            <h5 style={{marginTop: 5}}>There are no events today.</h5>
           </div>
         )
       }
@@ -269,14 +273,19 @@ export default function EventCardListHome(props) {
 
     return (
       <Fragment>
-        <h2 style={{textAlign: 'center'}}>{moment(props.filter.date).format("MMMM D, YYYY")}</h2>
+        <h2 style={{textAlign: 'center'}}>{moment(values.filter.date).format("MMMM D, YYYY")}</h2>
         <InfiniteScroll
             dataLength={values.eventsLength}
             next={loadMoreClicked}
             hasMore={!values.loadedAllEvents}
             scrollThreshold={0.95}
+            //scrollableTarget="scrollableDiv"
+            //pullDownToRefresh
+            //pullDownToRefreshContent={<h3>Pull down to refresh.</h3>}
+            //refreshFunction={loadMoreClicked}
             loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             style={{overflow: 'none'}}
+
         >
           <GridContainer style={{minHeight: '8em'}}>
             {noEvents()}
@@ -289,8 +298,8 @@ export default function EventCardListHome(props) {
                               event={event} 
                               client={props.client}
                               userId={props.userId}
-                              filter={props.filter}
-                              currentDate={props.filter.date}
+                              filter={values.filter}
+                              currentDate={values.filter.date}
                           />
                         </GridItem>
                         {
@@ -306,3 +315,9 @@ export default function EventCardListHome(props) {
       </Fragment>
     )
 }
+
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+  }

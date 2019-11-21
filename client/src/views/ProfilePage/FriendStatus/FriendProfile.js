@@ -26,7 +26,7 @@ import { useAuth0 } from 'Authorization/react-auth0-wrapper'
 import {
   QUERY_USER_PROFILE,
   MUTATION_FRIEND_REQUEST,
-  QUERY_ACCEPTED_FRIENDS,
+  QUERY_ACCEPTED_FRIENDS
 } from 'EventQueries/EventQueries.js'
 import { Button } from "@material-ui/core";
 
@@ -37,15 +37,6 @@ export default function FriendProfile(props) {
     const classes = useStyles();
     const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
-    const filter = {
-        searchText: "", //Search Text can look for Event Names, Tags, or Event Creators!
-        //type: "private",
-        category: "",
-        city: "",
-        state: "",
-        date: new Date(),
-        limit: 10   // This is how many events will show up in the eventList
-    };
 
       const userFriendsEvents = () => {
           //if(props.currentUserProfile) {
@@ -76,7 +67,7 @@ export default function FriendProfile(props) {
                         <EventCardList 
                             client={props.client}
                             userId={props.userId}
-                            filter={filter}
+                            profileId={props.profileId}
                             listType='profile'
                         /> 
                     )

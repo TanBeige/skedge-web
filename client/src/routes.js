@@ -75,7 +75,7 @@ export const MakeMainRoutes = () => {
 
   //Create navigation bar
   const bottomBar = () => {
-    if(values.showBottomBar && !loading) {
+    if(values.showBottomBar && !loading && isAuthenticated) {
       return (
         <ApolloProvider client={values.client}>
           <BottomNav client={values.client} userId={user.sub}/>

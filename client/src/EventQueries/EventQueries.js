@@ -92,8 +92,49 @@ const QUERY_USER_PROFILE = gql`
     }
   }
   ${USER_FRAGMENT}
-  ${EVENT_FRAGMENT}
 `;
+const QUERY_PROFILE_EVENTS = gql`
+query fetch_profile_events($eventLimit: Int, $eventOffset: Int, $profileId: String, $date: date, $weekday: String) {
+  events(
+    limit: $eventLimit
+    offset: $eventOffset
+    where:{
+    	_and: [
+        {_or: [
+          {creator_id: {_eq: $profileId}},
+          {event_going: {user_id: {_eq: $profileId}}}
+          {shared_event: {user_id: {_eq: $profileId}}}
+        ]},
+        {event_date:{
+          _or:[
+            {
+              _and: [
+                {is_recurring: {_eq: false}},
+                {start_date: {_eq: $date}}
+           		]
+            },
+            {
+              _and: [
+                {is_recurring: {_eq: true}},
+                {start_date: {_lte: $date}},
+              	{end_date: {_gte: $date}},
+                {weekday: {_like: $weekday}}
+              ]
+            }
+          ]
+        }}
+        
+      
+      ]
+    }
+    order_by: {start_time: asc}
+  )
+  {
+    ...EventFragment
+  }
+}
+${EVENT_FRAGMENT}
+`
 
 const FETCH_IF_ENTITY = gql`
   query fetch_user_entity($userId: String!) {
@@ -738,6 +779,7 @@ query check_relationship ($userId: String!, $profileId: String!) {
 export {
   QUERY_FILTERED_EVENT,
   QUERY_USER_PROFILE,
+  QUERY_PROFILE_EVENTS,
   FETCH_IF_ENTITY,
   MUTATION_EDIT_USER,
   REFETCH_USER_INFO,

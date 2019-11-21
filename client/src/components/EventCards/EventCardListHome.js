@@ -287,6 +287,7 @@ export default function EventCardListHome(props) {
             dataLength={values.eventsLength}
             next={loadMoreClicked}
             hasMore={!values.loadedAllEvents}
+            scrollThreshold={0.95}
             loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             style={{overflow: 'none'}}
         >

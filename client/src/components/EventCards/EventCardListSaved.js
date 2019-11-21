@@ -211,6 +211,7 @@ export default function EventCardListSaved(props) {
           next={loadMoreClicked}
           hasMore={!values.loadedAllEvents}
           //loader={<h4>Loading...</h4>}
+          scrollThreshold={0.95}
           style={{overflow: 'none'}}
       >
         <GridContainer style={{minHeight: '8em'}}>
