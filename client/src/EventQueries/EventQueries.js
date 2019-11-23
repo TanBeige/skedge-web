@@ -701,28 +701,21 @@ const SUBSCRIPTION_EVENT_LOCAL_LIST = gql`
 `;
 
 // Adding/Deleting Friends
-const MUTATION_FRIEND_REQUEST = gql`
-  mutation insert_relationships($objects: [relationship_insert_input!]!) {
-    insert_relationship(
-      objects: $objects, 
-      on_conflict: {
-        update_columns: status, 
-        constraint: relationship_pkey
-      }) {
-      affected_rows
-    }
+const MUTATION_FOLLOW_REQUEST = gql`
+mutation insert_follower($objects: [follower_insert_input!]!) {
+  insert_follower(
+    objects: $objects, 
+    on_conflict: {
+      update_columns: status, 
+      constraint: following_pkey
+    }) {
+    affected_rows
   }
+}
 `;
-const MUTATION_FRIEND_DELETE = gql`
-  mutation delete_relationships($user_one_id: String, $user_two_id: String) {
-    delete_relationship(
-      where: {
-        _and: [
-          {user_one_id: {_eq: $user_one_id}},
-          {user_two_id: {_eq: $user_two_id}}
-        ]
-      }
-      ) {
+const MUTATION_FOLLOW_DELETE = gql`
+  mutation delete_follower($userId: String!, $followingId: String!) {
+    delete_follower(where: {_and: [{user_id: {_eq: $userId}}, {following_id: {_eq: $followingId}}]}) {
       affected_rows
     }
   }
@@ -814,8 +807,8 @@ export {
   MUTATION_EVENT_VIEW,
   MUTATION_REPOST_EVENT,
   MUTATION_UNPOST_EVENT,
-  MUTATION_FRIEND_REQUEST,
-  MUTATION_FRIEND_DELETE,
+  MUTATION_FOLLOW_REQUEST,
+  MUTATION_FOLLOW_DELETE,
   
   SUBSCRIPTION_EVENT_LOCAL_LIST,
   QUERY_ACCEPTED_FRIENDS,

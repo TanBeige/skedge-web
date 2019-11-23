@@ -58,6 +58,7 @@ export default function ProfileTopSection(props) {
       full_name: "",
       biography: "",
       picture: props.values.picture,
+      relationship: -1,
 
       editProfile: false
     })
@@ -104,6 +105,41 @@ export default function ProfileTopSection(props) {
         biography: props.values.biography ? props.values.biography : "" ,
         picture: props.values.picture,
       })
+    }
+
+    //Follow/Following Button
+    const followButton = () => {
+      return (
+        <Button onClick={handleFollowing} size='sm' color='info' style={{marginTop: 10}}>
+          Follow
+        </Button>
+        )
+    }
+    const handleFollowing = () => {
+      //If not Following or not requesting to follow, Request Follow
+      if(vals.relationship === -1) {
+        props.followInvite();
+        setValues({
+          ...vals,
+          relationship: 0
+        });
+      }
+      //If Already Requested to Follow, Remove Follow Request
+      else if(vals.relationship === 0) {
+        props.followRemove();
+        setValues({
+          ...vals,
+          relationship: -1
+        })
+      }
+      // If Following Already, Remove Follow
+      else if(vals.relationship === 1) {
+        props.followRemove();
+        setValues({
+          ...vals,
+          relationship: -1
+        })
+      }
     }
 
     const displayName = vals.editProfile ? 
@@ -161,10 +197,11 @@ export default function ProfileTopSection(props) {
             </div>
           </GridItem>
         </GridContainer>
-        <div className={classNames(classes.description, classes.textCenter)}>
+        <div className={classNames(classes.description, classes.textCenter)} style={{marginTop: 5}}>
           <p>
             {vals.biography}
           </p>
+          {followButton()}
         </div>
       </div>
       )

@@ -28,8 +28,8 @@ import { useAuth0 } from 'Authorization/react-auth0-wrapper'
 
 import {
   QUERY_USER_PROFILE,
-  MUTATION_FRIEND_REQUEST,
-  MUTATION_FRIEND_DELETE,
+  MUTATION_FOLLOW_REQUEST,
+  MUTATION_FOLLOW_DELETE,
   MUTATION_EDIT_USER,
   REFETCH_USER_INFO
 } from 'EventQueries/EventQueries.js'
@@ -119,25 +119,13 @@ export default function ProfilePage(props, { ...rest }) {
 
   //// Handling Friend Invites
 
-  const handleFriendInvite = () => {
+  const handleFollowInvite = () => {
     //  Handling relationship. column 1 must be > column 2 for errors. 
     //    For more info check relationship table docs.
-    console.log("Add Friend")
-    let user_one = "";
-    let user_two = "";
-    let action_user = user.sub;
-
-    if(user.sub <= values.auth0Id) {
-      user_one = user.sub;
-      user_two = values.auth0Id;
-    }
-    else {
-      user_one = values.auth0Id;
-      user_two = user.sub
-    }
+    console.log("Follow Request")
     
     props.client.mutate({
-      mutation: MUTATION_FRIEND_REQUEST,
+      mutation: MUTATION_FOLLOW_REQUEST,
       refetchQueries: [{
         query: QUERY_USER_PROFILE,
         variables: {
@@ -147,9 +135,8 @@ export default function ProfilePage(props, { ...rest }) {
       }],
       variables: {
         objects: {
-          user_one_id: user_one,
-          user_two_id: user_two,
-          action_user_id: action_user,
+          user_id: user.sub,
+          following_id: values.auth0Id,
           status: 0
         }
       }
@@ -163,22 +150,11 @@ export default function ProfilePage(props, { ...rest }) {
   }
 
   // If already friends, remove friend
-  const handleRemoveFriend = () => {
+  const handleFollowRemove = () => {
     console.log("Removing Friend")
-    let user_one = "";
-    let user_two = "";
-
-    if(user.sub <= values.auth0Id) {
-      user_one = user.sub;
-      user_two = values.auth0Id;
-    }
-    else {
-      user_one = values.auth0Id;
-      user_two = user.sub
-    }
     
     props.client.mutate({
-      mutation: MUTATION_FRIEND_DELETE,
+      mutation: MUTATION_FOLLOW_DELETE,
       refetchQueries: [{
         query: QUERY_USER_PROFILE,
         variables: {
@@ -187,9 +163,9 @@ export default function ProfilePage(props, { ...rest }) {
         }
       }],
       variables: {
-          user_one_id: user_one,
-          user_two_id: user_two
-        }
+          userId: user.sub,
+          followingId: values.auth0Id,
+      }
     }).then((data) => {
       //Change relationship type for button to change
       console.log(data)
@@ -226,28 +202,29 @@ export default function ProfilePage(props, { ...rest }) {
           //Find the relationship between Current User and Profile User
           let relationship = 0
 
-          
           // Set Values
-          setValues({
-            ...values,
-            user_exists: true,
+          if(isMounted) {
+            setValues({
+              ...values,
+              user_exists: true,
 
-            userEvents: data.data.users[0].events,
-            userReposts: data.data.users[0].shared_event,
+              userEvents: data.data.users[0].events,
+              userReposts: data.data.users[0].shared_event,
 
-            name: data.data.users[0].name,
-            biography: data.data.users[0].biography,
-            full_name: data.data.users[0].full_name,
-            email: data.data.users[0].email,
-            picture: data.data.users[0].picture,
-            verified: data.data.users[0].verified,
-            auth0Id: data.data.users[0].auth0_id,
+              name: data.data.users[0].name,
+              biography: data.data.users[0].biography,
+              full_name: data.data.users[0].full_name,
+              email: data.data.users[0].email,
+              picture: data.data.users[0].picture,
+              verified: data.data.users[0].verified,
+              auth0Id: data.data.users[0].auth0_id,
 
-            currentUserProfile: (user.sub === data.data.users[0].auth0_id) ? true : false,
+              currentUserProfile: (user.sub === data.data.users[0].auth0_id) ? true : false,
 
-            //relationshipType: relationship
-          })
-          setIsLoading(false);
+              //relationshipType: relationship
+            })
+            setIsLoading(false);
+          }
         }
       }
     });
@@ -310,8 +287,8 @@ export default function ProfilePage(props, { ...rest }) {
             <div className={classes.container}>
               <ProfileTopSection 
                 values={values} 
-                friendInvite={handleFriendInvite} 
-                removeFriend={handleRemoveFriend}
+                followInvite={handleFollowInvite} 
+                followRemove={handleFollowRemove}
                 handleProfileEdit={handleProfileEdit}
               />    
               {profileContent}

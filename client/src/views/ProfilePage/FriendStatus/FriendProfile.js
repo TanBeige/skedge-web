@@ -55,7 +55,7 @@ export default function FriendProfile(props) {
 
     return (
         <div className={classes.profileTabs} style={{marginTop: 10}}>
-            {userFriendsEvents()}
+            {/* {userFriendsEvents()} */}
             <NavPills
                 alignCenter
                 color="primary"

@@ -12,8 +12,8 @@ import Button from 'components/CustomButtons/Button.js'
 
 
 import {
-    MUTATION_FRIEND_REQUEST,
-    MUTATION_FRIEND_DELETE,
+    MUTATION_FOLLOW_REQUEST,
+    MUTATION_FOLLOW_DELETE,
     QUERY_CHECK_FRIEND
   } from 'EventQueries/EventQueries.js'
 //import "../../styles/App.css";
@@ -73,7 +73,7 @@ const ProfileFriendItem = ({
 
         if(friendButton === 1) {
             client.mutate({
-                mutation: MUTATION_FRIEND_DELETE,
+                mutation: MUTATION_FOLLOW_DELETE,
                 variables: {
                     user_one_id: user_one,
                     user_two_id: user_two
@@ -85,7 +85,7 @@ const ProfileFriendItem = ({
         }
         else if(friendButton === -1) {
             client.mutate({
-                mutation: MUTATION_FRIEND_REQUEST,
+                mutation: MUTATION_FOLLOW_REQUEST,
                 variables: {
                   objects: {
                     user_one_id: user_one,
