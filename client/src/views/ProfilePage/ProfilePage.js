@@ -84,6 +84,7 @@ export default function ProfilePage(props, { ...rest }) {
     email: "",
     picture: "",
     verified: false,
+    isEntity: false,
 
     userEvents: [],
     userReposts: []
@@ -151,7 +152,7 @@ export default function ProfilePage(props, { ...rest }) {
         ...values,
         followingStatus: 0
       })
-      setStatus(`Followed ${values.name}`);
+      setStatus(`Followed ${values.name}.`);
     })
   }
 
@@ -179,7 +180,7 @@ export default function ProfilePage(props, { ...rest }) {
         ...values,
         followingStatus: -1
       })
-      setStatus(`Unfollowed ${values.name}`);
+      setStatus(`Unfollowed ${values.name}.`);
     })
   }
 
@@ -245,7 +246,8 @@ export default function ProfilePage(props, { ...rest }) {
 
               currentUserProfile: (user.sub === data.data.users[0].auth0_id) ? true : false,
 
-              followingStatus: followType
+              followingStatus: followType,
+              isEntity: data.data.users[0].entity
             })
             setIsLoading(false);
           }
@@ -285,14 +287,21 @@ export default function ProfilePage(props, { ...rest }) {
     let profileContent = ""
 
     // If user are friends
-    profileContent = (
-      <FriendProfile 
-        client={props.client}
-        userId={user.sub}
-        profileId={values.auth0Id}
-        currentUserProfile={values.currentUserProfile}
-      />
-    )
+    if(values.followingStatus === 1 || values.currentUserProfile || values.isEntity) {
+      profileContent = (
+        <FriendProfile 
+          client={props.client}
+          userId={user.sub}
+          profileId={values.auth0Id}
+          currentUserProfile={values.currentUserProfile}
+        />
+      )
+    }
+    else {
+      profileContent = (
+        <h3 style={{margin: '50px 20px', textAlign: 'center'}}>Must be following to view.</h3>
+      )
+    }
     
     // Gradient colors: 'linear-gradient(#02C39A 200px, white 400px)'
     return (

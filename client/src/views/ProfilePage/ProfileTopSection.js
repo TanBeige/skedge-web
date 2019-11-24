@@ -109,7 +109,10 @@ export default function ProfileTopSection(props) {
 
     //Follow/Following Button
     const followButton = () => {
-      if(props.values.followingStatus === 1) {
+      if (props.values.currentUserProfile) {
+        return null;
+      }
+      else if(props.values.followingStatus === 1) {
         //Unfollow
         return (
           <Button onClick={handleFollowing} size='sm' style={{marginTop: 10}}>
@@ -121,7 +124,7 @@ export default function ProfileTopSection(props) {
         //Remove Follow Request
         return (
           <Button onClick={handleFollowing} size='sm' style={{marginTop: 10}}>
-            Request Sent
+            Requested...
           </Button>
         )
       }

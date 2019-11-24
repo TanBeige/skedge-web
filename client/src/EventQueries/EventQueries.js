@@ -69,6 +69,7 @@ const USER_FRAGMENT = gql`
     biography
     picture
     verified
+    entity
     
     followers{
       user_id
