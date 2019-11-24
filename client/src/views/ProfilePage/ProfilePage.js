@@ -11,11 +11,12 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import NavPills from "components/NavPills/NavPills.js";
+import SnackbarSkedge from "components/Snackbar/SnackbarContent";
+import Snackbar from "@material-ui/core/Snackbar";
+
 
 import LoadingPage from "views/LoadingPage/LoadingPage.js"
-
 import ProfileTopSection from 'views/ProfilePage/ProfileTopSection.js';
-
 
 import FriendProfile from "views/ProfilePage/FriendStatus/FriendProfile.js"
 import NotFriendProfile from "views/ProfilePage/FriendStatus/NotFriendProfile.js"
@@ -59,7 +60,11 @@ export default function ProfilePage(props, { ...rest }) {
   const { isAuthenticated, user } = useAuth0();
 
   // Page is Loading variable
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState("");
+
+  const setStatus = (msg) => setSnackbar({ msg });
+
 
   //// Set State Values
   const [values, setValues] = useState({
@@ -70,7 +75,7 @@ export default function ProfilePage(props, { ...rest }) {
     editProfile: false,
 
     currentUserProfile: false,
-    relationshipType: 5,
+    followingStatus: 5,
 
     auth0Id: "",
     name: "",
@@ -136,7 +141,7 @@ export default function ProfilePage(props, { ...rest }) {
       variables: {
         objects: {
           user_id: user.sub,
-          following_id: values.auth0Id,
+          is_following_id: values.auth0Id,
           status: 0
         }
       }
@@ -144,8 +149,9 @@ export default function ProfilePage(props, { ...rest }) {
       //Change relationship type for button to change
       setValues({
         ...values,
-        relationshipType: 0
+        followingStatus: 0
       })
+      setStatus(`Followed ${values.name}`);
     })
   }
 
@@ -171,8 +177,9 @@ export default function ProfilePage(props, { ...rest }) {
       console.log(data)
       setValues({
         ...values,
-        relationshipType: -1
+        followingStatus: -1
       })
+      setStatus(`Unfollowed ${values.name}`);
     })
   }
 
@@ -191,16 +198,33 @@ export default function ProfilePage(props, { ...rest }) {
       console.log("user data: ", data.data.users);
       if(isMounted) {
         if(data.data.users === undefined || data.data.users.length === 0) {
-          if (isMounted) {
-            setValues({
-              ...values,
-              user_exists: false
-            })
-          }
+          setValues({
+            ...values,
+            user_exists: false
+          })
         }
         else {
           //Find the relationship between Current User and Profile User
-          let relationship = 0
+          let followType = 0
+
+          //if user has followers
+          if(data.data.users[0].followers) {
+            const followValues = data.data.users[0].followers.find(users => users.user_id === user.sub) 
+            //If current user is following profile confirmed
+            if(followValues) {
+              followType = followValues.status;
+              console.log("FollowType: ", followType)
+            }
+            else{
+              // If user is not following profile confirmed
+              followType = -1;
+              console.log("Not Follinwg")
+            }
+          }
+          //User has no followers
+          else {
+            followType = -1;
+          }
 
           // Set Values
           if(isMounted) {
@@ -221,7 +245,7 @@ export default function ProfilePage(props, { ...rest }) {
 
               currentUserProfile: (user.sub === data.data.users[0].auth0_id) ? true : false,
 
-              //relationshipType: relationship
+              followingStatus: followType
             })
             setIsLoading(false);
           }
@@ -285,6 +309,15 @@ export default function ProfilePage(props, { ...rest }) {
         (
           <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '85vh', marginBottom: '4em', marginTop: '4em'}}>
             <div className={classes.container}>
+              {snackbar ? 
+                <SnackbarSkedge 
+                  message={snackbar.msg}
+                  close 
+                  color='info'
+                /> 
+                : 
+                null
+              }
               <ProfileTopSection 
                 values={values} 
                 followInvite={handleFollowInvite} 

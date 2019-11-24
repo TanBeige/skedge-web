@@ -38,24 +38,25 @@ export default function FriendProfile(props) {
     const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
 
-      const userFriendsEvents = () => {
-          //if(props.currentUserProfile) {
-              return (
-                  <div  style={{textAlign: 'center'}}>
-                    {/* <Button variant='outlined' style={{width: '8em', marginRight: 5}}>Events</Button> */}
-                    <ProfileFriendList 
-                        client={props.client}
-                        userId={props.userId}
-                        profileId={props.profileId}
-                    />
-                  </div>
-              )
-          //}
-      }
+    const userFriendsEvents = () => {
+        //if(props.currentUserProfile) {
+            return (
+                <div  style={{textAlign: 'center'}}>
+                {/* <Button variant='outlined' style={{width: '8em', marginRight: 5}}>Events</Button> */}
+                <ProfileFriendList 
+                    client={props.client}
+                    userId={props.userId}
+                    profileId={props.profileId}
+                />
+                </div>
+            )
+        //}
+    }
 
-    return (
-        <div className={classes.profileTabs} style={{marginTop: 10}}>
-            {/* {userFriendsEvents()} */}
+    let displayPills = "";
+    if(props.profileId === props.userId) {
+        console.log(props.profileId);
+        displayPills = (
             <NavPills
                 alignCenter
                 color="primary"
@@ -85,6 +86,35 @@ export default function FriendProfile(props) {
                 }
                 ]}
             />
+        )
+    }
+    else {
+        displayPills = (
+            <NavPills
+                alignCenter
+                color="primary"
+                tabs={[
+                {
+                    tabButton: "Events",
+                    tabIcon: EventIcon,
+                    tabContent: (
+                        <EventCardList 
+                            client={props.client}
+                            userId={props.userId}
+                            profileId={props.profileId}
+                            listType='profile'
+                        /> 
+                    )
+                }]
+                }
+            />
+        )
+    }
+
+    return (
+        <div className={classes.profileTabs} style={{marginTop: 10}}>
+            {/* {userFriendsEvents()} */}
+            {displayPills}
         </div>
   );
 }

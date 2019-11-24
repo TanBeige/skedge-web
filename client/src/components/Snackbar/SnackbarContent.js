@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Snack from "@material-ui/core/SnackbarContent";
+import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
@@ -21,6 +22,7 @@ export default function SnackbarContent(props) {
   const closeAlert = () => {
     setAlert(null);
   };
+  console.log("snackbar opened")
   if (close !== undefined) {
     action = [
       <IconButton
@@ -47,19 +49,29 @@ export default function SnackbarContent(props) {
       break;
   }
   const [alert, setAlert] = React.useState(
-    <Snack
-      message={
-        <div>
-          {snackIcon}
-          {message}
-          {close !== undefined ? action : null}
-        </div>
-      }
-      classes={{
-        root: classes.root + " " + classes[color],
-        message: classes.message + " " + classes.container
-      }}
-    />
+    // <Snackbar
+    //   anchorOrigin={{
+    //     vertical: 'bottom',
+    //     horizontal: 'left',
+    //   }}
+    //   autoHideDuration={6000}
+    //   onClose={closeAlert}
+    // >
+      <Snack
+        message={
+          <div>
+            {snackIcon}
+            {message}
+            {close !== undefined ? action : null}
+          </div>
+        }
+        style={{position: 'fixed', bottom: 50, minWidth: '30%', zIndex: 100}}
+        classes={{
+          root: classes.root + " " + classes[color],
+          message: classes.message + " " + classes.container
+        }}
+      />
+    // </Snackbar>
   );
   return alert;
 }

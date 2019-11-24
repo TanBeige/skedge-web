@@ -69,6 +69,12 @@ const USER_FRAGMENT = gql`
     biography
     picture
     verified
+    
+    followers{
+      user_id
+      is_following_id
+      status
+    }
   }
 `;
 
@@ -715,7 +721,7 @@ mutation insert_follower($objects: [follower_insert_input!]!) {
 `;
 const MUTATION_FOLLOW_DELETE = gql`
   mutation delete_follower($userId: String!, $followingId: String!) {
-    delete_follower(where: {_and: [{user_id: {_eq: $userId}}, {following_id: {_eq: $followingId}}]}) {
+    delete_follower(where: {_and: [{user_id: {_eq: $userId}}, {is_following_id: {_eq: $followingId}}]}) {
       affected_rows
     }
   }

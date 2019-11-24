@@ -273,7 +273,7 @@ export default function EventCardListHome(props) {
 
     return (
       <Fragment>
-        <h2 style={{textAlign: 'center'}}>{moment(values.filter.date).format("MMMM D, YYYY")}</h2>
+        <h3 style={{textAlign: 'center'}}>{moment(values.filter.date).format("MMMM D, YYYY")}</h3>
         <InfiniteScroll
             dataLength={values.eventsLength}
             next={loadMoreClicked}
