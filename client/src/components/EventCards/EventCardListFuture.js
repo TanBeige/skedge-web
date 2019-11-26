@@ -179,14 +179,16 @@ export default function EventCardListHome(props) {
             }
           }
           else {
-            setValues({
-              ...values,
-              events: data.data.events,
-              eventsLength: data.data.events.length,
-              loadedAllEvents: true
-            })
-            // TURN THIS ON TO MAKE IT WORK, BUT FIX BUG WHERE IT QUEUES INFINITELY
-            //setIsSearch(false);
+            if(isMounted) {
+              setValues({
+                ...values,
+                events: data.data.events,
+                eventsLength: data.data.events.length,
+                loadedAllEvents: true
+              })
+              // TURN THIS ON TO MAKE IT WORK, BUT FIX BUG WHERE IT QUEUES INFINITELY
+              //setIsSearch(false);
+            }
           }
         });
 

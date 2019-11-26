@@ -156,6 +156,9 @@ export default function EventCardListProfile(props) {
       isMounted = true;
       const { client } = props;
 
+      //Sets Search to True
+      setIsSearch(true);
+
       client
         .query({
           query: QUERY_PROFILE_EVENTS,
@@ -179,6 +182,8 @@ export default function EventCardListProfile(props) {
                 eventsLength: data.data.events.length,
                 loadedAllEvents: data.data.events.length < 10
               });
+              setIsSearch(false);
+
             }
           }
           else {
@@ -194,7 +199,9 @@ export default function EventCardListProfile(props) {
             }
           }
         }).catch(error => {
-          console.log(error)
+          console.log(error);
+          setIsSearch(false);
+
         });
 
       return () => {
@@ -237,7 +244,7 @@ export default function EventCardListProfile(props) {
     if(isSearch) {
       return (
         <div style={{textAlign: 'center', margin: 20}} >
-          <CircularProgress color="primary" />
+          <CircularProgress color="primary"/>
         </div>
       )
     }

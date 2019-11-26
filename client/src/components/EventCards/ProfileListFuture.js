@@ -66,7 +66,6 @@ export default function EventCardListHome(props) {
   const loadMoreClicked = () => {
     const { client } = props;
     const { filter } = values;
-    console.log("Loading more")
 
     const totalEventsPrevious = values.eventsLength;
 
@@ -123,9 +122,6 @@ export default function EventCardListHome(props) {
 
     useEffect(() => {
       //Restart the get events
-      console.log("asshole")
-
-
       setValues({
         type: props.type,
         filter: {
@@ -189,6 +185,9 @@ export default function EventCardListHome(props) {
             // TURN THIS ON TO MAKE IT WORK, BUT FIX BUG WHERE IT QUEUES INFINITELY
             setIsSearch(false);
           }
+        }).catch(error => {
+          console.log(error);
+          setIsSearch(false);
         });
 
       return () => {

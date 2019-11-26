@@ -13,6 +13,8 @@ import Palette from "@material-ui/icons/Palette";   //Tab icons
 import People from "@material-ui/icons/People";
 import EventIcon from '@material-ui/icons/Event';
 import EventBusyIcon from '@material-ui/icons/EventBusy';
+import TurnedInIcon from '@material-ui/icons/TurnedIn';
+
 // core components
 import NavPills from "components/NavPills/NavPills.js";
 import EventCardList from "components/EventCards/EventCardList"
@@ -75,7 +77,7 @@ export default function FriendProfile(props) {
                 },
                 {
                     tabButton: "Saved Events",
-                    tabIcon: EventBusyIcon,
+                    tabIcon: TurnedInIcon,
                     tabContent: (
                         <EventCardList 
                             client={props.client}

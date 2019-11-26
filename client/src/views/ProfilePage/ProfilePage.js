@@ -3,7 +3,7 @@ import React, {useState, useEffect} from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 // core components
 import Header from "components/Header/Header.js";
 import Footer from "components/Footer/Footer.js";
@@ -24,6 +24,7 @@ import ErrorPage from "views/ErrorPage/ErrorPage.js"
 import gql from 'graphql-tag'
 
 import profilePageStyle from "assets/jss/material-kit-pro-react/views/profilePageStyle.js";
+import { ThemeProvider } from '@material-ui/styles';
 
 import { useAuth0 } from 'Authorization/react-auth0-wrapper'
 
@@ -41,6 +42,14 @@ import ReactGA from 'react-ga';
 
 
 const useStyles = makeStyles(profilePageStyle);
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#02C39A"
+    }
+  },
+});
 
 export default function ProfilePage(props, { ...rest }) {
 
@@ -64,7 +73,6 @@ export default function ProfilePage(props, { ...rest }) {
   const [snackbar, setSnackbar] = useState("");
 
   const setStatus = (msg) => setSnackbar({ msg });
-
 
   //// Set State Values
   const [values, setValues] = useState({
@@ -306,39 +314,40 @@ export default function ProfilePage(props, { ...rest }) {
     // Gradient colors: 'linear-gradient(#02C39A 200px, white 400px)'
     return (
     <div style={{minHeight: '100vh', backgroundImage: 'linear-gradient(#52D3B6 300px, white 400px)' , paddingTop: '20px'}}>
-      <Header
-        color="primary"
-        brand="Skedge"
-        links={<HeaderLinks dropdownHoverColor="info" userId={values.currentUserId}/>}
-        fixed
-        
-        {...rest}
-      />
-      { isLoading ? (<LoadingPage />) : 
-        (
-          <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '85vh', marginBottom: '4em', marginTop: '4em'}}>
-            <div className={classes.container}>
-              {snackbar ? 
-                <SnackbarSkedge 
-                  message={snackbar.msg}
-                  close 
-                  color='info'
-                /> 
-                : 
-                null
-              }
-              <ProfileTopSection 
-                values={values} 
-                followInvite={handleFollowInvite} 
-                followRemove={handleFollowRemove}
-                handleProfileEdit={handleProfileEdit}
-              />    
-              {profileContent}
+      <ThemeProvider theme={theme}>
+        <Header
+          color="primary"
+          brand="Skedge"
+          links={<HeaderLinks dropdownHoverColor="info" userId={values.currentUserId}/>}
+          fixed
+          
+          {...rest}
+        />
+        { isLoading ? (<LoadingPage />) : 
+          (
+            <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '85vh', marginBottom: '4em', marginTop: '4em'}}>
+              <div className={classes.container}>
+                {snackbar ? 
+                  <SnackbarSkedge 
+                    message={snackbar.msg}
+                    close 
+                    color='info'
+                  /> 
+                  : 
+                  null
+                }
+                <ProfileTopSection 
+                  values={values} 
+                  followInvite={handleFollowInvite} 
+                  followRemove={handleFollowRemove}
+                  handleProfileEdit={handleProfileEdit}
+                />    
+                {profileContent}
+              </div>
             </div>
-          </div>
-        )
-      }
-      
+          )
+        }
+      </ThemeProvider>
     </div>
   );
 }

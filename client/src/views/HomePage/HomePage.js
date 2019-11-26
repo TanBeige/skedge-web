@@ -180,7 +180,7 @@ export default function HomePage(props) {
     <div>
       <Header
         brand="Skedge"
-        links={<HeaderLinks dropdownHoverColor="info"/>}
+        //links={<HeaderLinks dropdownHoverColor="info"/>}
         fixed
         color="primary"//"transparent"
         changeColorOnScroll={{

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 // @material-ui/icons
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import StarIcon from '@material-ui/icons/Star';
-import FavoriteIcon from '@material-ui/icons/Favorite'
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import RenewIcon from '@material-ui/icons/Autorenew'
 import IconButton from '@material-ui/core/IconButton';
 import PlaceIcon from '@material-ui/icons/Place';

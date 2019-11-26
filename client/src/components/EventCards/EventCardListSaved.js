@@ -43,7 +43,8 @@ Date.prototype.formatDate = function() {
 // Functional Component
 export default function EventCardListSaved(props) {
   // Checks if we are still grabbing events
-  const [isSearch, setIsSearch] = useState(false)
+  const [isSearch, setIsSearch] = useState(false);
+  let isMounted = true;
 
   const { user } = useAuth0()
 
@@ -64,18 +65,19 @@ export default function EventCardListSaved(props) {
 
     if(!values.showNew) {
 
-      setIsSearch(true)
-        // query for public events
-        client
-          .query({
-            query: FETCH_SAVED_EVENTS,
-            variables: {
-                userId: user.sub,
-                eventLimit: values.limit,
-                eventOffset: 0,
-            }
-          })
-          .then(data => {
+      setIsSearch(true);
+      // query for public events
+      client
+        .query({
+          query: FETCH_SAVED_EVENTS,
+          variables: {
+              userId: user.sub,
+              eventLimit: values.limit,
+              eventOffset: 0,
+          }
+        })
+        .then(data => {
+          if(isMounted){
             let tempEvents = [];
             for(let i = 0; i < data.data.user_saved_events.length; ++i) {
                 tempEvents.push(data.data.user_saved_events[i].event)
@@ -85,13 +87,14 @@ export default function EventCardListSaved(props) {
               events: tempEvents, 
               eventsLength: tempEvents.length,
               showNew: false,
-              loadedAllEvents: false,
+              loadedAllEvents: data.data.user_saved_events.length < values.limit
             });
             // When done grabbing events, set seraching to false
             setIsSearch(false)
-          });
-      }
+          }
+      });
     }
+  }
 
     // Update Query When new Events are added
     const loadMoreClicked = () => {
@@ -99,6 +102,9 @@ export default function EventCardListSaved(props) {
       const { filter } = props;
 
       const totalEventsPrevious = values.eventsLength;
+
+      console.log("Loading More");
+      console.log("Loaded All: ", values.loadedAllEvents)
 
       client
         .query({
@@ -109,48 +115,58 @@ export default function EventCardListSaved(props) {
                 eventOffset: values.eventsLength,
             }
           }).then(data => {
-          if (data.data.user_saved_events) {
-            let tempEvents = [];
-            for(let i = 0; i < data.data.user_saved_events.length; ++i) {
-              tempEvents.push(data.data.user_saved_events[i].event)
+            if(isMounted){
+              if (data.data.user_saved_events) {
+                let tempEvents = [];
+                for(let i = 0; i < data.data.user_saved_events.length; ++i) {
+                  tempEvents.push(data.data.user_saved_events[i].event)
+                }
+                const mergedEvents = values.events.concat(tempEvents);
+
+
+                // update state with new events
+                setValues({ 
+                  ...values,
+                  events: mergedEvents,
+                  showNew: true,
+                  eventsLength: values.events.length + data.data.user_saved_events.length,
+                  loadedAllEvents: data.data.user_saved_events.length < values.limit
+                });
+              }
+              else {
+                setValues({
+                  ...values,
+                  loadedAllEvents: true
+                })
+              }
             }
-            const mergedEvents = values.events.concat(tempEvents);
-
-
-            // update state with new events
-            setValues({ 
-              ...values,
-              events: mergedEvents,
-              showNew: true,
-              eventsLength: values.events.length + data.data.user_saved_events.length
-             });
-          }
-          else {
-            setValues({ 
-              ...values,
-              events: values.events,
-              eventsLength: values.events.length + data.data.user_saved_events.length,
-              loadedAllEvents: true
-             });
-          }
+          }).catch(error => {
+            console.log(error);
+            if(isMounted) {
+              setValues({
+                ...values,
+                loadedAllEvents: true
+              })
+            }
         });
-
-      if(totalEventsPrevious === values.eventsLength) {
-        setValues({
-          ...values,
-          loadedAllEvents: true
-        })
-      }
     }
 
     // Replaces ComponentDidMount() in a Functional Component
 
     useEffect(() => {
+
+      isMounted = true;
+
       setValues({
         ...values,
         showNew: false,
+        loadedAllEvents: false,
       })
       grabEvents();
+
+      return () => {
+        isMounted = false;
+      }
     }, [])
 
     /*
@@ -183,6 +199,9 @@ export default function EventCardListSaved(props) {
     }
     */
 
+   console.log("Loaded all Events?: ", values.loadedAllEvents)
+
+
     // Start Filtering Responses here. Since it's so fucking hard in GraphQL
     let finalEvents = values.events
     
@@ -210,7 +229,7 @@ export default function EventCardListSaved(props) {
           dataLength={values.eventsLength}
           next={loadMoreClicked}
           hasMore={!values.loadedAllEvents}
-          //loader={<h4>Loading...</h4>}
+          loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
           scrollThreshold={0.95}
           style={{overflow: 'none'}}
       >

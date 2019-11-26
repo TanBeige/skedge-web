@@ -157,6 +157,9 @@ export default function EventCardListHome(props) {
         cat = ""
       }
 
+      setIsSearch(true)
+
+
       client
         .query({
           query: QUERY_FILTERED_EVENT,
@@ -186,6 +189,8 @@ export default function EventCardListHome(props) {
                 eventsLength: data.data.events.length,
                 loadedAllEvents: data.data.events.length < props.filter.limit
               });
+              setIsSearch(false);
+
             }
           }
           else {
@@ -197,11 +202,12 @@ export default function EventCardListHome(props) {
                 eventsLength: data.data.events.length,
                 loadedAllEvents: true
               })
-              setIsSearch(false)
+              setIsSearch(false);
             }
           }
         }).catch(error => {
           console.log(error)
+          setIsSearch(false);
         });
 
       return () => {
