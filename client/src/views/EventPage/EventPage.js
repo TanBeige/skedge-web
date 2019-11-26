@@ -29,6 +29,8 @@ import LoadingPage from '../LoadingPage/LoadingPage.js';
 import EditEventButton from './Sections/EventPageComponents/EditEventButton.js';
 import DeleteEventButton from './Sections/EventPageComponents/DeleteEventButton.js';
 
+import MapsApi from 'components/GoogleMaps/MapsApi.js';
+
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 import {
   FETCH_EVENT_INFO,

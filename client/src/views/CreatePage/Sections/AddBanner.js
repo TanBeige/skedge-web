@@ -2,9 +2,13 @@ import React, { useEffect } from 'react';
 import Slide from '@material-ui/core/Slide';
 import ImageUpload from 'components/CustomUpload/ImageUpload.js';
 import gql from 'graphql-tag';
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 
-import Button from 'components/CustomButtons/Button.js'
+//import Button from 'components/CustomButtons/Button.js'
+import Button from '@material-ui/core/Button';
+
 
 
 // Cloudinary setup
@@ -20,9 +24,20 @@ const buttonStyle = {
     margin: 'auto',
     minWidth: '10em',
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 20,
+    color: 'white',
+    fontSize: '12px',
+    padding: '12px 30px'
     //fontWeight: '400'
 }
+
+const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: "#02C39A"
+      },
+    },
+  });
 
 
 const AddBanner = (props) => {
@@ -133,21 +148,23 @@ const AddBanner = (props) => {
 
     return (
         <div>
-            <Slide direction={dir} in >
-                <div className='addBanner'>
-                    <div >
-                        <ImageUpload setFile={bannerChoose} bannerImg={values.bannerImg}/>
+            <ThemeProvider theme={theme}>
+                <Slide direction={dir} in >
+                    <div className='addBanner'>
+                        <div >
+                            <ImageUpload setFile={bannerChoose} bannerImg={values.bannerImg}/>
+                        </div>
+                        <div >
+                            <h1 className='OrText'>-Or-</h1>
+                        </div>
+                        <Button variant='contained' color='primary' style={buttonStyle} onClick={bannerSelect}>
+                            Choose A Banner
+                        </Button>
+                        {selectBanners()}
+                        {content}
                     </div>
-                    <div >
-                        <h1 className='OrText'>-Or-</h1>
-                    </div>
-                    <Button variant='contained' color='primary' style={buttonStyle} onClick={bannerSelect}>
-                        Choose A Banner
-                    </Button>
-                    {selectBanners()}
-                    {content}
-                </div>
-            </Slide>
+                </Slide>
+            </ThemeProvider>
         </div>
     )
 }

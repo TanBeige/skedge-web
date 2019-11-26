@@ -15,7 +15,10 @@ import tooltips from "assets/jss/material-kit-pro-react/tooltipsStyle.js";
 
 const styles = {
   main,
-  mainRaised,
+  mainRaised: {
+    ...mainRaised,
+    margin: "80px 30px 60px 30px",
+  },
   mrAuto,
   mlAuto,
   cardTitle,

@@ -21,6 +21,8 @@ import EventCreateInfo from 'views/CreatePage/Sections/EventCreateInfo.js';
 import TagSelect from 'views/CreatePage/Sections/TagSelect.js';
 import AddCohost from 'views/CreatePage/Sections/AddCohost/AddCohost.js';
 import AddBanner from 'views/CreatePage/Sections/AddBanner.js';
+import Header from "components/Header/Header.js";
+
 
 
 import pricingStyle from "assets/jss/material-kit-pro-react/views/pricingStyle.js";
@@ -516,7 +518,16 @@ const handleLocalOrPrivate = (type) => {
   //  This is probably becsue I used a material-ui theme in EventCreateInfo.js
   return (
     <div style={{backgroundColor: "#02C39A",height: '100vh',  overflowY: 'scroll'}}>
-      <div style={{height: 60}}></div>
+      <Header
+        brand="Skedge"
+        fixed
+        color="primary"//"transparent"
+        changeColorOnScroll={{
+          height: 100,
+          color: "primary"
+        }}
+      />
+      <div style={{height: 125}}></div>
       <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '70vh', marginBottom: '2em'}}>
         <div className={classes.container}>
           <IconButton style={{position: 'absolute', left: 0}} onClick={handleGoBack}>

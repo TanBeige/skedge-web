@@ -471,14 +471,15 @@ export default function EventCreateInfo(props) {
           </div>
 
           <Button
-          disabled={continueDisabled}
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          onClick={submitEventInfo}
+            disabled={continueDisabled}
+            fullWidth
+            variant="contained"
+            color="primary"
+            style={{color: 'white'}}
+            className={classes.submit}
+            onClick={submitEventInfo}
           >
-          Choose Category ->
+           Choose Category ->
           </Button>
         </form>
       </ThemeProvider>

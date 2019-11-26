@@ -14,7 +14,9 @@ import TagsInput from "react-tagsinput";
 import { ThemeProvider } from '@material-ui/styles';
 import { categoryList } from "utils/constants";
 
-import Button from 'components/CustomButtons/Button.js';
+//import Button from 'components/CustomButtons/Button.js';
+import Button from '@material-ui/core/Button';
+
 
 
 const theme = createMuiTheme({
@@ -102,6 +104,7 @@ export default function TagSelect(props) {
                 fullWidth
                 variant="contained"
                 color="primary"
+                style={{color: 'white'}}
                 className={classes.submit}
                 onClick={submitTags}
                 >
@@ -133,8 +136,8 @@ const EventTags = ({values, onRadioChange}) => {
                         }
                         else {
                             return(
-                                <Grid item xs={6}>
-                                    <FormControlLabel key={index} value={cat} control={<Radio color='primary'/>} label={cat} />
+                                <Grid item xs={6} key={index}>
+                                    <FormControlLabel key={index} value={cat} style={{color: "black"}} control={<Radio color='primary'/>} label={cat} />
                                 </Grid>
                             )
                         }

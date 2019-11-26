@@ -175,17 +175,17 @@ export const MakeMainRoutes = () => {
           <Route exact path="/about-us" render={props => provideClient(AboutUsPage, props)} />
           <PrivateRoute path="/event" render={props => provideClient(EventPage, props)} />
           <PrivateRoute path="/home" render={props => provideClient(Home, props)} />
+          <PrivateRoute path="/create" render={props => provideClient(CreatePage, props)} />
           {/*<Route exact path="/components" render={props => provideClient(ComponentsPage, props)} />*/}
           <Route exact path="/contact-us" render={props => provideClient(ContactUsPage, props)} />
           <Route exact path="/subscriptions" render={props => provideClient(EcommercePage, props)} />
           <Route exact path="/landing-page" render={props => provideClient(LandingPage, props)} />
           <Route exact path="/login-page" render={props => provideClient(LoginPage, props)} />
-          <PrivateRoute path="/create" render={props => provideClient(CreatePage, props)} />
           <Route exact path="/user" render={props => provideClient(ProfilePage, props)} />
           <Route exact path="/product-page" render={props => provideClient(ProductPage, props)} />
           <Route exact path="/sections" render={props => provideClient(SectionsPage, props)} />
-          <Route exact path="/shopping-cart-page" render={props => provideClient(TodoPage, props)} />
-          <Route exact path="/signup-page" render={props => provideClient(SignupPage, props)} />
+          <Route exact path="/notifications" render={props => provideClient(ShoppingCartPage, props)} />
+          <Route exact path="/signup-page" render={props => provideClient(TodoPage, props)} />
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
 
           <PrivateRoute path="/events/:id" render={props => provideClient(EventPage, props)} />
