@@ -42,155 +42,159 @@ export default function ProfileTopSection(props) {
 
   const { logout } = useAuth0();
 
-    const useStyles = makeStyles(profilePageStyle);
-    const classes = useStyles();
-    const imageClasses = classNames(
-      classes.imgRaised,
-      classes.imgRoundedCircle,
-      classes.imgFluid
-    );
+  const useStyles = makeStyles(profilePageStyle);
+  const classes = useStyles();
+  const imageClasses = classNames(
+    classes.imgRaised,
+    classes.imgRoundedCircle,
+    classes.imgFluid
+  );
 
 
-    // Editing Profile Page
+  // Editing Profile Page
 
-    const [vals, setValues] = useState({
-      name: "",
-      full_name: "",
-      biography: "",
-      picture: props.values.picture,
-      followingStatus: props.values.followingStatus,
+  const [vals, setValues] = useState({
+    name: "",
+    full_name: "",
+    biography: "",
+    picture: props.values.picture,
+    followingStatus: props.values.followingStatus,
 
-      editProfile: false
+    editProfile: false
+  })
+
+  const handleProfileEdit = () => {
+    props.handleProfileEdit(vals)
+
+    setValues({
+      ...vals,
+      editProfile: false,
+
     })
+  }
 
-    const handleProfileEdit = () => {
-      props.handleProfileEdit(vals)
+  const changeName = (event) => {
+    setValues({
+      ...vals,
+      full_name: event.target.value
+    })
+  }
 
+  const changeBio = (event) => {
+    setValues({
+      ...vals,
+      biography: event.target.value
+    })
+  }
+
+  useEffect(() => {
+    setValues({
+      ...vals,
+      name: props.values.name,
+      full_name: props.values.full_name,
+      biography: props.values.biography ? props.values.biography : "" ,
+      picture: props.values.picture,
+    })
+  }, [props.values])
+
+  const editProfilePage = () => {
+    setValues({
+      ...vals,
+      editProfile: !vals.editProfile,
+      full_name: props.values.full_name,
+      biography: props.values.biography ? props.values.biography : "" ,
+      picture: props.values.picture,
+    })
+  }
+
+  //Follow/Following Button
+  const followButton = () => {
+    if (props.values.currentUserProfile) {
+      return null;
+    }
+    else if(props.values.followingStatus === 1) {
+      //Unfollow
+      return (
+        <Button onClick={handleFollowing} size='sm' style={{marginTop: 10}}>
+          Following
+        </Button>
+      )
+    }
+    if(props.values.followingStatus === 0) {
+      //Remove Follow Request
+      return (
+        <Button onClick={handleFollowing} size='sm' style={{marginTop: 10}}>
+          Requested...
+        </Button>
+      )
+    }
+    else {
+      //No Request Sent, Send Follow Request
+      return (
+        <Button onClick={handleFollowing} size='sm' color='info' style={{marginTop: 10}}>
+          Follow
+        </Button>
+      )
+    }
+  }
+  const handleFollowing = () => {
+    //If not Following or not requesting to follow, Request Follow
+    if(vals.followingStatus === -1) {
+      props.followInvite();
       setValues({
         ...vals,
-        editProfile: false,
-
-      })
+        followingStatus: 0
+      });
     }
-
-    const changeName = (event) => {
+    //If Already Requested to Follow, Remove Follow Request
+    else if(vals.followingStatus === 0) {
+      props.followRemove();
       setValues({
         ...vals,
-        full_name: event.target.value
+        followingStatus: -1
       })
     }
-
-    const changeBio = (event) => {
+    // If Following Already, Remove Follow
+    else if(vals.followingStatus === 1) {
+      props.followRemove();
       setValues({
         ...vals,
-        biography: event.target.value
+        followingStatus: -1
       })
     }
+  }
 
-    useEffect(() => {
-      setValues({
-        ...vals,
-        name: props.values.name,
-        full_name: props.values.full_name,
-        biography: props.values.biography ? props.values.biography : "" ,
-        picture: props.values.picture,
-      })
-    }, [props.values])
+  //For editing Profile
+  const displayName = vals.editProfile ? 
+  (
+    <CustomInput 
+      id="regular"
+      labelText="Name"
+      inputProps={{
+        value:  vals.full_name,
+      }}
+      formControlProps={{
+        onChange: changeName
+      }}
+    />
+  ) : vals.full_name
+  const displayBio = vals.editProfile ?
+  (
+    <CustomInput 
+      id="regular"
+      labelText="Bio"
+      inputProps={{
+        value:  vals.biography
+      }}
+      formControlProps={{
+        fullWidth: true,
+        onChange: changeBio
+      }}
+    />
+  ) : <p>{vals.biography}</p>
 
-    const editProfilePage = () => {
-      setValues({
-        ...vals,
-        editProfile: !vals.editProfile,
-        full_name: props.values.full_name,
-        biography: props.values.biography ? props.values.biography : "" ,
-        picture: props.values.picture,
-      })
-    }
+  const updateProfileButton = vals.editProfile ? (<Button color="primary" onClick={handleProfileEdit}>Save</Button>) : "";
 
-    //Follow/Following Button
-    const followButton = () => {
-      if (props.values.currentUserProfile) {
-        return null;
-      }
-      else if(props.values.followingStatus === 1) {
-        //Unfollow
-        return (
-          <Button onClick={handleFollowing} size='sm' style={{marginTop: 10}}>
-            Following
-          </Button>
-        )
-      }
-      if(props.values.followingStatus === 0) {
-        //Remove Follow Request
-        return (
-          <Button onClick={handleFollowing} size='sm' style={{marginTop: 10}}>
-            Requested...
-          </Button>
-        )
-      }
-      else {
-        //No Request Sent, Send Follow Request
-        return (
-          <Button onClick={handleFollowing} size='sm' color='info' style={{marginTop: 10}}>
-            Follow
-          </Button>
-        )
-      }
-    }
-    const handleFollowing = () => {
-      //If not Following or not requesting to follow, Request Follow
-      if(vals.followingStatus === -1) {
-        props.followInvite();
-        setValues({
-          ...vals,
-          followingStatus: 0
-        });
-      }
-      //If Already Requested to Follow, Remove Follow Request
-      else if(vals.followingStatus === 0) {
-        props.followRemove();
-        setValues({
-          ...vals,
-          followingStatus: -1
-        })
-      }
-      // If Following Already, Remove Follow
-      else if(vals.followingStatus === 1) {
-        props.followRemove();
-        setValues({
-          ...vals,
-          followingStatus: -1
-        })
-      }
-    }
-
-    const displayName = vals.editProfile ? 
-    (
-      <CustomInput 
-        id="regular"
-        labelText="Name"
-        inputProps={{
-          value:  vals.full_name,
-        }}
-        formControlProps={{
-          onChange: changeName
-        }}
-      />
-    ) : vals.full_name
-    const displayBio = vals.editProfile ?
-    (
-      <CustomInput 
-        id="regular"
-        labelText="Bio"
-        inputProps={{
-          value:  vals.biography
-        }}
-        formControlProps={{
-          fullWidth: true,
-          onChange: changeBio
-        }}
-      />
-    ) : <p>{vals.biography}</p>
 
   
 //------------------ START RENDERING PAGE ---------------------
@@ -204,6 +208,16 @@ export default function ProfileTopSection(props) {
               <div>
                 <img src={vals.picture} alt="..." className={imageClasses} />
                 {/* <LoadImage src={vals.picture} alt={vals.name} className={imageClasses} /> */}
+                <Button 
+                  style={{position: 'absolute', top: 110, margin: 20, zIndex: 10}} 
+                  justIcon 
+                  round 
+                  size='sm'
+                  color='info'
+                  onClick={() => setValues({...vals, editProfile: !vals.editProfile})}
+                >
+                  <EditIcon />
+                </Button>
               </div>
               <div className={classes.name}>
                 <h3 className={classes.title} style={{margin: 0}}>
@@ -220,9 +234,8 @@ export default function ProfileTopSection(props) {
           </GridItem>
         </GridContainer>
         <div className={classNames(classes.description, classes.textCenter)} style={{marginTop: 5}}>
-          <p>
-            {vals.biography}
-          </p>
+          {displayBio}
+          {updateProfileButton}
           {followButton()}
         </div>
       </div>
