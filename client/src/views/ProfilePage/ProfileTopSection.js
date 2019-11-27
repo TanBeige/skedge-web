@@ -193,9 +193,20 @@ export default function ProfileTopSection(props) {
     />
   ) : <p>{vals.biography}</p>
 
-  const updateProfileButton = vals.editProfile ? (<Button color="primary" onClick={handleProfileEdit}>Save</Button>) : "";
+  const saveUpdateButton = vals.editProfile ? (<Button color="primary" onClick={handleProfileEdit}>Save</Button>) : "";
 
-
+  const updateProfileButton = props.values.currentUserProfile ? (
+    <Button 
+      style={{position: 'absolute', top: 110, margin: 20, zIndex: 10}} 
+      justIcon 
+      round 
+      size='sm'
+      color='info'
+      onClick={() => setValues({...vals, editProfile: !vals.editProfile})}
+    >
+      <EditIcon />
+    </Button> 
+  ) : ""
   
 //------------------ START RENDERING PAGE ---------------------
 
@@ -208,16 +219,7 @@ export default function ProfileTopSection(props) {
               <div>
                 <img src={vals.picture} alt="..." className={imageClasses} />
                 {/* <LoadImage src={vals.picture} alt={vals.name} className={imageClasses} /> */}
-                <Button 
-                  style={{position: 'absolute', top: 110, margin: 20, zIndex: 10}} 
-                  justIcon 
-                  round 
-                  size='sm'
-                  color='info'
-                  onClick={() => setValues({...vals, editProfile: !vals.editProfile})}
-                >
-                  <EditIcon />
-                </Button>
+                {updateProfileButton}
               </div>
               <div className={classes.name}>
                 <h3 className={classes.title} style={{margin: 0}}>
@@ -235,7 +237,7 @@ export default function ProfileTopSection(props) {
         </GridContainer>
         <div className={classNames(classes.description, classes.textCenter)} style={{marginTop: 5}}>
           {displayBio}
-          {updateProfileButton}
+          {saveUpdateButton}
           {followButton()}
         </div>
       </div>

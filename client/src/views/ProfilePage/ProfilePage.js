@@ -13,7 +13,7 @@ import HeaderLinks from "components/Header/HeaderLinks.js";
 import NavPills from "components/NavPills/NavPills.js";
 import SnackbarSkedge from "components/Snackbar/SnackbarContent";
 import Snackbar from "@material-ui/core/Snackbar";
-
+import LockIcon from '@material-ui/icons/Lock';
 
 import LoadingPage from "views/LoadingPage/LoadingPage.js"
 import ProfileTopSection from 'views/ProfilePage/ProfileTopSection.js';
@@ -307,7 +307,8 @@ export default function ProfilePage(props, { ...rest }) {
     }
     else {
       profileContent = (
-        <h3 style={{margin: '50px 20px', textAlign: 'center'}}>Must be following to view.</h3>
+        //<h3 style={{margin: '50px 20px', textAlign: 'center'}}>Must be following to view.</h3>
+        <LockIcon style={{margin: '50px 0px', textAlign: 'center', width: '100%', height: 75}} />
       )
     }
     
@@ -325,7 +326,7 @@ export default function ProfilePage(props, { ...rest }) {
         />
         { isLoading ? (<LoadingPage />) : 
           (
-            <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '85vh', marginBottom: '4em', marginTop: '4em'}}>
+            <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '75vh', marginBottom: '4em', marginTop: '4em'}}>
               <div className={classes.container}>
                 {snackbar ? 
                   <SnackbarSkedge 
