@@ -19,7 +19,7 @@ import styles from "assets/jss/material-kit-pro-react/components/navPillsStyle.j
 
 const useStyles = makeStyles(styles);
 
-export default function NavPillsSearch(props) {
+export default function NavPillsProfile(props) {
   const [active, setActive] = React.useState(props.active);
   console.log("Tab: ", active)
   const handleChange = (event, active) => {
@@ -104,12 +104,12 @@ export default function NavPillsSearch(props) {
   );
 }
 
-NavPillsSearch.defaultProps = {
+NavPillsProfile.defaultProps = {
   active: 0,
   color: "primary"
 };
 
-NavPillsSearch.propTypes = {
+NavPillsProfile.propTypes = {
   // index of the default active pill
   active: PropTypes.number,
   tabs: PropTypes.arrayOf(

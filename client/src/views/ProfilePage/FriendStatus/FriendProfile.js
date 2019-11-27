@@ -16,7 +16,7 @@ import EventBusyIcon from '@material-ui/icons/EventBusy';
 import TurnedInIcon from '@material-ui/icons/TurnedIn';
 
 // core components
-import NavPills from "components/NavPills/NavPills.js";
+import NavPillsProfile from "components/NavPills/NavPillsProfile.js";
 import EventCardList from "components/EventCards/EventCardList"
 import ProfileFriendList from './ProfileFriendList.js'
 
@@ -59,9 +59,10 @@ export default function FriendProfile(props) {
     if(props.profileId === props.userId) {
         console.log(props.profileId);
         displayPills = (
-            <NavPills
+            <NavPillsProfile
                 alignCenter
                 color="primary"
+                includeSave
                 tabs={[
                 {
                     tabButton: "My Events",
@@ -92,7 +93,7 @@ export default function FriendProfile(props) {
     }
     else {
         displayPills = (
-            <NavPills
+            <NavPillsProfile
                 alignCenter
                 color="primary"
                 tabs={[
