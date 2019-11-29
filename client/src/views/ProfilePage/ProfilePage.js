@@ -11,7 +11,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import NavPills from "components/NavPills/NavPills.js";
-import SnackbarSkedge from "components/Snackbar/SnackbarContent";
+import SnackbarContent from "components/Snackbar/SnackbarContent";
 import Snackbar from "@material-ui/core/Snackbar";
 import LockIcon from '@material-ui/icons/Lock';
 
@@ -39,6 +39,7 @@ import { getArgumentValues } from "graphql/execution/values";
 
 //Google analytics import
 import ReactGA from 'react-ga';
+import { IconButton } from "@material-ui/core";
 
 
 const useStyles = makeStyles(profilePageStyle);
@@ -70,9 +71,25 @@ export default function ProfilePage(props, { ...rest }) {
 
   // Page is Loading variable
   const [isLoading, setIsLoading] = useState(false);
-  const [snackbar, setSnackbar] = useState("");
+  const [snackbar, setSnackbar] = useState({
+    snackbaropen: false,
+    snackbarmsg: ''
+  });
 
-  const setStatus = (msg) => setSnackbar({ msg });
+  const snackbarClose = () => {
+    setSnackbar({
+      ...snackbar,
+      snackbaropen: false
+    })
+  }
+
+
+  const setStatus = (msg) => {
+    setSnackbar({
+      snackbaropen: true,
+      snackbarmsg: msg
+    })
+  }
 
   //// Set State Values
   const [values, setValues] = useState({
@@ -328,15 +345,23 @@ export default function ProfilePage(props, { ...rest }) {
           (
             <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '75vh', marginBottom: '4em', marginTop: '4em'}}>
               <div className={classes.container}>
-                {snackbar ? 
-                  <SnackbarSkedge 
-                    message={snackbar.msg}
-                    close 
-                    color='info'
-                  /> 
-                  : 
-                  null
-                }
+                <Snackbar 
+                  anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+                  open={snackbar.snackbaropen}
+                  autoHideDuration={3000}
+                  style={{bottom: 70}}
+                  color='inherit'
+                  onClose={snackbarClose}
+                  message={<span>{snackbar.snackbarmsg}</span>}
+                  action={[
+                    <IconButton
+                      onClick={snackbarClose}
+                      color='primary'
+                    >
+                      x
+                    </IconButton>
+                  ]}
+                /> 
                 <ProfileTopSection 
                   values={values} 
                   followInvite={handleFollowInvite} 
