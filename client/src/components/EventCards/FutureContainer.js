@@ -31,7 +31,7 @@ export default function EventCardListHome(props) {
     category: props.filter.category,
     city: props.filter.city,
     state: props.filter.state,
-    limit: 10,
+    limit: props.filter.limit,
     date: props.filter.date.addDays(1),
   })
 

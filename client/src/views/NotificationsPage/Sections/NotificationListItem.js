@@ -49,7 +49,7 @@ export default function NotificationListItem(props) {
                 </ListItemAvatar>
                 <ListItemText
                     primary="Brunch this weekend?"
-                    style={{backgroundColor: notification.seen ? 'white' : 'blue'}}
+                    style={{backgroundColor: notification.seen ? 'white' : 'lightblue'}}
                     secondary={
                     <React.Fragment>
                         <Typography
