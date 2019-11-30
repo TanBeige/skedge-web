@@ -172,6 +172,30 @@ const REFETCH_USER_INFO = gql`
   }
 `
 
+const FETCH_NOTIFICATIONS = gql`
+  query fetch_notifications($userId: String!) {
+    notifications(where: {user_id: {_eq: $userId}}) {
+      user_id
+      activity_type
+      description
+      other_user_id
+      source_id
+      time_created
+      seen
+    }
+  }
+`
+const SEE_NOTIFICATION = gql`
+  mutation see_notification($id: Int) {
+    update_notifications(
+      where: {id: {_eq: $id}}
+      _set: {seen: true}
+    ) {
+      affected_rows
+    }
+  }
+`
+
 
 // Fetch Events
 
@@ -783,6 +807,8 @@ export {
   FETCH_IF_ENTITY,
   MUTATION_EDIT_USER,
   REFETCH_USER_INFO,
+  FETCH_NOTIFICATIONS,
+  SEE_NOTIFICATION,
 
   MUTATION_EVENT_SAVE,
   MUTATION_EVENT_UNDO_SAVE,

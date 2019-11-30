@@ -44,7 +44,7 @@ import LoginPage from "views/LoginPage/LoginPage.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import ProductPage from "views/ProductPage/ProductPage.js";
 import SectionsPage from "views/SectionsPage/SectionsPage.js";
-import ShoppingCartPage from "views/ShoppingCartPage/ShoppingCartPage.js";
+import NotificationsPage from "views/NotificationsPage/NotificationsPage.js";
 import SignupPage from "views/SignupPage/SignupPage.js";
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
 import LoadingPage from "views/LoadingPage/LoadingPage.js";
@@ -184,7 +184,7 @@ export const MakeMainRoutes = () => {
           <Route exact path="/user" render={props => provideClient(ProfilePage, props)} />
           <Route exact path="/product-page" render={props => provideClient(ProductPage, props)} />
           <Route exact path="/sections" render={props => provideClient(SectionsPage, props)} />
-          <Route exact path="/notifications" render={props => provideClient(ShoppingCartPage, props)} />
+          <Route exact path="/notifications" render={props => provideClient(NotificationsPage, props)} />
           <Route exact path="/signup-page" render={props => provideClient(TodoPage, props)} />
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
 
