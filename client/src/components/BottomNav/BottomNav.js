@@ -44,7 +44,6 @@ class PrimaryNav extends Component {
     //const {pathMap} = this.state;
 
     if(nextProps.location.pathname !== prevState.path) {
-      console.log("np",nextProps.location.pathname)
       return {path: nextProps.location.pathname}
     }
     else {
@@ -77,10 +76,8 @@ class PrimaryNav extends Component {
   componentDidUpdate(prevProps, prevState) {
 
     if (prevState.path !== this.state.path) {
-      console.log("run")
       const pathname = this.state.path;
       const {pathMap} = this.state;
-      console.log(pathname)
 
       const value = pathMap.indexOf(pathname);
 
