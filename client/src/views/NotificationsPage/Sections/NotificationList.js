@@ -18,7 +18,7 @@ import {
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    maxWidth: 360,
+    //maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
   },
   inline: {
@@ -30,7 +30,6 @@ export default function NotificationList(props) {
     const classes = useStyles();
 
     const { user } = useAuth0();
-    console.log("running")
 
     const [values, setValues] = useState({
         notifications: []

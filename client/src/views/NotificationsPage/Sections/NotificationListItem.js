@@ -8,6 +8,10 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import RenewIcon from '@material-ui/icons/Autorenew'
+
+
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js';
 
 import {
@@ -17,18 +21,30 @@ import {
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
+    //maxWidth: 360,
+    backgroundColor: theme.palette.background.paper
   },
   inline: {
     display: 'inline',
   },
 }));
 
+// Cloudinary setup
+var cloudinary = require('cloudinary/lib/cloudinary').v2
+
+cloudinary.config({
+  cloud_name: "skedge"
+});
+
+// Implement How long ago the notification was made
+
+
 export default function NotificationListItem(props) {
     const classes = useStyles();
     const { user } = useAuth0();
     const { notification } = props;
+
+    const unseenColor = 'lightblue'
 
     useEffect(() => {
         props.client.mutate({
@@ -38,32 +54,54 @@ export default function NotificationListItem(props) {
             }
         })
     })
-    console.log(notification);
 
     const likeNotif = () => {
+
+        // Edit Bio
+        // let eventBio = ""
+        // if(notification.description === "" || !values.description) {
+        //     eventBio = <i>There is no bio.</i>
+        // }
+        // else if(values.description.length > bioMaxLength) {
+        //     eventBio += values.description.substring(0, bioMaxLength);
+        //     eventBio += "..."
+        // }
+        // else {
+        //     eventBio = values.description;
+        // }
+        // setValues({
+        //     ...values,
+        //     description: eventBio
+        // })
+
         return (
             <Fragment key={notification.id}>
-                <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                </ListItemAvatar>
-                <ListItemText
-                    primary="Brunch this weekend?"
-                    style={{backgroundColor: notification.seen ? 'white' : 'lightblue'}}
-                    secondary={
-                    <React.Fragment>
-                        <Typography
-                        component="span"
-                        variant="body2"
-                        className={classes.inline}
-                        color="textPrimary"
-                        >
-                        {notification.activity_type}
-                        </Typography>
-                        {" — I'll be in your neighborhood doing errands this…"}
-                    </React.Fragment>
-                    }
-                />
+                <ListItem style={{paddingLeft: 10, paddingRight: 0}}>
+                    <FavoriteIcon color='secondary' style={{position: "absolute", left: 0, top: 5}} />
+                    <ListItemAvatar>
+                        <Avatar 
+                            alt={notification.other_user.name}
+                            //src={cloudinary.url(notification.source.image.image_uuid, {secure: true, width: 100, height: 100, crop: "fill" ,fetch_format: "auto", quality: "auto"})} 
+                            src={notification.other_user.picture}
+                        />
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={`${notification.other_user.name} liked your Event`}
+                        style={{backgroundColor: notification.seen ? 'white' : unseenColor}}
+                        secondary={
+                        <React.Fragment>
+                            <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textPrimary"
+                            >
+                                {notification.source.name}
+                            </Typography>
+                            {` — now at ${notification.source.event_like_aggregate.aggregate.count} likes.`}
+                        </React.Fragment>
+                        }
+                    />
                 </ListItem>
                 <Divider component="li" />
             </Fragment>
@@ -72,7 +110,36 @@ export default function NotificationListItem(props) {
 
     const repostNotif = () => {
         return (
-            <h3>{notification.activity_type}</h3>
+            <Fragment key={notification.id}>
+                <ListItem style={{paddingLeft: 10, paddingRight: 0}}>
+                    <RenewIcon color='primary' style={{position: "absolute", left: 0, top: 5}} />
+                    <ListItemAvatar>
+                        <Avatar 
+                            alt={notification.other_user.name}
+                            //src={cloudinary.url(notification.source.image.image_uuid, {secure: true, width: 100, height: 100, crop: "fill" ,fetch_format: "auto", quality: "auto"})} 
+                            src={notification.other_user.picture}
+                        />
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={`${notification.other_user.name} shared your Event`}
+                        style={{backgroundColor: notification.seen ? 'white' : unseenColor}}
+                        secondary={
+                        <React.Fragment>
+                            <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textPrimary"
+                            >
+                                {notification.source.name}
+                            </Typography>
+                            {` — now at ${notification.source.shared_event_aggregate.aggregate.count} shares.`}
+                        </React.Fragment>
+                        }
+                    />
+                </ListItem>
+                <Divider component="li" />
+            </Fragment>
         )
     }
 

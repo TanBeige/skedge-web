@@ -36,6 +36,8 @@ import shoppingCartStyle from "assets/jss/material-kit-pro-react/views/shoppingC
 
 const useStyles = makeStyles(shoppingCartStyle);
 
+import './Sections/NotificationStyle.css';
+
 export default function NotificationsPage(props) {
 
   const [active, setActive] = useState(0);

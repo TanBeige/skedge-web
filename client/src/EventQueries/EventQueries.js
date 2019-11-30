@@ -35,6 +35,7 @@ fragment EventFragment on events {
   }
   user {
     id
+    auth0_id
     name
     picture
   }
@@ -174,8 +175,29 @@ const REFETCH_USER_INFO = gql`
 
 const FETCH_NOTIFICATIONS = gql`
   query fetch_notifications($userId: String!) {
-    notifications(where: {user_id: {_eq: $userId}}) {
-      user_id
+    notifications(where: {user_id: {_eq: $userId}} order_by: {time_created: desc}) {
+      other_user{
+        name
+        id
+        picture
+      }
+      source {
+        name
+        id
+        image {
+          image_uuid
+        }
+        event_like_aggregate{
+          aggregate{
+            count
+          }
+        }
+        shared_event_aggregate{
+          aggregate{
+            count
+          }
+        }
+      }
       activity_type
       description
       other_user_id
@@ -218,7 +240,8 @@ mutation save_event($eventId: Int, $userId: String) {
   insert_user_saved_events(
     objects: {
       event_id: $eventId, 
-      user_id: $userId}, 
+      user_id: $userId
+    }, 
       on_conflict: {
         update_columns: 
         time_saved, 
@@ -657,7 +680,7 @@ const MUTATION_EVENT_VIEW = gql`
 `
 
 const MUTATION_LIKE_EVENT = gql`
-mutation like_event($eventId: Int, $userId: String) {
+mutation like_event($eventId: Int, $userId: String, $objects: [notifications_insert_input!]!) {
   insert_event_likes(
     objects: {
       event_id: $eventId, 
@@ -667,6 +690,16 @@ mutation like_event($eventId: Int, $userId: String) {
         time_liked, 
         constraint: event_likes_pkey
       }) {
+    affected_rows
+  }
+
+  insert_notifications(
+    objects: $objects 
+    on_conflict: {
+      update_columns: time_created, 
+      constraint: notifications_user_id_activity_type_source_id_other_user_id_key
+    }
+  ){
     affected_rows
   }
 }
@@ -686,7 +719,7 @@ mutation unlike_event($eventId: Int, $userId: String) {
 `
 
 const MUTATION_REPOST_EVENT = gql`
-mutation repost_event($eventId: Int, $userId: String) {
+mutation repost_event($eventId: Int, $userId: String, $objects: [notifications_insert_input!]!) {
   insert_shared_events(
     objects: {
       event_id: $eventId, 
@@ -696,6 +729,16 @@ mutation repost_event($eventId: Int, $userId: String) {
         time_shared, 
         constraint: shared_events_pkey
       }) {
+    affected_rows
+  }
+  
+  insert_notifications(
+    objects: $objects 
+    on_conflict: {
+      update_columns: time_created, 
+      constraint: notifications_user_id_activity_type_source_id_other_user_id_key
+    }
+  ){
     affected_rows
   }
 }

@@ -168,7 +168,8 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
       
       username: event.user ? event.user.name : "",
       userProfilePic: event.user ? event.user.picture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-      userId: event.user ? event.user.id : 0
+      userId: event.user ? event.user.id : 0,
+      user_auth0: event.user ? event.user.auth0_id : null
     })
 
     
@@ -203,7 +204,13 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
           }],
           variables: {
             eventId: event.id,
-            userId: userId
+            userId: userId,
+            objects: {
+              user_id: values.user_auth0,
+              activity_type: 1,
+              source_id: event.id,
+              other_user_id: userId
+            }
           }
         }).then((data) => {
           console.log('Repost!: ', data)
@@ -215,6 +222,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
         })
       }
     }
+    console.log("user id: ", userId)
 
     const handleLike = () => {
 
@@ -245,7 +253,13 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
           }],
           variables: {
             eventId: event.id,
-            userId: userId
+            userId: userId,
+            objects: {
+              user_id: values.user_auth0,
+              activity_type: 0,
+              source_id: event.id,
+              other_user_id: userId
+            }
           }
         }).then((data) => {
           console.log('Like!: ', data)
