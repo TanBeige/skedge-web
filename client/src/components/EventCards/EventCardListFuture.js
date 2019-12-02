@@ -121,8 +121,6 @@ export default function EventCardListHome(props) {
     // Replaces ComponentDidMount() in a Functional Component
 
     useEffect(() => {
-      console.log("Future Events")
-
       //Restart the get events
 
       setValues({

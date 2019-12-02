@@ -222,7 +222,6 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
         })
       }
     }
-    console.log("user id: ", userId)
 
     const handleLike = () => {
 

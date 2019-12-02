@@ -107,7 +107,6 @@ export default function SectionPills(props) {
     date: values.date,
     weekday: values.weekday
   })
-  console.log("private filter: ", privateFilter)
 
   const [expanded, setExpanded] = useState(false)
 
@@ -263,8 +262,17 @@ export default function SectionPills(props) {
                     <CustomInput
                       labelText="Search by name, date, category, etc."
                       id="search"
+                      
                       inputProps={{
-                        onChange: handleFilters("searchText")
+                        onChange: handleFilters("searchText"),
+                        onKeyPress: (ev) => {
+                          console.log(`Pressed keyCode ${ev.key}`);
+                          if (ev.key === 'Enter') {
+                            // Do code here
+                            ev.preventDefault();
+                            submitSearch();
+                          }
+                        }
                       }}
                     />
                   </FormControl>
@@ -418,6 +426,7 @@ export default function SectionPills(props) {
                   alignCenter
                   color="primary"
                   client={props.client}
+                  searchText={values.searchText}
                   tabs={[
                   {
                       tabButton: "Local",

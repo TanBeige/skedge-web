@@ -14,13 +14,32 @@ import Tabs from "@material-ui/core/Tabs";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import EventCardList from '../EventCards/EventCardList';
+import UserSearchList from 'components/UserSearch/UserSearchList.js';
 
 import styles from "assets/jss/material-kit-pro-react/components/navPillsStyle.js";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
+const tableButtonStyle = {
+  borderRadius: 20,
+  fontSize: 12,
+  padding: "2px 4px",
+  margin: "5px 2px 0px 2px"
+}
+const tableButtonSelectedStyle = {
+  //Differences : in the future? didn't think I wouldn't need this...
+
+  //Similarities
+  borderRadius: 20,
+  fontSize: 12,
+  padding: "2px 4px",
+  margin: "5px 2px 0px 2px"
+}
+
 export default function NavPillsSearch(props) {
   const [active, setActive] = React.useState(props.active);
+  const [tableValue, setTableValue] = React.useState(0);
   console.log("Tab: ", active)
   const handleChange = (event, active) => {
     setActive(active);
@@ -28,7 +47,10 @@ export default function NavPillsSearch(props) {
   const handleChangeIndex = index => {
     setActive(index);
   };
-  const { tabs, direction, color, horizontal, alignCenter } = props;
+  const handletableChange = index => {
+    setTableValue(index)
+  }
+  const { tabs, userSearch, direction, color, horizontal, alignCenter } = props;
   const classes = useStyles();
   const flexContainerClasses = classNames({
     [classes.flexContainer]: true,
@@ -71,32 +93,77 @@ export default function NavPillsSearch(props) {
       })}
     </Tabs>
   );
-  const tabContent = active === 0 ? (
-    <div className={classes.contentWrapper}>
-      <div className={classes.tabContent} >
-        {tabs[0].tabContent}
+  
+  let tabContent = "";
+  if(tableValue === 0) {
+    if (active === 0 ) {
+      tabContent = (
+        <div>
+          <div className={classes.tabContent} >
+            {tabs[0].tabContent}
+          </div>
+        </div>
+      )
+    }
+    else if (active === 1 ) {
+      tabContent = (
+        <div>
+          <div className={classes.tabContent} >
+            {tabs[1].tabContent}
+          </div>
+        </div>
+      )
+    }
+  }
+  else if(tableValue === 1) {
+    tabContent = (
+      <div>
+        <div className={classes.tabContent} >
+          {/* {userSearch} */}
+          <UserSearchList 
+            client={props.client}
+            searchText={props.searchText}
+          />
+        </div>
       </div>
-    </div>
-  ) : 
-  (
-    <div className={classes.contentWrapper}>
-      <div className={classes.tabContent} >
-        {tabs[1].tabContent}
-      </div>
+    )
+  }
+
+  // const tableType is if the user is searching events, users, etc...
+  const tableType = (
+    <div style={{textAlign: 'center', marginTop: 5}}>
+      {
+        tableTypeList.map((item, index) => {
+          return (
+            <Button 
+              key={index} 
+              size="small" 
+              variant="contained" 
+              disabled={tableValue === index ? true : false} 
+              style={ tableValue === index ? tableButtonSelectedStyle : tableButtonStyle }
+              onClick={() => handletableChange(index)}
+            >
+              {item.label}
+            </Button>
+          )
+        })
+      }
     </div>
   )
-  
-  ;
+
+
   return horizontal !== undefined ? (
     <GridContainer>
       <GridItem {...horizontal.tabsGrid}>{tabButtons}</GridItem>
+      <GridItem {...horizontal.tabsGrid}>{tableType}</GridItem>
       <GridItem {...horizontal.contentGrid}>{tabContent}</GridItem>
     </GridContainer>
   ) : (
     <div>
       <GridContainer justify="center">
         <GridItem xs={12} sm={12} md={12} className={classes.textCenter}>
-          {tabButtons}      
+          {tabButtons}
+          {tableType}  
           {tabContent}
         </GridItem>
       </GridContainer>
@@ -134,3 +201,12 @@ NavPillsSearch.propTypes = {
   }),
   alignCenter: PropTypes.bool
 };
+
+const tableTypeList = [
+  {
+    label: "events"
+  },
+  {
+    label: "users"
+  },
+]
