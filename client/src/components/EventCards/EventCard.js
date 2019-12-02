@@ -167,10 +167,14 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
       weekday: event.event_date ? event.event_date.weekday : "",
       
       username: event.user ? event.user.name : "",
-      userProfilePic: event.user ? event.user.picture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+
+      //Get Profile Picture UUID and call image with cloudinary
+      userProfilePic: event.user ? cloudinary.url(event.user.picture, {secure: true, width: 32, height: 32, crop: "fill"}) : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       userId: event.user ? event.user.id : 0,
       user_auth0: event.user ? event.user.auth0_id : null
     })
+
+    console.log("user profile event card: ", values.userProfilePic)
 
     
     // Handling event likes + reposts + saves

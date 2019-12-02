@@ -91,12 +91,11 @@ fragment FriendFragment on users {
 
 // Fetch Users
 const QUERY_USER_PROFILE = gql`
-  query fetch_user($userId: bigint!, $limit: Int) {
+  query fetch_user($userId: bigint!) {
     users(
       where: {id: { _eq: $userId }}
     ) {  
       ...UserFragment
-    
     }
   }
   ${USER_FRAGMENT}
@@ -214,6 +213,30 @@ const SEE_NOTIFICATION = gql`
       _set: {seen: true}
     ) {
       affected_rows
+    }
+  }
+`
+
+// Fetch User Search
+const USER_SEARCH = gql`
+  query user_search($search: String){
+    users(
+      where: {
+        name: {_ilike: $search}
+      }
+      order_by: {followers_aggregate: {count: desc}}
+    ){
+      id
+      name
+      full_name
+      picture
+      auth0_id
+      followers (where: {status: {_eq: 1}}){
+        user_id
+        user {
+          name
+        }
+      }
     }
   }
 `
@@ -852,6 +875,7 @@ export {
   REFETCH_USER_INFO,
   FETCH_NOTIFICATIONS,
   SEE_NOTIFICATION,
+  USER_SEARCH,
 
   MUTATION_EVENT_SAVE,
   MUTATION_EVENT_UNDO_SAVE,

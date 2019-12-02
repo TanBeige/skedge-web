@@ -4,6 +4,7 @@ import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import Camera from "@material-ui/icons/Camera";
 import Palette from "@material-ui/icons/Palette";
 import People from "@material-ui/icons/People";
@@ -32,15 +33,25 @@ import Popover from "@material-ui/core/Popover";
 import { useAuth0 } from 'Authorization/react-auth0-wrapper'
 import CustomInput from 'components/CustomInput/CustomInput.js';
 import LoadImage from 'material-ui-image'
+import ImageUpload from 'components/CustomUpload/ImageUpload.js';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 
 import profilePageStyle from "assets/jss/material-kit-pro-react/views/profilePageStyle.js";
 
+// Cloudinary setup
+var cloudinary = require('cloudinary/lib/cloudinary').v2
+
+cloudinary.config({
+  cloud_name: "skedge"
+});
 
 export default function ProfileTopSection(props) {
 
   const { logout } = useAuth0();
+  let fileInput = React.createRef();
+
 
   const useStyles = makeStyles(profilePageStyle);
   const classes = useStyles();
@@ -57,11 +68,19 @@ export default function ProfileTopSection(props) {
     name: "",
     full_name: "",
     biography: "",
-    picture: props.values.picture,
+    picture: "",
     followingStatus: props.values.followingStatus,
+
+    picFile: null,
 
     editProfile: false
   })
+
+  const [imagePreviewUrl, setImagePreviewUrl] = React.useState(
+    vals.picture
+  );
+  const [file, setFile] = React.useState(null);
+
 
   const handleProfileEdit = () => {
     props.handleProfileEdit(vals)
@@ -69,7 +88,6 @@ export default function ProfileTopSection(props) {
     setValues({
       ...vals,
       editProfile: false,
-
     })
   }
 
@@ -88,14 +106,16 @@ export default function ProfileTopSection(props) {
   }
 
   useEffect(() => {
+    const profilePic = cloudinary.url(props.values.picture, {secure: true, width: 200, height: 200, crop: "fill"})
     setValues({
       ...vals,
       name: props.values.name,
       full_name: props.values.full_name,
       biography: props.values.biography ? props.values.biography : "" ,
-      picture: props.values.picture,
-    })
-  }, [props.values])
+      picture: profilePic,
+    });
+    setImagePreviewUrl(profilePic);
+  }, [props.values]);
 
   const editProfilePage = () => {
     setValues({
@@ -193,11 +213,62 @@ export default function ProfileTopSection(props) {
     />
   ) : <p>{vals.biography}</p>
 
+  //Editing Profile Picture
+  const profilePicSection = () => {
+    if(props.imageUploading) {
+      return (
+        <div>
+          <img src={vals.picture} alt="..." className={imageClasses} style={{opacity: '0.5'}}/>
+          <CircularProgress style={{position: 'absolute', left: '50%', marginLeft: '-20px', top: 50}}/>
+          {/* <LoadImage src={vals.picture} alt={vals.name} className={imageClasses} /> */}
+          {updateProfileButton}
+        </div>
+      )
+    }
+    else if(vals.editProfile) {
+      return (
+        <div>
+          <div className="fileinput" style={{display: 'inline'}} onClick={() => editProfilePic()}>
+            <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInput} />
+            <img src={imagePreviewUrl}  alt="..." className={imageClasses} style={{opacity: '0.5', objectFit: 'cover'}}/>
+            <AddAPhotoIcon style={{position: 'absolute', left: '50%', marginLeft: '-12px', top: 105}}/>
+          </div>
+          {updateProfileButton}
+        </div>
+      )
+    }
+    else {
+      return (
+        <div>
+          <img src={vals.picture} alt="..." className={imageClasses} />
+          {/* <LoadImage src={vals.picture} alt={vals.name} className={imageClasses} /> */}
+          {updateProfileButton}
+        </div>
+      )
+    }
+  }
+  const editProfilePic = () => {
+    fileInput.current.click();
+  }
+  const handleImageChange = e => {
+    e.preventDefault();
+    let reader = new FileReader();
+    let inFile = e.target.files[0];
+    reader.onloadend = () => {
+      setValues({
+        ...vals,
+        picFile: inFile
+      });
+      setImagePreviewUrl(reader.result);
+    };
+    reader.readAsDataURL(inFile);
+  };
+
   const saveUpdateButton = vals.editProfile ? (<Button color="primary" onClick={handleProfileEdit}>Save</Button>) : "";
 
   const updateProfileButton = props.values.currentUserProfile ? (
     <Button 
-      style={{position: 'absolute', top: 110, margin: 20, zIndex: 10}} 
+      style={{position: 'absolute', top: 70, margin: 20, zIndex: 10}} 
       justIcon 
       round 
       size='sm'
@@ -216,11 +287,9 @@ export default function ProfileTopSection(props) {
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={6}>
             <div className={classes.profile}>
-              <div>
-                <img src={vals.picture} alt="..." className={imageClasses} />
-                {/* <LoadImage src={vals.picture} alt={vals.name} className={imageClasses} /> */}
-                {updateProfileButton}
-              </div>
+
+              {profilePicSection()}
+
               <div className={classes.name}>
                 <h3 className={classes.title} style={{margin: 0}}>
                   {/* <CheckCircleOutlineIcon style={{textAlign: 'center', verticalAlign: 'middle'}} />

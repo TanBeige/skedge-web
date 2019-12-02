@@ -1,5 +1,6 @@
 /*eslint-disable*/
 import React, {useState, useEffect} from "react";
+import axios from 'axios';
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -75,6 +76,7 @@ export default function ProfilePage(props, { ...rest }) {
     snackbaropen: false,
     snackbarmsg: ''
   });
+  const [imageUploading, setImageUploading] = useState(false)
 
   const snackbarClose = () => {
     setSnackbar({
@@ -115,7 +117,9 @@ export default function ProfilePage(props, { ...rest }) {
     userReposts: []
   })
 
-  const handleProfileEdit = (vals) => {
+  console.log("pic uuid: ", values.picture)
+
+  const handleProfileEdit = async (vals) => {
     // setValues({
     //   ...values,
     //   full_name: vals.full_name,
@@ -123,13 +127,42 @@ export default function ProfilePage(props, { ...rest }) {
     //   picture: vals.picture
     // })
 
+    //Upload Image to Cloudinary, Delete Old picture Afterwards
+    let errorOccurred = false;
+    let response = "";
+    if(vals.picFile !== null) {
+      setImageUploading(true)
+      const form_data = new FormData();
+
+      form_data.append('file', vals.picFile)
+      console.log(form_data)
+
+      // Upload file to Cloudinary
+      console.log("vals.picture: ", values.picture);
+      response = await axios.post(
+        `/profile/upload`, 
+        form_data, 
+        {
+        params: {
+          picId: values.picture
+        }}
+      ).catch((error => {
+        alert("Error occurred while uploading picture, try uploading a smaller image size or try again later.")
+        errorOccurred = true;
+        return;
+      }))
+    }
+    if (errorOccurred) {
+      return
+    }
+
+    //Submit changes to database
     props.client.mutate({
       mutation: MUTATION_EDIT_USER,
       refetchQueries: [{
         query: QUERY_USER_PROFILE,
         variables: {
-          userId: userId,
-          limit: 10
+          userId: userId
         }
       }],
       variables: {
@@ -137,19 +170,27 @@ export default function ProfilePage(props, { ...rest }) {
         changes: {
           full_name: vals.full_name,
           biography: vals.biography,
-          picture: vals.picture
+          //picture: vals.picture,
+
+          picture: response === "" ? values.picture : response.data.id
         }
       }
     }).then(data => {
+      if(isMounted) {
+        setValues({
+          ...values,
+          picture: response === "" ? values.picture : response.data.id
+        })
+        setImageUploading(false)
+      }
       console.log("Success!")
     }).catch( error =>{
       console.error(error)
       alert("Couldn't update profile, try again later or report error to info@theskedge.com")
-    })
+    });
   }
 
   //// Handling Friend Invites
-
   const handleFollowInvite = () => {
     //  Handling relationship. column 1 must be > column 2 for errors. 
     //    For more info check relationship table docs.
@@ -161,7 +202,6 @@ export default function ProfilePage(props, { ...rest }) {
         query: QUERY_USER_PROFILE,
         variables: {
           userId: userId,
-          limit: 10
         }
       }],
       variables: {
@@ -191,7 +231,6 @@ export default function ProfilePage(props, { ...rest }) {
         query: QUERY_USER_PROFILE,
         variables: {
           userId: userId,
-          limit: 10
         }
       }],
       variables: {
@@ -218,7 +257,6 @@ export default function ProfilePage(props, { ...rest }) {
       query: QUERY_USER_PROFILE,
       variables: {
         userId: userId,
-        limit: 10
       }
     }).then((data) => {
       console.log("user data: ", data.data.users);
@@ -253,29 +291,28 @@ export default function ProfilePage(props, { ...rest }) {
           }
 
           // Set Values
-          if(isMounted) {
-            setValues({
-              ...values,
-              user_exists: true,
+          setValues({
+            ...values,
+            user_exists: true,
 
-              userEvents: data.data.users[0].events,
-              userReposts: data.data.users[0].shared_event,
+            userEvents: data.data.users[0].events,
+            userReposts: data.data.users[0].shared_event,
 
-              name: data.data.users[0].name,
-              biography: data.data.users[0].biography,
-              full_name: data.data.users[0].full_name,
-              email: data.data.users[0].email,
-              picture: data.data.users[0].picture,
-              verified: data.data.users[0].verified,
-              auth0Id: data.data.users[0].auth0_id,
+            name: data.data.users[0].name,
+            biography: data.data.users[0].biography,
+            full_name: data.data.users[0].full_name,
+            email: data.data.users[0].email,
+            picture: data.data.users[0].picture,
+            verified: data.data.users[0].verified,
+            auth0Id: data.data.users[0].auth0_id,
 
-              currentUserProfile: (user.sub === data.data.users[0].auth0_id) ? true : false,
+            currentUserProfile: (user.sub === data.data.users[0].auth0_id) ? true : false,
 
-              followingStatus: followType,
-              isEntity: data.data.users[0].entity
-            })
-            setIsLoading(false);
-          }
+            followingStatus: followType,
+            isEntity: data.data.users[0].entity
+          })
+          setIsLoading(false);
+        
         }
       }
     });
@@ -286,6 +323,7 @@ export default function ProfilePage(props, { ...rest }) {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   });
+
   useEffect(() => {
     // Get Profile age
     isMounted = true;
@@ -367,6 +405,7 @@ export default function ProfilePage(props, { ...rest }) {
                   followInvite={handleFollowInvite} 
                   followRemove={handleFollowRemove}
                   handleProfileEdit={handleProfileEdit}
+                  imageUploading={imageUploading}
                 />    
                 {profileContent}
               </div>

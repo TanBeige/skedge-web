@@ -36,10 +36,18 @@ export default function EventCardListHome(props) {
   })
 
   useEffect(() => {
-    setFilter({
-        ...filter,
-        date: props.filter.date.addDays(1),
-    })
+    let isMounted = true;
+    
+    if(isMounted) {
+      setFilter({
+          ...filter,
+          date: props.filter.date.addDays(1),
+      })
+    }
+
+    return () =>{
+      isMounted = false;
+    }
   }, [props.filter])
 
   return (

@@ -1,16 +1,31 @@
 import React, { useEffect, useState} from 'react';
+import UserSearchItem from './UserSearchItem.js';
+import List from '@material-ui/core/List';
+
+import {
+    USER_SEARCH
+} from 'EventQueries/EventQueries.js';
 
 export default function UserSearchList(props) {
 
     let isMounted = false;
 
+    const [users, setUsers] = useState([])
+
     const getUsers = () => {
-        // props.client.query({
-        //     query: ,
-        //     variables: {
-        //         search: props.searchText
-        //     }
-        // })
+        const text = `%${props.searchText}%`;
+        props.client.query({
+            query: USER_SEARCH,
+            variables: {
+                search: text
+            }
+        }).then((data) => {
+            if(isMounted) {
+                setUsers(data.data.users)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
 
@@ -26,14 +41,17 @@ export default function UserSearchList(props) {
     })
 
     return (
-        <div>
-            <h4>@tanarin</h4>
-            <h4>@tanarin</h4>
-            <h4>@tanarin</h4>
-            <h4>@tanarin</h4>
-            <h4>@tanarin</h4>
-            <h4>@tanarin</h4>
-            <h4>@tanarin</h4>
-        </div>
+        <List>
+            {
+                users.map((user, index) => {
+                    return (
+                        <UserSearchItem
+                            key={user.id} 
+                            user={user}
+                        />
+                    )
+                })
+            }
+        </List>
     )
 }
