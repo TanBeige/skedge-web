@@ -80,6 +80,27 @@ const USER_FRAGMENT = gql`
   }
 `;
 
+const USER_SEARCH_FRAGMENT = gql`
+  fragment UserSearchFragment on users {
+      id
+      name
+      full_name
+      picture
+      auth0_id
+      followers (where: {status: {_eq: 1}}){
+        user_id
+        user {
+          name
+        }
+      }
+      followers_aggregate{
+      	aggregate{
+        	count
+      	}
+      }
+  }
+`
+
 
 const FRIEND_FRAGMENT = gql`
 fragment FriendFragment on users {
@@ -217,24 +238,78 @@ const SEE_NOTIFICATION = gql`
   }
 `
 
+const FETCH_FOLLOW_REQUESTS = gql`
+  query follow_requests($userId: String, $limit: Int, $offset: Int) {
+    follower(
+      where: { 
+        _and: [
+          {is_following_id: {_eq: $userId}},
+          {status: {_eq: 0}}
+        ]
+      }
+      limit: $limit
+      offset: $offset
+    ){
+      user{
+        ...UserSearchFragment
+      }
+    }
+  }
+  ${USER_SEARCH_FRAGMENT}
+`
+
 // Fetch User Search
 const USER_SEARCH = gql`
-  query user_search($search: String){
+  query user_search($search: String, $limit: Int, $offset: Int, $userId: String!){
     users(
       where: {
         name: {_ilike: $search}
       }
-      order_by: {followers_aggregate: {count: desc}}
+      limit: $limit
+      offset: $offset
+      order_by: {id: desc}
     ){
       id
       name
       full_name
       picture
       auth0_id
-      followers (where: {status: {_eq: 1}}){
+      followers (where: {user_id: {_eq: $userId}}){
         user_id
+        status
         user {
           name
+        }
+      }
+      followers_aggregate{
+      	aggregate{
+        	count
+      	}
+      }
+    }
+  }
+
+  ${USER_SEARCH_FRAGMENT}
+`
+
+// Use in te future when I can actually test it out after people actually start following people
+const SUGGESTED_USERS = gql`
+  query suggested_users($userId: String){
+    follower(
+      where: {
+        user_id: {_eq: $userId}
+        status: {_eq: 1}
+      }
+    ){
+      user{
+        name
+      }
+      is_following {
+        name
+        following{
+          is_following{
+            name
+          }
         }
       }
     }
@@ -876,6 +951,7 @@ export {
   FETCH_NOTIFICATIONS,
   SEE_NOTIFICATION,
   USER_SEARCH,
+  FETCH_FOLLOW_REQUESTS,
 
   MUTATION_EVENT_SAVE,
   MUTATION_EVENT_UNDO_SAVE,

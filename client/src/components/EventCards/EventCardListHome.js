@@ -66,11 +66,10 @@ export default function EventCardListHome(props) {
       const { client } = props;
       const { filter } = props;
 
-      const totalEventsPrevious = values.eventsLength;
-      setValues({
-        ...values,
-        loadedAllEvents: false
-      })
+      // setValues({
+      //   ...values,
+      //   loadedAllEvents: false
+      // })
 
       let cat = filter.category;
       if(filter.category == "Any") {

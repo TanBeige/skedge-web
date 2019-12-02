@@ -426,7 +426,7 @@ export default function SectionPills(props) {
                   alignCenter
                   color="primary"
                   client={props.client}
-                  searchText={values.searchText}
+                  searchText={localFilter.searchText}
                   tabs={[
                   {
                       tabButton: "Local",

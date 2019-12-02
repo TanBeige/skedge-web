@@ -174,7 +174,6 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
       user_auth0: event.user ? event.user.auth0_id : null
     })
 
-    console.log("user profile event card: ", values.userProfilePic)
 
     
     // Handling event likes + reposts + saves

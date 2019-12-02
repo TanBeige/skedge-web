@@ -3,11 +3,12 @@ import React, { useState, useEffect } from "react";
 import SwipeableViews from 'react-swipeable-views';
 
 import NotificationList from './Sections/NotificationList.js';
+import FriendRequestsList from './Sections/FriendRequestsList.js';
 
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -31,10 +32,18 @@ import Table from "components/Table/Table.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
+import { ThemeProvider } from '@material-ui/styles';
 
 import shoppingCartStyle from "assets/jss/material-kit-pro-react/views/shoppingCartStyle.js";
 
 const useStyles = makeStyles(shoppingCartStyle);
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#02C39A"
+    }
+  },
+});
 
 import './Sections/NotificationStyle.css';
 
@@ -54,68 +63,71 @@ export default function NotificationsPage(props) {
   });
   const classes = useStyles();
   return (
-    <div>
-      <Header
-        brand="Skedge"
-        links={<HeaderLinks dropdownHoverColor="info"/>}
-        fixed
-        color="primary"//"transparent"
-        changeColorOnScroll={{
-          height: 100,
-          color: "primary"
-        }}
-      />
+    <ThemeProvider theme={theme}>
+      <div>
+        <Header
+          brand="Skedge"
+          links={<HeaderLinks dropdownHoverColor="info"/>}
+          fixed
+          color="primary"//"transparent"
+          changeColorOnScroll={{
+            height: 100,
+            color: "primary"
+          }}
+        />
 
-      <div className={classNames(classes.main, classes.mainRaised)}>
-        <div className={classes.container}>
-          <Card plain>
-            <CardBody plain>
-              {/* <h3 className={classes.cardTitle}>Notifications</h3> */}
-              <Tabs
-                // classes={{
-                //   root: classes.root,
-                //   fixed: classes.fixed,
-                //   flexContainer: flexContainerClasses,
-                //   indicator: classes.displayNone
-                // }}
-                value={active}
-                onChange={handleChange}
-                centered
-              >
-                <Tab
-                  label={'Notifications'}
-                  icon={<Favorite />}
+        <div className={classNames(classes.main, classes.mainRaised)}>
+          <div className={classes.container}>
+            <Card plain>
+              <CardBody plain>
+                {/* <h3 className={classes.cardTitle}>Notifications</h3> */}
+                <Tabs
                   // classes={{
-                  //   root: pillsClasses,
-                  //   label: classes.label,
-                  //   selected: classes[color]
+                  //   root: classes.root,
+                  //   fixed: classes.fixed,
+                  //   flexContainer: flexContainerClasses,
+                  //   indicator: classes.displayNone
                   // }}
-                />
-                <Tab
-                  label={'Requests'}
-                  icon={<Add />}
-                  // classes={{
-                  //   root: pillsClasses,
-                  //   label: classes.label,
-                  //   selected: classes[color]
-                  // }}
-                />
-              </Tabs>
-              <SwipeableViews
-                index={active}
-                onChangeIndex={handleChangeIndex}
-              >
-                <NotificationList 
-                  client={props.client}
-                />
-                <div>
-                  No Requests Currently
-                </div>
-              </SwipeableViews>
-            </CardBody>
-          </Card>
+                  value={active}
+                  onChange={handleChange}
+                  centered
+                >
+                  <Tab
+                    label={'Notifications'}
+                    icon={<Favorite />}
+                    // classes={{
+                    //   root: pillsClasses,
+                    //   label: classes.label,
+                    //   selected: classes[color]
+                    // }}
+                  />
+                  <Tab
+                    label={'Requests'}
+                    icon={<Add />}
+                    // classes={{
+                    //   root: pillsClasses,
+                    //   label: classes.label,
+                    //   selected: classes[color]
+                    // }}
+                  />
+                </Tabs>
+                <SwipeableViews
+                  index={active}
+                  onChangeIndex={handleChangeIndex}
+                >
+                  <NotificationList 
+                    client={props.client}
+                  />
+
+                  <FriendRequestsList 
+                    client={props.client}
+                  />
+                </SwipeableViews>
+              </CardBody>
+            </Card>
+          </div>
         </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 }

@@ -44,7 +44,9 @@ export default function NotificationListItem(props) {
     const { user } = useAuth0();
     const { notification } = props;
 
-    const unseenColor = 'lightblue'
+    const unseenColor = 'lightblue';
+
+    console.log("test")
 
     useEffect(() => {
         props.client.mutate({
@@ -82,7 +84,8 @@ export default function NotificationListItem(props) {
                         <Avatar 
                             alt={notification.other_user.name}
                             //src={cloudinary.url(notification.source.image.image_uuid, {secure: true, width: 100, height: 100, crop: "fill" ,fetch_format: "auto", quality: "auto"})} 
-                            src={notification.other_user.picture}
+                            src={cloudinary.url(notification.other_user.picture, {secure: true, width: 200, height: 200, crop: "fill"})}
+
                         />
                     </ListItemAvatar>
                     <ListItemText
@@ -117,7 +120,7 @@ export default function NotificationListItem(props) {
                         <Avatar 
                             alt={notification.other_user.name}
                             //src={cloudinary.url(notification.source.image.image_uuid, {secure: true, width: 100, height: 100, crop: "fill" ,fetch_format: "auto", quality: "auto"})} 
-                            src={notification.other_user.picture}
+                            src={cloudinary.url(notification.other_user.picture, {secure: true, width: 200, height: 200, crop: "fill"})}
                         />
                     </ListItemAvatar>
                     <ListItemText
