@@ -206,7 +206,7 @@ export default function FollowRequestItem(props) {
 
     return (
         <Fragment key={userItem.id}>
-                <ListItem style={{paddingLeft: 10, paddingRight: 0, height: '5em'}}>
+                <ListItem className='notificationList' style={{paddingLeft: 10, paddingRight: 0, height: '5em'}}>
                   <Link to={`/users/${userItem.id}`}>
                     <ListItemAvatar>
                         <Avatar 
