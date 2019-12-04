@@ -65,6 +65,7 @@ export default function EventPage(props) {
 
   const [values, setValues] = useState({
     event_id: eventId,
+    event_date_id: null,
     event_exists: true,
 
     name: "",
@@ -125,6 +126,7 @@ export default function EventPage(props) {
           ...values,
 
           event_exists: true,
+          event_date_id: data.data.events[0].event_date_id,
 
           name: data.data.events[0].name,
           description: data.data.events[0].description,
@@ -182,6 +184,7 @@ export default function EventPage(props) {
       }],
       variables: {
         eventId: values.event_id,
+        eventDateId: values.event_date_id,
         name: newInfo.name,
         locationName: newInfo.location_name,
         street: newInfo.street,
@@ -193,7 +196,8 @@ export default function EventPage(props) {
         description: newInfo.description,
         category: newInfo.category
       }
-    }).then(()=> {
+    }).then((data)=> {
+      console.log(data)
       console.log("Success!")
     }).catch(error => {
       console.error(error);
