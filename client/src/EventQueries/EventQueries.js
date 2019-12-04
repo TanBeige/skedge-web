@@ -720,7 +720,7 @@ mutation insert_events($objects: [events_insert_input!]!) {
 `;
 
 const MUTATION_EVENT_UPDATE = gql`
-mutation update_event($eventId: Int, $name: String, $locationName: String, $street: String, $city: String, $state: String, $startDate: date, $startTime: timetz, $endTime: timetz, $description: String, $category: String){
+mutation update_event($eventId: Int, $name: String, $locationName: String, $street: String, $city: String, $state: String, $startDate: date, $startTime: time, $endTime: time, $description: String, $category: String){
   update_events(
     where: {id: {_eq: $eventId}}
     _set: {

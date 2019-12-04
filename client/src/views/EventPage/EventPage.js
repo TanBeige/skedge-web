@@ -171,6 +171,7 @@ export default function EventPage(props) {
 
   //Submit Changes
   const handleEventChange = (newInfo) => {
+    console.log(moment(newInfo.start_time).format("HH:mm:ss"))
     props.client.mutate({
       mutation: MUTATION_EVENT_UPDATE,
       refetchQueries: [{
@@ -187,8 +188,8 @@ export default function EventPage(props) {
         city: newInfo.city,
         state: newInfo.state,
         startDate: newInfo.start_date,
-        startTime: moment(newInfo.start_time).format("HH:mm:ssZ"),
-        endTime: newInfo.end_time ? moment(newInfo.end_time).format("HH:mm:ssZ") : null,
+        startTime: moment(newInfo.start_time).format("HH:mm:ss"),
+        endTime: newInfo.end_time ? moment(newInfo.end_time).format("HH:mm:ss") : null,
         description: newInfo.description,
         category: newInfo.category
       }
