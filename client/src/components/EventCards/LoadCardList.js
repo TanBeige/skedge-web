@@ -11,7 +11,7 @@ export default function LoadCardList() {
           <GridItem xs={12} md={6} xl={6}>
             <Instagram />
           </GridItem>
-          <GridItem xs={12} md={6} xl={6}>
+          {/* <GridItem xs={12} md={6} xl={6}>
             <Instagram />
           </GridItem>
           <GridItem xs={12} md={6} xl={6}>
@@ -19,7 +19,7 @@ export default function LoadCardList() {
           </GridItem>
           <GridItem xs={12} md={6} xl={6}>
             <Instagram />
-          </GridItem>
+          </GridItem> */}
         </GridContainer>
         // <div style={{textAlign: 'center', margin: 20}} >
         //   <CircularProgress color="primary" />
