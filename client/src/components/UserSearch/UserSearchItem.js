@@ -138,8 +138,6 @@ export default function UserSearchList(props) {
         else {
             setFollowStatus(-1)
         }
-
-        console.log(userItem.name, followType)
         
 
         return () => {
@@ -189,7 +187,7 @@ export default function UserSearchList(props) {
                             />
                         </ListItemAvatar>
                     </Link>
-                    <Link to={`/users/${userItem.id}`}>
+                    <Link style={{color: '#008064'}} to={`/users/${userItem.id}`}>
                         <ListItemText
                             primary={`${displayName}`}
                             secondary={

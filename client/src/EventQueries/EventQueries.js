@@ -263,7 +263,10 @@ const USER_SEARCH = gql`
   query user_search($search: String, $limit: Int, $offset: Int, $userId: String!){
     users(
       where: {
-        name: {_ilike: $search}
+        _or:[
+          {name: {_ilike: $search}},
+          {full_name: {_ilike: $search}}
+        ]
       }
       limit: $limit
       offset: $offset

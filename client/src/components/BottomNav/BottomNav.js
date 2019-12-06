@@ -7,6 +7,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import SearchIcon from '@material-ui/icons/Search';
 
 import gql from 'graphql-tag';
 import './PrimaryNav.css';
@@ -31,6 +32,7 @@ class PrimaryNav extends Component {
             path: props.location.pathname,
             pathMap: [
                 '/home',
+                '/search',
                 '/create',
                 '/notifications',
                 `/users/0`,
@@ -150,6 +152,7 @@ class PrimaryNav extends Component {
               this.setState({
                   pathMap: [
                       '/home',
+                      '/search',
                       '/create',
                       '/notifications',
                       `/users/${data.data.users[0].id}`
@@ -184,9 +187,10 @@ class PrimaryNav extends Component {
                   className="nav primary"
               >
                   <BottomNavigationAction label="Feeds" icon={<DynamicFeedIcon />} component={Link} to={pathMap[0]} />
-                  <BottomNavigationAction label="Create" icon={<AddCircleOutlineIcon />} component={Link} to={pathMap[1]} />
-                  <BottomNavigationAction label="Notifications" icon={<NotificationsIcon />} component={Link} to={pathMap[2]} />
-                  <BottomNavigationAction label="Profile" icon={<AccountCircleIcon />} component={Link} to={pathMap[3]} />
+                  <BottomNavigationAction label="Search" icon={<SearchIcon />} component={Link} to={pathMap[1]} />
+                  <BottomNavigationAction label="Create" icon={<AddCircleOutlineIcon />} component={Link} to={pathMap[2]} />
+                  <BottomNavigationAction label="Notifications" icon={<NotificationsIcon />} component={Link} to={pathMap[3]} />
+                  <BottomNavigationAction label="Profile" icon={<AccountCircleIcon />} component={Link} to={pathMap[4]} />
               </BottomNavigation>
           </ThemeProvider>
       );

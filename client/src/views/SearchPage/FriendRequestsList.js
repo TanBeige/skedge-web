@@ -1,24 +1,23 @@
 import React, { useEffect, useState} from 'react';
-import UserSearchItem from './UserSearchItem.js';
+import FollowRequestItem from './FollowRequestItem.js';
+
 import List from '@material-ui/core/List';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import SearchIcon from '@material-ui/icons/Search';
+
 import {
-    USER_SEARCH
+    FETCH_FOLLOW_REQUESTS
 } from 'EventQueries/EventQueries.js';
+
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js';
 
-import { Facebook } from 'react-content-loader'
 
-
-export default function UserSearchList(props) {
+export default function FriendRequestsList(props) {
 
     let isMounted = true;
+
+    const { user } = useAuth0();
 
     const [values, setValues] = useState({
         usersLength: 0,
@@ -26,37 +25,36 @@ export default function UserSearchList(props) {
         limit: 15
     })
 
-    const [users, setUsers] = useState([])
+    const [usersList, setUsersList] = useState([])
     const [isSearch, setIsSearch] = useState(false)
     const [initialLoad, setInitialLoad] = useState(false)
-    const { user } = useAuth0();
-
 
     // GraphQL fetch users
     const getUsers = () => {
-        const text = `%${props.searchText}%`;
         setIsSearch(true);
         setInitialLoad(true);
         props.client.query({
-            query: USER_SEARCH,
+            query: FETCH_FOLLOW_REQUESTS,
             variables: {
-                search: text,
+                userId: user.sub,
                 limit: values.limit,
-                offset: values.usersLength,
-                userId: user.sub
+                offset: values.usersLength
             }
         }).then((data) => {
+            console.log("datatatata", data)
+
             if(isMounted) {
-                setUsers(data.data.users);
+                setUsersList(data.data.follower);
                 setValues({
                     ...values,
-                    hasMoreUsers: data.data.users.length < values.limit ? false : true,
-                    usersLength: data.data.users.length
+                    hasMoreUsers: data.data.follower.length < values.limit ? false : true,
+                    usersLength: data.data.follower.length
                 })
             }
             setIsSearch(false);
             setInitialLoad(false);
         }).catch(error => {
+            console.log(error)
             if(isMounted) {
                 setIsSearch(false);
                 setInitialLoad(false);
@@ -66,30 +64,30 @@ export default function UserSearchList(props) {
 
     const loadMoreUsers = () => {
         console.log("loading more users")
-        const text = `%${props.searchText}%`;
         setIsSearch(true);
         props.client.query({
-            query: USER_SEARCH,
+            query: FETCH_FOLLOW_REQUESTS,
             variables: {
-                search: text,
+                userId: user.sub,
                 limit: values.limit,
-                offset: values.usersLength,
-                userId: user.sub
-
+                offset: values.usersLength
             }
         }).then((data) => {
-            if(isMounted && data.data.users.length > 0) {
+            console.log("ass", isMounted)
+            console.log(data.data.follower)
+            if(isMounted && data.data.follower.length > 0) {
 
-                //const tempUsers = data.data.users.filter(val => !users.includes(val));
+                //const tempUsers = data.data.follower.filter(val => !users.includes(val));
                 //let mergedUsers = users.concat(tempUsers);
                 //mergedUsers = mergedUsers.filter(val => !users.includes(val));
-                const mergedUsers = users.concat(data.data.users);
+                const mergedUsers = usersList.concat(data.data.follower);
 
 
-                setUsers(mergedUsers);
+                console.log(data.data.follower)
+                setUsersList(mergedUsers);
                 setValues({
                     ...values,
-                    hasMoreUsers: data.data.users.length < values.limit ? false : true,
+                    hasMoreUsers: data.data.follower.length < values.limit ? false : true,
                     usersLength: mergedUsers.length
                 })
                 setIsSearch(false);
@@ -102,60 +100,20 @@ export default function UserSearchList(props) {
         })
     }
 
-    // const getSuggestedUsers = () => {
-    //     setIsSearch(true);
-    //     props.client.query({
-    //         query: ,
-    //         variables: {
-    //             userId: 
-    //         }
-    //     }).then((data) => {
-    //         if(isMounted) {
-    //             setUsers(data.data.users);
-    //         }
-    //         setIsSearch(false);
-    //         setInitialLoad(false);
-    //     }).catch(error => {
-    //         console.log(error)
-    //         if(isMounted) {
-    //             setIsSearch(false);
-    //             setInitialLoad(false);
-    //         }
-    //     })
-    // }
-
     // Use Effect Function
     useEffect(() => {
         isMounted = true;
 
-        if(props.searchText !== "")
-        {
-            getUsers();
-        }
-        else {
-            //getSuggestedUsers();
-        }
+        
+        getUsers();
 
         return () => {
             isMounted = false;
         }
     }, [props.searchText])
 
-    if(props.searchText === "") {
-        return (
-            <div style={{textAlign: 'center', marginTop: 20}}>
-                <PeopleAltIcon fontSize='large'/>
-            </div>
-        )
-    }
-    else if(initialLoad) {
-        return (
-            <GridContainer>
-                <GridItem xs={12}>
-                    <Facebook />
-                </GridItem>
-            </GridContainer>
-        )
+    if(initialLoad) {
+        return <div style={{textAlign: 'center', marginTop: 20}}><CircularProgress size={20} color='primary'/></div>
     }
     else{
         return (
@@ -169,11 +127,11 @@ export default function UserSearchList(props) {
             >   
                 <List>
                     {
-                        users.map((user, index) => {
+                        usersList.map((user, index) => {
                             return (
-                                <UserSearchItem
-                                    key={user.id} 
-                                    userItem={user}
+                                <FollowRequestItem
+                                    key={index} 
+                                    userItem={user.user}
                                     client={props.client}
                                 />
                             )

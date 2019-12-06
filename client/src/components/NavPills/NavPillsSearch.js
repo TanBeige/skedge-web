@@ -13,8 +13,6 @@ import Tabs from "@material-ui/core/Tabs";
 // core components
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import EventCardList from '../EventCards/EventCardList';
-import UserSearchList from 'components/UserSearch/UserSearchList.js';
 
 import styles from "assets/jss/material-kit-pro-react/components/navPillsStyle.js";
 import { Button } from "@material-ui/core";
@@ -95,67 +93,30 @@ export default function NavPillsSearch(props) {
   );
   
   let tabContent = "";
-  if(tableValue === 0) {
-    if (active === 0 ) {
-      tabContent = (
-        <div>
-          <div className={classes.tabContent} >
-            {tabs[0].tabContent}
-          </div>
-        </div>
-      )
-    }
-    else if (active === 1 ) {
-      tabContent = (
-        <div>
-          <div className={classes.tabContent} >
-            {tabs[1].tabContent}
-          </div>
-        </div>
-      )
-    }
-  }
-  else if(tableValue === 1) {
+  if (active === 0 ) {
     tabContent = (
       <div>
         <div className={classes.tabContent} >
-          {/* {userSearch} */}
-          <UserSearchList 
-            client={props.client}
-            searchText={props.searchText}
-          />
+          {tabs[0].tabContent}
+        </div>
+      </div>
+    )
+  }
+  else if (active === 1 ) {
+    tabContent = (
+      <div>
+        <div className={classes.tabContent} >
+          {tabs[1].tabContent}
         </div>
       </div>
     )
   }
 
-  // const tableType is if the user is searching events, users, etc...
-  const tableType = (
-    <div style={{textAlign: 'center', marginTop: 5}}>
-      {
-        tableTypeList.map((item, index) => {
-          return (
-            <Button 
-              key={index} 
-              size="small" 
-              variant="contained" 
-              disabled={tableValue === index ? true : false} 
-              style={ tableValue === index ? tableButtonSelectedStyle : tableButtonStyle }
-              onClick={() => handletableChange(index)}
-            >
-              {item.label}
-            </Button>
-          )
-        })
-      }
-    </div>
-  )
 
 
   return horizontal !== undefined ? (
     <GridContainer>
       <GridItem {...horizontal.tabsGrid}>{tabButtons}</GridItem>
-      <GridItem {...horizontal.tabsGrid}>{tableType}</GridItem>
       <GridItem {...horizontal.contentGrid}>{tabContent}</GridItem>
     </GridContainer>
   ) : (
@@ -163,7 +124,6 @@ export default function NavPillsSearch(props) {
       <GridContainer justify="center">
         <GridItem xs={12} sm={12} md={12} className={classes.textCenter}>
           {tabButtons}
-          {tableType}  
           {tabContent}
         </GridItem>
       </GridContainer>

@@ -9,6 +9,11 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import EventCardListFuture from './EventCardListFuture.js';
 import FutureContainer from './FutureContainer.js';
+import { Instagram } from 'react-content-loader'
+
+import LoadCardList from './LoadCardList.js';
+
+//const MyInstagramLoader = () => <Instagram />
 
 import {
     QUERY_FILTERED_EVENT
@@ -249,9 +254,10 @@ export default function EventCardListHome(props) {
     
     if(isSearch) {
       return (
-        <div style={{textAlign: 'center', margin: 20}} >
-          <CircularProgress color="primary" />
-        </div>
+        <LoadCardList />
+        // <div style={{textAlign: 'center', margin: 20}} >
+        //   <CircularProgress color="primary" />
+        // </div>
       )
     }
 
@@ -293,7 +299,8 @@ export default function EventCardListHome(props) {
             next={loadMoreClicked}
             hasMore={!values.loadedAllEvents}
             scrollThreshold={0.95}
-            loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
+            //loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
+            loader={<LoadCardList />}
             style={{overflow: 'none'}}
         >
           <GridContainer style={{minHeight: '8em'}}>
