@@ -2,7 +2,7 @@ import React, { Component, Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import Container from '@material-ui/core/Container'
-import FriendItem from "./FriendItem";
+import FriendItem from "./AddCohost/FriendItem";
 import { QUERY_ACCEPTED_FRIENDS } from "EventQueries/EventQueries.js";
 import List from '@material-ui/core/List';
 import { Button } from "@material-ui/core";
@@ -13,8 +13,8 @@ export default function ListFollowers(props) {
 
     const handleToggle = value =>{
       console.log(value)
-      const currentIndex = props.cohosts.indexOf(value);
-      const newChecked = props.cohosts;
+      const currentIndex = props.guests.indexOf(value);
+      const newChecked = props.guests;
 
       if (currentIndex === -1) {
         newChecked.push(value);
@@ -23,7 +23,7 @@ export default function ListFollowers(props) {
       }
 
       //setChecked(newChecked);
-      props.selectCohosts(newChecked)
+      props.selectGuests(newChecked)
     };
 
 
@@ -48,7 +48,7 @@ export default function ListFollowers(props) {
                               <FriendItem
                               key={index}
                               index={index}
-                              check={props.cohosts}
+                              check={props.guests}
                               friend={follower}
                               userId={userId}
                               handleChange={handleToggle}

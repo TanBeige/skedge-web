@@ -906,27 +906,22 @@ const MUTATION_FOLLOW_DELETE = gql`
 // Fetching friends
 const QUERY_ACCEPTED_FRIENDS = gql`
   query fetch_accepted_friends($userId: String!) {
-    relationship(
+    follower(
       where: {
-        _or: [
-          {user_one_id: {_eq: $userId}}
-          {user_two_id: {_eq: $userId}}
-        ]
         _and: [
+          {is_following_id: {_eq: $userId}},
           {status: {_eq: 1}}
         ]
       }
     ) {
-      status
-      friend_one {
-        ...FriendFragment
-      }
-      friend_two {
-        ...FriendFragment
+      user{
+        auth0_id
+        id
+        name
+        picture
       }
     }
   }
-  ${FRIEND_FRAGMENT}
 `;
 
 const QUERY_CHECK_FRIEND = gql`

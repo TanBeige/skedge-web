@@ -4,7 +4,8 @@ import Container from '@material-ui/core/Container';
 import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
 
-import ListFriends from 'views/CreatePage/Sections/AddCohost/ListFriends.js'
+import ListFriends from 'views/CreatePage/Sections/AddCohost/ListFriends.js';
+import ListFollowers from 'views/CreatePage/Sections/ListFollowers.js';
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -32,15 +33,14 @@ const useStyles = makeStyles(theme => ({
     },
   }));
 
-export default function AddCohost (props) {
+export default function InviteUsers (props) {
     const classes = useStyles();
 
-    const [values, setValues] = React.useState({
-        cohostId: props.cohosts
-    });
+    const [guests, setGuests] = React.useState(props.guests);
     
-    const selectCohosts = (cohosts) => {
-      setValues({ ...values, cohostId: cohosts });
+    const selectGuests = (inGuests) => {
+      console.log(inGuests)
+      setGuests(inGuests);
     };
 
     let dir = props.goingBack ? 'right' : 'left';
@@ -50,11 +50,11 @@ export default function AddCohost (props) {
             <Container component="main">
                 <div className={classes.paper}>
                     <div className='AddCohost'>
-                        <ListFriends
+                        <ListFollowers
                           client={props.client}
                           userId={props.userId}
-                          selectCohosts={selectCohosts}
-                          cohosts={values.cohostId}
+                          selectGuests={selectGuests}
+                          guests={guests}
                          />
                     </div>
                 </div>
@@ -64,9 +64,9 @@ export default function AddCohost (props) {
                   variant="contained"
                   color="secondary"
                   style={{margin: 3, height: '4em'}}
-                  onClick={() => props.handleCohost(values.cohostId)}
+                  onClick={() => props.handleGuests(guests)}
                   >
-                  Choose Banner ->
+                   Invite Cohosts ->
                   </Button>
                 </div>
             </Container>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {Fragment} from 'react'
 import PropTypes from "prop-types";
 import Avatar from '@material-ui/core/Avatar';
@@ -10,6 +10,16 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Checkbox from '@material-ui/core/Checkbox';
 //import "../../styles/App.css";
 
+// Cloudinary setup
+var cloudinary = require('cloudinary/lib/cloudinary').v2
+
+cloudinary.config({
+  cloud_name: "skedge"
+});
+
+//cloudinary.url(event.image.image_uuid, {secure: true, width: 800, height: 533, crop: "fill" ,fetch_format: "auto", quality: "auto"}),
+
+
 const FriendItem = ({
     index,
     friend,
@@ -19,28 +29,41 @@ const FriendItem = ({
     handleChange
     }) => {
 
-    let currentFriend = null;
-    if (friend.friend_one.auth0_id === userId){
-        currentFriend = friend.friend_two
-    }
-    else {
-        currentFriend = friend.friend_one
+    // let currentFriend = null;
+    // if (friend.friend_one.auth0_id === userId){
+    //     currentFriend = friend.friend_two
+    // }
+    // else {
+    //     currentFriend = friend.friend_one
+    // }
+    const [isChecked, setIsChecked] = useState(false)
+    const follower = friend.user;
+
+    useEffect(()=>{
+        //Reload the page
+        setIsChecked(check.indexOf(follower.auth0_id) !== -1)
+    }, check)
+
+    const checkBox = () => {
+        setIsChecked(!isChecked);
+        console.log(follower.auth0_id)
+        handleChange(follower.auth0_id);
     }
 
     return (
         <Fragment>
-            <ListItem key={currentFriend.auth0_id} button onClick={handleChange(currentFriend.auth0_id)}>
+            <ListItem key={follower.auth0_id} button onClick={checkBox}>
                 <ListItemAvatar>
                 <Avatar
-                    alt={currentFriend.name}
-                    src={currentFriend.picture}
+                    alt={follower.name}
+                    src={cloudinary.url(follower.picture, {secure: true, width: 200, height: 200, crop: "fill" ,fetch_format: "auto", quality: "auto"})}
                 />
                 </ListItemAvatar>
-                <ListItemText id={currentFriend.name} primary={currentFriend.name} />
+                <ListItemText id={follower.name} primary={follower.name} />
                 <ListItemIcon>
                 <Checkbox
                     edge="end"
-                    checked={check.indexOf(currentFriend.auth0_id) !== -1}
+                    checked={isChecked}
                 />
                 </ListItemIcon>
             </ListItem>

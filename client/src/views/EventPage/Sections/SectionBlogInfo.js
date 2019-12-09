@@ -48,7 +48,7 @@ export default function SectionBlogInfo({eventInfo}) {
 
   return (
     <div className={classes.section} >
-      <GridContainer justify="center">
+      <GridContainer justify="center" style={{marginBottom: 20}}>
         <GridItem xs={12} sm={10} md={8}>
           {/* <GridContainer>
             <GridItem xs={12} sm={6} md={6}>
@@ -63,7 +63,7 @@ export default function SectionBlogInfo({eventInfo}) {
             </GridItem>
           </GridContainer> */}
           <hr />
-          <h2 style={{textAlign: 'center'}}>Hosts</h2>
+          {/* <h2 style={{textAlign: 'center'}}>Hosts</h2>
           <Card plain profile className={classes.card} >
             <GridContainer>
               <GridItem xs={12} sm={12} md={12}>
@@ -80,8 +80,8 @@ export default function SectionBlogInfo({eventInfo}) {
                 </p>
               </GridItem>
             </GridContainer>
-          </Card>
-            {insertCohosts}
+          </Card> */}
+            {/* {insertCohosts} */}
         </GridItem>
       </GridContainer>
     </div>

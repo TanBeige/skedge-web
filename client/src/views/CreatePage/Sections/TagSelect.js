@@ -108,7 +108,7 @@ export default function TagSelect(props) {
                 className={classes.submit}
                 onClick={submitTags}
                 >
-                Choose Cohost ->
+                Invite Followers ->
                 </Button>
             </div>
             </ThemeProvider>

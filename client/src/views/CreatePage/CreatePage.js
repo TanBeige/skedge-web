@@ -19,6 +19,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import LocalOrPrivate from 'views/CreatePage/Sections/LocalOrPrivate.js';
 import EventCreateInfo from 'views/CreatePage/Sections/EventCreateInfo.js';
 import TagSelect from 'views/CreatePage/Sections/TagSelect.js';
+import InviteUsers from 'views/CreatePage/Sections/InviteUsers.js';
 import AddCohost from 'views/CreatePage/Sections/AddCohost/AddCohost.js';
 import AddBanner from 'views/CreatePage/Sections/AddBanner.js';
 import Header from "components/Header/Header.js";
@@ -85,7 +86,8 @@ export default function PricingPage(props) {
       category: "Arts/Culture",
       tags: [],
 
-      cohosts: []
+      cohosts: [],
+      guests: []
   });
 
   // Functions
@@ -207,12 +209,25 @@ const handleLocalOrPrivate = (type) => {
   }
 
   const handleCohost = (cohostId) => {
+    console.log(cohostId)
+
     setValues({
         ...values,
         currentPage: values.currentPage + 1,
         goingBack: false,
 
         cohosts: cohostId
+    });
+  }
+
+  const handleGuests = (inGuests) => {
+    console.log(inGuests)
+    setValues({
+        ...values,
+        currentPage: values.currentPage + 1,
+        goingBack: false,
+
+        guests: inGuests
     });
   }
 
@@ -492,7 +507,18 @@ const handleLocalOrPrivate = (type) => {
         handleTagInfo={handleTagInfo} 
       />)
       break;
-    case 3:
+    case 3: 
+        appBarTitle = "Invite Guests"
+        page = <InviteUsers 
+          goingBack={values.goingBack} 
+          handleGuests={handleGuests}
+          guests={values.guests}
+          client={props.client}
+          userId={user.sub}
+          event_type={values.event_type}
+        />
+        break;
+    case 4:
       appBarTitle = "Add A Cohost";
       page = <AddCohost 
         goingBack={values.goingBack} 
@@ -503,7 +529,7 @@ const handleLocalOrPrivate = (type) => {
         event_type={values.event_type}
       />
       break;
-    case 4:
+    case 5:
       appBarTitle = "Banner";
       page = <AddBanner 
           goingBack={values.goingBack} 
