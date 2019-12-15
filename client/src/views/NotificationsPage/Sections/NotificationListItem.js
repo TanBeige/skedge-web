@@ -8,6 +8,8 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 
+import gql from 'graphql-tag';
+
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import RenewIcon from '@material-ui/icons/Autorenew'
 
@@ -15,7 +17,7 @@ import RenewIcon from '@material-ui/icons/Autorenew'
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js';
 
 import {
-    SEE_NOTIFICATION
+    SEE_NOTIFICATION,
 } from 'EventQueries/EventQueries.js';
 
 const useStyles = makeStyles(theme => ({
@@ -78,7 +80,7 @@ export default function NotificationListItem(props) {
 
         return (
             <Fragment key={notification.id}>
-                <ListItem style={{paddingLeft: 10, paddingRight: 0}}>
+                <ListItem style={{paddingLeft: 10, paddingRight: 0, backgroundColor: notification.seen ? 'white' : unseenColor}}>
                     <FavoriteIcon color='secondary' style={{position: "absolute", left: 0, top: 5}} />
                     <ListItemAvatar>
                         <Avatar 
@@ -90,7 +92,6 @@ export default function NotificationListItem(props) {
                     </ListItemAvatar>
                     <ListItemText
                         primary={`${notification.other_user.name} liked your Event`}
-                        style={{backgroundColor: notification.seen ? 'white' : unseenColor}}
                         secondary={
                         <React.Fragment>
                             <Typography
@@ -114,7 +115,7 @@ export default function NotificationListItem(props) {
     const repostNotif = () => {
         return (
             <Fragment key={notification.id}>
-                <ListItem style={{paddingLeft: 10, paddingRight: 0}}>
+                <ListItem style={{paddingLeft: 10, paddingRight: 0, borderRadius: 3, backgroundColor: notification.seen ? 'white' : unseenColor}}>
                     <RenewIcon color='primary' style={{position: "absolute", left: 0, top: 5}} />
                     <ListItemAvatar>
                         <Avatar 
@@ -125,7 +126,6 @@ export default function NotificationListItem(props) {
                     </ListItemAvatar>
                     <ListItemText
                         primary={`${notification.other_user.name} shared your Event`}
-                        style={{backgroundColor: notification.seen ? 'white' : unseenColor}}
                         secondary={
                         <React.Fragment>
                             <Typography

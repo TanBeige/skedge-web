@@ -319,7 +319,15 @@ const handleLocalOrPrivate = (type) => {
         newCohosts.push({
             cohost_id: values.cohosts[i]
         });
-      }
+    }
+
+    // Order guestsinto array so they can be input into graphql
+    let newGuests = [];
+    for(i = 0; i < values.guests.length; i++){
+        newGuests.push({
+          invited_id : values.guests[i]
+        });
+    }
 
 
     // Inputs all information into Hasura Postgres DB via GraphQL
@@ -367,6 +375,9 @@ const handleLocalOrPrivate = (type) => {
                       },
                       event_cohosts: {
                         data: newCohosts
+                      },
+                      event_invites: {
+                        data: newGuests
                       }
                   }
               ],
@@ -424,6 +435,9 @@ const handleLocalOrPrivate = (type) => {
                     },
                     event_cohosts: {
                       data: newCohosts
+                    },
+                    event_invites: {
+                      data: newGuests
                     }
                 }
             ],

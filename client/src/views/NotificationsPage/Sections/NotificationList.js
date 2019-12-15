@@ -12,7 +12,9 @@ import NotificationListItem from './NotificationListItem.js';
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js';
 
 import {
-    FETCH_NOTIFICATIONS
+    FETCH_NOTIFICATIONS,
+    QUERY_BOTTOM_NAV
+
 } from 'EventQueries/EventQueries.js';
 
 const useStyles = makeStyles(theme => ({
@@ -38,6 +40,10 @@ export default function NotificationList(props) {
     useEffect(() => {
         props.client.query({
             query: FETCH_NOTIFICATIONS,
+            refetchQueries: [{
+                query: QUERY_BOTTOM_NAV,
+                variables: {userId: user.sub}
+            }],
             variables: {
                 userId: user.sub
             }

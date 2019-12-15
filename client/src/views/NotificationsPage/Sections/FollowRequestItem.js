@@ -85,9 +85,9 @@ export default function FollowRequestItem(props) {
         `,
         refetchQueries: [{
           query: FETCH_FOLLOW_REQUESTS,
-          // variables: {
-          //   userId: user.sub,
-          // }
+          variables: {
+            userId: user.sub,
+          }
         }],
         variables: {
           userId: user.sub,

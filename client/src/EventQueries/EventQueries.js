@@ -945,6 +945,26 @@ query check_relationship ($userId: String!, $profileId: String!) {
 }
 `
 
+const QUERY_BOTTOM_NAV = gql`
+query fetch_user_nav($userId: String) {
+  users(
+  where: {auth0_id: { _eq: $userId }}
+  ) {
+    id
+    followers_aggregate(where: {status: {_eq: 0}}) {
+      aggregate {
+        count
+      }
+    }
+    notifications_aggregate(where: {seen: {_eq: false}}) {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+`
+
 
 export {
   QUERY_FILTERED_EVENT,
@@ -993,7 +1013,8 @@ export {
   
   SUBSCRIPTION_EVENT_LOCAL_LIST,
   QUERY_ACCEPTED_FRIENDS,
-  QUERY_CHECK_FRIEND
+  QUERY_CHECK_FRIEND,
+  QUERY_BOTTOM_NAV
 };
 
 
