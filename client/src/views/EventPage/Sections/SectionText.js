@@ -73,7 +73,9 @@ export default function SectionText({ eventInfo, client }) {
   }
 
   useEffect(() => {
-    getUserGoingSave();
+    if(user) {
+      getUserGoingSave();
+    }
   },[])
 
   
@@ -99,47 +101,60 @@ export default function SectionText({ eventInfo, client }) {
     formattedDate = moment(eventInfo.start_date, "YYYY-MM-DD").format("MMMM D, YYYY")
   }
 
-  return (
-    <div className={classes.section} style={{paddingTop: 15}}>
-      <GridContainer justify="center">
-        <GridItem xs={12} sm={8} md={8}>
-          <div style={{textAlign: 'center'}}>
-            <h2>
-              <TodayIcon fontSize='large' style={{verticalAlign: 'middle'}}/>
-              {formattedDate}
-            </h2>
-            <div>
-              <h3 style={{marginTop: 0}}>
-                Starts at: {moment(formattedStartTime).format("h:mm A")}
-              </h3>
-              {formattedEndTime}
+  if(user) {
+    return (
+      <div className={classes.section} style={{paddingTop: 15}}>
+        <GridContainer justify="center">
+          <GridItem xs={12} sm={8} md={8}>
+            <div style={{textAlign: 'center'}}>
+              <h2>
+                <TodayIcon fontSize='large' style={{verticalAlign: 'middle'}}/>
+                {formattedDate}
+              </h2>
+              <div>
+                <h3 style={{marginTop: 0}}>
+                  Starts at: {moment(formattedStartTime).format("h:mm A")}
+                </h3>
+                {formattedEndTime}
+              </div>
             </div>
-          </div>
-          <hr />
-          <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
-            <GoingSaveButtons 
-              ifGoing={values.ifGoing}
-              ifSaved={values.ifSaved}
-              client={client}
-              eventId={eventInfo.event_id}
-            />
-          </div>
-          <h3 className={classes.title}>
-            Details
-          </h3>
-          <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
-            {eventInfo.description}
-          </p>
-          <h4>
-            <PlaceIcon style={{verticalAlign: 'top'}}/>
-            {`${eventInfo.location_name}`} <br />
-            <HomeWorkIcon style={{verticalAlign: 'top'}}/>
-            { eventInfo.street ? `${eventInfo.street} ` : ""} <br />
-            <MapIcon style={{verticalAlign: 'top'}}/>
-            {`${eventInfo.city}, ${eventInfo.state}`}
-          </h4>
-        </GridItem>
-      </GridContainer>
-    </div>
-  );
+            <hr />
+            <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
+              <GoingSaveButtons 
+                ifGoing={values.ifGoing}
+                ifSaved={values.ifSaved}
+                client={client}
+                eventId={eventInfo.event_id}
+              />
+            </div>
+            <h3 className={classes.title}>
+              Details
+            </h3>
+            <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
+              {eventInfo.description}
+            </p>
+            <h4>
+              <PlaceIcon style={{verticalAlign: 'top'}}/>
+              {`${eventInfo.location_name}`} <br />
+              <HomeWorkIcon style={{verticalAlign: 'top'}}/>
+              { eventInfo.street ? `${eventInfo.street} ` : ""} <br />
+              <MapIcon style={{verticalAlign: 'top'}}/>
+              {`${eventInfo.city}, ${eventInfo.state}`}
+            </h4>
+          </GridItem>
+        </GridContainer>
+      </div>
+    );
+  }
+  else {
+    return (
+      <div className={classes.section} style={{padding: '10px 15px 15px 15px'}}>
+        <GridContainer justify="center">
+          <GridItem xs={12} sm={12} md={12}>
+            <h3>Sign in for more info</h3>
+          </GridItem>
+        </GridContainer>
+      </div>
+    );
+  }
 }

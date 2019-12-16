@@ -320,6 +320,72 @@ export default function EventPage(props) {
       </div>
     )
   }
+  else if(!user) {
+    const userLink = `/users/${values.user_id}`
+
+    return(
+      <div>
+        <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 50,  left: 22, zIndex: 100}} color="primary">
+                <ChevronLeftIcon/>
+            </Button>
+        <Parallax image={values.cover_url} filter="dark">
+          <div className={classes.container}>
+            
+            <GridContainer justify="center">
+              <GridItem md={10} className={classes.textCenter}>
+                <h1 className={classes.title} style={{fontSize: titleSize, wordWrap: 'break-word'}}>
+                  {values.name}
+                </h1>
+                <h4 className={classes.subtitle}>
+                  Created by: <Link to={userLink}>{values.user_name}</Link>
+                </h4>
+                <br />
+                  <CategoryFragment category={values.category}/>
+                <br />                
+              </GridItem>
+            </GridContainer>
+          </div>
+        </Parallax>
+        <div className={classes.main}>
+          <div className={classes.container}>
+            <SectionText 
+              eventInfo={values}
+              client={props.client}
+            />
+            {/* <SectionComments /> */}
+          </div>
+        </div>
+        {/*<SectionSimilarStories />*/}
+        <Footer
+          content={
+            <div>
+              <div className={classes.left}>
+                <List className={classes.list}>
+                  <ListItem className={classes.inlineBlock}>
+                    <a
+                      href="/home"
+                      className={classes.block}
+                    >
+                      Skedge
+                    </a>
+                  </ListItem>
+                  <ListItem className={classes.inlineBlock}>
+                    <a
+                      href="https://www.creative-tim.com/presentation?ref=mkpr-blog-post"
+                      target="_blank"
+                      className={classes.block}
+                    >
+                      About us
+                    </a>
+                  </ListItem>
+                </List>
+              </div>
+            </div>
+          }
+        />
+      </div>
+    )
+  }
   else {
     const userLink = `/users/${values.user_id}`
 
