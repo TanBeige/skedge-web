@@ -4,19 +4,32 @@ import PropTypes from "prop-types";
 import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItem from '@material-ui/core/ListItem'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider';
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Checkbox from '@material-ui/core/Checkbox';
-import Button from 'components/CustomButtons/Button.js'
+import Button from 'components/CustomButtons/Button.js';
+import Typography from '@material-ui/core/Typography';
+
+import { Link } from 'react-router-dom';
 
 
 import {
     MUTATION_FOLLOW_REQUEST,
     MUTATION_FOLLOW_DELETE,
-    QUERY_CHECK_FRIEND
+    QUERY_CHECK_FRIEND,
+    QUERY_ACCEPTED_FRIENDS
   } from 'EventQueries/EventQueries.js'
 //import "../../styles/App.css";
+
+// Cloudinary setup
+var cloudinary = require('cloudinary/lib/cloudinary').v2
+
+cloudinary.config({
+  cloud_name: "skedge"
+});
+
 
 const ProfileFriendItem = ({
     index,
@@ -29,54 +42,40 @@ const ProfileFriendItem = ({
     // if friendButton = 1, friend; if = 0, Invited, if = -1, not added; if = -2 then current user; 
     const [friendButton, setFriendButton] = useState(-2)
 
-    let currentFriend = null;
-    console.log("Profile User Id: ", profileId)
-    console.log("Current User Id: ", userId)
-    if (friend.friend_one.auth0_id === profileId){
-        currentFriend = friend.friend_two
-    }
-    else {
-        currentFriend = friend.friend_one
-    }
+    const currentFriend = friend
 
-    let maxNameLength = 16
-    console.log("width: ", window.innerWidth)
+    let maxNameLength = 32
     if(window.innerWidth < 400) {
-        maxNameLength = 10
+        maxNameLength = 26
     }
 
-    let friendUserName = `@${currentFriend.name}`
+    let friendUserName = `${currentFriend.name}`
     if(friendUserName.length > maxNameLength) {
         friendUserName = friendUserName.substring(0, maxNameLength);
         friendUserName += "...";
     }
-    console.log(currentFriend)
+    let friendFullName = currentFriend.full_name;
+    if(friendFullName.length > maxNameLength) {
+        friendFullName = friendFullName.substring(0, maxNameLength);
+        friendFullName += "...";
+    }
 
 
     //Handling Friend Removing/Adding
     const handleFriend = () => {
-        let user_one = "";
-        let user_two = "";
-        let action_user = userId;
-    
-        if(userId <= currentFriend.auth0_id) {
-          user_one = userId;
-          user_two = currentFriend.auth0_id;
-        }
-        else {
-          user_one = currentFriend.auth0_id;
-          user_two = userId;
-        }
-        console.log("friend auth: ", currentFriend.auth0_id)
-        console.log("user 1: ", user_one)
-        console.log("user 2: ", user_two)
 
-        if(friendButton === 1) {
+        if(friendButton === 1 || friendButton === 0) {
             client.mutate({
                 mutation: MUTATION_FOLLOW_DELETE,
+                refetchQueries: {
+                    query: QUERY_ACCEPTED_FRIENDS,
+                    variables: {
+                        userId: profileId
+                    }
+                },
                 variables: {
-                    user_one_id: user_one,
-                    user_two_id: user_two
+                    userId: userId,
+                    followingId: profileId
                 }
             }).then(() => {
                 //Change relationship type for button to change
@@ -86,12 +85,16 @@ const ProfileFriendItem = ({
         else if(friendButton === -1) {
             client.mutate({
                 mutation: MUTATION_FOLLOW_REQUEST,
+                refetchQueries: {
+                    query: QUERY_ACCEPTED_FRIENDS,
+                    variables: {
+                        userId: profileId
+                    }
+                },
                 variables: {
                   objects: {
-                    user_one_id: user_one,
-                    user_two_id: user_two,
-                    action_user_id: action_user,
-                    status: 0
+                      user_id: userId,
+                      is_following_id: profileId
                   }
                 }
               }).then(() => {
@@ -104,21 +107,35 @@ const ProfileFriendItem = ({
     // Checks if the current user is friends with this user
     const getFriendStatus = () => {
         if(currentFriend.auth0_id !== userId) {
-            client.query({
-                query: QUERY_CHECK_FRIEND,
-                variables: {
-                    userId: userId,
-                    profileId: currentFriend.auth0_id
+            // client.query({
+            //     query: QUERY_CHECK_FRIEND,
+            //     variables: {
+            //         userId: userId,
+            //         profileId: currentFriend.auth0_id
+            //     }
+            // }).then((data) =>{
+            //     console.log("friend daata: ", data)
+            //     if(data.data.relationship[0]) {
+            //         setFriendButton(data.data.relationship[0].status)
+            //     }
+            //     else {
+            //         setFriendButton(-1)
+            //     }
+            // });
+            const followStatus = currentFriend.followers.find(u => u.user_id === userId)
+            console.log("cuur friend: ", currentFriend.followers)
+            console.log("follow sttts: ", followStatus)
+            if(followStatus) {
+                if(followStatus.status === 1) {
+                    setFriendButton(1)
                 }
-            }).then((data) =>{
-                console.log("friend daata: ", data)
-                if(data.data.relationship[0]) {
-                    setFriendButton(data.data.relationship[0].status)
+                else if(followStatus.status === 0) {
+                    setFriendButton(0)
                 }
-                else {
-                    setFriendButton(-1)
-                }
-            });
+            }
+            else {
+                setFriendButton(-1)
+            }
         }
         else {
             //If current user
@@ -134,7 +151,7 @@ const ProfileFriendItem = ({
         if(friendButton === 1) {
             return (
                 <Button size="sm" onClick={handleFriend}>
-                    Unfriend
+                    Unfollow
                 </Button>
             )
         }
@@ -148,7 +165,7 @@ const ProfileFriendItem = ({
         else if(friendButton === -1) {
             return (
                 <Button size="sm"  color="info" onClick={handleFriend}>
-                    Add Friend
+                    Follow
                 </Button>
             )
         }
@@ -161,15 +178,35 @@ const ProfileFriendItem = ({
     return (
         <Fragment>
             <ListItem key={currentFriend.auth0_id} button style={{width: '100%'}}>
-                <ListItemAvatar>
-                <Avatar
-                    alt={currentFriend.name}
-                    src={currentFriend.picture}
-                    style={{border: '1px solid #02C39A'}}
-                />
-                </ListItemAvatar>
-                <ListItemText id={currentFriend.name} primary={friendUserName} />
-                {placeFriendButton()}
+                <Link to={`/users/${currentFriend.id}`}>
+                    <ListItemAvatar>
+                        <Avatar
+                            alt={currentFriend.name}
+                            src={cloudinary.url(currentFriend.picture, {secure: true, width: 32, height: 32, crop: "fill"})}
+                            style={{border: '1px solid #02C39A'}}
+                        />
+                        </ListItemAvatar>
+                    </Link>
+
+                    <Link to={`/users/${currentFriend.id}`} style={{color: 'black'}}>
+                        <ListItemText
+                            primary={friendUserName}
+                            secondary={
+                                <React.Fragment>
+                                    <Typography
+                                        component="span"
+                                        variant="body2"
+                                        color="textPrimary"
+                                    >
+                                        {friendFullName}
+                                    </Typography>
+                                </React.Fragment>
+                            }
+                        />
+                    </Link>
+                <ListItemSecondaryAction>
+                    {placeFriendButton()}
+                </ListItemSecondaryAction>
             </ListItem>
             {/* <Divider variant="inset" component="li" /> */}
         </Fragment>

@@ -18,7 +18,7 @@ import TurnedInIcon from '@material-ui/icons/TurnedIn';
 // core components
 import NavPillsProfile from "components/NavPills/NavPillsProfile.js";
 import EventCardList from "components/EventCards/EventCardList"
-import ProfileFriendList from './ProfileFriendList.js'
+import ProfileFollowerList from './ProfileFollowerList.js'
 
 import cardProfile2Square from "assets/img/faces/card-profile2-square.jpg";
 
@@ -44,12 +44,14 @@ export default function FriendProfile(props) {
         //if(props.currentUserProfile) {
             return (
                 <div  style={{textAlign: 'center'}}>
-                {/* <Button variant='outlined' style={{width: '8em', marginRight: 5}}>Events</Button> */}
-                <ProfileFriendList 
+                <ProfileFollowerList 
                     client={props.client}
                     userId={props.userId}
                     profileId={props.profileId}
+                    followerCount={props.followerCount}
                 />
+                {/* <Button variant='outlined' style={{width: '8em', marginRight: 5}}>Following</Button> */}
+
                 </div>
             )
         //}
@@ -116,7 +118,7 @@ export default function FriendProfile(props) {
 
     return (
         <div className={classes.profileTabs} style={{marginTop: 10}}>
-            {/* {userFriendsEvents()} */}
+            {userFriendsEvents()}
             {displayPills}
         </div>
   );

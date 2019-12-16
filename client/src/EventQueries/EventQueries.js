@@ -72,6 +72,11 @@ const USER_FRAGMENT = gql`
     verified
     entity
     
+    followers_aggregate(where: {status: {_eq: 1}}) {
+      aggregate {
+        count
+      }
+    }
     followers{
       user_id
       is_following_id
@@ -918,25 +923,24 @@ const QUERY_ACCEPTED_FRIENDS = gql`
         auth0_id
         id
         name
+        full_name
         picture
+        followers{
+          user_id
+          status
+        }
       }
     }
   }
 `;
 
 const QUERY_CHECK_FRIEND = gql`
-query check_relationship ($userId: String!, $profileId: String!) {
-  relationship(
+query check_following ($userId: String!, $profileId: String!) {
+  follower(
     where: {
-      _or: [
-        {_and: [
-          {user_one_id: {_eq: $userId}},
-          {user_two_id: {_eq: $profileId}}
-        ]},
-        {_and: [
-          {user_one_id: {_eq: $profileId}},
-          {user_two_id: {_eq: $userId}}
-        ]},
+      _and: [
+        {user_id: {_eq: $userId}},
+        {is_following_id: {_eq: $profileId}},
       ]
     }
   ) {

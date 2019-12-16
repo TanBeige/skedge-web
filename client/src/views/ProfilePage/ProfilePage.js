@@ -112,6 +112,7 @@ export default function ProfilePage(props, { ...rest }) {
     picture: "",
     verified: false,
     isEntity: false,
+    followerCount: 0,
 
     userEvents: [],
     userReposts: []
@@ -179,7 +180,9 @@ export default function ProfilePage(props, { ...rest }) {
       if(isMounted) {
         setValues({
           ...values,
-          picture: response === "" ? values.picture : response.data.id
+          picture: response === "" ? values.picture : response.data.id,
+          full_name: vals.full_name,
+          biography: vals.biography
         })
         setImageUploading(false)
       }
@@ -195,6 +198,8 @@ export default function ProfilePage(props, { ...rest }) {
     //  Handling relationship. column 1 must be > column 2 for errors. 
     //    For more info check relationship table docs.
     console.log("Follow Request")
+
+    const followStatus = values.isEntity ? 1 : 0;
     
     props.client.mutate({
       mutation: MUTATION_FOLLOW_REQUEST,
@@ -208,16 +213,21 @@ export default function ProfilePage(props, { ...rest }) {
         objects: {
           user_id: user.sub,
           is_following_id: values.auth0Id,
-          status: 0
+          status: followStatus
         }
       }
     }).then(() => {
       //Change relationship type for button to change
       setValues({
         ...values,
-        followingStatus: 0
+        followingStatus: followStatus
       })
-      setStatus(`Followed ${values.name}.`);
+      if(values.isEntity){
+        setStatus(`Followed ${values.name}.`);
+      }
+      else {
+        setStatus(`Sent a follow request to ${values.name}.`);
+      }
     })
   }
 
@@ -270,6 +280,8 @@ export default function ProfilePage(props, { ...rest }) {
         else {
           //Find the relationship between Current User and Profile User
           let followType = 0
+          console.log("dddd", data.data.users[0])
+
 
           //if user has followers
           if(data.data.users[0].followers) {
@@ -305,6 +317,7 @@ export default function ProfilePage(props, { ...rest }) {
             picture: data.data.users[0].picture,
             verified: data.data.users[0].verified,
             auth0Id: data.data.users[0].auth0_id,
+            followerCount: data.data.users[0].followers_aggregate.aggregate.count,
 
             currentUserProfile: (user.sub === data.data.users[0].auth0_id) ? true : false,
 
@@ -357,6 +370,7 @@ export default function ProfilePage(props, { ...rest }) {
           userId={user.sub}
           profileId={values.auth0Id}
           currentUserProfile={values.currentUserProfile}
+          followerCount={values.followerCount}
         />
       )
     }
@@ -395,6 +409,8 @@ export default function ProfilePage(props, { ...rest }) {
                     <IconButton
                       onClick={snackbarClose}
                       color='primary'
+                      key={new Date()}
+
                     >
                       x
                     </IconButton>
@@ -406,6 +422,7 @@ export default function ProfilePage(props, { ...rest }) {
                   followRemove={handleFollowRemove}
                   handleProfileEdit={handleProfileEdit}
                   imageUploading={imageUploading}
+                  isEntity={values.isEntity}
                 />    
                 {profileContent}
               </div>

@@ -325,7 +325,7 @@ export default function EventPage(props) {
 
     return (
       <div>
-        <Header
+        {/* <Header
           brand="Skedge"
           links={<HeaderLinks dropdownHoverColor="info" />}
           fixed
@@ -334,12 +334,13 @@ export default function EventPage(props) {
             height: 300,
             color: "primary"
           }}
-        />
-        <Parallax image={values.cover_url} filter="dark">
-          <div className={classes.container}>
-            <Button onClick={goBack} justIcon round style={{position: 'absolute', top: 75,  left: 22}} color="primary">
+        /> */}
+        <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 50,  left: 22, zIndex: 100}} color="primary">
                 <ChevronLeftIcon/>
             </Button>
+        <Parallax image={values.cover_url} filter="dark">
+          <div className={classes.container}>
+            
             <GridContainer justify="center">
               <GridItem md={10} className={classes.textCenter}>
                 <h1 className={classes.title} style={{fontSize: titleSize, wordWrap: 'break-word'}}>

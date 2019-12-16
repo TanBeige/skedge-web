@@ -129,13 +129,14 @@ export default function ProfileTopSection(props) {
 
   //Follow/Following Button
   const followButton = () => {
+    console.log("following status: ", props.values.followingStatus)
     if (props.values.currentUserProfile) {
       return null;
     }
     else if(props.values.followingStatus === 1) {
       //Unfollow
       return (
-        <Button onClick={handleFollowing} size='sm' style={{marginTop: 10}}>
+        <Button onClick={handleFollowing} size='sm' color='white' style={{marginTop: 10, color: 'black'}}>
           Following
         </Button>
       )
@@ -161,9 +162,11 @@ export default function ProfileTopSection(props) {
     //If not Following or not requesting to follow, Request Follow
     if(vals.followingStatus === -1) {
       props.followInvite();
+
+      const followStatus = props.isEntity ? 1 : 0
       setValues({
         ...vals,
-        followingStatus: 0
+        followingStatus: followStatus
       });
     }
     //If Already Requested to Follow, Remove Follow Request

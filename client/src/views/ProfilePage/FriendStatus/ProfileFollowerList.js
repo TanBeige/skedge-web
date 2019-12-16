@@ -52,7 +52,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const useStyles = makeStyles(style);
 
-export default function ExampleScrolling(props) {
+export default function ProfileFollowerList(props) {
   const [scrollingModal, setScrollingModal] = React.useState(false);
   const classes = useStyles();
 
@@ -66,14 +66,16 @@ export default function ExampleScrolling(props) {
               userId: props.profileId
           }
       }).then((data) => {
-          setFriendData(data.data.relationship);
-          console.log(friendData);
+        setFriendData(data.data.follower);
       })
   }
 
+  const followerText = props.followerCount !== 1 ? `${props.followerCount} Followers` : `${props.followerCount} Follower`
+
   return (
     <div>
-      <Button onClick={friendList} variant='outlined' style={{width: '8em', marginLeft: 5}}>Friends</Button>
+      <Button onClick={friendList} variant='outlined' style={{marginLeft: 5}}>{followerText}</Button>
+      
       <Dialog
         classes={{
           root: `${classes.modalRoot} ${classes.modalRootExample}`,
@@ -114,7 +116,7 @@ export default function ExampleScrolling(props) {
                         <ProfileFriendItem 
                             key={index}
                             index={index}
-                            friend={friend}
+                            friend={friend.user}
                             profileId={props.profileId}
                             userId={props.userId}
                             client={props.client}
