@@ -32,8 +32,8 @@ import {
   QUERY_ACCEPTED_FRIENDS
 } from 'EventQueries/EventQueries.js'
 import { Button } from "@material-ui/core";
-import GridContainer from "AdminDashboard/components/Grid/GridContainer.js";
-import GridItem from "AdminDashboard/components/Grid/GridItem.js";
+import GridContainer from "components/Grid/GridContainer.js";
+import GridItem from "components/Grid/GridItem.js";
 
 const useStyles = makeStyles(profilePageStyle);
 
