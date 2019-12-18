@@ -82,6 +82,17 @@ const USER_FRAGMENT = gql`
       is_following_id
       status
     }
+
+    following_aggregate(where: {status: {_eq: 1}}) {
+      aggregate {
+        count
+      }
+    }
+    following{
+      user_id
+      is_following_id
+      status
+    }
   }
 `;
 
@@ -199,38 +210,39 @@ const REFETCH_USER_INFO = gql`
 `
 
 const FETCH_NOTIFICATIONS = gql`
-  query fetch_notifications($userId: String!) {
-    notifications(where: {user_id: {_eq: $userId}} order_by: {time_created: desc}) {
-      other_user{
-        name
-        id
-        picture
-      }
-      source {
-        name
-        id
-        image {
-          image_uuid
-        }
-        event_like_aggregate{
-          aggregate{
-            count
-          }
-        }
-        shared_event_aggregate{
-          aggregate{
-            count
-          }
-        }
-      }
-      activity_type
-      description
-      other_user_id
-      source_id
-      time_created
-      seen
+subscription fetch_notifications($userId: String!) {
+  notifications(where: {user_id: {_eq: $userId}} order_by: {time_created: desc}) {
+    other_user{
+      name
+      id
+      picture
     }
+    source {
+      name
+      id
+      image {
+        image_uuid
+      }
+      event_like_aggregate{
+        aggregate{
+          count
+        }
+      }
+      shared_event_aggregate{
+        aggregate{
+          count
+        }
+      }
+    }
+    id
+    activity_type
+    description
+    other_user_id
+    source_id
+    time_created
+    seen
   }
+}
 `
 const SEE_NOTIFICATION = gql`
   mutation see_notification($id: Int) {
@@ -244,7 +256,7 @@ const SEE_NOTIFICATION = gql`
 `
 
 const FETCH_FOLLOW_REQUESTS = gql`
-  query follow_requests($userId: String, $limit: Int, $offset: Int) {
+  subscription follow_requests($userId: String) {
     follower(
       where: { 
         _and: [
@@ -252,8 +264,6 @@ const FETCH_FOLLOW_REQUESTS = gql`
           {status: {_eq: 0}}
         ]
       }
-      limit: $limit
-      offset: $offset
     ){
       user{
         ...UserSearchFragment
@@ -918,8 +928,35 @@ const QUERY_ACCEPTED_FRIENDS = gql`
           {status: {_eq: 1}}
         ]
       }
+      order_by: {user: {name: asc}}
     ) {
       user{
+        auth0_id
+        id
+        name
+        full_name
+        picture
+        followers{
+          user_id
+          status
+        }
+      }
+    }
+  }
+`;
+
+const QUERY_ACCEPTED_FOLLOWING = gql`
+  query fetch_accepted_following($userId: String!) {
+    follower(
+      where: {
+        _and: [
+          {user_id: {_eq: $userId}},
+          {status: {_eq: 1}}
+        ]
+      }
+      order_by: {is_following: {name: asc}}
+    ) {
+      is_following{
         auth0_id
         id
         name
@@ -950,9 +987,9 @@ query check_following ($userId: String!, $profileId: String!) {
 `
 
 const QUERY_BOTTOM_NAV = gql`
-query fetch_user_nav($userId: String) {
+subscription fetch_user_nav($userId: String) {
   users(
-  where: {auth0_id: { _eq: $userId }}
+    where: {auth0_id: { _eq: $userId }}
   ) {
     id
     followers_aggregate(where: {status: {_eq: 0}}) {
@@ -1017,6 +1054,7 @@ export {
   
   SUBSCRIPTION_EVENT_LOCAL_LIST,
   QUERY_ACCEPTED_FRIENDS,
+  QUERY_ACCEPTED_FOLLOWING,
   QUERY_CHECK_FRIEND,
   QUERY_BOTTOM_NAV
 };

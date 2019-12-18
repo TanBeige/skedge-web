@@ -266,7 +266,6 @@ export default function SectionPills(props) {
                       inputProps={{
                         onChange: handleFilters("searchText"),
                         onKeyPress: (ev) => {
-                          console.log(`Pressed keyCode ${ev.key}`);
                           if (ev.key === 'Enter') {
                             // Do code here
                             ev.preventDefault();

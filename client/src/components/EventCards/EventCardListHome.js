@@ -123,7 +123,6 @@ export default function EventCardListHome(props) {
     }
 
     // Replaces ComponentDidMount() in a Functional Component
-    console.log("loaded all: ", values.loadedAllEvents)
     if (values.loadedAllEvents) {
       futureEvents = (
         <FutureContainer
@@ -180,12 +179,10 @@ export default function EventCardListHome(props) {
           }
         })
         .then(data => {
-          console.log(props.filter.type)
           if (data.data.events.length > 0) {
             //const mergedEvents = values.events.concat(data.data.events);
             // update state with new events
             if(isMounted) {
-              console.log("Home Data Events:", data.data.events)
               setValues({
                 ...values,
                 events: data.data.events,
@@ -199,7 +196,6 @@ export default function EventCardListHome(props) {
           }
           else {
             if(isMounted) {
-              console.log("there are no events")
               setValues({
                 ...values,
                 events: data.data.events,

@@ -78,7 +78,7 @@ export default function NotificationsPage(props) {
 
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div className={classes.container}>
-            <Card plain>
+            <Card plain >
               <CardBody plain>
                 {/* <h3 className={classes.cardTitle}>Notifications</h3> */}
                 <Tabs
@@ -114,6 +114,7 @@ export default function NotificationsPage(props) {
                 <SwipeableViews
                   index={active}
                   onChangeIndex={handleChangeIndex}
+                  style={{height: '65vh'}}
                 >
                   <NotificationList 
                     client={props.client}

@@ -21,7 +21,6 @@ const useStyles = makeStyles(styles);
 
 export default function NavPillsProfile(props) {
   const [active, setActive] = React.useState(props.active);
-  console.log("Tab: ", active)
   const handleChange = (event, active) => {
     setActive(active);
   };

@@ -104,7 +104,6 @@ export default function UserSearchList(props) {
       }
     }).then((data) => {
       //Change relationship type for button to change
-      console.log(data)
       if(isMounted) {
         setFollowStatus(-1);
       }
@@ -130,7 +129,6 @@ export default function UserSearchList(props) {
           else{
             // If user is not following profile confirmed
             followType = -1;
-            console.log("Not Follinwg")
             setFollowStatus(followType)
           }
         }

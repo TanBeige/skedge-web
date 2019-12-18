@@ -41,6 +41,10 @@ export default function TodoList(props) {
         });
     }
 
+    const loadMoreTodos = () => {
+        console.log("load more")
+    }
+
     useEffect(() => {
         // Fetch Todos on first render of page
         getTodos();
@@ -49,20 +53,27 @@ export default function TodoList(props) {
     return (
         <div>
             <h1>Things To Do:</h1>
-            <ol>
-                {
-                    values.todos.map((todo) => {
-                        return(
-                            <Fragment key={todo.id}>
-                                <li>
-                                    <h4>{todo.title}</h4>
-                                    <h5>{todo.text}</h5>
-                                </li>
-                            </Fragment>
-                        )
-                    })
-                }
-            </ol>
+            <InfiniteScroll
+                dataLength={values.todoLength}
+                next={loadMoreTodos}
+                hasMore={!values.loadedAllEvents}
+                loader={<div>Loading...</div>}
+            >
+                <ol>
+                    {
+                        values.todos.map((todo) => {
+                            return(
+                                <Fragment key={todo.id}>
+                                    <li>
+                                        <h4>{todo.title}</h4>
+                                        <h5>{todo.text}</h5>
+                                    </li>
+                                </Fragment>
+                            )
+                        })
+                    }
+                </ol>
+            </InfiniteScroll>
         </div>
     )
 }

@@ -17,8 +17,9 @@ import TurnedInIcon from '@material-ui/icons/TurnedIn';
 
 // core components
 import NavPillsProfile from "components/NavPills/NavPillsProfile.js";
-import EventCardList from "components/EventCards/EventCardList"
-import ProfileFollowerList from './ProfileFollowerList.js'
+import EventCardList from "components/EventCards/EventCardList";
+import ProfileFollowerList from './ProfileFollowerList.js';
+import ProfileFollowingList from './ProfileFollowingList.js';
 
 import cardProfile2Square from "assets/img/faces/card-profile2-square.jpg";
 
@@ -31,6 +32,8 @@ import {
   QUERY_ACCEPTED_FRIENDS
 } from 'EventQueries/EventQueries.js'
 import { Button } from "@material-ui/core";
+import GridContainer from "AdminDashboard/components/Grid/GridContainer.js";
+import GridItem from "AdminDashboard/components/Grid/GridItem.js";
 
 const useStyles = makeStyles(profilePageStyle);
 
@@ -43,16 +46,24 @@ export default function FriendProfile(props) {
     const userFriendsEvents = () => {
         //if(props.currentUserProfile) {
             return (
-                <div  style={{textAlign: 'center'}}>
-                <ProfileFollowerList 
-                    client={props.client}
-                    userId={props.userId}
-                    profileId={props.profileId}
-                    followerCount={props.followerCount}
-                />
-                {/* <Button variant='outlined' style={{width: '8em', marginRight: 5}}>Following</Button> */}
-
-                </div>
+                <GridContainer justify='center' style={{textAlign: 'center'}}>
+                    {/* <GridItem xs={4}> */}
+                        <ProfileFollowerList 
+                            client={props.client}
+                            userId={props.userId}
+                            profileId={props.profileId}
+                            followerCount={props.followerCount}
+                        />
+                    {/* </GridItem>
+                    <GridItem xs={4}> */}
+                        <ProfileFollowingList 
+                            client={props.client}
+                            userId={props.userId}
+                            profileId={props.profileId}
+                            followingCount={props.followingCount}
+                        />
+                    {/* </GridItem> */}
+                </GridContainer>
             )
         //}
     }

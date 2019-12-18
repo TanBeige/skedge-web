@@ -22,7 +22,6 @@ export default function SnackbarContent(props) {
   const closeAlert = () => {
     setAlert(null);
   };
-  console.log("snackbar opened")
   if (close !== undefined) {
     action = [
       <IconButton

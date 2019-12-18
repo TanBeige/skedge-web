@@ -11,7 +11,6 @@ import defaultAvatar from "assets/img/placeholder.jpg";
 export default function ImageUpload(props) {
   //const [file, setFile] = React.useState(null);
   const file = props.bannerImg;
-  console.log("file: ", file)
   const [imagePreviewUrl, setImagePreviewUrl] = React.useState(
     props.avatar ? defaultAvatar : defaultImage
   );

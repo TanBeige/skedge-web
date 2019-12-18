@@ -63,7 +63,8 @@ const ProfileFriendItem = ({
 
     //Handling Friend Removing/Adding
     const handleFriend = () => {
-
+        //If user is Already Following, unfollow
+        console.log("unfollowing")
         if(friendButton === 1 || friendButton === 0) {
             client.mutate({
                 mutation: MUTATION_FOLLOW_DELETE,
@@ -82,7 +83,9 @@ const ProfileFriendItem = ({
                 setFriendButton(-1);
             })
         }
+        //If user is  not Following, Follow/Send Request
         else if(friendButton === -1) {
+            console.log("userId: ", userId, "\n profileId: ", profileId)
             client.mutate({
                 mutation: MUTATION_FOLLOW_REQUEST,
                 refetchQueries: {

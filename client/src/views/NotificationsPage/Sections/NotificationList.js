@@ -11,6 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import NotificationListItem from './NotificationListItem.js';
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js';
 
+//React-Apollo Graphql
+import { Subscription } from "react-apollo";
+
 import {
     FETCH_NOTIFICATIONS,
     QUERY_BOTTOM_NAV
@@ -37,40 +40,39 @@ export default function NotificationList(props) {
         notifications: []
     })
 
-    useEffect(() => {
-        props.client.query({
-            query: FETCH_NOTIFICATIONS,
-            refetchQueries: [{
-                query: QUERY_BOTTOM_NAV,
-                variables: {userId: user.sub}
-            }],
-            variables: {
-                userId: user.sub
-            }
-        }).then((data) => {
-            setValues({
-                ...values,
-                notifications: data.data.notifications
-            })
-        }).catch(error => {
-            alert("Could not retrieve your notifications currently, try again later or report this to info@theskedge.come");
-            console.log(error);
-        })
-    }, [])
-
     return (
-        <List className={classes.root}>
-            {
-                values.notifications.map((notif, index) => {
-                    return(
-                        <NotificationListItem 
-                            key={index}
-                            notification={notif}
-                            client={props.client}
-                        />
-                    )
-                })
+        <Subscription subscription={FETCH_NOTIFICATIONS} variables={{userId: user.sub}} >
+          {({ loading, error, data }) => {
+            if (loading) {
+              return <TextDisplay text='Loading. Please wait...'/>
             }
-        </List>
-    );
+            if (error) {
+                console.log(error)
+                return <TextDisplay text='Error loading notifications.'/>
+            }
+            console.log(data)
+            return (
+                <List className={classes.root}>
+                    {data.notifications.map((notif, index) => {
+                        return(
+                            <NotificationListItem 
+                                key={index}
+                                notification={notif}
+                                client={props.client}
+                            />
+                        )
+                    })}
+                </List>
+            );
+          }}
+        </Subscription>
+      );
+}
+
+function TextDisplay({text}) {
+    return(
+        <div style={{textAlign: 'center', fontSize: 20, marginTop: 25}}>
+            {text}
+        </div>
+    )
 }

@@ -6,6 +6,9 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchIcon from '@material-ui/icons/Search';
 
+//React-Apollo Graphql
+import { Subscription } from "react-apollo";
+
 import {
     FETCH_FOLLOW_REQUESTS
 } from 'EventQueries/EventQueries.js';
@@ -19,126 +22,83 @@ export default function FriendRequestsList(props) {
 
     const { user } = useAuth0();
 
-    const [values, setValues] = useState({
-        usersLength: 0,
-        hasMoreUsers: true,
-        limit: 15
-    })
-
-    const [usersList, setUsersList] = useState([])
-    const [isSearch, setIsSearch] = useState(false)
-    const [initialLoad, setInitialLoad] = useState(false)
-
-    // GraphQL fetch users
-    const getUsers = () => {
-        setIsSearch(true);
-        setInitialLoad(true);
-        props.client.query({
-            query: FETCH_FOLLOW_REQUESTS,
-            variables: {
-                userId: user.sub,
-                limit: values.limit,
-                offset: values.usersLength
-            }
-        }).then((data) => {
-            console.log("datatatata", data)
-
-            if(isMounted) {
-                setUsersList(data.data.follower);
-                setValues({
-                    ...values,
-                    hasMoreUsers: data.data.follower.length < values.limit ? false : true,
-                    usersLength: data.data.follower.length
-                })
-            }
-            setIsSearch(false);
-            setInitialLoad(false);
-        }).catch(error => {
-            console.log(error)
-            if(isMounted) {
-                setIsSearch(false);
-                setInitialLoad(false);
-            }
-        })
-    }
-
-    const loadMoreUsers = () => {
-        console.log("loading more users")
-        setIsSearch(true);
-        props.client.query({
-            query: FETCH_FOLLOW_REQUESTS,
-            variables: {
-                userId: user.sub,
-                limit: values.limit,
-                offset: values.usersLength
-            }
-        }).then((data) => {
-            console.log("ass", isMounted)
-            console.log(data.data.follower)
-            if(isMounted && data.data.follower.length > 0) {
-
-                //const tempUsers = data.data.follower.filter(val => !users.includes(val));
-                //let mergedUsers = users.concat(tempUsers);
-                //mergedUsers = mergedUsers.filter(val => !users.includes(val));
-                const mergedUsers = usersList.concat(data.data.follower);
-
-
-                console.log(data.data.follower)
-                setUsersList(mergedUsers);
-                setValues({
-                    ...values,
-                    hasMoreUsers: data.data.follower.length < values.limit ? false : true,
-                    usersLength: mergedUsers.length
-                })
-                setIsSearch(false);
-            }
-        }).catch(error => {
-            console.log(error)
-            if(isMounted) {
-                setIsSearch(false);
-            }
-        })
-    }
-
     // Use Effect Function
     useEffect(() => {
         isMounted = true;
-
-        
-        getUsers();
-
+        // getUsers();
         return () => {
             isMounted = false;
         }
     }, [props.searchText])
 
-    if(initialLoad) {
-        return <div style={{textAlign: 'center', marginTop: 20}}><CircularProgress size={20} color='primary'/></div>
-    }
-    else{
+    // if(initialLoad) {
+    //     return <div style={{textAlign: 'center', marginTop: 20}}><CircularProgress size={20} color='primary'/></div>
+    // }
+
         return (
-            <InfiniteScroll
-            dataLength={values.usersLength}
-            next={loadMoreUsers}
-            hasMore={values.hasMoreUsers && !isSearch}
-            scrollThreshold={0.95}
-            loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
-            style={{overflow: 'none'}}
-            >   
-                <List>
-                    {
-                        usersList.map((user, index) => {
-                            return (
-                                <FollowRequestItem
-                                    key={index} 
-                                    userItem={user.user}
-                                    client={props.client}
-                                />
-                            )
-                        })
+            // <InfiniteScroll
+            // dataLength={values.usersLength}
+            // next={loadMoreUsers}
+            // hasMore={values.hasMoreUsers && !isSearch}
+            // scrollThreshold={0.95}
+            // loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
+            // style={{overflow: 'none'}}
+            // >   
+            //     <List>
+            //         {
+            //             data.follower.map((user, index) => {
+            //                 return (
+            //                     <FollowRequestItem
+            //                         key={index} 
+            //                         userItem={user.user}
+            //                         client={props.client}
+            //                     />
+            //                 )
+            //             })
+            //         }
+            //     </List>
+            // </InfiniteScroll>
+
+            <Subscription subscription={FETCH_FOLLOW_REQUESTS} variables={{userId: user.sub}} >
+                {({ loading, error, data }) => {
+                    if (loading) {
+                        return <TextDisplay text='Loading. Please wait...'/>
                     }
-                </List>
-            </InfiniteScroll>
+                    if (error) {
+                        console.log(error)
+                        return <TextDisplay text='Error loading requests.'/>
+                    }
+                    console.log(data)
+                    if(data.follower.length === 0) {
+                        return <TextDisplay text='No requests at this time.'/>
+                    }
+                    else {
+                        return (
+                            <List>
+                                {
+                                    data.follower.map((user, index) => {
+                                        return(
+                                            <FollowRequestItem
+                                                key={index} 
+                                                userItem={user.user}
+                                                client={props.client}
+                                            />
+                                        )
+                                    })                                
+                                }
+                            </List>
+                        );
+                    }
+                }}
+            </Subscription>
         )
-    }
+    
+}
+
+function TextDisplay({text}) {
+    return(
+        <div style={{textAlign: 'center', fontSize: 20, marginTop: 25}}>
+            {text}
+        </div>
+    )
 }

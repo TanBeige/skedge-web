@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { useAuth0 } from 'Authorization/react-auth0-wrapper';
+import Button from "components/CustomButtons/Button.js";
+import GoingSaveButtons from './EventPageComponents/GoingSaveButtons.js';
 
-import GoingSaveButtons from './EventPageComponents/GoingSaveButtons.js'
 // @material-ui/icons
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -19,6 +19,12 @@ import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import MapIcon from '@material-ui/icons/Map';
 // style components
 import sectionTextStyle from "assets/jss/material-kit-pro-react/views/blogPostSections/sectionTextStyle.js";
+
+//Auth0 Wrapper
+import { useAuth0 } from 'Authorization/react-auth0-wrapper';
+
+//Google Analytics
+import ReactGA from 'react-ga';
 
 // Queries
 import {
@@ -37,7 +43,7 @@ const useStyles = makeStyles(sectionTextStyle);
 
 export default function SectionText({ eventInfo, client }) {
 
-  const { user } = useAuth0();
+  const { user, loginWithRedirect } = useAuth0();
 
   const classes = useStyles();
   const imgClasses = classNames(
@@ -51,6 +57,18 @@ export default function SectionText({ eventInfo, client }) {
     ifGoing: false,
     ifSaved: false
   })
+  
+  //Record if the user signs up/in
+  const handleLogin = () => {
+    //Google Analytics Record when someone Clicks this
+    ReactGA.initialize('UA-151937222-1');
+    ReactGA.event({
+      category: 'User',
+      action: 'Created an Account/Logged In'
+    });
+    //Then Login/Sign up
+    loginWithRedirect({})
+  }
 
 
   // Getting new queries so we can refetch
@@ -152,6 +170,12 @@ export default function SectionText({ eventInfo, client }) {
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={12}>
             <h3>Sign in for more info</h3>
+            <Button
+              color="primary"
+              onClick={handleLogin}
+            >
+              Login or Sign Up
+            </Button>
           </GridItem>
         </GridContainer>
       </div>

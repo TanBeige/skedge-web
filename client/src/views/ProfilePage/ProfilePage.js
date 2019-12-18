@@ -318,6 +318,7 @@ export default function ProfilePage(props, { ...rest }) {
             verified: data.data.users[0].verified,
             auth0Id: data.data.users[0].auth0_id,
             followerCount: data.data.users[0].followers_aggregate.aggregate.count,
+            followingCount: data.data.users[0].following_aggregate.aggregate.count,
 
             currentUserProfile: (user.sub === data.data.users[0].auth0_id) ? true : false,
 
@@ -371,6 +372,7 @@ export default function ProfilePage(props, { ...rest }) {
           profileId={values.auth0Id}
           currentUserProfile={values.currentUserProfile}
           followerCount={values.followerCount}
+          followingCount={values.followingCount}
         />
       )
     }

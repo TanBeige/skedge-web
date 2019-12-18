@@ -38,7 +38,6 @@ const tableButtonSelectedStyle = {
 export default function NavPillsSearch(props) {
   const [active, setActive] = React.useState(props.active);
   const [tableValue, setTableValue] = React.useState(0);
-  console.log("Tab: ", active)
   const handleChange = (event, active) => {
     setActive(active);
   };

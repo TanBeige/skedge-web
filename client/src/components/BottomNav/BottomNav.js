@@ -11,6 +11,8 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import Badge from '@material-ui/core/Badge';
 
+//React-Apollo Graphql
+import { Subscription } from "react-apollo";
 
 import gql from 'graphql-tag';
 import './PrimaryNav.css';
@@ -111,8 +113,6 @@ class PrimaryNav extends Component {
   }
 
   componentDidMount() {
-    console.log("Mounting BottomNav")
-
     if (this.props.location.pathname === "/create" || this.props.location.pathname === "/" || this.props.location.pathname === "/error-page") {
       this.setState({
         showBar: false
@@ -134,14 +134,20 @@ class PrimaryNav extends Component {
     //let newPathMap = [];
     if(this.props.client) {
         this.props.client.query({
-            query: QUERY_BOTTOM_NAV,
+            query: gql`
+              query fetch_user_nav_id($userId: String) {
+                users(
+                  where: {auth0_id: { _eq: $userId }}
+                ) {
+                  id
+                }
+              }
+            `,
             variables: {
               userId: this.props.userId
             }
         }).then((data) => {
-          console.log(data.data.users[0].notifications_aggregate.aggregate.count)
             if(data.data.users[0]){
-
               //Set State variable
               this.setState({
                   pathMap: [
@@ -151,7 +157,7 @@ class PrimaryNav extends Component {
                       '/notifications',
                       `/users/${data.data.users[0].id}`
                   ],
-                  notifs: (data.data.users[0].followers_aggregate.aggregate.count + data.data.users[0].notifications_aggregate.aggregate.count)
+                  //notifs: (data.data.users[0].followers_aggregate.aggregate.count + data.data.users[0].notifications_aggregate.aggregate.count)
               })
 
               //Set current Page View
@@ -185,19 +191,36 @@ class PrimaryNav extends Component {
     const {value, pathMap, showBar} = this.state;
     if (showBar) {
       return (
-          <ThemeProvider theme={theme}>
-              <BottomNavigation
+        <ThemeProvider theme={theme}>
+          <Subscription subscription={QUERY_BOTTOM_NAV} variables={{userId: this.props.userId}} >
+            {({ loading, error, data }) => {
+              let notifNums = 0;
+              if (loading) {
+                notifNums = 0;
+              }
+              else if (error) {
+                notifNums = 0;
+                console.log("Navbar Error: ",error)
+              } 
+              else {
+                notifNums = (data.users[0].followers_aggregate.aggregate.count + data.users[0].notifications_aggregate.aggregate.count)
+              }
+              return (
+                <BottomNavigation
                   value={value}
                   onChange={this.handleChange}
                   className="nav primary"
-              >
+                >
                   <BottomNavigationAction label="Feeds" icon={<DynamicFeedIcon />} component={Link} to={pathMap[0]} />
                   <BottomNavigationAction label="Search" icon={<SearchIcon />} component={Link} to={pathMap[1]} />
                   <BottomNavigationAction label="Create" icon={<AddCircleOutlineIcon />} component={Link} to={pathMap[2]} />
-                  <BottomNavigationAction label="Notifications" icon={<Badge badgeContent={this.state.notifs} max={999} overlap="circle" color="secondary"><NotificationsIcon /></Badge>} component={Link} to={pathMap[3]} />
+                  <BottomNavigationAction label="Notifications" icon={<Badge badgeContent={notifNums} max={999} overlap="circle" color="secondary"><NotificationsIcon /></Badge>} component={Link} to={pathMap[3]} />
                   <BottomNavigationAction label="Profile" icon={<AccountCircleIcon />} component={Link} to={pathMap[4]} />
-              </BottomNavigation>
-          </ThemeProvider>
+                </BottomNavigation>
+              );
+            }}
+          </Subscription>
+        </ThemeProvider>
       );
     }
     else {

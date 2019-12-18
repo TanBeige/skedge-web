@@ -188,7 +188,6 @@ export default function EventCardListProfile(props) {
           }
           else {
             if(isMounted) {
-              console.log("there are no events")
               setValues({
                 ...values,
                 events: data.data.events,

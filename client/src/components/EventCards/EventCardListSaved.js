@@ -103,9 +103,6 @@ export default function EventCardListSaved(props) {
 
       const totalEventsPrevious = values.eventsLength;
 
-      console.log("Loading More");
-      console.log("Loaded All: ", values.loadedAllEvents)
-
       client
         .query({
             query: FETCH_SAVED_EVENTS,

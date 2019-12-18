@@ -46,7 +46,6 @@ const FriendItem = ({
 
     const checkBox = () => {
         setIsChecked(!isChecked);
-        console.log(follower.auth0_id)
         handleChange(follower.auth0_id);
     }
 

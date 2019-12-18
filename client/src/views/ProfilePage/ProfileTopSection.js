@@ -192,7 +192,7 @@ export default function ProfileTopSection(props) {
   (
     <CustomInput 
       id="regular"
-      labelText="Name"
+      labelText="Full Name"
       inputProps={{
         value:  vals.full_name,
       }}

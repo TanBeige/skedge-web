@@ -31,7 +31,7 @@ import Close from "@material-ui/icons/Close";
 //import Button from "components/CustomButtons/Button.js";
 import Button from "@material-ui/core/Button";
 import {
-    QUERY_ACCEPTED_FRIENDS
+    QUERY_ACCEPTED_FOLLOWING
 } from 'EventQueries/EventQueries.js'
 
 import modalStyle from "assets/jss/material-kit-pro-react/modalStyle.js";
@@ -61,7 +61,7 @@ export default function ProfileFollowerList(props) {
   const friendList = () => {
       setScrollingModal(true)
       props.client.query({
-          query: QUERY_ACCEPTED_FRIENDS,
+          query: QUERY_ACCEPTED_FOLLOWING,
           variables: {
               userId: props.profileId
           }
@@ -70,17 +70,17 @@ export default function ProfileFollowerList(props) {
       })
   }
 
-  const followerText = props.followerCount !== 1 ? `${props.followerCount} Followers` : `${props.followerCount} Follower`
+  const followerText = `${props.followingCount} Following`;
 
   return (
     <div>
-      <Button 
-        onClick={friendList} 
-        simple
-        style={{width: '7em', marginRight: 5}}
-      >
-          {followerText}
-      </Button>
+        <Button
+            onClick={friendList}
+            simple
+            style={{width: '7em'}}
+        >
+            {followerText}
+        </Button>
       
       <Dialog
         classes={{
@@ -108,7 +108,7 @@ export default function ProfileFollowerList(props) {
             {" "}
             <Close className={classes.modalClose} />
           </Button>
-          <h4 className={classes.modalTitle}>Followers</h4>
+          <h4 className={classes.modalTitle}>Following</h4>
         </DialogTitle>
         <DialogContent
           id="classic-modal-slide-description"
@@ -118,13 +118,12 @@ export default function ProfileFollowerList(props) {
             <List style={{width: '100%'}}>  
             {
                 friendData.map((friend, index) => {
-                  console.log(friend)
                     return(
                         <ProfileFriendItem 
                             key={index}
                             index={index}
-                            friend={friend.user}
-                            profileId={friend.user.auth0_id}
+                            friend={friend.is_following}
+                            profileId={friend.is_following.auth0_id}
                             userId={props.userId}
                             client={props.client}
                         />

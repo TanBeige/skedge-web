@@ -11,10 +11,11 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 import { Link } from "react-router-dom"
 
+import IconButton from '@material-ui/core/IconButton';
 
-
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import RenewIcon from '@material-ui/icons/Autorenew'
+import DeleteIcon from '@material-ui/icons/Delete';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { Button } from '@material-ui/core';
 
 import gql from 'graphql-tag';
@@ -80,15 +81,14 @@ export default function FollowRequestItem(props) {
             }
           ){
             affected_rows
+            returning {
+              status
+              user_id
+              is_following_id
+            }
           }
         }
         `,
-        refetchQueries: [{
-          query: FETCH_FOLLOW_REQUESTS,
-          variables: {
-            userId: user.sub,
-          }
-        }],
         variables: {
           userId: user.sub,
           otherUser: userItem.auth0_id,
@@ -129,23 +129,17 @@ export default function FollowRequestItem(props) {
 
   // If already friends, remove friend
   const handleFollowRemove = () => {
-    console.log("Removing Friend")
-    
+    console.log("Removing Friend");
+
     props.client.mutate({
       mutation: MUTATION_FOLLOW_DELETE,
-      refetchQueries: [{
-        query: FETCH_FOLLOW_REQUESTS,
-        // variables: {
-        //   userId: user.sub,
-        // }
-      }],
       variables: {
-          userId: user.sub,
-          followingId: userItem.auth0_id,
+          userId: userItem.auth0_id,
+          followingId: user.sub,
       }
     }).then((data) => {
-      //Change relationship type for button to change
       console.log(data)
+      //Change relationship type for button to change
       setFollowing(-1);
     })
   }
@@ -154,10 +148,7 @@ export default function FollowRequestItem(props) {
     // Use Effect Function
     useEffect(() => {
         isMounted = true;
-        console.log(userItem)
-
         const isFollowing = userItem.followers.some(u => u.user_id === user.sub);
-        console.log(`${userItem.name}: ${isFollowing}`)
         if(userItem.followers) {
             setFollowing(isFollowing)
         }
@@ -176,16 +167,21 @@ export default function FollowRequestItem(props) {
     let followButton = "";
     if(!followAccepted) {
       followButton = (
-        <Button variant='outlined' onClick={handleFollowAccept}>
-            Accept
-        </Button>
+        <Fragment>
+          <IconButton edge="end" aria-label="accept" onClick={handleFollowAccept}>
+            <CheckCircleOutlineIcon fontSize='large'/>
+          </IconButton>
+          <IconButton edge="end" aria-label="delete" onClick={handleFollowRemove}>
+            <DeleteIcon fontSize='large'/>
+          </IconButton>
+        </Fragment>
         )
     }
     else {
       followButton = (
-        <Button variant='outlined'>
-            Accepted!
-        </Button>
+        <IconButton edge="end" aria-label="accepted" onClick={handleFollowAccept}>
+          <CheckCircleIcon fontSize='large'/>
+        </IconButton>
         )
     }
     // else if(!following){ 
