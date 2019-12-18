@@ -29,17 +29,20 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 // core components
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
-import Parallax from "components/Parallax/Parallax.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import Footer from "components/Footer/Footer.js";
-import Table from "components/Table/Table.js";
-import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import { ThemeProvider } from '@material-ui/styles';
 
 import shoppingCartStyle from "assets/jss/material-kit-pro-react/views/shoppingCartStyle.js";
+
+import { Subscription } from "react-apollo";
+
+import {
+  FETCH_FOLLOW_REQUESTS,
+  SUBSCRIBE_USER_EVENT_INVITES,
+  SUBSCRIBE_ALL_NOTIFICATIONS
+} from 'EventQueries/EventQueries.js';
+
 
 const useStyles = makeStyles(shoppingCartStyle);
 const theme = createMuiTheme({
@@ -96,6 +99,7 @@ export default function NotificationsPage(props) {
             <Card plain >
               <CardBody plain>
                 {/* <h3 className={classes.cardTitle}>Notifications</h3> */}
+                <Subscription subscription={FETCH_FOLLOW_REQUESTS} variables={{userId: user.sub}} >
                 <Tabs
                   value={active}
                   onChange={handleChange}
@@ -125,6 +129,7 @@ export default function NotificationsPage(props) {
                     changeRequestNums={changeRequestNums}
                   />
                 </SwipeableViews>
+                </Subscription>
               </CardBody>
             </Card>
           </div>

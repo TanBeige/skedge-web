@@ -325,7 +325,8 @@ const handleLocalOrPrivate = (type) => {
     let newGuests = [];
     for(i = 0; i < values.guests.length; i++){
         newGuests.push({
-          invited_id : values.guests[i]
+          invited_id: values.guests[i],
+          inviter_id: user.sub
         });
     }
 
