@@ -129,7 +129,6 @@ export default function ProfileTopSection(props) {
 
   //Follow/Following Button
   const followButton = () => {
-    console.log("following status: ", props.values.followingStatus)
     if (props.values.currentUserProfile) {
       return null;
     }

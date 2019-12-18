@@ -76,7 +76,7 @@ export default function ProfileFollowerList(props) {
     <div>
       <Button 
         onClick={friendList} 
-        simple
+        // simple
         style={{width: '7em', marginRight: 5}}
       >
           {followerText}

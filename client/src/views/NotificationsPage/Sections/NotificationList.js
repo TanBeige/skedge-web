@@ -40,6 +40,11 @@ export default function NotificationList(props) {
         notifications: []
     })
 
+    //Change notification badge number in Tab
+    const handleNumberChange = (num) => {
+      props.changeNotifNums(num);
+    }
+
     return (
         <Subscription subscription={FETCH_NOTIFICATIONS} variables={{userId: user.sub}} >
           {({ loading, error, data }) => {
@@ -50,7 +55,8 @@ export default function NotificationList(props) {
                 console.log(error)
                 return <TextDisplay text='Error loading notifications.'/>
             }
-            console.log(data)
+            //handleNumberChange(data.notifications.length)
+
             return (
                 <List className={classes.root}>
                     {data.notifications.map((notif, index) => {

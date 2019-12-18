@@ -48,8 +48,6 @@ export default function NotificationListItem(props) {
 
     const unseenColor = 'lightblue';
 
-    console.log("test")
-
     useEffect(() => {
         props.client.mutate({
             mutation:SEE_NOTIFICATION,
@@ -60,24 +58,6 @@ export default function NotificationListItem(props) {
     })
 
     const likeNotif = () => {
-
-        // Edit Bio
-        // let eventBio = ""
-        // if(notification.description === "" || !values.description) {
-        //     eventBio = <i>There is no bio.</i>
-        // }
-        // else if(values.description.length > bioMaxLength) {
-        //     eventBio += values.description.substring(0, bioMaxLength);
-        //     eventBio += "..."
-        // }
-        // else {
-        //     eventBio = values.description;
-        // }
-        // setValues({
-        //     ...values,
-        //     description: eventBio
-        // })
-
         return (
             <Fragment key={notification.id}>
                 <ListItem style={{paddingLeft: 10, paddingRight: 0, backgroundColor: notification.seen ? 'white' : unseenColor}}>

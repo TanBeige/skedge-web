@@ -14,6 +14,8 @@ import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "@material-ui/core/Tooltip";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
+import Badge from '@material-ui/core/Badge';
+
 
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
@@ -21,6 +23,9 @@ import Close from "@material-ui/icons/Close";
 import Remove from "@material-ui/icons/Remove";
 import Add from "@material-ui/icons/Add";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
+import NotificationsIcon from '@material-ui/icons/Notifications';
+
+
 // core components
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
@@ -57,6 +62,16 @@ export default function NotificationsPage(props) {
     setActive(index);
   };
 
+  //For icon badge that displays how many notifications/requests you have
+  const [notifNums, setNotifNums] = useState(0)
+  const changeNotifNums = (num) => {
+    setNotifNums(num)
+  }
+  const [requestNums, setRequestNums] = useState(0)
+  const changeRequestNums = (num) => {
+    setRequestNums(num)
+  }
+
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
@@ -82,33 +97,17 @@ export default function NotificationsPage(props) {
               <CardBody plain>
                 {/* <h3 className={classes.cardTitle}>Notifications</h3> */}
                 <Tabs
-                  // classes={{
-                  //   root: classes.root,
-                  //   fixed: classes.fixed,
-                  //   flexContainer: flexContainerClasses,
-                  //   indicator: classes.displayNone
-                  // }}
                   value={active}
                   onChange={handleChange}
                   centered
                 >
                   <Tab
                     label={'Notifications'}
-                    icon={<Favorite />}
-                    // classes={{
-                    //   root: pillsClasses,
-                    //   label: classes.label,
-                    //   selected: classes[color]
-                    // }}
+                    icon={<Badge badgeContent={notifNums} max={999} overlap="circle" color="secondary"><NotificationsIcon /></Badge>}
                   />
                   <Tab
                     label={'Requests'}
-                    icon={<Add />}
-                    // classes={{
-                    //   root: pillsClasses,
-                    //   label: classes.label,
-                    //   selected: classes[color]
-                    // }}
+                    icon={<Badge badgeContent={requestNums} max={999} overlap="circle" color="secondary"><Add /></Badge>}
                   />
                 </Tabs>
                 <SwipeableViews
@@ -118,10 +117,12 @@ export default function NotificationsPage(props) {
                 >
                   <NotificationList 
                     client={props.client}
+                    changeNotifNums={changeNotifNums}
                   />
 
                   <FriendRequestsList 
                     client={props.client}
+                    changeRequestNums={changeRequestNums}
                   />
                 </SwipeableViews>
               </CardBody>

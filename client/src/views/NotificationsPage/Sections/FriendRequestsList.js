@@ -31,33 +31,13 @@ export default function FriendRequestsList(props) {
         }
     }, [props.searchText])
 
-    // if(initialLoad) {
-    //     return <div style={{textAlign: 'center', marginTop: 20}}><CircularProgress size={20} color='primary'/></div>
-    // }
+    //Change notification badge number in Tab
+    const handleNumberChange = (num) => {
+        props.changeRequestNums(num);
+    }
+
 
         return (
-            // <InfiniteScroll
-            // dataLength={values.usersLength}
-            // next={loadMoreUsers}
-            // hasMore={values.hasMoreUsers && !isSearch}
-            // scrollThreshold={0.95}
-            // loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
-            // style={{overflow: 'none'}}
-            // >   
-            //     <List>
-            //         {
-            //             data.follower.map((user, index) => {
-            //                 return (
-            //                     <FollowRequestItem
-            //                         key={index} 
-            //                         userItem={user.user}
-            //                         client={props.client}
-            //                     />
-            //                 )
-            //             })
-            //         }
-            //     </List>
-            // </InfiniteScroll>
 
             <Subscription subscription={FETCH_FOLLOW_REQUESTS} variables={{userId: user.sub}} >
                 {({ loading, error, data }) => {
@@ -68,11 +48,11 @@ export default function FriendRequestsList(props) {
                         console.log(error)
                         return <TextDisplay text='Error loading requests.'/>
                     }
-                    console.log(data)
                     if(data.follower.length === 0) {
                         return <TextDisplay text='No requests at this time.'/>
                     }
                     else {
+                        handleNumberChange(data.follower.length)
                         return (
                             <List>
                                 {

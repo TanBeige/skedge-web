@@ -118,8 +118,6 @@ export default function ProfilePage(props, { ...rest }) {
     userReposts: []
   })
 
-  console.log("pic uuid: ", values.picture)
-
   const handleProfileEdit = async (vals) => {
     // setValues({
     //   ...values,
@@ -136,10 +134,8 @@ export default function ProfilePage(props, { ...rest }) {
       const form_data = new FormData();
 
       form_data.append('file', vals.picFile)
-      console.log(form_data)
 
       // Upload file to Cloudinary
-      console.log("vals.picture: ", values.picture);
       response = await axios.post(
         `/profile/upload`, 
         form_data, 
@@ -269,7 +265,6 @@ export default function ProfilePage(props, { ...rest }) {
         userId: userId,
       }
     }).then((data) => {
-      console.log("user data: ", data.data.users);
       if(isMounted) {
         if(data.data.users === undefined || data.data.users.length === 0) {
           setValues({
@@ -280,8 +275,6 @@ export default function ProfilePage(props, { ...rest }) {
         else {
           //Find the relationship between Current User and Profile User
           let followType = 0
-          console.log("dddd", data.data.users[0])
-
 
           //if user has followers
           if(data.data.users[0].followers) {
@@ -289,12 +282,10 @@ export default function ProfilePage(props, { ...rest }) {
             //If current user is following profile confirmed
             if(followValues) {
               followType = followValues.status;
-              console.log("FollowType: ", followType)
             }
             else{
               // If user is not following profile confirmed
               followType = -1;
-              console.log("Not Follinwg")
             }
           }
           //User has no followers
