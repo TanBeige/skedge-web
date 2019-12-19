@@ -465,7 +465,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
               <hr style={{margin: 2}}/>
 
               <div style={{width: '100%', textAlign: 'left'}}>
-                <p style={{fontSize: 16}}>
+                <div style={{fontSize: 16}}>
                   <div style={{position: 'absolute', right: 40,  textShadow: "-1px 1px #02C39A"}}>
                     {values.price === "$0.00" ? "Free" : values.price}
                   </div>
@@ -473,7 +473,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
                   <AccessAlarmIcon fontSize='small' style={{verticalAlign: 'top'}}/>
                   {` ${values.start_time.format("h:mma")}`}
                   {values.end_time ? ` - ${values.end_time.format("h:mma")}` : ""}
-                </p>
+                </div>
                 
               </div>
 

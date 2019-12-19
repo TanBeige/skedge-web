@@ -428,7 +428,7 @@ query fetch_event_going($eventId: Int) {
 
 // Filter Event
 const QUERY_FILTERED_EVENT = gql`
-query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String, $category: String, $city: String, $state: String, $type: String, $date: date, $weekday: String) {
+query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String, $category: String, $city: String, $state: String, $type: String, $date: date, $weekday: String, $lowerPrice: money, $upperPrice: money) {
   events(
     order_by:[{start_time: asc}, {event_like_aggregate: {count: desc_nulls_last}}]
     limit: $eventLimit
@@ -439,6 +439,10 @@ query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String
         {category: {_like: $category}},
         {city: {_ilike: $city}},
         {state: {_ilike: $state}},
+        {_and: [
+        	{price: {_gte: $lowerPrice}}
+          {price: {_lte: $upperPrice}}
+        ]},
         {
           _or: [
             {name: {_ilike: $search}},

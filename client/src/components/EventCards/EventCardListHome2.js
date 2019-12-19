@@ -84,8 +84,7 @@ export default function EventCardListHome(props) {
       if(filter.category == "Any") {
         cat = ""
       }
-      client
-        .query({
+      client.query({
           query: QUERY_FILTERED_EVENT,
           variables: {
             eventLimit: values.limit,
@@ -94,6 +93,8 @@ export default function EventCardListHome(props) {
             category: `%${cat}%`,
             city: `%${filter.city}%`,
             state: `%${filter.state}%`,
+            lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
+            upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
             type: filter.type,
             date: filter.date ? filter.date.formatDate() : null,
             weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
@@ -111,13 +112,17 @@ export default function EventCardListHome(props) {
                 showNew: true,
                 eventsLength: values.events.length + data.data.events.length
               });
+              setIsSearch(false)
             }
           }
           else {
-            setValues({
-              ...values,
-              loadedAllEvents: true
-            })
+            if(isMounted) {
+                setValues({
+                    ...values,
+                    loadedAllEvents: true
+                })
+                setIsSearch(false)
+            }
           }
         }).catch(error => {
           console.log(error)
@@ -165,9 +170,7 @@ export default function EventCardListHome(props) {
       if(filter.category == "Any") {
         cat = ""
       }
-
       setIsSearch(true)
-
 
       client
         .query({
@@ -179,6 +182,8 @@ export default function EventCardListHome(props) {
             category: `%${cat}%`,
             city: `%${filter.city}%`,
             state: `%${filter.state}%`,
+            lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
+            upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
             type: filter.type,
             date: filter.date !== null ? filter.date.formatDate() : null,
             weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
@@ -188,6 +193,7 @@ export default function EventCardListHome(props) {
           if (data.data.events.length > 0) {
             //const mergedEvents = values.events.concat(data.data.events);
             // update state with new events
+            console.log("loaded all events: ", data.data.events.length < props.filter.limit)
             if(isMounted) {
               setValues({
                 ...values,
@@ -197,7 +203,6 @@ export default function EventCardListHome(props) {
                 loadedAllEvents: data.data.events.length < props.filter.limit
               });
               setIsSearch(false);
-
             }
           }
           else {
@@ -257,9 +262,6 @@ export default function EventCardListHome(props) {
     if(isSearch) {
       return (
         <LoadCardList />
-        // <div style={{textAlign: 'center', margin: 20}} >
-        //   <CircularProgress color="primary" />
-        // </div>
       )
     }
 
@@ -288,7 +290,12 @@ export default function EventCardListHome(props) {
     {
       return(
         <div>
-          <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no events today.</h5>
+            <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no events this day.</h5>
+            <hr />
+            {
+                values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
+            }
+          {futureEvents}
         </div>
       )
     }
@@ -328,6 +335,10 @@ export default function EventCardListHome(props) {
             }
           </GridContainer>
         </InfiniteScroll>
+        <hr />
+        {
+            values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
+        }
         {futureEvents}
       </div>
     )

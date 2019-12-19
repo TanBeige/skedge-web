@@ -81,6 +81,7 @@ export default function EventCardListHome(props) {
           category: `%${cat}%`,
           city: `%${filter.city}%`,
           state: `%${filter.state}%`,
+          price: filter.price,
           type: filter.type,
           date: filter.date ? filter.date.formatDate() : null,
           weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
@@ -160,6 +161,7 @@ export default function EventCardListHome(props) {
           category: `%${cat}%`,
           city: `%${filter.city}%`,
           state: `%${filter.state}%`,
+          price: filter.price,
           type: filter.type,
           date: filter.date ? filter.date.formatDate() : null,
           weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
@@ -190,7 +192,7 @@ export default function EventCardListHome(props) {
               loadedAllEvents: true
             })
             // TURN THIS ON TO MAKE IT WORK, BUT FIX BUG WHERE IT QUEUES INFINITELY
-            //setIsSearch(false);
+            // setIsSearch(false);
           }
         }
       });
@@ -235,19 +237,22 @@ export default function EventCardListHome(props) {
 
     // Start Filtering Responses here. Since it's so fucking hard in GraphQL
     let finalEvents = values.events
-    
-    if(isSearch) {
+
+    if(isSearch && values.loadedAllEvents) {
+      return ""
+    }
+    else if(isSearch) {
       return (
         <div style={{textAlign: 'center'}}>
           <CircularProgress size={20} color='primary'/>
         </div>
       )
     }
+   
 
     // Components to Render
     const futureEvents = () => {
       if(values.loadedAllEvents) {
-//        <h1>Future Events</h1>
         return(
           <FutureContainer
             client={props.client}
@@ -265,9 +270,9 @@ export default function EventCardListHome(props) {
       if(values.events.length === 0 && !isSearch)
       {
         return(
-          <div>
-            <h5 style={{marginTop: 20, textAlign: 'center', width: '100%'}}>There are no events today.</h5>
-          </div>
+          <Fragment>
+            <h5 style={{marginTop: 20, textAlign: 'center', width: '100%'}}>There are no events this day.</h5>
+          </Fragment>
         )
       }
     }
@@ -279,7 +284,7 @@ export default function EventCardListHome(props) {
             dataLength={values.eventsLength}
             next={loadMoreThrottled}
             hasMore={!values.loadedAllEvents}
-            scrollThreshold={0.95}
+            scrollThreshold={1}
             loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             style={{overflow: 'none'}}
         >

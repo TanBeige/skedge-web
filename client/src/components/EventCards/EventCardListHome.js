@@ -90,6 +90,7 @@ export default function EventCardListHome(props) {
             category: `%${cat}%`,
             city: `%${filter.city}%`,
             state: `%${filter.state}%`,
+            price: filter.price,
             type: filter.type,
             date: filter.date ? filter.date.formatDate() : null,
             weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
@@ -173,6 +174,7 @@ export default function EventCardListHome(props) {
             category: `%${cat}%`,
             city: `%${filter.city}%`,
             state: `%${filter.state}%`,
+            price: filter.price,
             type: filter.type,
             date: filter.date !== null ? filter.date.formatDate() : null,
             weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null

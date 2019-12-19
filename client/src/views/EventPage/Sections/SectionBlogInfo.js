@@ -47,8 +47,8 @@ export default function SectionBlogInfo({eventInfo}) {
   } 
 
   return (
-    <div className={classes.section} >
-      <GridContainer justify="center" style={{marginBottom: 20}}>
+    <div>
+      <GridContainer justify="center" style={{paddingBottom: 10}}>
         <GridItem xs={12} sm={10} md={8}>
           {/* <GridContainer>
             <GridItem xs={12} sm={6} md={6}>
@@ -82,6 +82,7 @@ export default function SectionBlogInfo({eventInfo}) {
             </GridContainer>
           </Card> */}
             {/* {insertCohosts} */}
+            <p>*Skedge is not responsible for the authenticity regarding this event as well as any sudden changes/cancelations.</p>
         </GridItem>
       </GridContainer>
     </div>

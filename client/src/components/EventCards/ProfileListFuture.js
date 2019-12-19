@@ -183,7 +183,7 @@ export default function EventCardListHome(props) {
               //loadedAllEvents: true
             })
             // TURN THIS ON TO MAKE IT WORK, BUT FIX BUG WHERE IT QUEUES INFINITELY
-            setIsSearch(false);
+            //setIsSearch(false);
           }
         }).catch(error => {
           console.log(error);
@@ -263,7 +263,7 @@ export default function EventCardListHome(props) {
       {
         return(
           <div style={{margin: 'auto', textAlign: 'center'}}>
-            <h5 style={{marginTop: 5}}>There are no events today.</h5>
+            <h5 style={{marginTop: 5}}>There are no events this day.</h5>
           </div>
         )
       }

@@ -274,7 +274,7 @@ export default function EventCardListProfile(props) {
       {
         return(
           <div>
-            <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no events today.</h5>
+            <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no events this day.</h5>
           </div>
         )
       }
