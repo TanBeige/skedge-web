@@ -99,7 +99,6 @@ export default function NotificationsPage(props) {
             <Card plain >
               <CardBody plain>
                 {/* <h3 className={classes.cardTitle}>Notifications</h3> */}
-                <Subscription subscription={FETCH_FOLLOW_REQUESTS} variables={{userId: user.sub}} >
                 <Tabs
                   value={active}
                   onChange={handleChange}
@@ -117,7 +116,6 @@ export default function NotificationsPage(props) {
                 <SwipeableViews
                   index={active}
                   onChangeIndex={handleChangeIndex}
-                  style={{height: '65vh'}}
                 >
                   <NotificationList 
                     client={props.client}
@@ -129,7 +127,6 @@ export default function NotificationsPage(props) {
                     changeRequestNums={changeRequestNums}
                   />
                 </SwipeableViews>
-                </Subscription>
               </CardBody>
             </Card>
           </div>

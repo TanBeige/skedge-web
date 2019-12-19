@@ -72,40 +72,6 @@ export default function FriendRequestsList(props) {
                     }
                 }}
             </Subscription>
-<hr />
-            <Subscription subscription={FETCH_FOLLOW_REQUESTS} variables={{userId: user.sub}} >
-                {({ loading, error, data }) => {
-                    if (loading) {
-                        return <TextDisplay text='Loading. Please wait...'/>
-                    }
-                    if (error) {
-                        console.log(error)
-                        return <TextDisplay text='Error loading requests.'/>
-                    }
-                    if(data.follower.length === 0) {
-                        return <TextDisplay text='No requests at this time.'/>
-                    }
-                    else {
-                        handleNumberChange(data.follower.length)
-                        return (
-                            <List>
-                                {
-                                    data.follower.map((user, index) => {
-                                        return(
-                                            <FollowRequestItem
-                                                key={index} 
-                                                userItem={user.user}
-                                                client={props.client}
-                                            />
-                                        )
-                                    })                                
-                                }
-                            </List>
-                        );
-                    }
-                }}
-            </Subscription>
-
 </div>
         )
     

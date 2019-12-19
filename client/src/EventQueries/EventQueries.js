@@ -210,8 +210,8 @@ const REFETCH_USER_INFO = gql`
 `
 
 const FETCH_NOTIFICATIONS = gql`
-subscription fetch_notifications($userId: String!) {
-  notifications(where: {user_id: {_eq: $userId}} order_by: {time_created: desc}) {
+query fetch_notifications($userId: String!, $limit: Int, $offset: Int) {
+  notifications(limit: $limit offset: $offset where: {user_id: {_eq: $userId}} order_by: {id: desc}) {
     other_user{
       name
       id
