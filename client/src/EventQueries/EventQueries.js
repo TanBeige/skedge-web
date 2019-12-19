@@ -20,6 +20,7 @@ fragment EventFragment on events {
   description
   location_name
   event_type
+  price
   event_date {
     start_date
     is_recurring
