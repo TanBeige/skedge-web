@@ -135,6 +135,9 @@ export default function EventPage(props) {
           start_date: data.data.events[0].event_date.start_date,
           end_date: data.data.events[0].event_date.end_date,
 
+          is_recurring: data.data.events[0].event_date.is_recurring,
+          weekday: data.data.events[0].event_date.weekday,
+
           start_time: data.data.events[0].start_time,
           end_time: data.data.events[0].end_time,
           category: data.data.events[0].category,

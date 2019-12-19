@@ -44,6 +44,7 @@
     "react-image-gallery": "0.8.18",
     "react-infinite-scroll-component": "^4.5.3",
     "react-lazy-load": "^3.0.13",
+    "react-number-format": "^4.3.1",
     "react-router-dom": "5.0.1",
     "react-scripts": "3.1.0",
     "react-scroll": "^1.7.14",

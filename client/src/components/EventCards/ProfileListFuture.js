@@ -240,7 +240,6 @@ export default function EventCardListHome(props) {
     // Components to Render
     const futureEvents = () => {
       if(values.loadedAllEvents) {
-//        <h1>Future Events</h1>
         return(
           <ProfileListFuture
             client={props.client}
@@ -270,9 +269,21 @@ export default function EventCardListHome(props) {
       }
     }
 
+    // if(values.events.length === 0 && !isSearch){
+    //   console.log("no events, ", values.filter.date)
+    //   if(isMounted) {
+    //     setValues({...values, loadedAllEvents: true})
+    //   }
+    //   return(
+    //     <Fragment>
+    //       {futureEvents()}
+    //     </Fragment>
+    //   )
+    // }
+
     return (
       <Fragment>
-        <h3 style={{textAlign: 'center'}}>{moment(values.filter.date).format("MMMM D, YYYY")}</h3>
+        <h3 style={{textAlign: 'center'}}>{moment(values.filter.date).format("dddd, MMM Do")}</h3>
         <InfiniteScroll
             dataLength={values.eventsLength}
             next={loadMoreClicked}

@@ -7,6 +7,8 @@ import GridItem from "components/Grid/GridItem.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from "react-infinite-scroll-component";
 import FutureContainer from './FutureContainer.js';
+import { throttle } from 'lodash';
+
 
 import {
     QUERY_FILTERED_EVENT
@@ -114,89 +116,92 @@ export default function EventCardListHome(props) {
         }
       }).catch(error => {
         console.log(error);
-      });
-    
+      }); 
   }
 
-    // Replaces ComponentDidMount() in a Functional Component
+  //Throttle LoadMore so we don't load too much at once
+  const loadMoreThrottled = throttle(loadMoreClicked, 100);
 
-    useEffect(() => {
-      //Restart the get events
 
-      setValues({
-        type: props.type,
-        filter: props.filter,
-        loadedAllEvents: false,
-        showOlder: true,
-        eventsLength: 0,
-        showNew: false,
-        limit: props.filter.limit,
-        events: [],
+  // Replaces ComponentDidMount() in a Functional Component
+
+  useEffect(() => {
+    //Restart the get events
+
+    setValues({
+      type: props.type,
+      filter: props.filter,
+      loadedAllEvents: false,
+      showOlder: true,
+      eventsLength: 0,
+      showNew: false,
+      limit: props.filter.limit,
+      events: [],
+    });
+
+    // ----------------------------TESTING UNMOUNTING--------------------------------
+    isMounted = true;
+    const { client } = props;
+    const { filter } = props;
+
+    setIsSearch(true);
+
+    let cat = filter.category;
+    if(filter.category == "Any") {
+      cat = ""
+    }
+    client
+      .query({
+        query: QUERY_FILTERED_EVENT,
+        variables: {
+          eventLimit: values.limit,
+          eventOffset: 0,
+          search: `%${filter.searchText}%`,
+          category: `%${cat}%`,
+          city: `%${filter.city}%`,
+          state: `%${filter.state}%`,
+          type: filter.type,
+          date: filter.date ? filter.date.formatDate() : null,
+          weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
+        }
+      })
+      .then(data => {
+        if (data.data.events.length) {
+          // const mergedEvents = values.events.concat(data.data.events);
+
+          // update state with new events
+          if(isMounted) {
+            setValues({
+              ...values,
+              events: data.data.events,
+              showNew: true,
+              eventsLength: data.data.events.length,
+              loadedAllEvents: data.data.events.length < props.filter.limit
+            });
+            setIsSearch(false)
+          }
+        }
+        else {
+          if(isMounted) {
+            setValues({
+              ...values,
+              events: data.data.events,
+              eventsLength: data.data.events.length,
+              loadedAllEvents: true
+            })
+            // TURN THIS ON TO MAKE IT WORK, BUT FIX BUG WHERE IT QUEUES INFINITELY
+            //setIsSearch(false);
+          }
+        }
       });
 
-      // ----------------------------TESTING UNMOUNTING--------------------------------
-      isMounted = true;
-      const { client } = props;
-      const { filter } = props;
+    
 
-      setIsSearch(true);
-
-      let cat = filter.category;
-      if(filter.category == "Any") {
-        cat = ""
-      }
-      client
-        .query({
-          query: QUERY_FILTERED_EVENT,
-          variables: {
-            eventLimit: values.limit,
-            eventOffset: 0,
-            search: `%${filter.searchText}%`,
-            category: `%${cat}%`,
-            city: `%${filter.city}%`,
-            state: `%${filter.state}%`,
-            type: filter.type,
-            date: filter.date ? filter.date.formatDate() : null,
-            weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
-          }
-        })
-        .then(data => {
-          if (data.data.events.length) {
-           // const mergedEvents = values.events.concat(data.data.events);
-
-            // update state with new events
-            if(isMounted) {
-              setValues({
-                ...values,
-                events: data.data.events,
-                showNew: true,
-                eventsLength: data.data.events.length,
-                loadedAllEvents: data.data.events.length < props.filter.limit
-              });
-              setIsSearch(false)
-            }
-          }
-          else {
-            if(isMounted) {
-              setValues({
-                ...values,
-                events: data.data.events,
-                eventsLength: data.data.events.length,
-                loadedAllEvents: true
-              })
-              // TURN THIS ON TO MAKE IT WORK, BUT FIX BUG WHERE IT QUEUES INFINITELY
-              //setIsSearch(false);
-            }
-          }
-        });
-
-      
-
-      return () => {
-        //setIsMounted(false);
-        isMounted = false;        
-      }
-    }, [props.filter])
+    return () => {
+      //setIsMounted(false);
+      isMounted = false;        
+    }
+  }, [props.filter])
 
     /*
     const insertAd = (index) => {
@@ -269,10 +274,10 @@ export default function EventCardListHome(props) {
 
     return (
       <Fragment>
-        <h3 style={{textAlign: 'center'}}>{moment(props.filter.date).format("MMMM D, YYYY")}</h3>
+        <h3 style={{textAlign: 'center'}}>{moment(props.filter.date).format("dddd, MMM Do")}</h3>
         <InfiniteScroll
             dataLength={values.eventsLength}
-            next={loadMoreClicked}
+            next={loadMoreThrottled}
             hasMore={!values.loadedAllEvents}
             scrollThreshold={0.95}
             loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}

@@ -12,6 +12,12 @@ import Container from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
+import NumberFormat from 'react-number-format';
+
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
@@ -449,6 +455,20 @@ export default function EventCreateInfo(props) {
             </Grid>
 
             {repeatEvent}
+            
+            <Grid item xs={12} >
+              <FormControl fullWidth variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-amount">Event Entry Fee</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-amount"
+                  value={values.price}
+                  type='number'
+                  onChange={handleChange('price')}
+                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                  labelWidth={110}
+                />
+              </FormControl>
+            </Grid>
 
             <Grid item xs={12}>
               <TextField 

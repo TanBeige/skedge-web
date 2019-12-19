@@ -1,6 +1,6 @@
 import React from 'react'
 
-import EventCardListHome from 'components/EventCards/EventCardListHome.js'
+import EventCardListHome from 'components/EventCards/EventCardListHome2.js'
 import EventCardListSaved from 'components/EventCards/EventCardListSaved.js'
 import EventCardListProfile from 'components/EventCards/EventCardListProfile.js'
 

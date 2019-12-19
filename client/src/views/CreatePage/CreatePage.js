@@ -199,6 +199,7 @@ const handleLocalOrPrivate = (type) => {
       street: valuesInfo.street,
       city: valuesInfo.city,
       state: valuesInfo.state,
+      price: valuesInfo.price,
       start_date: valuesInfo.start_date,
       end_date: valuesInfo.end_date,
       start_time: valuesInfo.start_time,

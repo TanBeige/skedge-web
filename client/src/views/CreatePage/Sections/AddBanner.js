@@ -170,3 +170,9 @@ const AddBanner = (props) => {
 }
 
 export default AddBanner;
+
+const presetBannerIDs = [
+    "",
+    "",
+    ""
+]

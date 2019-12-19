@@ -115,8 +115,55 @@ export default function SectionText({ eventInfo, client }) {
     )
   }
   let formattedDate = ""
-  if(eventInfo.start_date) {
-    formattedDate = moment(eventInfo.start_date, "YYYY-MM-DD").format("MMMM D, YYYY")
+  if(eventInfo.is_recurring) {
+    // Setting Display Variables    
+    let displayDate = "Every ";
+    if(eventInfo.weekday.includes("1")) {
+      displayDate += "Monday";
+    }
+    if(eventInfo.weekday.includes("2")) {
+      if(displayDate.length > 6) {
+        displayDate += ", "
+      }
+      displayDate += "Tuesday";
+    }
+    if(eventInfo.weekday.includes("3")) {
+      if(displayDate.length > 6) {
+        displayDate += ", "
+      }
+      displayDate += "Wednesday";
+    }
+    if(eventInfo.weekday.includes("4")) {
+      if(displayDate.length > 6) {
+        displayDate += ", "
+      }
+      displayDate += "Thursday";
+    }
+    if(eventInfo.weekday.includes("5")) {
+      if(displayDate.length > 6) {
+        displayDate += ", "
+      }
+      displayDate += "Friday";
+    }
+    if(eventInfo.weekday.includes("6")) {
+      if(displayDate.length > 6) {
+        displayDate += ", "
+      }
+      displayDate += "Saturday";
+    }
+    if(eventInfo.weekday.includes("0")) {
+      if(displayDate.length > 6) {
+        displayDate += ", "
+      }
+      displayDate += "Sunday";
+    }
+
+    //displayDate += `until ${eventInfo.end_date}`
+    formattedDate = displayDate;
+    
+  }
+  else {
+    formattedDate = moment(eventInfo.start_date, "YYYY-MM-DD").format("MMMM Do, YYYY")
   }
 
   if(user) {
