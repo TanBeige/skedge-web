@@ -43,6 +43,8 @@ const useStyles = makeStyles(sectionTextStyle);
 
 export default function SectionText({ eventInfo, client }) {
 
+  let _isMounted = true;
+
   const { user, loginWithRedirect } = useAuth0();
 
   const classes = useStyles();
@@ -80,19 +82,26 @@ export default function SectionText({ eventInfo, client }) {
         userId: user.sub
       }
     }).then((data) => {
-      const isGoing = data.data.users[0].event_goings.length === 1
-      const isSaved = data.data.users[0].user_saved_events.length === 1
-      setValues({
-        ...values,
-        ifGoing: isGoing,
-        ifSaved: isSaved
-      })
+      const isGoing = data.data.users[0].event_goings.length === 1;
+      const isSaved = data.data.users[0].user_saved_events.length === 1;
+      if(_isMounted) {
+        setValues({
+          ...values,
+          ifGoing: isGoing,
+          ifSaved: isSaved
+        })
+      }
     })
   }
 
   useEffect(() => {
+
+    _isMounted = true;
     if(user) {
       getUserGoingSave();
+    }
+    return () => {
+      _isMounted = false;
     }
   },[])
 

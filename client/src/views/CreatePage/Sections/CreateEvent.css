@@ -125,6 +125,7 @@ span.InputBanner {
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
+    padding-bottom: 20px;
 }
 
 .selectImage:hover {

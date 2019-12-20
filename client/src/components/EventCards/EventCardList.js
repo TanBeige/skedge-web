@@ -7,13 +7,13 @@ import EventCardListProfile from 'components/EventCards/EventCardListProfile.js'
 export default function EventCardList(props) {
 
   const eventList = () => {
-    if(props.listType == 'home'){
+    if(props.listType === 'home'){
       return (<EventCardListHome {...props}/>)
     }
-    else if(props.listType == 'saved'){
+    else if(props.listType === 'saved'){
       return (<EventCardListSaved {...props}/>)
     }
-    else if(props.listType == 'profile'){
+    else if(props.listType === 'profile'){
       return (<EventCardListProfile {...props}/>)
     }
     else {

@@ -76,7 +76,9 @@ export default function PricingPage(props) {
       start_time: new Date(),
       end_time: null,
       price: "0.00",
-      allow_invites: false,
+
+      invite_only: false,
+      guest_invites: false,
       host_approval: false,
       web_url: "",
       cover_pic: "",
@@ -221,14 +223,17 @@ const handleLocalOrPrivate = (type) => {
     });
   }
 
-  const handleGuests = (inGuests) => {
+  const handleGuests = (inGuests, inviteSettings) => {
     console.log(inGuests)
     setValues({
         ...values,
         currentPage: values.currentPage + 1,
         goingBack: false,
 
-        guests: inGuests
+        guests: inGuests,
+        invite_only: inviteSettings.inviteOnly,
+        guest_invites: inviteSettings.allowGuestInvites,
+        host_approval: inviteSettings.inviteApproval
     });
   }
 
@@ -529,6 +534,9 @@ const handleLocalOrPrivate = (type) => {
           goingBack={values.goingBack} 
           handleGuests={handleGuests}
           guests={values.guests}
+          invite_only={values.invite_only}
+          guest_invites={values.guest_invites}
+          host_approval={values.host_approval}
           client={props.client}
           userId={user.sub}
           event_type={values.event_type}

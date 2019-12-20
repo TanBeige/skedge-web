@@ -16,6 +16,7 @@ import { categoryList } from "utils/constants";
 
 //import Button from 'components/CustomButtons/Button.js';
 import Button from '@material-ui/core/Button';
+import { Checkbox } from '@material-ui/core';
 
 
 
@@ -48,10 +49,9 @@ const useStyles = makeStyles(theme => ({
 export default function TagSelect(props) {
     const classes = useStyles();
 
-
-
     const [values, setValues] = React.useState({
         category: props.savedCategory,
+        categories: [],
         tags: props.savedTag
       });
     
@@ -64,6 +64,28 @@ export default function TagSelect(props) {
             ...values,
             tags: regularTags
         });
+    };
+
+    const handleToggle = value =>{
+        
+        const currentIndex = values.categories.indexOf(value);
+        const newChecked = values.categories;
+
+        if (currentIndex === -1) {
+            if(values.categories.length >= 2) {
+                return
+            }
+            newChecked.push(value);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
+        console.log("Array: ", newChecked)
+
+
+        setValues({
+            ...values,
+            categories: newChecked
+        })
     };
 
     const submitTags = () => {
@@ -80,9 +102,9 @@ export default function TagSelect(props) {
             <div className={classes.paper}>
                 <div className='TagSelect'>
                     <FormControl component="fieldset">
-                        <FormLabel component="legend">Choose a category</FormLabel>
+                        <FormLabel component="legend">Choose Primary and Secondary categories</FormLabel>
                             <FormGroup>
-                                <EventTags values={values} onRadioChange={handleChange}/>
+                                <EventTags values={values} handleToggle={handleToggle}/>
                             </FormGroup>
                     </FormControl>
 
@@ -107,6 +129,7 @@ export default function TagSelect(props) {
                 style={{color: 'white'}}
                 className={classes.submit}
                 onClick={submitTags}
+                disabled={values.categories.length === 0}
                 >
                 Invite Followers ->
                 </Button>
@@ -119,15 +142,15 @@ export default function TagSelect(props) {
 }
 
 
-const EventTags = ({values, onRadioChange}) => {
+const EventTags = ({values, handleToggle}) => {
     return(
         <div className='TagCheckbox'>
-            <RadioGroup
+            {/* <RadioGroup
             aria-label="tags"
             name="tags"
-            value={values.category}
-            onChange={onRadioChange}
-            >
+            //value={values.category}
+            //onChange={onRadioChange}
+            > */}
             <Grid container>
                 {
                     categoryList.map((cat, index) => {
@@ -137,14 +160,26 @@ const EventTags = ({values, onRadioChange}) => {
                         else {
                             return(
                                 <Grid item xs={6} key={index}>
-                                    <FormControlLabel key={index} value={cat} style={{color: "black"}} control={<Radio color='primary'/>} label={cat} />
+                                    <FormControlLabel 
+                                    key={index} 
+                                    //value={values.categories.indexOf(cat) !== -1} 
+                                    style={{color: "black"}} 
+                                    control={
+                                        <Checkbox
+                                        checked={values.categories.indexOf(cat) !== -1}
+                                        onChange={() => {handleToggle(cat)}} 
+                                        indeterminate={values.categories.indexOf(cat) === 1}
+                                        color='primary'/>
+                                    } 
+                                    label={cat} 
+                                    />
                                 </Grid>
                             )
                         }
                     })
                 }
             </Grid>
-            </RadioGroup>
+            {/* </RadioGroup> */}
         </div>
     )
 }

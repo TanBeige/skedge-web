@@ -8,8 +8,6 @@ import React, { useState, useEffect } from "react";
 import Button from 'components/CustomButtons/Button.js';
 import clsx from 'clsx';
 
-
-
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
@@ -27,8 +25,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import MomentUtils from '@date-io/moment';    //uninstall if dont need this later
 import {
     DatePicker,
-    MuiPickersUtilsProvider,
-    TimePicker
+    MuiPickersUtilsProvider
 } from '@material-ui/pickers';
 
 // @material-ui/icons
@@ -47,17 +44,10 @@ import GridItem from "components/Grid/GridItem.js";
 import NavPillsSearch from "components/NavPills/NavPillsSearch.js";
 import EventCardList from "components/EventCards/EventCardList.js";
 import CustomInput from 'components/CustomInput/CustomInput.js';
-import useDebounce from 'components/Debounce/Debounce.js';
-
-import EventCardListFuture from "components/EventCards/EventCardListFuture.js"
-
-
 import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js";
-
 
 // Constants
 import { categoryList } from "utils/constants";
-// import { dataTable } from "AdminDashboard/variables/general";
 
 const useStyles = makeStyles(sectionPillsStyle);
 
@@ -223,44 +213,75 @@ export default function SectionPills(props) {
     });
   }
 
-  
-
-  // const debouncedSearchTerm = useDebounce(values, 300);
-
-
-  // useEffect(() => {
-  //   if(debouncedSearchTerm) {
-  //     console.log("Test debounce")
-
-  //     setLocalFilter({
-  //       ...localFilter,
-  //       searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
-  //       type: "local",
-  //       category: values.category,
-  //       city: values.city,
-  //       state: values.state,
-  //       limit: values.limit,
-  //       date: values.date,
-  //       weekday: values.weekday
-  //     });
-  //     setPrivateFilter({
-  //       ...privateFilter,
-  //       searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
-  //       type: "private",
-  //       category: values.category,
-  //       city: values.city,
-  //       state: values.state,
-  //       limit: values.limit,
-  //       date: values.date,
-  //       weekday: values.weekday
-  //     });
-  //   }
-  // },[debouncedSearchTerm])
 
 
   //Changes day to a moment.js object so I can format easier
   const moment = require('moment')
   const formatDate = moment(values.date);
+
+
+  // If user is an entity, only show local event feed
+  const navPillsDisplay = props.isEntity ? (
+    <NavPillsSearch
+        alignCenter
+        color="primary"
+        client={props.client}
+        searchText={localFilter.searchText}
+        tabs={[
+        {
+            tabButton: "Local",
+            tabIcon: ApartmentIcon,
+            tabContent: (
+              <div>
+                <EventCardList 
+                    client={props.client}
+                    userId={props.userId}
+                    filter={localFilter}
+                    listType='home'
+                />
+              </div>
+            )
+        }
+      ]}
+    />
+  ) : (
+    <NavPillsSearch
+        alignCenter
+        color="primary"
+        client={props.client}
+        searchText={localFilter.searchText}
+        tabs={[
+        {
+          tabButton: "Local",
+          tabIcon: ApartmentIcon,
+          tabContent: (
+            <div>
+              <EventCardList 
+                  client={props.client}
+                  userId={props.userId}
+                  filter={localFilter}
+                  listType='home'
+              />
+            </div>
+          )
+        },
+        {
+          tabButton: "Following",
+          tabIcon: EmojiPeopleIcon,
+          tabContent: (
+            <div>
+              <EventCardList 
+                  client={props.client}
+                  userId={props.userId}
+                  filter={privateFilter}
+                  listType='home'
+              />
+            </div>
+          )
+        }
+      ]}
+    />
+  )
 
   return (
     <ThemeProvider theme={theme}>
@@ -451,42 +472,7 @@ export default function SectionPills(props) {
         </div>
 
         <div className={classes.profileTabs} style={{marginTop: 10}}>
-              <NavPillsSearch
-                  alignCenter
-                  color="primary"
-                  client={props.client}
-                  searchText={localFilter.searchText}
-                  tabs={[
-                  {
-                      tabButton: "Local",
-                      tabIcon: ApartmentIcon,
-                      tabContent: (
-                        <div>
-                          <EventCardList 
-                              client={props.client}
-                              userId={props.userId}
-                              filter={localFilter}
-                              listType='home'
-                          />
-                        </div>
-                      )
-                  },
-                  {
-                      tabButton: "Following",
-                      tabIcon: EmojiPeopleIcon,
-                      tabContent: (
-                        <div>
-                          <EventCardList 
-                              client={props.client}
-                              userId={props.userId}
-                              filter={privateFilter}
-                              listType='home'
-                          />
-                        </div>
-                      )
-                  }
-                  ]}
-              />
+              {navPillsDisplay}
           </div>
       </div>
     </ThemeProvider>

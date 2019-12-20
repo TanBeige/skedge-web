@@ -4,8 +4,9 @@ import Container from '@material-ui/core/Container';
 import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
 
-import ListFriends from 'views/CreatePage/Sections/AddCohost/ListFriends.js';
 import ListFollowers from 'views/CreatePage/Sections/ListFollowers.js';
+import { Checkbox, FormControlLabel } from '@material-ui/core';
+
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -37,38 +38,104 @@ export default function InviteUsers (props) {
     const classes = useStyles();
 
     const [guests, setGuests] = React.useState(props.guests);
+
+    const [inviteSettings, setInviteSettings] = React.useState({
+      inviteOnly: props.invite_only,
+      allowGuestInvites: props.guest_invites,
+      inviteApproval: props.host_approval
+    })
     
     const selectGuests = (inGuests) => {
       console.log(inGuests)
       setGuests(inGuests);
     };
 
+    const handleChange = name => event => {
+      setInviteSettings({ ...inviteSettings, [name]: event.target.checked });
+    };
+
+
     let dir = props.goingBack ? 'right' : 'left';
+
+    let privacyText = "Your event can be seen and shared by all of your followers.";
+
+    if (inviteSettings.inviteOnly && inviteSettings.allowGuestInvites && inviteSettings.inviteApproval) {
+      privacyText = "Your event can only be seen by invited users and guest invites must be approved before sent."
+    }
+    else if (inviteSettings.inviteOnly && inviteSettings.allowGuestInvites) {
+      privacyText = "Your event can only be seen by invited users."
+    }
+    else if (inviteSettings.allowGuestInvites && inviteSettings.inviteApproval) {
+      privacyText = "Your event can be seen by all of your followers."
+    }
+    else if (inviteSettings.inviteOnly) {
+      privacyText = "Your event can only be seen by users you invite."
+    }
+    else if(inviteSettings.allowGuestInvites){
+      privacyText = "Your event can only be seen by invited users."
+    }
 
     return(
         <Slide direction={dir} in mountOnEnter unmountOnExit>
             <Container component="main">
-                <div className={classes.paper}>
-                    <div className='AddCohost'>
-                        <ListFollowers
-                          client={props.client}
-                          userId={props.userId}
-                          selectGuests={selectGuests}
-                          guests={guests}
-                         />
-                    </div>
+              <div className={classes.paper}>
+                <h5 style={{height: '4em'}}>{privacyText}</h5>
+                <div style={{textAlign: 'left'}}>
+                  <FormControlLabel 
+                    style={{color: "black"}} 
+                    control={
+                        <Checkbox
+                        checked={inviteSettings.inviteOnly}
+                        onChange={handleChange("inviteOnly")}
+                        color='primary'/>
+                    } 
+                    label={"Invite Only"} 
+                  />
+                  <FormControlLabel 
+                    style={{color: "black"}} 
+                    control={
+                        <Checkbox
+                        disabled={!inviteSettings.inviteOnly}
+                        checked={inviteSettings.allowGuestInvites}
+                        onChange={handleChange("allowGuestInvites")}
+                        color='primary'/>
+                    } 
+                    label={"Allow Guests to Invite"} 
+                  />
+                  <FormControlLabel 
+                    style={{color: "black"}} 
+                    control={
+                        <Checkbox
+                        disabled={!inviteSettings.allowGuestInvites}
+                        checked={inviteSettings.inviteApproval}
+                        onChange={handleChange("inviteApproval")}
+                        color='primary'/>
+                    } 
+                    label={"Invite Must Be Approved"} 
+                  />
                 </div>
-                <div className='centerSubmit'>
-                  <Button
-                  fullWidth
-                  variant="contained"
-                  color="secondary"
-                  style={{margin: 3, height: '4em'}}
-                  onClick={() => props.handleGuests(guests)}
-                  >
-                   Invite Cohosts ->
-                  </Button>
+
+                <h4>Send Invite:</h4>
+                <div className='AddCohost' style={{maxHeight: "60vh", overflow: 'hidden', overflowY: 'scroll'}}>
+                    <ListFollowers
+                      client={props.client}
+                      userId={props.userId}
+                      selectGuests={selectGuests}
+                      guests={guests}
+                    />
                 </div>
+              </div>
+              <div className='centerSubmit'>
+                <Button
+                fullWidth
+                variant="contained"
+                color="secondary"
+                style={{margin: 3, height: '4em'}}
+                onClick={() => props.handleGuests(guests, inviteSettings)}
+                >
+                  Invite Cohosts ->
+                </Button>
+              </div>
             </Container>
         </Slide>
     )

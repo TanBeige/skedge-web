@@ -4,7 +4,7 @@ import Container from '@material-ui/core/Container';
 import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
 
-import ListFriends from 'views/CreatePage/Sections/AddCohost/ListFriends.js'
+import ListCohosts from 'views/CreatePage/Sections/AddCohost/ListCohosts.js'
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -50,7 +50,7 @@ export default function AddCohost (props) {
             <Container component="main">
                 <div className={classes.paper}>
                     <div className='AddCohost'>
-                        <ListFriends
+                        <ListCohosts
                           client={props.client}
                           userId={props.userId}
                           selectCohosts={selectCohosts}

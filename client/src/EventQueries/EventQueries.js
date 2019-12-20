@@ -182,7 +182,7 @@ ${EVENT_FRAGMENT}
 `
 
 const FETCH_IF_ENTITY = gql`
-  query fetch_user_entity($userId: String!) {
+  query check_if_entity($userId: String!) {
     users(where: {auth0_id: {_eq: $userId}}) {
       entity
     }

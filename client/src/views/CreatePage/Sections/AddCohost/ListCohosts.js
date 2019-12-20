@@ -7,7 +7,7 @@ import { QUERY_ACCEPTED_FRIENDS } from "EventQueries/EventQueries.js";
 import List from '@material-ui/core/List';
 import { Button } from "@material-ui/core";
 
-export default function ListFollowers(props) {
+export default function ListCohosts(props) {
 
     //const [checked, setChecked] = React.useState(props.guests);
 
@@ -63,7 +63,7 @@ export default function ListFollowers(props) {
     );
 }
   
-ListFollowers.propTypes = {
+ListCohosts.propTypes = {
   userId: PropTypes.string.isRequired,
 };
     
