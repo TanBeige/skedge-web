@@ -89,7 +89,7 @@ export default function TagSelect(props) {
     };
 
     const submitTags = () => {
-        props.handleTagInfo(values.category, values.tags)
+        props.handleTagInfo(values.categories, values.tags)
     }
 
     let dir = props.goingBack ? 'right' : 'left';

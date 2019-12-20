@@ -85,7 +85,7 @@ export default function PricingPage(props) {
       is_recurring: false,
       weekday: "",
 
-      category: "Arts/Culture",
+      categories: [],
       tags: [],
 
       cohosts: [],
@@ -125,7 +125,7 @@ const handleLocalOrPrivate = (type) => {
         currentPage: values.currentPage + 1,
         goingBack: false,
 
-        category: cat,
+        categories: cat,
         tags: inTags
     });
 }
@@ -354,7 +354,12 @@ const handleLocalOrPrivate = (type) => {
                       price: values.price,
                       //allow_invites: values.allow_invites,
                       //host_approval: values.host_approval,
-                      category: values.category,
+
+                      invite_only: values.invite_only,
+                      guest_invites: values.guest_invites,
+                      host_approval: values.host_approval,
+                      category: values.categories[0],
+                      second_category: values.categories.length === 2 ? values.categories[1] : null,
 
                       street: values.street,
                       city: values.city,
@@ -421,7 +426,11 @@ const handleLocalOrPrivate = (type) => {
                     price: values.price,
                     //allow_invites: values.allow_invites,
                     //host_approval: values.host_approval,
-                    category: values.category,
+                    invite_only: values.invite_only,
+                    guest_invites: values.guest_invites,
+                    host_approval: values.host_approval,
+                    category: values.categories[0],
+                    second_category: values.categories.length === 2 ? values.categories[1] : null,
 
                     street: values.street,
                     city: values.city,
