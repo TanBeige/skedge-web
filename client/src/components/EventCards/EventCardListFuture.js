@@ -279,7 +279,7 @@ export default function EventCardListHome(props) {
 
     return (
       <Fragment>
-        <h3 style={{textAlign: 'center'}}>{moment(props.filter.date).format("dddd, MMM Do")}</h3>
+        <h3 style={{textAlign: 'center'}}>{moment(props.filter.date).format("dddd, MMM D")}</h3>
         <InfiniteScroll
             dataLength={values.eventsLength}
             next={loadMoreThrottled}

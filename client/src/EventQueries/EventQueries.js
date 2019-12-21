@@ -560,7 +560,8 @@ const FETCH_EVENT_INFO = gql`
       street
       price
       web_url
-      allow_invites
+      guest_invites 
+      invite_only 
       host_approval
       updated_at
       event_date_id

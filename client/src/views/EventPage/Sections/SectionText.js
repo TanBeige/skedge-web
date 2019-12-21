@@ -20,6 +20,9 @@ import MapIcon from '@material-ui/icons/Map';
 // style components
 import sectionTextStyle from "assets/jss/material-kit-pro-react/views/blogPostSections/sectionTextStyle.js";
 
+// Google Maps API
+import MapsApi from 'components/GoogleMaps/MapsApi.js';
+
 //Auth0 Wrapper
 import { useAuth0 } from 'Authorization/react-auth0-wrapper';
 
@@ -215,6 +218,11 @@ export default function SectionText({ eventInfo, client }) {
               <MapIcon style={{verticalAlign: 'top'}}/>
               {`${eventInfo.city}, ${eventInfo.state}`}
             </h4>
+            <MapsApi 
+              street={eventInfo.street}
+              city={eventInfo.city}
+              state={eventInfo.state}
+            />
           </GridItem>
         </GridContainer>
       </div>

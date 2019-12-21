@@ -291,7 +291,7 @@ export default function EventCardListProfile(props) {
             loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             style={{overflow: 'none'}}
         >
-          <h3 style={{textAlign: 'center'}}>{moment(values.filter.date).format("dddd, MMM Do")}</h3>
+          <h3 style={{textAlign: 'center'}}>{moment(values.filter.date).format("dddd, MMM D")}</h3>
           {noEvents()}
           <GridContainer style={{minHeight: '8em'}}>
               {

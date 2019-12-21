@@ -29,7 +29,6 @@ import LoadingPage from '../LoadingPage/LoadingPage.js';
 import EditEventButton from './Sections/EventPageComponents/EditEventButton.js';
 import DeleteEventButton from './Sections/EventPageComponents/DeleteEventButton.js';
 
-import MapsApi from 'components/GoogleMaps/MapsApi.js';
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 import {
@@ -434,6 +433,7 @@ export default function EventPage(props) {
               eventInfo={values}
               client={props.client}
             />
+
             <SectionBlogInfo
               eventInfo={values}
               eventId={values.event_id}
