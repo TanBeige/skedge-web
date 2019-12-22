@@ -293,7 +293,7 @@ export default function EventCardListProfile(props) {
         >
           <h3 style={{textAlign: 'center'}}>{moment(values.filter.date).format("dddd, MMM D")}</h3>
           {noEvents()}
-          <GridContainer style={{minHeight: '8em'}}>
+          <GridContainer style={{minHeight: '3em'}}>
               {
                 values.events.map((event, index) => {
                     return (

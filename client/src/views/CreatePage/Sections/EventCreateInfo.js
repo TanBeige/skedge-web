@@ -1,5 +1,5 @@
 // React Imports
-import React from 'react';
+import React, {Fragment} from 'react';
 
 // Material Ui Imports
 import Button from '@material-ui/core/Button';
@@ -63,6 +63,7 @@ export default function EventCreateInfo(props) {
     location_name: savedValues.location_name,
     city: savedValues.city,
     state: savedValues.state,
+    entityCityState: {},
 
     start_date: savedValues.start_date,
     end_date: savedValues.end_date,
@@ -93,6 +94,16 @@ export default function EventCreateInfo(props) {
   const handleCheck = name => event => {
     setValues({ ...values, [name]: event.target.checked });
   };
+
+  const handleEntityLocation = event => {
+    console.log(event.target.value)
+    setValues({
+      ...values,
+      city: event.target.value.city,
+      state: event.target.value.state,
+      entityCityState: event.target.value
+    })
+  }
 
   const handleDayClick = (day) => {
       setValues({
@@ -133,11 +144,11 @@ export default function EventCreateInfo(props) {
 
 
 
-  //Returned JSX
   let dir = props.goingBack ? 'right' : 'left';
 
   const error = [values.monday, values.tuesday, values.wednesday, values.thursday, values.friday, values.saturday, values.sunday].filter(v => v).length < 1;
 
+  // Changes to Date/Time input dynamically based on time types
   let endTimeJS = ""
 
   if (values.endTimeExists) {
@@ -316,6 +327,7 @@ export default function EventCreateInfo(props) {
     )
   }
 
+  // Disable Button if form is filled incorrectly
   let continueDisabled = true;
 
   if(
@@ -347,6 +359,85 @@ export default function EventCreateInfo(props) {
   else {
     continueDisabled = true;
   }
+
+  // Date/Time input based on if Entity or not
+  let inputCityState = ""
+  if(props.savedValues.event_type === "local") {
+    inputCityState = (
+      <Fragment>
+        <Grid item xs={12}>
+          <TextField
+              id="locations"
+              select
+              label="Locations"
+              variant="outlined"
+              required
+              fullWidth
+              className={classes.textField}
+              value={values.entityCityState}
+              onChange={handleEntityLocation}
+              SelectProps={{
+                  MenuProps: {
+                      className: classes.menu,
+                  },
+              }}
+              margin="normal"
+          >
+              {
+              skedgeLocations.map((item, index) => 
+                  (<MenuItem key={index} value={item}>{item.city}, {item.state}</MenuItem>)
+              )}
+          </TextField>
+        </Grid>
+      </Fragment>
+    )
+  }
+  else {
+    inputCityState = (
+      <Fragment>
+        <Grid item xs={6}>
+          <TextField
+              id="city"
+              label="City"
+              variant="outlined"
+              onChange={handleChange}
+              required
+              fullWidth
+              className={classes.textField}
+              value={values.city}
+              onChange={handleChange('city')}
+              margin="normal"
+          >
+          </TextField>
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+              id="state"
+              select
+              label="State"
+              variant="outlined"
+              required
+              fullWidth
+              className={classes.textField}
+              value={values.state}
+              onChange={handleChange('state')}
+              SelectProps={{
+                  MenuProps: {
+                      className: classes.menu,
+                  },
+              }}
+              margin="normal"
+          >
+              {
+              states.map(value => 
+                  (<MenuItem key={value} value={value}>{value}</MenuItem>)
+              )}
+          </TextField>
+        </Grid>
+      </Fragment>
+    )
+  }
+  
 
   //**************************** Return ******************************
   return (
@@ -399,7 +490,9 @@ export default function EventCreateInfo(props) {
                 placeholder="123 Example St."
               />
             </Grid>
-            <Grid item xs={6}>
+
+            {inputCityState}
+            {/* <Grid item xs={6}>
                 <TextField
                     id="city"
                     label="City"
@@ -437,7 +530,7 @@ export default function EventCreateInfo(props) {
                         (<MenuItem key={value} value={value}>{value}</MenuItem>)
                     )}
                 </TextField>
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
               <FormControlLabel
@@ -557,4 +650,11 @@ const states = [ "Alabama", "Alaska", "American Samoa", "Arizona", "Arkansas", "
  "West Virginia",
  "Wisconsin",
  "Wyoming"
+]
+
+const skedgeLocations = [
+  {
+    city: "Tallahassee",
+    state: "Florida"
+  }
 ]

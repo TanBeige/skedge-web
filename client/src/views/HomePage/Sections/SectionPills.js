@@ -21,6 +21,9 @@ import Collapse from '@material-ui/core/Collapse';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from "@material-ui/core/styles";
 
+import TextField from '@material-ui/core/TextField';
+
+
 // Time/Date Selections Imports
 import MomentUtils from '@date-io/moment';    //uninstall if dont need this later
 import {
@@ -286,6 +289,25 @@ export default function SectionPills(props) {
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.section} style={{paddingTop: 0, paddingBottom: '1em'}}>
+        {/* <div style={{paddingTop: 20}}>
+          <TextField
+            id="outlined-select-currency"
+            select
+            value={skedgeLocations[0]}
+            fullWidth
+            //onChange={handleChange}
+            variant="outlined"
+          >
+            {skedgeLocations.map((item, index) => (
+              <MenuItem key={index} value={item}>
+                {item.city}, {item.state}
+              </MenuItem>
+            ))}
+            <MenuItem disabled>
+                More To Come!
+            </MenuItem>
+          </TextField>
+        </div> */}
         <GridContainer justify="center">
           <GridItem xs={12}>
             <Paper elevation={10} style={{paddingLeft:20, paddingRight: 20, margin: '10px 0 20px 0'}} color="primary">
@@ -487,3 +509,10 @@ Date.prototype.addDays = function(days) {
   date.setDate(date.getDate() + days);
   return date;
 }
+
+const skedgeLocations = [
+  {
+    city: "Tallahassee",
+    state: "Florida"
+  }
+]

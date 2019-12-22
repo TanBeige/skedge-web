@@ -173,6 +173,7 @@ export default function HomePage(props) {
                 <ArrowUpwardIcon style={{color: "white"}} />
           </Button>
           <div className={classes.container} >
+
             {/* <h1 className='homeTitle'>Skedge</h1> */}
             {
               loading ?

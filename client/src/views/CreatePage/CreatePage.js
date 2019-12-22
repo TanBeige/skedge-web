@@ -103,7 +103,8 @@ export default function PricingPage(props) {
     }
     else {
         let path = `home`;
-        props.history.push(path);
+        //props.history.push(path);
+        props.history.goBack()
         // eslint-disable-next-line
         /*window.location.reload()*/
     }
@@ -535,6 +536,7 @@ const handleLocalOrPrivate = (type) => {
         savedTag={values.tags} 
         savedCategory={values.category} 
         handleTagInfo={handleTagInfo} 
+        
       />)
       break;
     case 3: 
@@ -549,6 +551,8 @@ const handleLocalOrPrivate = (type) => {
           client={props.client}
           userId={user.sub}
           event_type={values.event_type}
+          entity={values.isEntity} 
+
         />
         break;
     case 4:
