@@ -1012,6 +1012,21 @@ subscription fetch_user_nav($userId: String) {
 }
 `
 
+const QUERY_EVENT_PAGE_MOMENTS = gql`
+query query_event_memories($eventId: Int!, $limit: Int, $offset: Int) {
+  events(limit: $limit, offset: $offset, where: {id: {_eq: $eventId}}) {
+    moments {
+      source
+      moment_likes_aggregate{
+        aggregate{
+          count
+        }
+      }
+    }
+  }
+}
+`
+
 
 export {
   QUERY_FILTERED_EVENT,
@@ -1062,7 +1077,8 @@ export {
   QUERY_ACCEPTED_FRIENDS,
   QUERY_ACCEPTED_FOLLOWING,
   QUERY_CHECK_FRIEND,
-  QUERY_BOTTOM_NAV
+  QUERY_BOTTOM_NAV,
+  QUERY_EVENT_PAGE_MOMENTS
 };
 
 

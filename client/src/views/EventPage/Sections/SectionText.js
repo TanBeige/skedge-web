@@ -5,6 +5,8 @@ import classNames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "components/CustomButtons/Button.js";
 import GoingSaveButtons from './EventPageComponents/GoingSaveButtons.js';
+import EventMoments from './EventMoments.js';
+
 
 // @material-ui/icons
 import GridContainer from "components/Grid/GridContainer.js";
@@ -204,12 +206,19 @@ export default function SectionText({ eventInfo, client }) {
                 eventId={eventInfo.event_id}
               />
             </div>
+            <EventMoments
+              eventId={eventInfo.event_id}
+              cover={eventInfo.cover_url}
+              client={client}
+              ifGoing={values.ifGoing}
+            />
             <h3 className={classes.title}>
               Details
             </h3>
             <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
               {eventInfo.description}
             </p>
+            
             <h4>
               <PlaceIcon style={{verticalAlign: 'top'}}/>
               {`${eventInfo.location_name}`} <br />
@@ -223,6 +232,7 @@ export default function SectionText({ eventInfo, client }) {
               city={eventInfo.city}
               state={eventInfo.state}
             />
+            
           </GridItem>
         </GridContainer>
       </div>

@@ -30,6 +30,7 @@ import EditEventButton from './Sections/EventPageComponents/EditEventButton.js';
 import DeleteEventButton from './Sections/EventPageComponents/DeleteEventButton.js';
 
 
+
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 import {
   FETCH_EVENT_INFO,
@@ -433,7 +434,6 @@ export default function EventPage(props) {
               eventInfo={values}
               client={props.client}
             />
-
             <SectionBlogInfo
               eventInfo={values}
               eventId={values.event_id}
