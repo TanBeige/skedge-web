@@ -5,7 +5,9 @@ import classNames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "components/CustomButtons/Button.js";
 import GoingSaveButtons from './EventPageComponents/GoingSaveButtons.js';
-import EventMoments from './EventMoments.js';
+import EventMomentsWrapper from 'components/EventMoments/EventMomentsWrapper.js';
+import MomentPopover from 'components/EventMoments/MomentPopover.js';
+
 
 
 // @material-ui/icons
@@ -206,7 +208,10 @@ export default function SectionText({ eventInfo, client }) {
                 eventId={eventInfo.event_id}
               />
             </div>
-            <EventMoments
+
+            <h4></h4>
+            <MomentPopover/>
+            <EventMomentsWrapper
               eventId={eventInfo.event_id}
               cover={eventInfo.cover_url}
               client={client}
