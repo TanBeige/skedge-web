@@ -93,7 +93,7 @@ export default function EventMoments(props) {
                 // moments: momentsList
                 moments: [
                     {
-                        url: 'https://picsum.photos/1080/1920',
+                        url: `https://picsum.photos/1080/1920`,
                         // seeMore: ({ close }) => (
                         //     <div style={{ width: '100%', height: '100%' }}>Hello</div>
                         // ),
@@ -174,7 +174,6 @@ export default function EventMoments(props) {
     return (
         <ThemeProvider theme={theme}>
             <div style={{margin: 'auto', textAlign: 'center'}}>
-                <h4 style={{}}>Event Moments</h4>
                 <GridContainer spacing={3} justify="center">
                     <GridItem xs={10}>
                         <div onClick={() => setOpenMoments(true)} style={{overflow: 'hidden', borderRadius: 8, border: '2px solid #02C39A',  width: '100%', height: 64, display: 'flex', justifyContent: 'center'}}>

@@ -30,6 +30,8 @@ import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
 // import Badge from 'components/Badge/Badge.js';
 
+import EventMoments from 'views/EventPage/Sections/EventMoments.js';
+
 //Style
 import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js";
 
@@ -461,7 +463,12 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
               <Link to={`/events/${event.id}`}>
                 <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center"}}>{values.name}</h3>
               </Link>
-              
+              <EventMoments 
+                eventId={event.id}
+                cover={values.image_url}
+                client={client}
+                //ifGoing={values.ifGoing}
+              />
               <hr style={{margin: 2}}/>
 
               <div style={{width: '100%', textAlign: 'left'}}>
