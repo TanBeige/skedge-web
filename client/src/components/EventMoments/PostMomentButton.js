@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
@@ -11,33 +11,15 @@ import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
+
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 
-//Cropping
-import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
-
 //Icons
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
-import { useEffect } from 'react';
 
-
-/*
-    //From react-image-crop documents, for Video Support: 
-    -----
-    Render a custom HTML element in place of an image. Useful if you want to support videos:
-
-    const videoComponent = (
-    <video autoPlay loop style={{ display: 'block', maxWidth: '100%' }}>
-        <source src="sample.mp4" type="video/mp4" />
-    </video>
-    );
-
-    <ReactCrop onChange={this.onCropChange} renderComponent={videoComponent} />;
-    ----
-*/
+import CropImage from 'components/CropImage/CropImage.js';
 
 // Fade in for Modal
 const Fade = React.forwardRef(function Fade(props, ref) {
@@ -81,7 +63,7 @@ const useStyles = makeStyles(theme => ({
     },
     paper: {
         maxHeight: '90vh',
-        maxWidth: '90vw',
+        width: '90vw',
         backgroundColor: "white",
         border: '1px solid #000',
         boxShadow: theme.shadows[5],
@@ -97,21 +79,6 @@ export default function PostMomentButton() {
         file: null,
         uploading: false,
         openPreview: false,
-
-        src: null,
-        crop: {
-            unit: '%',
-            width: 30,
-            aspect: 9 / 16,
-        },
-        //croppedImageUrl: null,
-        //imageRef: null
-    })
-
-    const [theCrop, setTheCrop] = useState({
-        unit: '%',
-        width: 30,
-        aspect: 9 / 16,
     })
 
     //Modal Styling
@@ -153,66 +120,46 @@ export default function PostMomentButton() {
         }
     };
 
-    // For Cropping
-    const onImageLoaded = image => {
-        imageRef.current = image;
-    };
-    
-    const onCropComplete = crop => {
-        makeClientCrop(crop);
-    };
+    //Submit to cloudinary
+    const submitMoment = async (crop) => {
+        //Upload Image to Cloudinary, Delete Old picture Afterwards
+        console.log(crop)
+        let errorOccurred = false;
+        let response = "";
+        if(uploadValues.file !== null) {
+            setUploadValues({
+                ...uploadValues,
+                uploading: true
+            });
+            const form_data = new FormData();
 
-    const onCropChange = (crop, percentCrop) => {
-        // You could also use percentCrop:
-        // this.setState({ crop: percentCrop });
-        //setUploadValues({ ...uploadValues, crop });
-        setTheCrop(crop);
-    };
+            form_data.append('file', uploadValues.file)
 
-    const makeClientCrop = async (crop) => {
-        if (imageRef.current && crop.width && crop.height) {
-          const croppedImageUrl = await getCroppedImg(
-            imageRef.current,
-            crop,
-            'newFile.jpeg'
-          );
-          setUploadValues({...uploadValues, croppedImageUrl });
+            const request_config = {
+                method: "post",
+                url: `/moment/upload`,
+                data: form_data,
+                params: {
+                    x: Math.floor(crop.x),
+                    y: Math.floor(crop.y),
+                    width: Math.floor(crop.width),
+                    height: Math.floor(crop.height)
+                },
+            };
+            response = await axios(request_config).then(()=>{
+                console.log("Success!")
+            //     setUploadValues({
+            //         ...uploadValues,
+            //         uploading: false
+            //     });
+            });
+
+        }
+        if (errorOccurred) {
+            return
         }
     }
-    const getCroppedImg = (image, crop, fileName) => {
-        const canvas = document.createElement('canvas');
-        const scaleX = image.naturalWidth / image.width;
-        const scaleY = image.naturalHeight / image.height;
-        canvas.width = crop.width;
-        canvas.height = crop.height;
-        const ctx = canvas.getContext('2d');
     
-        ctx.drawImage(
-          image,
-          crop.x * scaleX,
-          crop.y * scaleY,
-          crop.width * scaleX,
-          crop.height * scaleY,
-          0,
-          0,
-          crop.width,
-          crop.height
-        );
-    
-        return new Promise((resolve, reject) => {
-          canvas.toBlob(blob => {
-            if (!blob) {
-              //reject(new Error('Canvas is empty'));
-              console.error('Canvas is empty');
-              return;
-            }
-            blob.name = fileName;
-            window.URL.revokeObjectURL(fileUrl);
-            fileUrl = window.URL.createObjectURL(blob);
-            resolve(fileUrl);
-          }, 'image/jpeg');
-        });
-      }
 
 
     //In the future, get current location and see if they're at the event
@@ -237,22 +184,9 @@ export default function PostMomentButton() {
                 >
                     <Fade in={uploadValues.openPreview}>
                         <div className={classes.paper}>
-                            {/* <img style={{maxWidth: '100%', maxHeight: '100%'}} alt='Moment Preview' src={uploadValues.src} /> */}
                             <h4>Click and Drag to Crop</h4>
-                            <ReactCrop
-                                src={uploadValues.src}
-                                crop={theCrop}
-                                ruleOfThirds
-                                onImageLoaded={onImageLoaded}
-                                onComplete={onCropComplete}
-                                onChange={onCropChange}
-                            />
-                            {/* {uploadValues.croppedImageUrl && (
-                                <img alt="Crop" style={{ maxWidth: '100%' }} src={uploadValues.croppedImageUrl} />
-                            )} */}
-                                <img alt="Crop" style={{ maxWidth: '100%' }} src={uploadValues.croppedImageUrl} />
-
-                            <Button variant='outlined'>Post Moment</Button>
+                            <CropImage type='moment' src={uploadValues.src} cropSubmit={submitMoment}/>
+                            {/* <Button variant='outlined'>Post Moment</Button> */}
                         </div>
                     </Fade>
                 </Modal>
@@ -284,45 +218,6 @@ export default function PostMomentButton() {
         )
     }
 
-    //Submit to cloudinary
-    const submitMoment = async () => {
-        //Upload Image to Cloudinary, Delete Old picture Afterwards
-        let errorOccurred = false;
-        let response = "";
-        if(uploadValues.file !== null) {
-            setUploadValues({
-                ...uploadValues,
-                uploading: true
-            });
-            const form_data = new FormData();
-
-            form_data.append('file', uploadValues.file)
-
-            // Upload file to Cloudinary
-            response = await axios.post(
-                `/profile/upload`, 
-                form_data, 
-                {
-                    params: {
-                        //picId: values.picture //send parameters to backend here
-                    }
-                }
-            ).catch((error => {
-                alert("Error occurred while uploading picture, try uploading a smaller image size or try again later.")
-                errorOccurred = true;
-                return;
-            })).then(() => {
-                console.log("Success!")
-                setUploadValues({
-                    ...uploadValues,
-                    uploading: false
-                });
-            })
-        }
-        if (errorOccurred) {
-            return
-        }
-    }
     
 
     return(

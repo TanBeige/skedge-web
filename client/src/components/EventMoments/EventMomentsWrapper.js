@@ -18,14 +18,8 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
 //Icons
-import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/Edit';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import NavigationIcon from '@material-ui/icons/Navigation';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
-import LoadImage from 'material-ui-image';
-import MomentPopover from './MomentPopover';
 import PostMomentButton from './PostMomentButton.js'
 
 import {
