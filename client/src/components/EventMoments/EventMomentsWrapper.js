@@ -26,6 +26,7 @@ import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 import LoadImage from 'material-ui-image';
 import MomentPopover from './MomentPopover';
+import PostMomentButton from './PostMomentButton.js'
 
 import {
     QUERY_EVENT_PAGE_MOMENTS
@@ -152,19 +153,19 @@ export default function EventMoments(props) {
             setValues({
                 ...values,
                 // moments: momentsList
-                // moments: [
-                //     {
-                //         url: `https://picsum.photos/1080/1920`,
-                //         // seeMore: ({ close }) => (
-                //         //     <div style={{ width: '100%', height: '100%' }}>Hello</div>
-                //         // ),
-                //         header: {
-                //             heading: 'Mohit Karekar',
-                //             subheading: 'Posted 5h ago',
-                //             profileImage: 'https://picsum.photos/1000/1000'
-                //         }
-                //     }
-                // ]
+                moments: [
+                    {
+                        url: `https://picsum.photos/1080/1920`,
+                        // seeMore: ({ close }) => (
+                        //     <div style={{ width: '100%', height: '100%' }}>Hello</div>
+                        // ),
+                        header: {
+                            heading: 'Mohit Karekar',
+                            subheading: 'Posted 5h ago',
+                            profileImage: 'https://picsum.photos/1000/1000'
+                        }
+                    }
+                ]
             })
         })
     }
@@ -214,9 +215,8 @@ export default function EventMoments(props) {
         momentCover = values.moments[0].url;
     }
     else {
-        //momentCover = props.cover
+        momentCover = props.cover
         //momentCover = "https://picsum.photos/1080/1920"
-        momentCover = false;
     }
 
     let displayMoments = (
@@ -228,7 +228,7 @@ export default function EventMoments(props) {
             </Fab>
             <hr />
             <p>
-                Moments are photos and videos users share while at the event.
+                Moments are photos users share while at the event.
                 Use it to store all the good times you had with your friends and show everyone else what's going on!
             </p>
         </div>
@@ -276,7 +276,8 @@ export default function EventMoments(props) {
                         </Modal>
                     </GridItem>
                 </GridContainer>
-                {submitMoment}
+
+                <PostMomentButton client={props.client}/>
             </div>
         </ThemeProvider>
     )

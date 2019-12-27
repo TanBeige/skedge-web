@@ -45,8 +45,8 @@ export default function MomentPopover() {
         }}
       >
         <Typography className={classes.typography}>
-            Moments are photos and videos users share while at the event.
-            Use it to store all the good times you had with your friends and show everyone else what's going on!
+          Moments are photos users share while at the event.
+          Use it to store all the good times you had with your friends and show everyone else what's going on!
         </Typography>
       </Popover>
     </div>
