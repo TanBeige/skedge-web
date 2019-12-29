@@ -10,6 +10,9 @@ export default function EventCardList(props) {
     if(props.listType === 'home'){
       return (<EventCardListHome {...props}/>)
     }
+    else if(props.listType === 'landing'){
+      return (<EventCardListHome {...props} type='landing' />)
+    }
     else if(props.listType === 'saved'){
       return (<EventCardListSaved {...props}/>)
     }

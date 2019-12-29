@@ -88,7 +88,7 @@ const theme = createMuiTheme({
 
 
 
-export default function EventCard({event, client, userId, filter, currentDate}) {
+export default function EventCard({event, client, userId, filter, currentDate, type}) {
     const classes = useStyles();
     const bioMaxLength = 100;
 
@@ -467,6 +467,7 @@ export default function EventCard({event, client, userId, filter, currentDate}) 
                 eventId={event.id}
                 cover={values.image_url}
                 client={client}
+                type={type}
                 //ifGoing={values.ifGoing}
               />
               <hr style={{margin: 2}}/>

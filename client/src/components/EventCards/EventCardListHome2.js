@@ -320,6 +320,7 @@ export default function EventCardListHome(props) {
                         <GridItem xs={12} sm={6} md={6} >
                           <EventCard 
                               event={event} 
+                              type={props.type}
                               client={props.client}
                               userId={props.userId}
                               filter={props.filter}

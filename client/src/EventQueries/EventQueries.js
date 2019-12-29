@@ -1012,16 +1012,41 @@ subscription fetch_user_nav($userId: String) {
 }
 `
 
+
+// ----------MOMENTS----------
 const QUERY_EVENT_PAGE_MOMENTS = gql`
 query query_event_memories($eventId: Int!, $limit: Int, $offset: Int) {
   events(limit: $limit, offset: $offset, where: {id: {_eq: $eventId}}) {
-    moments {
-      source
-      moment_likes_aggregate{
-        aggregate{
+    moments (order_by: {time_posted: asc, id: asc}){
+      time_posted
+      source_id
+      user{
+        name
+        picture
+      }
+      moment_likes_aggregate {
+        aggregate {
           count
         }
       }
+    }
+  }
+}
+`
+
+const MUTATION_ADD_MOMENT = gql`
+mutation add_moment($eventId: Int!, $sourceId: String!, $creatorId: String!){
+  insert_moments(
+    objects:{
+      event_id: $eventId,
+      source_id: $sourceId,
+      creator_id: $creatorId
+    }
+  ) {
+    returning{
+      event_id
+      source_id
+      creator_id
     }
   }
 }
@@ -1078,7 +1103,8 @@ export {
   QUERY_ACCEPTED_FOLLOWING,
   QUERY_CHECK_FRIEND,
   QUERY_BOTTOM_NAV,
-  QUERY_EVENT_PAGE_MOMENTS
+  QUERY_EVENT_PAGE_MOMENTS,
+  MUTATION_ADD_MOMENT
 };
 
 

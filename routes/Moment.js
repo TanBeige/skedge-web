@@ -26,7 +26,7 @@ const storage = cloudinaryStorage({
     allowedFormats: ["jpg", "png"],
     transformation: function(req, res, cb) {
 
-        console.log("req.query", req)
+        //console.log("req.query", req)
 
         const inX = req.query.x;
         const inY = req.query.y;
@@ -35,6 +35,8 @@ const storage = cloudinaryStorage({
 
         let transformation = [
             { x: inX, y: inY, width: inWidth, height: inHeight, crop:'crop' },
+            { if: "w_gt_1900", width: 1900, crop: "scale" },
+            { if: "h_gt_1900", height: 1900, crop: "scale" },
             { quality: "auto" },
             { format: 'jpg' }
         ]
@@ -51,21 +53,11 @@ const parser = multer({ storage: storage });
 
 router.post('/upload', parser.single('file'), (req, res) => {
 
-    // const inX = req.query.x;
-    // const inY = req.query.y;
-    // const inHeight = req.query.height;
-    // const inWidth = req.query.width;
-    // console.log(req);
-    // console.log(inX)
-
-    console.log(req.file);
-
-    // const parser = multer({ storage: storage });
-
     const image = {};
-    //image.url = tempImageUrl;
     image.id = req.file.public_id;
 
+    console.log("image id", image.id)
+    // res.send(image);
     res.json(image);  // Returns image url and id to be stored
 });
 

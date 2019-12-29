@@ -21,6 +21,7 @@ import GridItem from "components/Grid/GridItem.js";
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 import PostMomentButton from './PostMomentButton.js'
+import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 
 import {
     QUERY_EVENT_PAGE_MOMENTS
@@ -99,8 +100,11 @@ export default function EventMoments(props) {
     const [values, setValues] = useState({
         randomColor: getRandomColor(),
         moments: [],
-        //image_url: cloudinary.url("", {secure: true, width: 1080, height: 1920 ,fetch_format: "auto"})
+        // image_url: cloudinary.url("", {secure: true, width: 1080, height: 1920 ,fetch_format: "auto"})
     })
+
+    const { user, loginWithRedirect } = useAuth0()
+    
 
 
     //For popover
@@ -125,47 +129,39 @@ export default function EventMoments(props) {
             query: QUERY_EVENT_PAGE_MOMENTS,
             variables: {
                 eventId: props.eventId,
-                limit: 10,
+                limit: 5,
                 offset: 0
             }
         }).then((data) => {
             let momentsList = []; 
+            console.log("moment data", data)
 
-            // data.data.events[0].moments.forEach((moment) => {
-            //     let tempMoment = {
-            //         url: moment.source,
-            //         header: {
-            //             heading: "name",
-            //             subheading: 'Posted 5 hours ago',
-            //             profileImage: 'aass'
-            //         }
-            //     };
+            data.data.events[0].moments.forEach((moment) => {
+                let tempMoment = {
+                    url: cloudinary.url(moment.source_id, {secure: true, width: 1080, height: 1920 ,fetch_format: "auto"}),
 
-            //     momentsList.push(tempMoment);
-            // });
+                    header: {
+                        heading: moment.user.name,
+                        subheading: `Posted ${moment.time_posted} hours ago`,
+                        profileImage: cloudinary.url(moment.user.picture, {secure: true, width: 100, height: 100 ,fetch_format: "auto"}),
+
+                    }
+                };
+
+                momentsList.push(tempMoment);
+            });
 
             setValues({
                 ...values,
-                // moments: momentsList
-                moments: [
-                    {
-                        url: `https://picsum.photos/1080/1920`,
-                        // seeMore: ({ close }) => (
-                        //     <div style={{ width: '100%', height: '100%' }}>Hello</div>
-                        // ),
-                        header: {
-                            heading: 'Mohit Karekar',
-                            subheading: 'Posted 5h ago',
-                            profileImage: 'https://picsum.photos/1000/1000'
-                        }
-                    }
-                ]
+                moments: momentsList
             })
         })
     }
 
     useEffect(() => {
-        getMoments();
+        if(user) {
+            getMoments();
+        }
     },[])
 
     //In the future, get current location and see if they're at the event
@@ -213,33 +209,51 @@ export default function EventMoments(props) {
         //momentCover = "https://picsum.photos/1080/1920"
     }
 
-    let displayMoments = (
-        <div style={{textAlign: 'center'}}>
-            <h5>There are currently no Moments for this event.</h5>
-            <h3 style={{margin: '0px 0px 20px 0px'}}>Add First Moment?</h3>
-            <Fab size='small' color='primary' style={{marginTop: -20, color: 'white'}}>
-                <PhotoCameraIcon />
-            </Fab>
-            <hr />
-            <p>
-                Moments are photos users share while at the event.
-                Use it to store all the good times you had with your friends and show everyone else what's going on!
-            </p>
-        </div>
-        );
-    if(values.moments.length > 0) {
+    let displayMoments = ""
+    if(!user) {
         displayMoments = (
-            <div>
-                <Stories
-                    stories={values.moments}
-                    defaultInterval={2000}
-                    width={'100%'}
-                    height={'70vh'}
-                    onAllStoriesEnd={() => setOpenMoments(false)}
-                />
+            <div style={{textAlign: 'center'}}>
+                <h3 style={{margin: '0px 0px 20px 0px'}}>Must be logged in to view moments.</h3>
+                <Button onClick={loginWithRedirect} color='primary'>Login/Sign Up</Button>
+                <hr />
+                <p>
+                    Moments are photos users share while at the event.
+                    Use it to store all the good times you had with your friends and show everyone else what's going on!
+                </p>
             </div>
-        )
+        );
     }
+    else {
+        if(values.moments.length > 0) {
+            displayMoments = (
+                <div>
+                    <Stories
+                        stories={values.moments}
+                        defaultInterval={2000}
+                        width={'100%'}
+                        height={'70vh'}
+                        onAllStoriesEnd={() => setOpenMoments(false)}
+                    />
+                </div>
+            )
+        }
+        else {
+            displayMoments = (
+                <div style={{textAlign: 'center'}}>
+                    <h5>There are currently no Moments for this event.</h5>
+                    <h3 style={{margin: '0px 0px 20px 0px'}}>Add First Moment?</h3>
+                    <PostMomentButton client={props.client} eventId={props.eventId} userId={user.sub}/>
+        
+                    <hr />
+                    <p>
+                        Moments are photos users share while at the event.
+                        Use it to store all the good times you had with your friends and show everyone else what's going on!
+                    </p>
+                </div>
+            );
+        }
+    }
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -271,7 +285,12 @@ export default function EventMoments(props) {
                     </GridItem>
                 </GridContainer>
 
-                <PostMomentButton client={props.client}/>
+                {
+                    //If user is logged in
+                    user ? <PostMomentButton client={props.client} eventId={props.eventId} userId={user.sub}/>
+                    :
+                    ""
+                }
             </div>
         </ThemeProvider>
     )

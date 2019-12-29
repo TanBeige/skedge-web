@@ -2,7 +2,6 @@ import React, {Fragment, useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-
 import axios from 'axios';
 
 //Material-UI
@@ -10,8 +9,6 @@ import Fab from '@material-ui/core/Fab';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-
-
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
@@ -20,6 +17,11 @@ import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is requir
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 import CropImage from 'components/CropImage/CropImage.js';
+
+import {
+    MUTATION_ADD_MOMENT,
+    QUERY_EVENT_PAGE_MOMENTS
+} from 'EventQueries/EventQueries.js'
 
 // Fade in for Modal
 const Fade = React.forwardRef(function Fade(props, ref) {
@@ -73,7 +75,9 @@ const useStyles = makeStyles(theme => ({
   }));
 
 
-export default function PostMomentButton() {
+export default function PostMomentButton(props) {
+
+    let isMounted = true;
     // Creating Variables and States
     const [uploadValues, setUploadValues] = useState({
         file: null,
@@ -108,6 +112,7 @@ export default function PostMomentButton() {
         e.preventDefault();
         let reader = new FileReader();
         let inFile = e.target.files[0];
+        console.log(inFile)
         reader.onloadend = () => {
             setUploadValues({
                 ...uploadValues,
@@ -140,24 +145,57 @@ export default function PostMomentButton() {
                 url: `/moment/upload`,
                 data: form_data,
                 params: {
-                    x: Math.floor(crop.x),
-                    y: Math.floor(crop.y),
-                    width: Math.floor(crop.width),
-                    height: Math.floor(crop.height)
+                    x: (crop.x/100),
+                    y: (crop.y/100),
+                    width: (crop.width/100),
+                    height: (crop.height/100)
                 },
             };
-            response = await axios(request_config).then(()=>{
-                console.log("Success!")
-            //     setUploadValues({
-            //         ...uploadValues,
-            //         uploading: false
-            //     });
+            response = await axios(request_config).then((res)=>{
+                //After uploading to cloudinary
+                console.log("res", res);
+                return res;
+            }).catch(error => {
+                console.log(error);
+                errorOccurred = true;
+                alert("Could not upload Moment, try again later, or try another picture.")
             });
-
         }
         if (errorOccurred) {
             return
         }
+
+        console.log("Later Reponse", response);
+
+
+        //After uploading to cloudinary, update database
+        //Submit changes to database
+        props.client.mutate({
+            mutation: MUTATION_ADD_MOMENT,
+            refetchQueries: [{
+                query: QUERY_EVENT_PAGE_MOMENTS,
+                variables: {
+                    eventId: props.eventId,
+                }
+            }],
+            variables: {
+                eventId: props.eventId,
+                sourceId: response.data.id,
+                creatorId: props.userId
+            }
+        }).then(data => {
+            if(isMounted){
+                setUploadValues({
+                    ...uploadValues,
+                    uploading: false,
+                    openPreview: false
+                })
+            }
+            console.log("Success!")
+        }).catch( error =>{
+            console.error(error)
+            alert("Could not upload Moment, try again later.")
+        });
     }
     
 
@@ -219,6 +257,13 @@ export default function PostMomentButton() {
     }
 
     
+    useEffect(()=>{
+        isMounted = true;
+
+        return () => {
+            isMounted = false;
+        }
+    }, [])
 
     return(
         <div className="fileinput" style={{display: 'inline'}} >

@@ -41,7 +41,8 @@ class CropImage extends Component {
               unit: '%',
               width: 1000,
               aspect: aspectRatio,
-            }
+            },
+            percentCrop: null
         }
         this.submitCroppedImage = this.submitCroppedImage.bind(this)
     }
@@ -77,7 +78,10 @@ class CropImage extends Component {
   onCropChange = (crop, percentCrop) => {
     // You could also use percentCrop:
     // this.setState({ crop: percentCrop });
-    this.setState({ crop });
+    this.setState({ 
+      crop: crop ,
+      percentCrop: percentCrop
+    });
   };
 
   async makeClientCrop(crop) {
@@ -127,8 +131,7 @@ class CropImage extends Component {
   }
 
   submitCroppedImage() {
-    console.log(this.state.crop)
-    this.props.cropSubmit(this.state.crop);
+    this.props.cropSubmit(this.state.percentCrop);
   }
 
   render() {
@@ -138,10 +141,11 @@ class CropImage extends Component {
       <div style={{textAlign: 'center'}}>
         <GridContainer>
           {src && (
-            <GridItem xs={12} style={{maxHeight: '50vh'}}>
+            <GridItem xs={12}>
               <ReactCrop
                 src={src}
                 style={{border: '2px solid black', borderRadius: 5}}
+                imageStyle ={{maxHeight: '50vh', maxWidth: '80vw'}}
                 crop={crop}
                 ruleOfThirds
                 onImageLoaded={this.onImageLoaded}
