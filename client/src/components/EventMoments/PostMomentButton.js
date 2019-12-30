@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: "white",
         border: '1px solid #000',
         boxShadow: theme.shadows[5],
-        borderRadius: 5,
+        borderRadius: 6,
         padding: theme.spacing(2, 3, 2),
     },
   }));

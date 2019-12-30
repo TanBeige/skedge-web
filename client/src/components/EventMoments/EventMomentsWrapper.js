@@ -87,14 +87,18 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: "white",
       border: '1px solid #000',
       boxShadow: theme.shadows[5],
-      borderRadius: 5,
+      borderRadius: 6,
       padding: theme.spacing(2, 3, 2),
+      maxWidth: 500,
+      margin: 10
     },
   }));
 
-// --------------------Actualy Component!!!---------------
+// --------------------Component!!!---------------
 
 export default function EventMoments(props) {
+
+    let isMounted = true;
 
     const [openMoments, setOpenMoments] = useState(false)
     const [values, setValues] = useState({
@@ -142,25 +146,30 @@ export default function EventMoments(props) {
 
                     header: {
                         heading: moment.user.name,
-                        subheading: `Posted ${moment.time_posted} hours ago`,
-                        profileImage: cloudinary.url(moment.user.picture, {secure: true, width: 100, height: 100 ,fetch_format: "auto"}),
-
+                        subheading: `Posted ${timeSince(moment.time_posted)} ago`,
+                        profileImage: cloudinary.url(moment.user.picture, {secure: true, width: 100, height: 100, crop: "fill" ,fetch_format: "auto"}),
                     }
                 };
 
                 momentsList.push(tempMoment);
             });
-
-            setValues({
-                ...values,
-                moments: momentsList
-            })
+            if(isMounted) {
+                setValues({
+                    ...values,
+                    moments: momentsList
+                })
+            }
         })
     }
 
     useEffect(() => {
+        isMounted = true;
         if(user) {
             getMoments();
+        }
+
+        return () =>{
+            isMounted = false;
         }
     },[])
 
@@ -205,8 +214,8 @@ export default function EventMoments(props) {
         momentCover = values.moments[0].url;
     }
     else {
-        momentCover = props.cover
-        //momentCover = "https://picsum.photos/1080/1920"
+        //momentCover = props.cover
+        // momentCover = "https://picsum.photos/720/1080"
     }
 
     let displayMoments = ""
@@ -229,7 +238,7 @@ export default function EventMoments(props) {
                 <div>
                     <Stories
                         stories={values.moments}
-                        defaultInterval={2000}
+                        defaultInterval={4000}
                         width={'100%'}
                         height={'70vh'}
                         onAllStoriesEnd={() => setOpenMoments(false)}
@@ -303,4 +312,34 @@ function getRandomColor() {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+}
+
+function timeSince(date) {
+
+    const tempDate = new Date(date)
+
+    var seconds = Math.floor((new Date() - tempDate) / 1000);
+  
+    var interval = Math.floor(seconds / 31536000);
+  
+    if (interval > 1) {
+      return interval + " years";
+    }
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) {
+      return interval + " months";
+    }
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) {
+      return interval + " days";
+    }
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) {
+      return interval + " hours";
+    }
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) {
+      return interval + " minutes";
+    }
+    return Math.floor(seconds) + " seconds";
   }
