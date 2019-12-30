@@ -59,8 +59,6 @@ export default function UserSearchList(props) {
 
       //// Handling Friend Invites
   const handleFollowInvite = () => {
-    //  Handling relationship. column 1 must be > column 2 for errors. 
-    //    For more info check relationship table docs.
     console.log("Follow Request")
     
     props.client.mutate({
@@ -75,13 +73,13 @@ export default function UserSearchList(props) {
         objects: {
           user_id: user.sub,
           is_following_id: userItem.auth0_id,
-          status: 0
+          status: userItem.entity ? 1 : 0
         }
       }
     }).then(() => {
       //Change relationship type for button to change
       if(isMounted) {
-        setFollowStatus(0)
+        setFollowStatus(userItem.entity ? 1 : 0)
       }
     })
   }

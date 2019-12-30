@@ -59,7 +59,7 @@ const ProfileFriendItem = ({
         friendFullName = friendFullName.substring(0, maxNameLength);
         friendFullName += "...";
     }
-
+console.log("friend status: ",currentFriend.entity)
 
     //Handling Friend Removing/Adding
     const handleFriend = () => {
@@ -97,12 +97,13 @@ const ProfileFriendItem = ({
                 variables: {
                   objects: {
                       user_id: userId,
-                      is_following_id: profileId
+                      is_following_id: profileId,
+                      status: currentFriend.entity ? 1 : 0
                   }
                 }
               }).then(() => {
                     //Change relationship type for button to change
-                    setFriendButton(0)
+                    setFriendButton(currentFriend.entity ? 1 : 0)
               })
         }
     }

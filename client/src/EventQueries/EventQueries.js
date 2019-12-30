@@ -104,6 +104,7 @@ const USER_SEARCH_FRAGMENT = gql`
       full_name
       picture
       auth0_id
+      entity
       followers (where: {status: {_eq: 1}}){
         user_id
         user {
@@ -293,6 +294,7 @@ const USER_SEARCH = gql`
       full_name
       picture
       auth0_id
+      entity
       followers (where: {user_id: {_eq: $userId}}){
         user_id
         status
@@ -968,6 +970,7 @@ const QUERY_ACCEPTED_FOLLOWING = gql`
         name
         full_name
         picture
+        entity
         followers{
           user_id
           status

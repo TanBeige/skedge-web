@@ -109,8 +109,6 @@ export default function EventMoments(props) {
 
     const { user, loginWithRedirect } = useAuth0()
     
-
-
     //For popover
     const [anchorEl, setAnchorEl] = React.useState(null);
     const handleClick = event => {
@@ -133,8 +131,8 @@ export default function EventMoments(props) {
             query: QUERY_EVENT_PAGE_MOMENTS,
             variables: {
                 eventId: props.eventId,
-                limit: 5,
-                offset: 0
+                //limit: 5,
+                //offset: 0
             }
         }).then((data) => {
             let momentsList = []; 
@@ -238,7 +236,7 @@ export default function EventMoments(props) {
                 <div>
                     <Stories
                         stories={values.moments}
-                        defaultInterval={4000}
+                        defaultInterval={10000}
                         width={'100%'}
                         height={'70vh'}
                         onAllStoriesEnd={() => setOpenMoments(false)}
