@@ -341,16 +341,18 @@ const SUGGESTED_USERS = gql`
 // Fetch Events
 
 const FETCH_EVENT_GOING_SAVE = gql`
-  query fetch_event_going_save($eventId: Int, $userId: String) {
-    users(where: {auth0_id: {_eq: $userId}}) {
-      user_saved_events(where:{event_id:{_eq: $eventId}}) {
-        time_saved
-      }
-      event_goings(where:{event_id:{_eq: $eventId}}) {
-        event_id
-      }
+query fetch_event_going_save($eventId: Int, $userId: String) {
+  users(where: {auth0_id: {_eq: $userId}}) {
+    user_saved_events(where:{event_id:{_eq: $eventId}}) {
+      time_saved
+    }
+    event_invites(where:{event_id:{_eq: $eventId}}) {
+      event_id
+      response
     }
   }
+}
+
 `
 
   //Event Saves
@@ -406,6 +408,26 @@ mutation event_going($eventId: Int, $userId: String) {
   }
 }
 `
+
+//Event Going
+const MUTATION_EVENT_RESPONSE = gql`
+mutation event_going($invitedId: String!, $inviterId: String!, $eventId: Int!, $response: Int!) {
+  insert_event_invites(
+    objects: {
+      invited_id: $invitedId,
+      inviter_id: $inviterId,
+      event_id: $eventId, 
+      response: $response
+    }, 
+      on_conflict: {
+        constraint: event_invites_pkey
+        update_columns: [response, response_timestamp]
+      }) {
+    affected_rows
+  }
+}
+`
+
 const MUTATION_EVENT_UNDO_GOING = gql`
 mutation undo_going_event($eventId: Int, $userId: String) {
   delete_event_going(
@@ -944,6 +966,7 @@ const QUERY_ACCEPTED_FRIENDS = gql`
         name
         full_name
         picture
+        entity
         followers{
           user_id
           status
@@ -1074,6 +1097,8 @@ export {
   MUTATION_EVENT_GOING,
   MUTATION_EVENT_UNDO_GOING,
   REFETCH_EVENT_GOING,
+
+  MUTATION_EVENT_RESPONSE,
 
   FETCH_EVENT_GOING_SAVE,
 

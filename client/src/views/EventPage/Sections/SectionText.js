@@ -89,7 +89,11 @@ export default function SectionText({ eventInfo, client }) {
         userId: user.sub
       }
     }).then((data) => {
-      const isGoing = data.data.users[0].event_goings.length === 1;
+      console.log(data)
+      let isGoing = false;
+      if(data.data.users[0].event_invites.length === 1) {
+        isGoing = data.data.users[0].event_invites[0].response === 1;
+      }
       const isSaved = data.data.users[0].user_saved_events.length === 1;
       if(_isMounted) {
         setValues({
@@ -206,6 +210,7 @@ export default function SectionText({ eventInfo, client }) {
                 ifSaved={values.ifSaved}
                 client={client}
                 eventId={eventInfo.event_id}
+                eventHost={eventInfo.user_auth0_id}
               />
             </div>
 

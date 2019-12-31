@@ -6,11 +6,16 @@ import {
     MUTATION_EVENT_SAVE,
     MUTATION_EVENT_UNDO_SAVE,
     REFETCH_EVENT_SAVES,
+
     MUTATION_EVENT_GOING,
     MUTATION_EVENT_UNDO_GOING,
+
+    MUTATION_EVENT_RESPONSE,
+
     REFETCH_EVENT_GOING,
     FETCH_EVENT_INFO,
     FETCH_EVENT_GOING_SAVE,
+
   } from 'EventQueries/EventQueries.js'
 import { userInfo } from 'os';
 
@@ -28,7 +33,7 @@ export default function GoingSaveButtons (props) {
     // Change to Not Going To Event
     if(values.ifGoing) {
         props.client.mutate({
-            mutation: MUTATION_EVENT_UNDO_GOING,
+            mutation: MUTATION_EVENT_RESPONSE,
             refetchQueries: [{
                 query: FETCH_EVENT_GOING_SAVE,
                 variables: {
@@ -37,20 +42,22 @@ export default function GoingSaveButtons (props) {
                 }
             }],
             variables: {
+                invitedId: user.sub,
+                inviterId: props.eventHost,
                 eventId: props.eventId,
-                userId: user.sub
+                response: 2
             }
         }).then(() => {
-        setValues({
-            ...values,
-            ifGoing: false,
-        })
+            setValues({
+                ...values,
+                ifGoing: false,
+            })
         })
     }
     // Change to Going To Event
     else {
         props.client.mutate({
-            mutation: MUTATION_EVENT_GOING,
+            mutation: MUTATION_EVENT_RESPONSE,
             refetchQueries: [{
                 query: FETCH_EVENT_GOING_SAVE,
                 variables: {
@@ -59,14 +66,16 @@ export default function GoingSaveButtons (props) {
                 }
             }],
             variables: {
+                invitedId: user.sub,
+                inviterId: props.eventHost,
                 eventId: props.eventId,
-                userId: user.sub
+                response: 1
             }
         }).then(() => {
-        setValues({
-            ...values,
-            ifGoing: true
-        })
+            setValues({
+                ...values,
+                ifGoing: true
+            })
         })
     }
     }
