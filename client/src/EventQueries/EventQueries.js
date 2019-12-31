@@ -604,6 +604,10 @@ const FETCH_EVENT_INFO = gql`
       event_going {
         user_id
       }
+      event_invites{
+        invited_id
+        response
+      }
       user_saved_events {
         user_id
       }

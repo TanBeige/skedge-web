@@ -165,7 +165,7 @@ export default function EventPage(props) {
           like_amount: data.data.events[0].event_like_aggregate.aggregate.count,
 
           ifSaved: data.data.events[0].user_saved_events.some(user => user.user_id === user.sub),
-          ifGoing: data.data.events[0].event_going.some(user => user.user_id === user.sub),
+          ifGoing: data.data.events[0].event_invites.some(user => user.invited_id === user.sub),
         })
         console.log("Get Event Data: ", data)
         //Say that we're not loading the event anymore.
