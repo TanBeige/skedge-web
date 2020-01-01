@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import SwipeableViews from 'react-swipeable-views';
 
 import NotificationList from './Sections/NotificationList.js';
-import FriendRequestsList from './Sections/FriendRequestsList.js';
+import RequestList from './Sections/RequestList.js';
+import EventInviteList from './Sections/EventInvitesList.js';
 
 // nodejs library that concatenates classes
 import classNames from "classnames";
@@ -24,6 +25,7 @@ import Remove from "@material-ui/icons/Remove";
 import Add from "@material-ui/icons/Add";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import EventSeatIcon from '@material-ui/icons/EventSeat';
 
 
 // core components
@@ -74,6 +76,10 @@ export default function NotificationsPage(props) {
   const changeRequestNums = (num) => {
     setRequestNums(num)
   }
+  const [inviteNums, setInviteNums] = useState(0)
+  const changeInviteNums = (num) => {
+    setInviteNums(num)
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -112,6 +118,10 @@ export default function NotificationsPage(props) {
                     label={'Requests'}
                     icon={<Badge badgeContent={requestNums} max={999} overlap="circle" color="secondary"><Add /></Badge>}
                   />
+                  <Tab
+                    label={'Invites'}
+                    icon={<Badge badgeContent={inviteNums} max={999} overlap="circle" color="secondary"><EventSeatIcon /></Badge>}
+                  />
                 </Tabs>
                 <SwipeableViews
                   index={active}
@@ -122,9 +132,15 @@ export default function NotificationsPage(props) {
                     changeNotifNums={changeNotifNums}
                   />
 
-                  <FriendRequestsList 
+                  <RequestList 
                     client={props.client}
                     changeRequestNums={changeRequestNums}
+                  />
+
+                  <EventInviteList 
+                    client={props.client}
+                    changeInviteNums={changeInviteNums}
+                  
                   />
                 </SwipeableViews>
               </CardBody>

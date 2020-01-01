@@ -203,7 +203,8 @@ class PrimaryNav extends Component {
                 console.log("Navbar Error: ",error)
               } 
               else {
-                notifNums = (data.users[0].followers_aggregate.aggregate.count + data.users[0].notifications_aggregate.aggregate.count)
+                console.log(data)
+                notifNums = (data.users[0].followers_aggregate.aggregate.count + data.users[0].notifications_aggregate.aggregate.count + data.users[0].event_invites_aggregate.aggregate.count)
               }
               return (
                 <BottomNavigation

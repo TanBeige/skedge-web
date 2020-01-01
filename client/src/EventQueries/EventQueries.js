@@ -275,6 +275,34 @@ const FETCH_FOLLOW_REQUESTS = gql`
   ${USER_SEARCH_FRAGMENT}
 `
 
+const FETCH_EVENT_INVITES = gql`
+subscription follow_requests($userId: String!) {
+  users(where: {auth0_id: {_eq: $userId}}) {
+    name
+    event_invites(where: {response: {_eq: 0}}) {
+      event {
+        name
+        id
+        event_date {
+          end_date
+        }
+        image {
+          image_uuid
+        }
+      }
+      inviter {
+        name
+        auth0_id
+        full_name
+        id
+        picture
+      }
+    }
+  }
+}
+
+`
+
 // Fetch User Search
 const USER_SEARCH = gql`
   query user_search($search: String, $limit: Int, $offset: Int, $userId: String!){
@@ -1038,6 +1066,11 @@ subscription fetch_user_nav($userId: String) {
         count
       }
     }
+    event_invites_aggregate(where: {response: {_eq: 0}}) {
+      aggregate {
+        count
+      }
+    }
   }
 }
 `
@@ -1094,6 +1127,7 @@ export {
   SEE_NOTIFICATION,
   USER_SEARCH,
   FETCH_FOLLOW_REQUESTS,
+  FETCH_EVENT_INVITES,
 
   MUTATION_EVENT_SAVE,
   MUTATION_EVENT_UNDO_SAVE,
