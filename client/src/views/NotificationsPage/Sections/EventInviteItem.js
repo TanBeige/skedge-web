@@ -14,63 +14,167 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { Fragment } from "react";
+
+
+
+// import React, { Fragment } from "react";
+// // @material-ui/core components
+// import { makeStyles } from "@material-ui/core/styles";
+// // @material-ui icons
+// import DeleteIcon from '@material-ui/icons/Delete';
+// import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+// import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+// import IconButton from '@material-ui/core/IconButton';
+
+// // core components
+// import Card from "components/Card/Card.js";
+// import CardBody from "components/Card/CardBody.js";
+// import Button from "components/CustomButtons/Button.js";
+// import GridContainer from "components/Grid/GridContainer.js";
+// import GridItem from "components/Grid/GridItem.js";
+
+// import imagesStyles from "assets/jss/material-kit-pro-react/imagesStyles.js";
+
+// import { cardTitle } from "assets/jss/material-kit-pro-react.js";
+
+// // Fade in image when loads
+// import LoadImage from 'material-ui-image'
+
+// const style = {
+//   ...imagesStyles,
+//   cardTitle
+// };
+
+// const useStyles = makeStyles(style);
+
+// export default function EventInviteItem(props) {
+//     const classes = useStyles();
+
+//     return(
+//         <Fragment>
+//             <GridItem xs={12} md={6} lg={4}>
+//                 <Card>
+//                     {/* <img
+//                         style={{ height: "180px", width: "100%", display: "block" }}
+//                         className={classes.imgCardTop}
+//                         src={cloudinary.url(props.eventItem.event.image.image_uuid, {secure: true, height: 180, crop: "fill" ,fetch_format: "auto", quality: "auto"})}
+//                     /> */}
+//                     <LoadImage 
+//                         color='white' 
+//                         style={{ height: "100px", width: "100%", display: "block" }}
+//                         className={classes.imgCardTop}
+//                         src={cloudinary.url(props.eventItem.event.image.image_uuid, {secure: true, height: 180, crop: "fill" ,fetch_format: "auto", quality: "auto"})}
+//                         aspectRatio={3/2}
+//                         alt='event cover'
+//                     />
+
+//                     <CardBody>
+//                         <h4 className={classes.cardTitle}>{props.eventItem.event.name}</h4>
+//                         <IconButton color="primary" edge="end" aria-label="accept">
+//                             <CheckCircleOutlineIcon fontSize='large'/>
+//                         </IconButton>
+//                         <IconButton edge="end" aria-label="delete" >
+//                             <DeleteIcon fontSize='large'/>
+//                         </IconButton>
+//                     </CardBody>
+//                 </Card>
+//             </GridItem>
+//         </Fragment>
+//     )
+// }
+
+import React from "react";
 // @material-ui/core components
+import { Link } from 'react-router-dom'
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui icons
+import Subject from "@material-ui/icons/Subject";
+import WatchLater from "@material-ui/icons/WatchLater";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import IconButton from '@material-ui/core/IconButton';
-
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 // core components
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import Button from "components/CustomButtons/Button.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
+import Avatar from '@material-ui/core/Avatar';
 
 
-
-import imagesStyles from "assets/jss/material-kit-pro-react/imagesStyles.js";
-
-import { cardTitle } from "assets/jss/material-kit-pro-react.js";
+import cardsStyle from "assets/jss/material-kit-pro-react/views/componentsSections/sectionCards.js";
 
 const style = {
-  ...imagesStyles,
-  cardTitle
+  ...cardsStyle
 };
+
+// Cloudinary setup
+var cloudinary = require('cloudinary/lib/cloudinary').v2
+
+cloudinary.config({
+  cloud_name: "skedge"
+});
 
 const useStyles = makeStyles(style);
 
-export default function EventInviteItem(props) {
+export default function CardExampleCardBackground(props) {
     const classes = useStyles();
 
-    return(
-        <Fragment>
-            <GridItem xs={12} md={6} lg={4}>
-                <Card>
-                    <img
-                        style={{ height: "180px", width: "100%", display: "block" }}
-                        className={classes.imgCardTop}
-                        src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22320%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_163df23d717%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_163df23d717%22%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22119.0859375%22%20y%3D%2297.35%22%3E320x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
-                        alt="Card-img-cap"
-                    />
-                    <CardBody>
-                        <h4 className={classes.cardTitle}>{props.eventItem.event.name}</h4>
+    const bioMaxLength = 100;
+
+    //Edit Bio
+    let eventBio = ""
+    if(props.eventItem.event.description === "" || !props.eventItem.event.description) {
+        eventBio = ""
+    }
+    else if(props.eventItem.event.description.length > bioMaxLength) {
+        eventBio += props.eventItem.event.description.substring(0, bioMaxLength);
+        eventBio += "..."
+    }
+    else {
+        eventBio = props.eventItem.event.description;
+    }
+
+    // Event Date:
+
+    //Event Type (Local? Private? Invite Only? etc...)
+    //cont type = props.eventItem.event.event_type
+
+    const inviterPicture = cloudinary.url(props.eventItem.inviter.picture, {secure: true, height: 32, width: 32, crop: "fill" ,fetch_format: "auto", quality: "auto"})
+
+    return (
+            <Card
+            background
+            style={{
+                margin: 20,
+                backgroundImage: `url(${cloudinary.url(props.eventItem.event.image.image_uuid, {secure: true, height: 180, crop: "fill" ,fetch_format: "auto", quality: "auto"})})`,
+            }}
+            >
+                <CardBody background style={{paddingTop: '10px', paddingBottom: '10px', minHeight: '100px'}}>
+                    <Link to={`/events/${props.eventItem.event.id}`}>
+                        <h3 className={classes.cardTitleWhite}>
+                            {props.eventItem.event.name}
+                        </h3>
+                        <p className={classes.cardDescriptionWhite}>
+                            {eventBio}
+                        </p>
+                    </Link>
+                    <Link to={`/users/${props.eventItem.inviter.id}`}>
+                        <Button simple color="white">
+                            <Avatar src={inviterPicture} style={{float:'left', border: '1px solid #02C39A', height: 24, width: 24, marginRight: 3}} width={24} alt={props.eventItem.inviter.name} />
+                            Invited by: {props.eventItem.inviter.name}
+                        </Button>
+                    </Link>
+                    <div>
                         <IconButton color="primary" edge="end" aria-label="accept">
                             <CheckCircleOutlineIcon fontSize='large'/>
                         </IconButton>
-                        <IconButton edge="end" aria-label="delete" >
-                            <DeleteIcon fontSize='large'/>
+                        <IconButton color='secondary' edge="end" aria-label="delete" >
+                            <HighlightOffIcon fontSize='large'/>
                         </IconButton>
-                    </CardBody>
-                </Card>
-            </GridItem>
-        </Fragment>
-    )
+                    </div>
+                </CardBody>
+            </Card>
+    );
 }
-
-
-
-

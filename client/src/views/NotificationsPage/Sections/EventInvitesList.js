@@ -56,7 +56,7 @@ export default function RequestList(props) {
                         return <TextDisplay text='Error loading requests.'/>
                     }
                     if(data.users[0].event_invites.length === 0) {
-                        return <TextDisplay text='No invites at this time.'/>
+                        return <TextDisplay text='No event invites at this time.'/>
                     }
                     else {
                         handleNumberChange(data.users[0].event_invites.length)

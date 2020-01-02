@@ -136,8 +136,6 @@ export default function EventMoments(props) {
             }
         }).then((data) => {
             let momentsList = []; 
-            console.log("moment data", data)
-
             data.data.events[0].moments.forEach((moment) => {
                 let tempMoment = {
                     url: cloudinary.url(moment.source_id, {secure: true, width: 1080, height: 1920 ,fetch_format: "auto"}),

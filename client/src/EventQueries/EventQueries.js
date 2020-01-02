@@ -283,8 +283,15 @@ subscription follow_requests($userId: String!) {
       event {
         name
         id
+        description
+        event_type
+        
+        start_time
         event_date {
+          start_date
           end_date
+          is_recurring
+          weekday
         }
         image {
           image_uuid
