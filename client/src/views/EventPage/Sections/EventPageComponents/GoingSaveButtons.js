@@ -17,7 +17,6 @@ import {
     FETCH_EVENT_GOING_SAVE,
 
   } from 'EventQueries/EventQueries.js'
-import { userInfo } from 'os';
 
 export default function GoingSaveButtons (props) {
 

@@ -102,8 +102,13 @@ import CardBody from "components/Card/CardBody.js";
 import Button from "components/CustomButtons/Button.js";
 import Avatar from '@material-ui/core/Avatar';
 
-
 import cardsStyle from "assets/jss/material-kit-pro-react/views/componentsSections/sectionCards.js";
+
+import {
+    MUTATION_EVENT_RESPONSE
+} from 'EventQueries/EventQueries.js'
+import { useAuth0 } from 'Authorization/react-auth0-wrapper.js';
+
 
 const style = {
   ...cardsStyle
@@ -120,8 +125,25 @@ const useStyles = makeStyles(style);
 
 export default function CardExampleCardBackground(props) {
     const classes = useStyles();
-
     const bioMaxLength = 100;
+    const { user } = useAuth0();
+
+
+    const handleEventResponse = (response) => {
+        //If response is 2 it means declined, 1 means going
+        props.client.mutate({
+            mutation: MUTATION_EVENT_RESPONSE,
+            variables: {
+                invitedId: user.sub,
+                inviterId: props.eventItem.inviter.auth0_id,
+                eventId: props.eventItem.event.id,
+                response: response
+            }
+        }).then(() => {
+            //IDK yet, maybe notification?
+        })
+    }
+
 
     //Edit Bio
     let eventBio = ""
@@ -143,38 +165,43 @@ export default function CardExampleCardBackground(props) {
 
     const inviterPicture = cloudinary.url(props.eventItem.inviter.picture, {secure: true, height: 32, width: 32, crop: "fill" ,fetch_format: "auto", quality: "auto"})
 
-    return (
-            <Card
-            background
-            style={{
-                margin: 20,
-                backgroundImage: `url(${cloudinary.url(props.eventItem.event.image.image_uuid, {secure: true, height: 180, crop: "fill" ,fetch_format: "auto", quality: "auto"})})`,
-            }}
-            >
-                <CardBody background style={{paddingTop: '10px', paddingBottom: '10px', minHeight: '100px'}}>
-                    <Link to={`/events/${props.eventItem.event.id}`}>
-                        <h3 className={classes.cardTitleWhite}>
-                            {props.eventItem.event.name}
-                        </h3>
-                        <p className={classes.cardDescriptionWhite}>
-                            {eventBio}
-                        </p>
-                    </Link>
-                    <Link to={`/users/${props.eventItem.inviter.id}`}>
-                        <Button simple color="white">
-                            <Avatar src={inviterPicture} style={{float:'left', border: '1px solid #02C39A', height: 24, width: 24, marginRight: 3}} width={24} alt={props.eventItem.inviter.name} />
-                            Invited by: {props.eventItem.inviter.name}
-                        </Button>
-                    </Link>
-                    <div>
-                        <IconButton color="primary" edge="end" aria-label="accept">
-                            <CheckCircleOutlineIcon fontSize='large'/>
-                        </IconButton>
-                        <IconButton color='secondary' edge="end" aria-label="delete" >
-                            <HighlightOffIcon fontSize='large'/>
-                        </IconButton>
-                    </div>
-                </CardBody>
-            </Card>
-    );
+    if(!props.eventItem.event) {
+        return "";
+    }
+    else {
+        return (
+                <Card
+                background
+                style={{
+                    margin: 20,
+                    backgroundImage: `url(${cloudinary.url(props.eventItem.event.image.image_uuid, {secure: true, height: 180, crop: "fill" ,fetch_format: "auto", quality: "auto"})})`,
+                }}
+                >
+                    <CardBody background style={{paddingTop: '10px', paddingBottom: '10px', minHeight: '100px'}}>
+                        <Link to={`/events/${props.eventItem.event.id}`}>
+                            <h3 className={classes.cardTitleWhite}>
+                                {props.eventItem.event.name}
+                            </h3>
+                            <p className={classes.cardDescriptionWhite}>
+                                {eventBio}
+                            </p>
+                        </Link>
+                        <Link to={`/users/${props.eventItem.inviter.id}`}>
+                            <Button simple color="white">
+                                <Avatar src={inviterPicture} style={{float:'left', border: '1px solid #02C39A', height: 24, width: 24, marginRight: 3}} width={24} alt={props.eventItem.inviter.name} />
+                                Invited by: {props.eventItem.inviter.name}
+                            </Button>
+                        </Link>
+                        <div>
+                            <IconButton onClick={() => handleEventResponse(1)} color="primary" edge="end" aria-label="accept">
+                                Going? <CheckCircleOutlineIcon fontSize='large'/>
+                            </IconButton>
+                            <IconButton onClick={() => handleEventResponse(2)} color='secondary' edge="end" aria-label="delete" >
+                                <HighlightOffIcon fontSize='large'/>
+                            </IconButton>
+                        </div>
+                    </CardBody>
+                </Card>
+        );
+    }
 }
