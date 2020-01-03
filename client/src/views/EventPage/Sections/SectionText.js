@@ -214,14 +214,14 @@ export default function SectionText({ eventInfo, client }) {
               />
             </div>
 
-            <h4></h4>
+            {/* <h4></h4> //Event Moments turned off for now
             <MomentPopover/>
             <EventMomentsWrapper
               eventId={eventInfo.event_id}
               cover={eventInfo.cover_url}
               client={client}
               ifGoing={values.ifGoing}
-            />
+            /> */}
             <h3 className={classes.title}>
               Details
             </h3>

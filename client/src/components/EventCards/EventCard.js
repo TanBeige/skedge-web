@@ -463,13 +463,13 @@ export default function EventCard({event, client, userId, filter, currentDate, t
               <Link to={`/events/${event.id}`}>
                 <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center"}}>{values.name}</h3>
               </Link>
-              <EventMomentsWrapper 
+              {/* <EventMomentsWrapper 
                 eventId={event.id}
                 cover={values.image_url}
                 client={client}
                 type={type}
                 //ifGoing={values.ifGoing}
-              />
+              /> */}
               <hr style={{margin: 2}}/>
 
               <div style={{width: '100%', textAlign: 'left'}}>
