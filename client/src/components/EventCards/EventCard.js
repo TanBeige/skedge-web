@@ -92,7 +92,7 @@ const theme = createMuiTheme({
 
 
 
-export default function EventCard({event, client, userId, filter, currentDate, type}) {
+export default function EventCard({event, client, userId, filter, currentDate, listType}) {
     const classes = useStyles();
     const bioMaxLength = 100;
 
@@ -412,6 +412,18 @@ export default function EventCard({event, client, userId, filter, currentDate, t
     }
     //}
 
+
+    // While on the following feed, we display information about
+    //  who posted, shared, or is going to the event.
+    let followFeedInfo = ""
+    if(listType === "following") {
+      followFeedInfo = (
+        <h4>
+          {event.shared_event.length >= 1 ? event.shared_event[0].user.name : ""} Created an event
+        </h4>
+      )
+    }
+
     // Rendering Card
     return(
       <ThemeProvider theme={theme}>
@@ -419,6 +431,7 @@ export default function EventCard({event, client, userId, filter, currentDate, t
       <Grow in={true}>
         <Card blog style={{border: "2px solid darkgrey"}} raised>  
           <CardHeader image style={{marginBottom: -30}}>
+
             <Link to={`/events/${event.id}`}>
               {/* <img
                 className={classes.imgCard}
@@ -466,6 +479,8 @@ export default function EventCard({event, client, userId, filter, currentDate, t
           </CardHeader>
 
             <CardBody style={{paddingBottom: 0}}>
+            {followFeedInfo}
+
               <Link to={`/events/${event.id}`}>
                 <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center"}}>{values.name}</h3>
               </Link>

@@ -48,9 +48,7 @@ fragment EventFragment on events {
       count
     }
   }
-  shared_event {
-    user_id
-  }
+
   shared_event_aggregate {
     aggregate {
       count
@@ -177,6 +175,9 @@ query fetch_profile_events($eventLimit: Int, $eventOffset: Int, $profileId: Stri
   )
   {
     ...EventFragment
+    shared_event {
+      user_id
+    }
   }
 }
 ${EVENT_FRAGMENT}
@@ -540,6 +541,9 @@ query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String
   )
   {
     ...EventFragment
+    shared_event {
+      user_id
+    }
   }
 }
   ${EVENT_FRAGMENT}
@@ -615,6 +619,35 @@ query fetch_following_feed($userId: String!, $eventLimit: Int, $eventOffset: Int
   )
   {
     ...EventFragment
+    invite_only
+
+    shared_event(where: {user: {followers: {user_id: {_eq: $userId}}}}){
+      user{
+        id
+        name
+      }
+    }
+    event_invites(where: {
+      _or: [
+        {invited_id: {_eq: $userId}},
+        {_and: [
+          {response: {_eq: 1}},
+          {invited: {followers: {user_id: {_eq: $userId}}}}
+        ]}
+      ]
+    })
+    {
+      response
+      invited{
+        id
+        name
+        auth0_id
+      }
+      inviter {
+        id
+        name
+      }
+    }
   }
 }
 ${EVENT_FRAGMENT}
@@ -763,6 +796,9 @@ const QUERY_PRIVATE_EVENT = gql`
       order_by: { created_at: desc }
     ) {
       ...EventFragment
+      shared_event {
+        user_id
+      }
     }
   }
   ${EVENT_FRAGMENT}
@@ -779,6 +815,9 @@ const QUERY_LOCAL_EVENT = gql`
       user {
         ...UserFragment
       }
+      shared_event {
+        user_id
+      }
     }
   }
   ${EVENT_FRAGMENT}
@@ -794,6 +833,9 @@ const QUERY_FEED_LOCAL_EVENT = gql`
       ...EventFragment
       user {
         ...UserFragment
+      }
+      shared_event {
+        user_id
       }
     }
   }
@@ -812,6 +854,9 @@ const QUERY_FEED_LOCAL_OLD_EVENT = gql`
       user {
         ...UserFragment
       }
+      shared_event {
+        user_id
+      }
     }
   }
   ${EVENT_FRAGMENT}
@@ -823,6 +868,9 @@ const FETCH_TAGGED_EVENTS = gql`
     event_tags(where: {tag: {name: {_like: $tag}}}, order_by: {event: {event_date: asc}}) {
       event {
         ...EventFragment
+        shared_event {
+          user_id
+        }
       }
     }
   }
@@ -840,6 +888,9 @@ const FETCH_SAVED_EVENTS = gql`
     {
       event{
         ...EventFragment
+        shared_event {
+          user_id
+        }
       }
     }
   }

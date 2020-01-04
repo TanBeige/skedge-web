@@ -297,6 +297,7 @@ export default function EventCardListFuture(props) {
                         <GridItem xs={12} sm={6} md={4} >
                           <EventCard 
                               event={event} 
+                              listType={"following"}
                               client={props.client}
                               userId={props.userId}
                               filter={props.filter}

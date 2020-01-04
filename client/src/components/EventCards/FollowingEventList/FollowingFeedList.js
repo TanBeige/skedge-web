@@ -319,7 +319,7 @@ export default function FollowingFeedList(props) {
                         <GridItem xs={12} sm={6} md={6} >
                           <EventCard 
                               event={event} 
-                              type={props.type}
+                              listType={"following"}
                               client={props.client}
                               userId={props.userId}
                               filter={props.filter}
