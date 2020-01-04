@@ -6,12 +6,12 @@ import GridItem from "components/Grid/GridItem.js";
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from "react-infinite-scroll-component";
-import FutureContainer from './FutureContainer.js';
+import FutureContainer from './FollowFeedFutureContainer';
 import { throttle } from 'lodash';
 
 
 import {
-    QUERY_FILTERED_EVENT
+  FETCH_FOLLOWING_FEED
 } from "../../../EventQueries/EventQueries";
 
 const dateHeaderStyle = {
@@ -74,16 +74,17 @@ export default function EventCardListFuture(props) {
     }
     client
       .query({
-        query: QUERY_FILTERED_EVENT,
+        query: FETCH_FOLLOWING_FEED,
         variables: {
+          userId: props.userId,
           eventLimit: values.limit,
           eventOffset: values.eventsLength,
           search: `%${filter.searchText}%`,
           category: `%${cat}%`,
           city: `%${filter.city}%`,
           state: `%${filter.state}%`,
-          price: filter.price,
-          type: filter.type,
+          lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
+          upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
           date: filter.date ? filter.date.formatDate() : null,
           weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
         }
@@ -149,16 +150,17 @@ export default function EventCardListFuture(props) {
     }
     client
       .query({
-        query: QUERY_FILTERED_EVENT,
+        query: FETCH_FOLLOWING_FEED,
         variables: {
+          userId: props.userId,
           eventLimit: values.limit,
-          eventOffset: 0,
+          eventOffset: values.eventsLength,
           search: `%${filter.searchText}%`,
           category: `%${cat}%`,
           city: `%${filter.city}%`,
           state: `%${filter.state}%`,
-          price: filter.price,
-          type: filter.type,
+          lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
+          upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
           date: filter.date ? filter.date.formatDate() : null,
           weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
         }

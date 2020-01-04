@@ -82,7 +82,8 @@ export default function EventCardListFuture(props) {
           category: `%${cat}%`,
           city: `%${filter.city}%`,
           state: `%${filter.state}%`,
-          price: filter.price,
+          lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
+          upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
           type: filter.type,
           date: filter.date ? filter.date.formatDate() : null,
           weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
@@ -157,7 +158,8 @@ export default function EventCardListFuture(props) {
           category: `%${cat}%`,
           city: `%${filter.city}%`,
           state: `%${filter.state}%`,
-          price: filter.price,
+          lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
+          upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
           type: filter.type,
           date: filter.date ? filter.date.formatDate() : null,
           weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null

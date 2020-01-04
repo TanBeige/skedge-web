@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import FollowingFeedFuture from "components/EventCards/FollowingFeedFuture/FollowingFeedFuture.js"
+import FollowingFeedFuture from "components/EventCards/FollowingEventList/FollowingFeedFuture.js"
 
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -56,7 +56,7 @@ export default function FutureContainer(props) {
         client={props.client}
         filter={filter}
         userId={props.userId}
-        listType="home"
+        listType="following"
       />
     </Fragment>
   )

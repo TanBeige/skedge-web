@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from "react-infinite-scroll-component";
 
 // import EventCardListFuture from './EventCardListFuture.js';
-// import FutureContainer from './FutureContainer.js';
+import FollowFeedFutureContainer from './FollowFeedFutureContainer.js';
 import { Instagram } from 'react-content-loader'
 
 import LoadCardList from '../LoadCardList.js';
@@ -132,13 +132,13 @@ export default function FollowingFeedList(props) {
 
     // Replaces ComponentDidMount() in a Functional Component
     // if (values.loadedAllEvents) {
-    //   futureEvents = (
-    //     <FutureContainer
-    //       client={props.client}
-    //       filter={props.filter}
-    //       userId={props.userId}
-    //     />
-    //   )
+      futureEvents = (
+        <FollowFeedFutureContainer
+          client={props.client}
+          filter={props.filter}
+          userId={props.userId}
+        />
+      )
     // }
 
     useEffect(() => {
