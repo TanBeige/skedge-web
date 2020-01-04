@@ -78,6 +78,7 @@ export default function NavPillsSearch(props) {
         return (
           <Tab
             label={prop.tabButton}
+            disabled={prop.tabButton === "Following" && props.isEntity}
             key={key}
             {...icon}
             classes={{

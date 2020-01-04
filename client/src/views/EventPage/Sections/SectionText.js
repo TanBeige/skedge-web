@@ -250,10 +250,10 @@ export default function SectionText({ eventInfo, client }) {
   }
   else {
     return (
-      <div className={classes.section} style={{padding: '10px 15px 15px 15px'}}>
+      <div className={classes.section} style={{padding: '0px 15px 15px 15px', textAlign: 'center'}}>
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={12}>
-            <h3>Sign in for more info</h3>
+            <h3>Sign up for more info!</h3>
             <Button
               color="primary"
               onClick={handleLogin}

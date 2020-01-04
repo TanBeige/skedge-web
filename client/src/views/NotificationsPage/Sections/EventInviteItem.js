@@ -133,7 +133,7 @@ export default function CardExampleCardBackground(props) {
         //If response is 2 it means declined, 1 means going
         props.client.mutate({
             mutation: MUTATION_EVENT_RESPONSE,
-            variables: {
+            variables: { 
                 invitedId: user.sub,
                 inviterId: props.eventItem.inviter.auth0_id,
                 eventId: props.eventItem.event.id,

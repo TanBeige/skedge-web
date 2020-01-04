@@ -56,6 +56,7 @@ const useStyles = makeStyles(blogPostPageStyle);
 
 export default function EventPage(props) {
   const eventId = props.match.params.id;
+  console.log(props.match)
 
   const { loading, user, isAuthenticated} = useAuth0();
 
@@ -116,6 +117,8 @@ export default function EventPage(props) {
       }
     }).then((data) => {
       if(data.data.events === undefined || data.data.events.length === 0) {
+        console.log("Get Event Data: ", data)
+
         setValues({
           ...values,
           event_exists: false
@@ -171,6 +174,8 @@ export default function EventPage(props) {
         //Say that we're not loading the event anymore.
         setIsLoading(false);
       }
+    }).catch(error => {
+      console.log(error)
     })
   }
 

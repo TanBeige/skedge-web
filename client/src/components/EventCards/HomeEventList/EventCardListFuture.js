@@ -12,7 +12,7 @@ import { throttle } from 'lodash';
 
 import {
     QUERY_FILTERED_EVENT
-} from "../../EventQueries/EventQueries";
+} from "../../../EventQueries/EventQueries";
 
 const dateHeaderStyle = {
   textAlign: 'center',
@@ -42,7 +42,7 @@ const moment = require("moment")
 
 
 // Functional Component
-export default function EventCardListHome(props) {
+export default function EventCardListFuture(props) {
   // Checks if we are still grabbing events
   const [isSearch, setIsSearch] = useState(false);
 
@@ -62,6 +62,7 @@ export default function EventCardListHome(props) {
 
   // Update Query When new Events are added
   const loadMoreClicked = () => {
+    console.log("loading more")
     const { client } = props;
     const { filter } = props;
 
@@ -88,8 +89,9 @@ export default function EventCardListHome(props) {
         }
       })
       .then(data => {
-        if (data.data.events.length ) {
+        console.log("LoadMore: ", props.filter.date.formatDate(), ": ", data.data.events.length)
 
+        if (data.data.events.length ) {
           if(isMounted) {
             const mergedEvents = values.events.concat(data.data.events);
             // update state with new events
@@ -97,15 +99,10 @@ export default function EventCardListHome(props) {
               ...values,
               events: mergedEvents,
               showNew: true,
-              eventsLength: values.events.length + data.data.events.length
-              });
-              if(totalEventsPrevious === (values.events.length + data.data.events.length)) {
-                setValues({
-                  ...values,
-                  loadedAllEvents: true
-                })
-              }
-            }
+              eventsLength: mergedEvents.length,//values.events.length + data.data.events.length,
+              loadedAllEvents: data.data.events.length < values.limit
+            });
+          }
         }
         else {
           if(isMounted) {
@@ -117,7 +114,7 @@ export default function EventCardListHome(props) {
         }
       }).catch(error => {
         console.log(error);
-      }); 
+      });
   }
 
   //Throttle LoadMore so we don't load too much at once
@@ -135,7 +132,6 @@ export default function EventCardListHome(props) {
       loadedAllEvents: false,
       showOlder: true,
       eventsLength: 0,
-      showNew: false,
       limit: props.filter.limit,
       events: [],
     });
@@ -176,11 +172,10 @@ export default function EventCardListHome(props) {
             setValues({
               ...values,
               events: data.data.events,
-              showNew: true,
               eventsLength: data.data.events.length,
               loadedAllEvents: data.data.events.length < props.filter.limit
             });
-            setIsSearch(false)
+            setIsSearch(false);
           }
         }
         else {
@@ -192,18 +187,20 @@ export default function EventCardListHome(props) {
               loadedAllEvents: true
             })
             // TURN THIS ON TO MAKE IT WORK, BUT FIX BUG WHERE IT QUEUES INFINITELY
-            // setIsSearch(false);
+            setIsSearch(false);
           }
         }
       });
-
-    
 
     return () => {
       //setIsMounted(false);
       isMounted = false;        
     }
   }, [props.filter])
+
+  // useEffect(()=>{
+  //   console.log(props.filter.date.formatDate()," Loaded All: ", values.loadedAllEvents)
+  // })
 
     /*
     const insertAd = (index) => {
@@ -235,13 +232,11 @@ export default function EventCardListHome(props) {
     }
     */
 
-    // Start Filtering Responses here. Since it's so fucking hard in GraphQL
-    let finalEvents = values.events
 
-    if(isSearch && values.loadedAllEvents) {
-      return ""
-    }
-    else if(isSearch) {
+    // if(isSearch && values.loadedAllEvents) {
+    //   return ""
+    // }
+    if(isSearch) {
       return (
         <div style={{textAlign: 'center'}}>
           <CircularProgress size={20} color='primary'/>
@@ -277,6 +272,8 @@ export default function EventCardListHome(props) {
       }
     }
 
+    // Final Event list sent to the component
+    let finalEvents = values.events
     return (
       <Fragment>
         <h3 style={{textAlign: 'center'}}>{moment(props.filter.date).format("dddd, MMM D")}</h3>

@@ -11,7 +11,7 @@ import EventCardListFuture from './EventCardListFuture.js';
 import FutureContainer from './FutureContainer.js';
 import { Instagram } from 'react-content-loader'
 
-import LoadCardList from './LoadCardList.js';
+import LoadCardList from '../LoadCardList.js';
 
 import { throttle } from 'lodash';
 
@@ -20,7 +20,7 @@ import { throttle } from 'lodash';
 
 import {
     QUERY_FILTERED_EVENT
-} from "../../EventQueries/EventQueries";
+} from "EventQueries/EventQueries";
 
 const dateHeaderStyle = {
   textAlign: 'center',
@@ -53,9 +53,6 @@ export default function EventCardListHome(props) {
   let isMounted = true;
   let currentKey;
   let futureEvents = "";
-
-
-
 
   const [values, setValues] = useState({
       type: props.type,

@@ -545,6 +545,81 @@ query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String
   ${EVENT_FRAGMENT}
 `
 
+const FETCH_FOLLOWING_FEED = gql`
+query fetch_following_feed($userId: String!, $eventLimit: Int, $eventOffset: Int, $search: String, $category: String, $city: String, $state: String, $date: date, $weekday: String, $lowerPrice: money, $upperPrice: money) {
+  events(
+    order_by:[{event_like_aggregate: {count: desc_nulls_last}}, {id: desc}]
+    limit: $eventLimit
+    offset: $eventOffset
+    where: {
+      _and: [
+        {category: {_like: $category}},
+        {city: {_ilike: $city}},
+        {state: {_ilike: $state}},
+        {_or: [
+          {_and: [
+            {invite_only: {_eq: false}},
+            {_or: [
+              {user: {followers: {user_id: {_eq: $userId}}}}
+              {shared_event: {user: {followers: {user_id: {_eq: $userId}}}}},
+              {_and: [
+                {event_invites: {response: {_eq: 1}}}
+              	{event_invites: {invited: {followers: {user_id: {_eq: $userId}}}}}
+              ]}
+            ]}
+          ]},
+          {_and: [
+            {invite_only: {_eq: true}}
+            {event_invites: {invited_id: {_eq: $userId}}},
+          ]}
+        ]},
+        {_and: [
+        	{price: {_gte: $lowerPrice}}
+          {price: {_lte: $upperPrice}}
+        ]},
+        {
+          _or: [
+            {name: {_ilike: $search}},
+            {user: {
+              _or: [
+                {full_name: {_ilike: $search}},
+                {name: {_ilike: $search}}
+              ]}
+            },
+            {event_tags: {
+              tag: 
+                {name: {_ilike: $search}}
+            }}
+          ]
+        }
+        {event_date:{
+          _or:[
+            {
+              _and: [
+                {is_recurring: {_eq: false}},
+                {start_date: {_eq: $date}}
+           		]
+            },
+            {
+              _and: [
+                {is_recurring: {_eq: true}},
+                {start_date: {_lte: $date}},
+              	{end_date: {_gte: $date}},
+                {weekday: {_like: $weekday}}
+              ]
+            }
+          ]
+        }}
+      ]
+    }
+  )
+  {
+    ...EventFragment
+  }
+}
+${EVENT_FRAGMENT}
+`
+
 const FETCH_EVENT_LIKES_REPOSTS = gql`
 query event_likes_reblogs($eventId: Int) {
   events (where: {id: {_eq: $eventId}}) {
@@ -598,7 +673,7 @@ const REFETCH_EVENT_REPOSTS = gql`
 `
 
 const FETCH_EVENT_INFO = gql`
-  query fetch_event_info($eventId: Int) {
+  query fetch_event_info($eventId: Int!) {
     events(where: {id: {_eq: $eventId}}) {
       name
       description
@@ -1125,6 +1200,7 @@ mutation add_moment($eventId: Int!, $sourceId: String!, $creatorId: String!){
 
 export {
   QUERY_FILTERED_EVENT,
+  FETCH_FOLLOWING_FEED,
   QUERY_USER_PROFILE,
   QUERY_PROFILE_EVENTS,
   FETCH_IF_ENTITY,

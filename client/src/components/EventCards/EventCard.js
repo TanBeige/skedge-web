@@ -39,6 +39,10 @@ import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPosts
 // import { Image, Transformation, CloudinaryContext } from 'cloudinary-react';
 import LoadImage from 'material-ui-image'
 
+//import Fade from '@material-ui/core/Fade';
+import Grow from '@material-ui/core/Grow';
+
+
 
 //Queries
 import {
@@ -411,6 +415,8 @@ export default function EventCard({event, client, userId, filter, currentDate, t
     // Rendering Card
     return(
       <ThemeProvider theme={theme}>
+
+      <Grow in={true}>
         <Card blog style={{border: "2px solid darkgrey"}} raised>  
           <CardHeader image style={{marginBottom: -30}}>
             <Link to={`/events/${event.id}`}>
@@ -517,6 +523,7 @@ export default function EventCard({event, client, userId, filter, currentDate, t
               </div>
             </CardFooter>
         </Card>
-        </ThemeProvider>
+      </Grow>
+      </ThemeProvider>
     )
 }

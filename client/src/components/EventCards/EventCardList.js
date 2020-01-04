@@ -1,14 +1,18 @@
 import React from 'react'
 
-import EventCardListHome from 'components/EventCards/EventCardListHome2.js'
+import EventCardListHome from 'components/EventCards/HomeEventList/EventCardListHome.js'
+import FollowingFeedList from 'components/EventCards/FollowingEventList/FollowingFeedList.js'
 import EventCardListSaved from 'components/EventCards/EventCardListSaved.js'
 import EventCardListProfile from 'components/EventCards/EventCardListProfile.js'
 
 export default function EventCardList(props) {
 
   const eventList = () => {
-    if(props.listType === 'home'){
+    if(props.listType === 'local'){
       return (<EventCardListHome {...props}/>)
+    }
+    else if(props.listType === 'following'){
+      return (<FollowingFeedList {...props} type='following' />)
     }
     else if(props.listType === 'landing'){
       return (<EventCardListHome {...props} type='landing' />)

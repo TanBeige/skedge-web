@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import EventCardListFuture from "components/EventCards/EventCardListFuture.js"
+import EventCardListFuture from "components/EventCards/HomeEventList/EventCardListFuture.js"
 
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -9,7 +9,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import {
     QUERY_FILTERED_EVENT
-} from "../../EventQueries/EventQueries";
+} from "EventQueries/EventQueries.js";
 
 const dateHeaderStyle = {
   textAlign: 'center',
@@ -23,7 +23,7 @@ const dateHeaderStyle = {
 const moment = require("moment")
 
 // Functional Component
-export default function EventCardListHome(props) {
+export default function FutureContainer(props) {
 
   const [filter, setFilter] = useState({
     searchText: props.filter.searchText, //Search Text can look for Event Names, Tags, or Event Creators!

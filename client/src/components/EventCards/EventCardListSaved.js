@@ -196,9 +196,6 @@ export default function EventCardListSaved(props) {
     }
     */
 
-   console.log("Loaded all Events?: ", values.loadedAllEvents)
-
-
     // Start Filtering Responses here. Since it's so fucking hard in GraphQL
     let finalEvents = values.events
     

@@ -259,11 +259,6 @@ export default function EventMoments(props) {
         }
     }
 
-    //Feature is turned off for now
-    if(true){
-        return null;
-    }
-
     return (
         <ThemeProvider theme={theme}>
             <div style={{margin: 'auto', textAlign: 'center'}}>

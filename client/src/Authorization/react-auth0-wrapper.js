@@ -19,6 +19,16 @@ export const Auth0Provider = ({
   const [loading, setLoading] = useState(true);
   const [popupOpen, setPopupOpen] = useState(false);
 
+  const opts = {
+    ...initOptions,
+    additionalSignupFields: [
+      {
+        name: "date_of_birth",
+        placeholder: "Date of birth"
+      }
+    ]
+  }
+
   useEffect(() => {
     const initAuth0 = async () => {
       const auth0FromHook = await createAuth0Client(initOptions);

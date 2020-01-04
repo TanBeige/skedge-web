@@ -224,34 +224,12 @@ export default function SectionPills(props) {
 
 
   // If user is an entity, only show local event feed
-  const navPillsDisplay = props.isEntity ? (
+  const navPillsDisplay = (
     <NavPillsSearch
         alignCenter
         color="primary"
         client={props.client}
-        searchText={localFilter.searchText}
-        tabs={[
-        {
-            tabButton: "Local",
-            tabIcon: ApartmentIcon,
-            tabContent: (
-              <div>
-                <EventCardList 
-                    client={props.client}
-                    userId={props.userId}
-                    filter={localFilter}
-                    listType='home'
-                />
-              </div>
-            )
-        }
-      ]}
-    />
-  ) : (
-    <NavPillsSearch
-        alignCenter
-        color="primary"
-        client={props.client}
+        isEntity={props.isEntity}
         searchText={localFilter.searchText}
         tabs={[
         {
@@ -263,7 +241,7 @@ export default function SectionPills(props) {
                   client={props.client}
                   userId={props.userId}
                   filter={localFilter}
-                  listType='home'
+                  listType='local'
               />
             </div>
           )
@@ -277,7 +255,7 @@ export default function SectionPills(props) {
                   client={props.client}
                   userId={props.userId}
                   filter={privateFilter}
-                  listType='home'
+                  listType='following'
               />
             </div>
           )

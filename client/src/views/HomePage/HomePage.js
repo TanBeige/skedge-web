@@ -81,7 +81,7 @@ export default function HomePage(props) {
         }
       })
       .then((response) => {
-        console.log("Blogs Response: ", response)
+        //console.log("Blogs Response: ", response)
       })
       .catch(error => {
         console.error(error);
@@ -135,7 +135,6 @@ export default function HomePage(props) {
           userId: user.sub
         }
       }).then((data) => {
-        console.log(data)
         setIsEntity(data.data.users[0].entity)
       })
     }
