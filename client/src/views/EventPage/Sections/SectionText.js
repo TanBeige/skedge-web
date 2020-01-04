@@ -89,7 +89,6 @@ export default function SectionText({ eventInfo, client }) {
         userId: user.sub
       }
     }).then((data) => {
-      console.log(data)
       let isGoing = false;
       if(data.data.users[0].event_invites.length === 1) {
         isGoing = data.data.users[0].event_invites[0].response === 1;

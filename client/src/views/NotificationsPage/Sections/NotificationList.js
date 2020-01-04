@@ -79,7 +79,6 @@ export default function NotificationList(props) {
     }, [])
 
     const loadMore = () => {
-      console.log("lets wrangl")
       props.client.query({
         query: FETCH_NOTIFICATIONS,
         variables: {

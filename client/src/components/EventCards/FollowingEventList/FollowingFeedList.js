@@ -68,7 +68,6 @@ export default function FollowingFeedList(props) {
 
     // Update Query When new Events are added
     const loadMoreClicked = () => {
-        console.log("loading more")
       const { client } = props;
       const { filter } = props;
 
@@ -131,7 +130,7 @@ export default function FollowingFeedList(props) {
 
 
     // Replaces ComponentDidMount() in a Functional Component
-    // if (values.loadedAllEvents) {
+    if (values.loadedAllEvents) {
       futureEvents = (
         <FollowFeedFutureContainer
           client={props.client}
@@ -139,7 +138,7 @@ export default function FollowingFeedList(props) {
           userId={props.userId}
         />
       )
-    // }
+    }
 
     useEffect(() => {
       //Restart the get events
@@ -168,7 +167,6 @@ export default function FollowingFeedList(props) {
         cat = ""
       }
       setIsSearch(true)
-      console.log(filter)
 
       client
         .query({
@@ -188,11 +186,9 @@ export default function FollowingFeedList(props) {
           }
         })
         .then(data => {
-          console.log("Following Feed: ",data)
           if (data.data.events.length > 0) {
             //const mergedEvents = values.events.concat(data.data.events);
             // update state with new events
-            console.log("loaded all events: ", data.data.events.length < props.filter.limit)
             if(isMounted) {
               setValues({
                 ...values,

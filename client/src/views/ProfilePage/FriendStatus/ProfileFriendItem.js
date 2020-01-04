@@ -85,7 +85,6 @@ console.log("friend status: ",currentFriend.entity)
         }
         //If user is  not Following, Follow/Send Request
         else if(friendButton === -1) {
-            console.log("userId: ", userId, "\n profileId: ", profileId)
             client.mutate({
                 mutation: MUTATION_FOLLOW_REQUEST,
                 refetchQueries: {
@@ -127,8 +126,6 @@ console.log("friend status: ",currentFriend.entity)
             //     }
             // });
             const followStatus = currentFriend.followers.find(u => u.user_id === userId)
-            console.log("cuur friend: ", currentFriend.followers)
-            console.log("follow sttts: ", followStatus)
             if(followStatus) {
                 if(followStatus.status === 1) {
                     setFriendButton(1)

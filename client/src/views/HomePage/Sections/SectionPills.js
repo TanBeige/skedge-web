@@ -115,7 +115,6 @@ export default function SectionPills(props) {
   }
 
   const handleFilters = name => event => {
-    console.log(name)
     console.log(event.target.value)
       setValues({
         ...values,

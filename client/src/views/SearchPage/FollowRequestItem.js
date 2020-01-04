@@ -145,7 +145,6 @@ export default function FollowRequestItem(props) {
       }
     }).then((data) => {
       //Change relationship type for button to change
-      console.log(data)
       setFollowing(-1);
     })
   }
@@ -154,10 +153,8 @@ export default function FollowRequestItem(props) {
     // Use Effect Function
     useEffect(() => {
         isMounted = true;
-        console.log(userItem)
 
         const isFollowing = userItem.followers.some(u => u.user_id === user.sub);
-        console.log(`${userItem.name}: ${isFollowing}`)
         if(userItem.followers) {
             setFollowing(isFollowing)
         }

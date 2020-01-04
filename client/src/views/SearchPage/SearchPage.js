@@ -66,7 +66,6 @@ export default function SearchPage(props) {
 
   const debouncedSearchTerm = useDebounce(searchText, 300);
 
-  console.log(debouncedSearchTerm)
 
   useEffect(() => {
     if(debouncedSearchTerm) {
@@ -131,7 +130,6 @@ export default function SearchPage(props) {
                           ),
                           //onChange: (e) => {console.log(e.target.value);setSearchText(e.target.value)},
                           onKeyPress: (e) => {
-                            console.log(`Pressed keyCode ${e.key}`);
                             if (e.key === 'Enter') {
                               // Do code here
                               e.preventDefault();

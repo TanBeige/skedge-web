@@ -70,7 +70,6 @@ export default function FriendProfile(props) {
 
     let displayPills = "";
     if(props.profileId === props.userId) {
-        console.log(props.profileId);
         displayPills = (
             <NavPillsProfile
                 alignCenter

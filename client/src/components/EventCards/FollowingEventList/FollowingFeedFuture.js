@@ -62,7 +62,6 @@ export default function EventCardListFuture(props) {
 
   // Update Query When new Events are added
   const loadMoreClicked = () => {
-    console.log("loading more")
     const { client } = props;
     const { filter } = props;
 
@@ -90,7 +89,6 @@ export default function EventCardListFuture(props) {
         }
       })
       .then(data => {
-        console.log("LoadMore: ", props.filter.date.formatDate(), ": ", data.data.events.length)
 
         if (data.data.events.length ) {
           if(isMounted) {
@@ -168,7 +166,6 @@ export default function EventCardListFuture(props) {
       .then(data => {
         if (data.data.events.length) {
           // const mergedEvents = values.events.concat(data.data.events);
-          console.log("Initial: ",props.filter.date.formatDate(), ": ", data.data.events.length)
 
           // update state with new events
           if(isMounted) {

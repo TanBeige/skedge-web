@@ -12,7 +12,6 @@ export default function ListFollowers(props) {
     //const [checked, setChecked] = React.useState(props.guests);
 
     const handleToggle = value =>{
-      console.log(value)
       const currentIndex = props.guests.indexOf(value);
       const newChecked = props.guests;
 

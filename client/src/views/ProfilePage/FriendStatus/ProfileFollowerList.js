@@ -118,7 +118,6 @@ export default function ProfileFollowerList(props) {
             <List style={{width: '100%'}}>  
             {
                 friendData.map((friend, index) => {
-                  console.log(friend)
                     return(
                         <ProfileFriendItem 
                             key={index}

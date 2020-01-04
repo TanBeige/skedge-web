@@ -213,8 +213,6 @@ const handleLocalOrPrivate = (type) => {
   }
 
   const handleCohost = (cohostId) => {
-    console.log(cohostId)
-
     setValues({
         ...values,
         currentPage: values.currentPage + 1,
@@ -225,7 +223,6 @@ const handleLocalOrPrivate = (type) => {
   }
 
   const handleGuests = (inGuests, inviteSettings) => {
-    console.log(inGuests)
     setValues({
         ...values,
         currentPage: values.currentPage + 1,
@@ -282,7 +279,6 @@ const handleLocalOrPrivate = (type) => {
       const form_data = new FormData();
 
       form_data.append('file', bannerImg)
-      console.log(form_data)
 
       // Upload file to Cloudinary
       response = await axios.post(`/storage/upload`, form_data).catch((error => {

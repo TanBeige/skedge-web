@@ -56,7 +56,6 @@ const useStyles = makeStyles(blogPostPageStyle);
 
 export default function EventPage(props) {
   const eventId = props.match.params.id;
-  console.log(props.match)
 
   const { loading, user, isAuthenticated} = useAuth0();
 
@@ -117,7 +116,6 @@ export default function EventPage(props) {
       }
     }).then((data) => {
       if(data.data.events === undefined || data.data.events.length === 0) {
-        console.log("Get Event Data: ", data)
 
         setValues({
           ...values,
@@ -170,7 +168,6 @@ export default function EventPage(props) {
           ifSaved: data.data.events[0].user_saved_events.some(user => user.user_id === user.sub),
           ifGoing: data.data.events[0].event_invites.some(user => user.invited_id === user.sub),
         })
-        console.log("Get Event Data: ", data)
         //Say that we're not loading the event anymore.
         setIsLoading(false);
       }
@@ -279,7 +276,6 @@ export default function EventPage(props) {
   }
 
   const classes = useStyles();
-  console.log("Event cohosts: ", values.event_cohosts)
 
   const editingEvent = () => {
       if(isAuthenticated) {

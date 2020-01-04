@@ -50,7 +50,6 @@ export default function RequestList(props) {
                     if (loading) {
                         return <TextDisplay text='Loading. Please wait...'/>
                     }
-                    console.log(data)
                     if (error) {
                         console.log(error)
                         return <TextDisplay text='Error loading requests.'/>

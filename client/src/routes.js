@@ -115,9 +115,6 @@ export const MakeMainRoutes = () => {
     //   });
     // }
 
-    console.log("Routes.js Rendered, loading status: ", loading)
-
-
     // For Bottom Navbar
     if(window.location.pathname !== "/" && window.location.pathname !== "/shopping-cart-page") {
       setValues({

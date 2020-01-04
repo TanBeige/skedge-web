@@ -245,7 +245,6 @@ export default function ProfilePage(props, { ...rest }) {
       }
     }).then((data) => {
       //Change relationship type for button to change
-      console.log(data)
       setValues({
         ...values,
         followingStatus: -1

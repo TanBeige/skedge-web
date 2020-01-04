@@ -138,7 +138,6 @@ export default function FollowRequestItem(props) {
           followingId: user.sub,
       }
     }).then((data) => {
-      console.log(data)
       //Change relationship type for button to change
       setFollowing(-1);
     })

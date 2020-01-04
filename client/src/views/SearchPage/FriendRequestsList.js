@@ -63,7 +63,6 @@ export default function FriendRequestsList(props) {
     }
 
     const loadMoreUsers = () => {
-        console.log("loading more users")
         setIsSearch(true);
         props.client.query({
             query: FETCH_FOLLOW_REQUESTS,
@@ -73,8 +72,6 @@ export default function FriendRequestsList(props) {
                 offset: values.usersLength
             }
         }).then((data) => {
-            console.log("ass", isMounted)
-            console.log(data.data.follower)
             if(isMounted && data.data.follower.length > 0) {
 
                 //const tempUsers = data.data.follower.filter(val => !users.includes(val));
@@ -83,7 +80,6 @@ export default function FriendRequestsList(props) {
                 const mergedUsers = usersList.concat(data.data.follower);
 
 
-                console.log(data.data.follower)
                 setUsersList(mergedUsers);
                 setValues({
                     ...values,

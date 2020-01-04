@@ -431,25 +431,11 @@ export default function EventCard({event, client, userId, filter, currentDate, l
       <Grow in={true}>
         <Card blog style={{border: "2px solid darkgrey"}} raised>  
           <CardHeader image style={{marginBottom: -30}}>
-
             <Link to={`/events/${event.id}`}>
-              {/* <img
-                className={classes.imgCard}
-                src={holdURL}
-                alt={holdName}
-              /> */}
               <LoadImage color='white' src={values.image_url} aspectRatio={3/2}/>
-                {/* <Image cloudName="skedge" publicId={values.image_id} secure="true" alt={values.name}>
-                  <Transformation height="400" width="600" fetchFormat="jpg" crop='fill' quality="auto"/>
-                </Image> */}
             </Link>
 
               <div className={classes.imgCardOverlay} style={{display: 'inline-block',width: '100%'}}>
-                
-                {/* <div style={dateStyle}>
-                  <h5 style={{margin: 0, padding: 0, fontSize: 12, fontWeight: "600"}}>{displayMonth}</h5>
-                  <h5 style={{margin: '-5px 0px -2px 0px', fontSize: 12, fontWeight: "600"}}>{displayDay}</h5>
-                </div> */}
                 {displayCornerDate}
                 <div className='saveButton' onClick={handleSave}>
                   {
@@ -479,7 +465,8 @@ export default function EventCard({event, client, userId, filter, currentDate, l
           </CardHeader>
 
             <CardBody style={{paddingBottom: 0}}>
-            {followFeedInfo}
+            
+              {/* {followFeedInfo} */}
 
               <Link to={`/events/${event.id}`}>
                 <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center"}}>{values.name}</h3>
