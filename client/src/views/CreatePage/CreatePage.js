@@ -1,5 +1,6 @@
 /*eslint-disable*/
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import axios from 'axios'
 // nodejs library that concatenates classes
 import classNames from "classnames";
@@ -24,20 +25,23 @@ import AddCohost from 'views/CreatePage/Sections/AddCohost/AddCohost.js';
 import AddBanner from 'views/CreatePage/Sections/AddBanner.js';
 import Header from "components/Header/Header.js";
 
-
+//Popups notifications
+import { store } from 'react-notifications-component';
 
 import pricingStyle from "assets/jss/material-kit-pro-react/views/pricingStyle.js";
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 import {
   FETCH_IF_ENTITY,
-  MUTATION_EVENT_ADD
+  MUTATION_EVENT_ADD,
+  QUERY_FILTERED_EVENT,
+  FETCH_FOLLOWING_FEED
 } from 'EventQueries/EventQueries.js'
 
 //For Google Analytics
 import ReactGA from 'react-ga';
 
 const useStyles = makeStyles(pricingStyle);
-
+const primaryColor = "#02C39A"
 
 export default function PricingPage(props) {
   
@@ -339,6 +343,9 @@ const handleLocalOrPrivate = (type) => {
     if(typeof bannerImg !== "number") {
       props.client.mutate({
           mutation: MUTATION_EVENT_ADD,
+          // refetchQueries: [{
+          //   query: values.event_type === "private" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT
+          // }],
           variables: {
               objects: [
                   {
@@ -392,9 +399,23 @@ const handleLocalOrPrivate = (type) => {
               ],
               
           },
-      }).then(() =>{
-          let path = `home`;
-          props.history.push(path);
+      }).then((data) =>{
+        store.addNotification({
+          title: `You created the event ${values.name}`,
+          message: `Viewing your event right now!`,
+          //content: <div style={{backgroundColor: primaryColor}}><a href={`/events/${data.data.insert_events.returning[0].id}`}>Click here to go to event</a></div>,
+          type: "info",
+          insert: "bottom",
+          container: "bottom-center",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            onScreen: false
+          }
+        });
+        let path = `/events/${data.data.insert_events.returning[0].id}`;
+        props.history.push(path);
       }).catch(error => {
         console.log(error)
         alert("Error Occurred: ", error.name)
@@ -411,6 +432,12 @@ const handleLocalOrPrivate = (type) => {
       console.log("selected image")
       props.client.mutate({
         mutation: MUTATION_EVENT_ADD,
+        // refetchQueries: [{
+        //   query: values.event_type === "private" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
+        //   variables: {
+        //     userId: user.sub
+        //   }
+        // }],
         variables: {
             objects: [
                 {
@@ -456,9 +483,23 @@ const handleLocalOrPrivate = (type) => {
             ],
             
         },
-    }).then(() =>{
-        let path = `home`;
-        props.history.push(path);
+    }).then((data) =>{
+      store.addNotification({
+        title: `You created the event ${values.name}`,
+        message: `Viewing your event right now!`,
+        //content: <div style={{backgroundColor: primaryColor}}><a href={`/events/${data.data.insert_events.returning[0].id}`}>Click here to go to event</a></div>,
+        type: "info",
+        insert: "bottom",
+        container: "bottom-center",
+        animationIn: ["animated", "fadeIn"],
+        animationOut: ["animated", "fadeOut"],
+        dismiss: {
+          duration: 5000,
+          onScreen: false
+        }
+      });
+      let path = `/events/${data.data.insert_events.returning[0].id}`;
+      props.history.push(path);
     }).catch(error => {
       console.log(error)
       alert("Error Occurred: ", error.name)
@@ -576,7 +617,7 @@ const handleLocalOrPrivate = (type) => {
   //  page 2. So I have to have BOTH fontWeight: 'bolder' AND <strong> for all of them.
   //  This is probably becsue I used a material-ui theme in EventCreateInfo.js
   return (
-    <div style={{backgroundColor: "#02C39A",height: '100vh',  overflowY: 'scroll'}}>
+    <div style={{backgroundColor: primaryColor,height: '100vh',  overflowY: 'scroll'}}>
       <Header
         brand="Skedge"
         fixed

@@ -561,6 +561,7 @@ query fetch_following_feed($userId: String!, $eventLimit: Int, $eventOffset: Int
         {city: {_ilike: $city}},
         {state: {_ilike: $state}},
         {_or: [
+          {creator_id: {_eq: $userId}},
           {_and: [
             {invite_only: {_eq: false}},
             {_or: [
