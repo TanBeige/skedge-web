@@ -12,9 +12,13 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import NavPills from "components/NavPills/NavPills.js";
+import LockIcon from '@material-ui/icons/Lock';
+
+//Popup Notification
 import SnackbarContent from "components/Snackbar/SnackbarContent";
 import Snackbar from "@material-ui/core/Snackbar";
-import LockIcon from '@material-ui/icons/Lock';
+import { store } from 'react-notifications-component';
+
 
 import LoadingPage from "views/LoadingPage/LoadingPage.js"
 import ProfileTopSection from 'views/ProfilePage/ProfileTopSection.js';
@@ -72,26 +76,9 @@ export default function ProfilePage(props, { ...rest }) {
 
   // Page is Loading variable
   const [isLoading, setIsLoading] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    snackbaropen: false,
-    snackbarmsg: ''
-  });
+
   const [imageUploading, setImageUploading] = useState(false)
 
-  const snackbarClose = () => {
-    setSnackbar({
-      ...snackbar,
-      snackbaropen: false
-    })
-  }
-
-
-  const setStatus = (msg) => {
-    setSnackbar({
-      snackbaropen: true,
-      snackbarmsg: msg
-    })
-  }
 
   //// Set State Values
   const [values, setValues] = useState({
@@ -218,11 +205,37 @@ export default function ProfilePage(props, { ...rest }) {
         ...values,
         followingStatus: followStatus
       })
+
+      //Popup Notification
       if(values.isEntity){
-        setStatus(`Followed ${values.name}.`);
+        store.addNotification({
+          title: `Followed ${values.name}`,
+          message: `You have started following ${values.name}. You can now view their profile.`,
+          type: "info",
+          insert: "bottom",
+          container: "bottom-center",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            onScreen: false
+          }
+        });
       }
       else {
-        setStatus(`Sent a follow request to ${values.name}.`);
+        store.addNotification({
+          title: `Sent a follow request to ${values.name}`,
+          message: `You have sent a follow request to ${values.name}.`,
+          type: "info",
+          insert: "bottom",
+          container: "bottom-center",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 5000,
+            onScreen: false
+          }
+        });
       }
     })
   }
@@ -249,7 +262,20 @@ export default function ProfilePage(props, { ...rest }) {
         ...values,
         followingStatus: -1
       })
-      setStatus(`Unfollowed ${values.name}.`);
+      store.addNotification({
+        title: `Unfollowed ${values.name}`,
+        message: `You have unfollowed ${values.name}.`,
+        type: "info",
+        insert: "bottom",
+        container: "bottom-center",
+        animationIn: ["animated", "fadeIn"],
+        animationOut: ["animated", "fadeOut"],
+        dismiss: {
+          duration: 5000,
+          onScreen: false,
+          pauseOnHover: true
+        }
+      });
     })
   }
 
@@ -389,25 +415,6 @@ export default function ProfilePage(props, { ...rest }) {
           (
             <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '75vh', marginBottom: '4em', marginTop: '4em'}}>
               <div className={classes.container}>
-                <Snackbar 
-                  anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
-                  open={snackbar.snackbaropen}
-                  autoHideDuration={3000}
-                  style={{bottom: 70}}
-                  color='inherit'
-                  onClose={snackbarClose}
-                  message={<span>{snackbar.snackbarmsg}</span>}
-                  action={[
-                    <IconButton
-                      onClick={snackbarClose}
-                      color='primary'
-                      key={new Date()}
-
-                    >
-                      x
-                    </IconButton>
-                  ]}
-                /> 
                 <ProfileTopSection 
                   values={values} 
                   followInvite={handleFollowInvite} 

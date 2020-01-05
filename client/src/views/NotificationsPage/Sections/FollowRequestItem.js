@@ -68,7 +68,7 @@ export default function FollowRequestItem(props) {
       
       props.client.mutate({
         mutation: gql`
-        mutation accept_follow($userId: String!, $otherUser: String!){
+        mutation accept_follow($userId: String!, $otherUser: String!, $objects: [notifications_insert_input!]!){
           update_follower(
             where: {
               _and: [
@@ -87,11 +87,27 @@ export default function FollowRequestItem(props) {
               is_following_id
             }
           }
+          
+          insert_notifications(
+            objects: $objects 
+            on_conflict: {
+              update_columns: time_created, 
+              constraint: notifications_user_id_activity_type_source_id_other_user_id_key
+            }
+          ){
+            affected_rows
+          }
         }
         `,
         variables: {
           userId: user.sub,
           otherUser: userItem.auth0_id,
+          objects: {
+            user_id: userItem.auth0_id,
+            activity_type: 3,
+            source_id: null,
+            other_user_id: user.sub
+          }
         }
       }).then(() => {
         //Change relationship type for button to change

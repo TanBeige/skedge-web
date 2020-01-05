@@ -11,7 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import gql from 'graphql-tag';
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import RenewIcon from '@material-ui/icons/Autorenew'
+import RenewIcon from '@material-ui/icons/Autorenew';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js';
@@ -41,12 +42,21 @@ cloudinary.config({
 // Implement How long ago the notification was made
 
 
+
+
 export default function NotificationListItem(props) {
     const classes = useStyles();
     const { user } = useAuth0();
     const { notification } = props;
 
     const unseenColor = 'lightblue';
+
+    const notifStyle= {
+        paddingLeft: 10, 
+        paddingRight: 0, 
+        backgroundColor: notification.seen ? 'white' : unseenColor,
+        minHeight: 72
+    }
 
     useEffect(() => {
         props.client.mutate({
@@ -60,8 +70,8 @@ export default function NotificationListItem(props) {
     const likeNotif = () => {
         return (
             <Fragment key={notification.id}>
-                <ListItem style={{paddingLeft: 10, paddingRight: 0, backgroundColor: notification.seen ? 'white' : unseenColor}}>
-                    <FavoriteIcon color='secondary' style={{position: "absolute", left: 0, top: 5}} />
+                <ListItem style={notifStyle}>
+                    <FavoriteIcon color='secondary' style={{position: "absolute", left: 0, top: 5, zIndex: 10}} />
                     <ListItemAvatar>
                         <Avatar 
                             alt={notification.other_user.name}
@@ -95,8 +105,8 @@ export default function NotificationListItem(props) {
     const repostNotif = () => {
         return (
             <Fragment key={notification.id}>
-                <ListItem style={{paddingLeft: 10, paddingRight: 0, borderRadius: 3, backgroundColor: notification.seen ? 'white' : unseenColor}}>
-                    <RenewIcon color='primary' style={{position: "absolute", left: 0, top: 5}} />
+                <ListItem style={notifStyle}>
+                    <RenewIcon color='primary' style={{position: "absolute", left: 0, top: 5, zIndex: 10}} />
                     <ListItemAvatar>
                         <Avatar 
                             alt={notification.other_user.name}
@@ -126,6 +136,39 @@ export default function NotificationListItem(props) {
         )
     }
 
+    const followAcceptNotif = () => {
+        return (
+            <Fragment key={notification.id}>
+                <ListItem style={notifStyle}>
+                    <PersonAddIcon style={{position: "absolute", left: 0, top: 5, zIndex: 10}} />
+                    <ListItemAvatar>
+                        <Avatar 
+                            alt={notification.other_user.name}
+                            src={cloudinary.url(notification.other_user.picture, {secure: true, width: 200, height: 200, crop: "fill"})}
+                        />
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={`You are now following ${notification.other_user.name}!`}
+                        // secondary={
+                        // <React.Fragment>
+                        //     <Typography
+                        //     component="span"
+                        //     variant="body2"
+                        //     className={classes.inline}
+                        //     color="textPrimary"
+                        //     >
+                        //         {notification.source.name}
+                        //     </Typography>
+                        //     {` — now at ${notification.source.shared_event_aggregate.aggregate.count} shares.`}
+                        // </React.Fragment>
+                        // }
+                    />
+                </ListItem>
+                <Divider component="li" />
+            </Fragment>
+        )
+    }
+
     switch(notification.activity_type) {
         case 0:
             return likeNotif();
@@ -137,7 +180,7 @@ export default function NotificationListItem(props) {
             return repostNotif();   
             break;
         case 3: 
-            return repostNotif();
+            return followAcceptNotif();
             break;    
         default: 
             return repostNotif();

@@ -17,19 +17,14 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from 'components/Card/CardFooter';
-// import CardActions from '@material-ui/core/CardActions';
-// import Button from "components/CustomButtons/Button.js";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import Info from "components/Typography/Info.js";
-// import Warning from "components/Typography/Warning.js";
-// import Success from 'components/Typography/Success.js'
-// import Rose from 'components/Typography/Rose.js'
-// import Fab from '@material-ui/core/Fab';
 import { ThemeProvider } from '@material-ui/styles';
 import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
 // import Badge from 'components/Badge/Badge.js';
 
+//Event Moments
 import EventMomentsWrapper from 'components/EventMoments/EventMomentsWrapper.js';
 
 //Style
@@ -55,6 +50,7 @@ import {
   MUTATION_UNPOST_EVENT,
   REFETCH_EVENT_REPOSTS,
   QUERY_FILTERED_EVENT,
+  FETCH_FOLLOWING_FEED,
   MUTATION_EVENT_SAVE,
   MUTATION_EVENT_UNDO_SAVE
 } from "../../EventQueries/EventQueries";
@@ -193,7 +189,7 @@ export default function EventCard({event, client, userId, filter, currentDate, l
         client.mutate({
           mutation: MUTATION_UNPOST_EVENT,
           refetchQueries: [{
-            query: QUERY_FILTERED_EVENT
+            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT
           }],
           variables: {
             eventId: event.id,
@@ -212,7 +208,7 @@ export default function EventCard({event, client, userId, filter, currentDate, l
         client.mutate({
           mutation: MUTATION_REPOST_EVENT,
           refetchQueries: [{
-            query: QUERY_FILTERED_EVENT
+            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT
           }],
           variables: {
             eventId: event.id,
@@ -241,7 +237,7 @@ export default function EventCard({event, client, userId, filter, currentDate, l
         client.mutate({
           mutation: MUTATION_UNLIKE_EVENT,
           refetchQueries: [{
-            query: QUERY_FILTERED_EVENT
+            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT
           }],
           variables: {
             eventId: event.id,
@@ -260,7 +256,7 @@ export default function EventCard({event, client, userId, filter, currentDate, l
         client.mutate({
           mutation: MUTATION_LIKE_EVENT,
           refetchQueries: [{
-            query: QUERY_FILTERED_EVENT
+            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT
           }],
           variables: {
             eventId: event.id,
@@ -288,7 +284,7 @@ export default function EventCard({event, client, userId, filter, currentDate, l
         client.mutate({
           mutation: MUTATION_EVENT_UNDO_SAVE,
           refetchQueries: [{
-            query: QUERY_FILTERED_EVENT
+            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT
           }],
           variables: {
             eventId: event.id,
