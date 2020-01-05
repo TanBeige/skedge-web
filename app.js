@@ -13,10 +13,25 @@ const moment = require('./routes/Moment');
 const auth0calls = require('./routes/Auth0calls');
 
 var app = express();
+var env = process.env.NODE_ENV || 'development';
+console.log(env)
+
+
+//Redirect to https://
+var forceSsl = function (req, res, next) {
+  if (req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect(['https://', req.get('Host'), req.url].join(''));
+  }
+  return next();
+};
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+if (env === 'production') {
+  app.use(forceSsl);
+}
 
 app.use(logger('tiny'));
 app.use(cors({
