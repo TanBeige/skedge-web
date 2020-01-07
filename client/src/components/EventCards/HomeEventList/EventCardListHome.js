@@ -332,7 +332,7 @@ export default function EventCardListHome(props) {
                           />
                         </GridItem>
                         {
-                          insertAd(index)   //Add later when Skedge.com can get ads
+                          // insertAd(index)   //Add later when Skedge.com can get ads
                         }
                       </Fragment>
                     )
