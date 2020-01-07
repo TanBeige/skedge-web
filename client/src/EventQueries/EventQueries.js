@@ -138,17 +138,29 @@ const QUERY_USER_PROFILE = gql`
   ${USER_FRAGMENT}
 `;
 const QUERY_PROFILE_EVENTS = gql`
-query fetch_profile_events($eventLimit: Int, $eventOffset: Int, $profileId: String, $date: date, $weekday: String) {
+query fetch_profile_events($eventLimit: Int, $eventOffset: Int, $profileId: String, $userId: String, $date: date, $weekday: String) {
   events(
     limit: $eventLimit
     offset: $eventOffset
+    order_by: {start_time: asc}
     where:{
     	_and: [
         {_or: [
           {creator_id: {_eq: $profileId}},
-          {event_going: {user_id: {_eq: $profileId}}}
-          {shared_event: {user_id: {_eq: $profileId}}}
+          {shared_event: {user_id: {_eq: $profileId}}},
+          {_and: [
+          	{invite_only: {_eq: false}}
+            {event_invites: {invited_id: {_eq: $profileId}}}
+            {event_invites: {response: {_eq: 1}}}
+          ]},
+          {_and: [
+            {invite_only: {_eq: true}},
+            {event_invites: {invited_id: {_eq: $profileId}}}
+            {event_invites: {invited_id: {_eq: $userId}}}
+            {event_invites: {response: {_eq: 1}}}
+          ]}
         ]},
+
         {event_date:{
           _or:[
             {
@@ -167,16 +179,32 @@ query fetch_profile_events($eventLimit: Int, $eventOffset: Int, $profileId: Stri
             }
           ]
         }}
-        
-      
       ]
     }
-    order_by: {start_time: asc}
-  )
-  {
+  ) {
     ...EventFragment
-    shared_event {
-      user_id
+    shared_event(where: {user_id: {_eq: $profileId}}){
+      user{
+        id
+        name
+      }
+    }
+    event_invites(where: {
+      _or: [
+        {invited_id: {_eq: $profileId}},
+        {_and: [
+          {response: {_eq: 1}},
+          {invited: {followers: {user_id: {_eq: $profileId}}}}
+        ]}
+      ]
+    })
+    {
+      response
+      invited{
+        id
+        name
+        auth0_id
+      }
     }
   }
 }

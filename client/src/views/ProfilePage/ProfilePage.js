@@ -413,7 +413,7 @@ export default function ProfilePage(props, { ...rest }) {
         />
         { isLoading ? (<LoadingPage />) : 
           (
-            <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '75vh', marginBottom: '4em', marginTop: '4em'}}>
+            <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '90vh', marginBottom: '4em', marginTop: '4em'}}>
               <div className={classes.container}>
                 <ProfileTopSection 
                   values={values} 

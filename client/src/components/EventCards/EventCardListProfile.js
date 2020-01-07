@@ -109,8 +109,6 @@ export default function EventCardListProfile(props) {
         }).catch(error => {
           console.log(error)
         });
-
-      
     }
 
     // Replaces ComponentDidMount() in a Functional Component
@@ -149,9 +147,6 @@ export default function EventCardListProfile(props) {
       }
 
       currentKey = Math.floor(Math.random() * Math.floor(1000))
-      //setIsMounted(true)
-
-      //grabEvents();
       // ----------------------------GRABBING EVENTS IF MOUNTED--------------------------------
       isMounted = true;
       const { client } = props;
@@ -183,7 +178,6 @@ export default function EventCardListProfile(props) {
                 loadedAllEvents: data.data.events.length < 10
               });
               setIsSearch(false);
-
             }
           }
           else {

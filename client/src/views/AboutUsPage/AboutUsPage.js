@@ -71,7 +71,6 @@ export default function AboutUsPage() {
           <SectionTeam />
           <SectionServices />
           <SectionOffice />
-          <SectionContact />
         </div>
       </div>
     </div>

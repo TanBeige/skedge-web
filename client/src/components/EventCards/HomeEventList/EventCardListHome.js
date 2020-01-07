@@ -223,11 +223,11 @@ export default function EventCardListHome(props) {
       }
     }, [props.filter])
 
-    /*
+    
     const insertAd = (index) => {
       if((index % 6) === 5) {
         return (
-          <GridItem xs={12} sm={6} md={6} key={event.id}>
+          <GridItem xs={12} sm={6} md={6} key={index}>
             <div id="258077193">
                 <script type="text/javascript">
                   {
@@ -251,7 +251,7 @@ export default function EventCardListHome(props) {
       }
       catch (error) {}
     }
-    */
+    
 
     // Start Filtering Responses here. Since it's so fucking hard in GraphQL
     let finalEvents = values.events
@@ -325,7 +325,7 @@ export default function EventCardListHome(props) {
                           />
                         </GridItem>
                         {
-                          //insertAd(index)   //Add later when Skedge.com can get ads
+                          insertAd(index)   //Add later when Skedge.com can get ads
                         }
                       </Fragment>
                     )
