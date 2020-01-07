@@ -218,6 +218,8 @@ export default function EventCardListHome(props) {
           setIsSearch(false);
         });
 
+        // tryAd()
+
       return () => {
         isMounted = false;
       }
@@ -225,15 +227,16 @@ export default function EventCardListHome(props) {
 
     
     const insertAd = (index) => {
+      console.log("before ass")
       if((index % 6) === 5) {
         return (
           <GridItem xs={12} sm={6} md={6} key={index}>
-            <div id="258077193">
-                <script type="text/javascript">
+            <div id="663225813">
+                {/* <script type="text/javascript"> */}
                   {
                     tryAd()
                   }
-                </script>
+                {/* </script> */}
             </div>
           </GridItem>
         )
@@ -245,11 +248,15 @@ export default function EventCardListHome(props) {
 
     const tryAd = () => {
       try {
-          window._mNHandle.queue.push(function () {
-            window._mNDetails.loadTag("258077193", "180x150", "258077193");
-          });
+        window._mNHandle.queue.push(function () {
+            window._mNDetails.loadTag("663225813", "300x250", "663225813");
+        });
+        console.log("Assss")
+
       }
-      catch (error) {}
+      catch (error) {
+        console.log(error)
+      }
     }
     
 
