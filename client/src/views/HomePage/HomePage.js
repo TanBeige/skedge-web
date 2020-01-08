@@ -181,7 +181,7 @@ export default function HomePage(props) {
             color: "primary"
           }}
         />
-        <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '8vh', marginTop: '8vh'}}>
+        <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '5vh', marginTop: '8vh'}}>
           <Button style={{position: 'fixed', bottom: 55, right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
                 <ArrowUpwardIcon style={{color: "white"}} />
           </Button>

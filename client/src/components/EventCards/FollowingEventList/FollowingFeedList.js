@@ -300,7 +300,7 @@ export default function FollowingFeedList(props) {
 
 
     return (
-      <div id='scrollableDiv' style={{height: '65vh', overflowY: 'auto'}} key={currentKey} >
+      <div id='scrollableDiv' style={{height: '65vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey} >
         <Element name="listTop"></Element>
         <InfiniteScroll
             dataLength={values.eventsLength}

@@ -241,9 +241,10 @@ export default function EventCardListFuture(props) {
     // }
     if(isSearch) {
       return (
-        <div style={{textAlign: 'center'}}>
-          <CircularProgress size={20} color='primary'/>
-        </div>
+        ""
+        // <div style={{textAlign: 'center'}}>
+        //   <CircularProgress size={20} color='primary'/>
+        // </div>
       )
     }
    
