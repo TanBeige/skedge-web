@@ -36,7 +36,9 @@ import {
 import ReactGA from 'react-ga';
 
 // For Scrolling to top
-import { animateScroll as scroll} from 'react-scroll'
+import * as Scroll from 'react-scroll';
+import { animateScroll as scroll } from 'react-scroll'
+//import { animateScroll as scroll} from 'react-scroll'
 
 //Styles
 import blogPostsPageStyle from "assets/jss/material-kit-pro-react/views/blogPostsPageStyle.js";
@@ -55,8 +57,20 @@ export default function HomePage(props) {
 
   //Scroll To Top of the page
   const scrollToTop = () => {
-    scroll.scrollToTop();
-  }
+    scroll.scrollTo('listTop', {
+      duration: 1500,
+      delay: 100,
+      isDynamic: true,
+      smooth: true,
+      containerId: 'scrollableDiv'
+    })
+    
+    //scroll.scrollToTop();
+  }  
+  var ScrollLink = Scroll.Link;
+ 
+
+ 
 
 
   // Login/Event Logic:
@@ -167,7 +181,7 @@ export default function HomePage(props) {
             color: "primary"
           }}
         />
-        <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '4em', marginTop: '5em'}}>
+        <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '8vh', marginTop: '8vh'}}>
           <Button style={{position: 'fixed', bottom: 55, right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
                 <ArrowUpwardIcon style={{color: "white"}} />
           </Button>

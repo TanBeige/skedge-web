@@ -13,12 +13,13 @@ import {
 
 const navPillsStyle = theme => ({
   root: {
-    marginTop: "20px",
+    marginTop: "10px",
+    marginBottom: "10px",
     paddingLeft: "0",
-    marginBottom: "0",
     overflow: "visible !important"
   },
   flexContainer: {
+    height: '10vh',
     [theme.breakpoints.down("xs")]: {
       display: "flex",
       flexWrap: "wrap"
@@ -41,7 +42,7 @@ const navPillsStyle = theme => ({
     minWidth: "100px",
     textAlign: "center",
     transition: "all .3s",
-    padding: "10px 15px",
+    //padding: "10px 15px",
     color: grayColor[15],
     height: "auto",
     opacity: "1",
@@ -54,11 +55,12 @@ const navPillsStyle = theme => ({
     fontWeight: "500"
   },
   pillsWithIcons: {
-    borderRadius: "4px"
+    //borderRadius: "4px"
+    borderRadius: "20px"
   },
   tabIcon: {
     width: "30px",
-    height: "30px",
+    height: "20px",
     display: "block",
     margin: "5px 0 !important"
   },

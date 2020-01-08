@@ -14,6 +14,10 @@ import People from "@material-ui/icons/People";
 import EventIcon from '@material-ui/icons/Event';
 import EventBusyIcon from '@material-ui/icons/EventBusy';
 import TurnedInIcon from '@material-ui/icons/TurnedIn';
+import IconButton from '@material-ui/core/IconButton';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+
 
 // core components
 import NavPillsProfile from "components/NavPills/NavPillsProfile.js";
@@ -42,6 +46,24 @@ export default function FriendProfile(props) {
     const classes = useStyles();
     const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
+    const [date, setDate] = useState(new Date())
+
+    //Change current day
+    const handleDayBack = () => {
+        const newDate = date.addDays(-1)
+        const day = newDate.getDay()
+
+        setDate(newDate)
+    }
+    
+    const handleDayForward = () => {
+        const newDate = date.addDays(1)
+        const day = newDate.getDay();
+
+        setDate(newDate)
+
+    }
+    
 
     const userFriendsEvents = () => {
         //if(props.currentUserProfile) {
@@ -84,6 +106,7 @@ export default function FriendProfile(props) {
                             client={props.client}
                             userId={props.userId}
                             profileId={props.profileId}
+                            date={date}
                             listType='profile'
                         /> 
                     )
@@ -117,6 +140,7 @@ export default function FriendProfile(props) {
                             client={props.client}
                             userId={props.userId}
                             profileId={props.profileId}
+                            date={date}
                             listType='profile'
                         /> 
                     )
@@ -126,9 +150,30 @@ export default function FriendProfile(props) {
         )
     }
 
+    //Changes day to a moment.js object so I can format easier
+    const moment = require('moment')
+    const formatDate = moment(date);
+
     return (
         <div className={classes.profileTabs} style={{marginTop: 10}}>
             {userFriendsEvents()}
+            
+            <div style={{display: "block", margin: '10px 0px'}}>
+            <IconButton 
+                onClick={handleDayBack}
+                style={{position: 'absolute', left: 5, marginTop: '-12px', padding: '12px 18px'}}
+            >
+                <ChevronLeftIcon fontSize='large' />
+            </IconButton>
+            <IconButton 
+                onClick={handleDayForward}
+                style={{position: 'absolute', right: 5, marginTop: '-12px', padding: '12px 18px'}}
+            >
+                <ChevronRightIcon fontSize='large'  />
+            </IconButton>
+                <h3 style={{textAlign: 'center', verticalAlign: 'middle'}}>{formatDate.format("dddd, MMM D")}</h3>
+            </div>
+
             {displayPills}
         </div>
   );

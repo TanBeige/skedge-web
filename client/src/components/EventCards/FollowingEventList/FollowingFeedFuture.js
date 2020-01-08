@@ -6,7 +6,7 @@ import GridItem from "components/Grid/GridItem.js";
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from "react-infinite-scroll-component";
-import FutureContainer from './FollowFeedFutureContainer';
+import FollowFeedFutureContainer from './FollowFeedFutureContainer';
 import { throttle } from 'lodash';
 
 
@@ -55,17 +55,17 @@ export default function EventCardListFuture(props) {
       loadedAllEvents: false,
       showOlder: true,
       eventsLength: 0,
-      showNew: false,
       limit: props.filter.limit,
       events: [],
   });
 
+  const [activateFuture, setActivateFuture] = useState(false)
+
   // Update Query When new Events are added
   const loadMoreClicked = () => {
+    console.log("LOADING MORE!!!!!!!!!!!")
     const { client } = props;
     const { filter } = props;
-
-    const totalEventsPrevious = values.eventsLength;
 
     let cat = filter.category;
     if(filter.category == "Any") {
@@ -89,27 +89,25 @@ export default function EventCardListFuture(props) {
         }
       })
       .then(data => {
-
-        if (data.data.events.length ) {
-          if(isMounted) {
+        if(isMounted) {
+          if (data.data.events.length ) {
             const mergedEvents = values.events.concat(data.data.events);
             // update state with new events
             setValues({
               ...values,
               events: mergedEvents,
-              showNew: true,
               eventsLength: mergedEvents.length,//values.events.length + data.data.events.length,
               loadedAllEvents: data.data.events.length < values.limit
             });
           }
-        }
-        else {
-          if(isMounted) {
-            setValues({
-              ...values,
-              loadedAllEvents: true
-            })
+          else {
+              setValues({
+                ...values,
+                loadedAllEvents: true
+              })
           }
+          console.log("activating future")
+          setActivateFuture(true);
         }
       }).catch(error => {
         console.log(error);
@@ -124,7 +122,7 @@ export default function EventCardListFuture(props) {
 
   useEffect(() => {
     //Restart the get events
-
+    console.log("Initializing Feed For: ", props.filter.date.formatDate())
     setValues({
       type: props.type,
       filter: props.filter,
@@ -164,11 +162,10 @@ export default function EventCardListFuture(props) {
         }
       })
       .then(data => {
-        if (data.data.events.length) {
-          // const mergedEvents = values.events.concat(data.data.events);
-
+        console.log(data)
+        if(isMounted) {
+          if (data.data.events.length) {
           // update state with new events
-          if(isMounted) {
             setValues({
               ...values,
               events: data.data.events,
@@ -177,18 +174,23 @@ export default function EventCardListFuture(props) {
             });
             setIsSearch(false);
           }
-        }
-        else {
-          if(isMounted) {
-            setValues({
-              ...values,
-              events: data.data.events,
-              eventsLength: data.data.events.length,
-              loadedAllEvents: true
-            })
-            // TURN THIS ON TO MAKE IT WORK, BUT FIX BUG WHERE IT QUEUES INFINITELY
-            setIsSearch(false);
+          else {
+            if(isMounted) {
+              setValues({
+                ...values,
+                events: data.data.events,
+                eventsLength: data.data.events.length,
+                loadedAllEvents: true
+              })
+              setIsSearch(false);
+              
+              //Only set to true if entire day has no events, so we can move onto the next - 
+              // day's future events
+              setActivateFuture(true)
+            }
           }
+          // setActivateFuture(true);
+          console.log("Activate future: ", activateFuture)
         }
       });
 
@@ -197,6 +199,7 @@ export default function EventCardListFuture(props) {
       isMounted = false;        
     }
   }, [props.filter])
+
 
   // useEffect(()=>{
   //   console.log(props.filter.date.formatDate()," Loaded All: ", values.loadedAllEvents)
@@ -247,9 +250,10 @@ export default function EventCardListFuture(props) {
 
     // Components to Render
     const futureEvents = () => {
-      if(values.loadedAllEvents) {
+      if(activateFuture) {
+        console.log("here u go the future")
         return(
-          <FutureContainer
+          <FollowFeedFutureContainer
             client={props.client}
             filter={props.filter}
             userId={props.userId}
@@ -272,6 +276,14 @@ export default function EventCardListFuture(props) {
       }
     }
 
+    if(values.events.length === 0 && !isSearch){
+      return(
+        <Fragment>
+          {futureEvents()}
+        </Fragment>
+      )
+    }
+
     // Final Event list sent to the component
     let finalEvents = values.events
     return (
@@ -279,13 +291,13 @@ export default function EventCardListFuture(props) {
         <h3 style={{textAlign: 'center'}}>{moment(props.filter.date).format("dddd, MMM D")}</h3>
         <InfiniteScroll
             dataLength={values.eventsLength}
-            next={loadMoreThrottled}
-            hasMore={!values.loadedAllEvents}
-            scrollThreshold={1}
-            loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
+            next={loadMoreClicked}
+            hasMore={!activateFuture}
+            // loader={<div style={{marginTop: -20, textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             style={{overflow: 'none'}}
+            scrollableTarget="scrollableDiv"
         >
-          <GridContainer style={{minHeight: '8em'}}>
+          <GridContainer justify='center' style={{minHeight: '8em', margin: 0}}>
             {noEvents()}
               {
                 finalEvents.map((event, index) => {

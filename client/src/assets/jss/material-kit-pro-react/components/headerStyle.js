@@ -21,7 +21,7 @@ const headerStyle = theme => ({
     display: "flex",
     border: "0",
     borderRadius: "3px",
-    padding: "0.625rem 0",
+    //padding: "0.625rem 0",
     marginBottom: "20px",
     color: whiteColor,//grayColor[15],
     width: "100%",
@@ -47,7 +47,7 @@ const headerStyle = theme => ({
   },
   container: {
     ...container,
-    minHeight: "50px",
+    minHeight: "7vh",
     alignItems: "center",
     justifyContent: "space-between",
     display: "flex",

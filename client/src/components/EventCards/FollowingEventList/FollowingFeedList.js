@@ -15,6 +15,9 @@ import LoadCardList from '../LoadCardList.js';
 
 import { throttle } from 'lodash';
 
+import { Element , animateScroll as scroll,} from 'react-scroll'
+
+
 
 //const MyInstagramLoader = () => <Instagram />
 
@@ -297,17 +300,17 @@ export default function FollowingFeedList(props) {
 
 
     return (
-      <div className='EventCardListHomeContainer' key={currentKey}>
+      <div id='scrollableDiv' style={{height: '65vh', overflowY: 'auto'}} key={currentKey} >
+        <Element name="listTop"></Element>
         <InfiniteScroll
             dataLength={values.eventsLength}
             next={loadMoreThrottled}
             hasMore={!values.loadedAllEvents}
-            scrollThreshold={0.95}
             //loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             loader={<LoadCardList />}
             style={{overflow: 'none'}}
         >
-          <GridContainer style={{minHeight: '8em'}}>
+          <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
               {
                 finalEvents.map((event, index) => {
                     return (

@@ -49,12 +49,6 @@ export default function EventCardListProfile(props) {
   const moment = require("moment")
 
   const [values, setValues] = useState({
-      type: props.type,
-      filter: {
-        date: new Date(),
-        weekday: new Date().getDay(),
-        limit: 10
-      },
       loadedAllEvents: false,
       showOlder: true,
       eventsLength: 0,
@@ -67,7 +61,7 @@ export default function EventCardListProfile(props) {
     // Update Query When new Events are added
     const loadMoreClicked = () => {
       const { client } = props;
-      const { filter } = props;
+      const { date } = props;
 
       const totalEventsPrevious = values.eventsLength;
       setValues({
@@ -82,8 +76,8 @@ export default function EventCardListProfile(props) {
             eventLimit: values.limit,
             eventOffset: values.eventsLength,
             profileId: props.profileId,
-            date: filter.date ? filter.date.formatDate() : null,
-            weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
+            date: date ? date.formatDate() : null,
+            weekday: date !== null ? `%${date.getDay()}%` : null
           }
         })
         .then(data => {
@@ -116,7 +110,7 @@ export default function EventCardListProfile(props) {
       futureEvents = (
         <ProfileListFuture
           client={props.client}
-          filter={values.filter}
+          date={props.date}
           profileId={props.profileId}
           userId={props.userId}
         />
@@ -126,12 +120,6 @@ export default function EventCardListProfile(props) {
     useEffect(() => {
       //Restart the get events
       setValues({
-        type: props.type,
-        filter: {
-          date: new Date(),
-          weekday: new Date().getDay(),
-          limit: 10
-        },
         loadedAllEvents: false,
         showOlder: true,
         eventsLength: 0,
@@ -141,8 +129,8 @@ export default function EventCardListProfile(props) {
       });
 
       const filter = {
-        date: new Date(),
-        weekday: new Date().getDay(),
+        date: props.date,
+        weekday: props.date.getDay(),
         limit: 10
       }
 
@@ -200,7 +188,7 @@ export default function EventCardListProfile(props) {
       return () => {
         isMounted = false;
       }
-    }, [props.filter])
+    }, [props.date])
 
     /*
     const insertAd = (index) => {
@@ -276,16 +264,15 @@ export default function EventCardListProfile(props) {
 
 
     return (
-      <div id="scrollableDiv" className='EventCardListProfileContainer' key={currentKey}>
+      <div className='EventCardListProfileContainer' key={currentKey}>
         <InfiniteScroll
             dataLength={values.eventsLength}
             next={loadMoreClicked}
             hasMore={!values.loadedAllEvents}
-            scrollThreshold={0.95}
             loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             style={{overflow: 'none'}}
         >
-          <h3 style={{textAlign: 'center'}}>{moment(values.filter.date).format("dddd, MMM D")}</h3>
+          {/* <h3 style={{textAlign: 'center'}}>{moment(values.filter.date).format("dddd, MMM D")}</h3> */}
           {noEvents()}
           <GridContainer style={{minHeight: '3em'}}>
               {
@@ -297,8 +284,7 @@ export default function EventCardListProfile(props) {
                               event={event} 
                               client={props.client}
                               userId={props.userId}
-                              filter={values.filter}
-                              currentDate={values.filter.date}
+                              currentDate={props.date}
                           />
                         </GridItem>
                         {

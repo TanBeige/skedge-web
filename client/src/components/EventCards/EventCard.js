@@ -88,9 +88,10 @@ const theme = createMuiTheme({
 
 
 
-export default function EventCard({event, client, userId, filter, currentDate, listType}) {
+export default function EventCard({event, client, userId, currentDate, listType}) {
     const classes = useStyles();
     const bioMaxLength = 100;
+    const nameMaxLength = 25;
 
 
     //Styling Card

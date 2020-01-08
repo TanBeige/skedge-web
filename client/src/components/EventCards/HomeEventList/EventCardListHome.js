@@ -13,6 +13,9 @@ import { Instagram } from 'react-content-loader'
 
 import LoadCardList from '../LoadCardList.js';
 
+import * as Scroll from 'react-scroll';
+
+
 import { throttle } from 'lodash';
 
 
@@ -53,6 +56,10 @@ export default function EventCardListHome(props) {
   let isMounted = true;
   let currentKey;
   let futureEvents = "";
+
+  let ScrollLink = Scroll.Link;
+  let Element = Scroll.Element;
+
 
   const [values, setValues] = useState({
       type: props.type,
@@ -234,7 +241,7 @@ export default function EventCardListHome(props) {
             <div id="663225813">
                 {/* <script type="text/javascript"> */}
                   {
-                    tryAd()
+                    // tryAd()
                   }
                 {/* </script> */}
             </div>
@@ -246,18 +253,18 @@ export default function EventCardListHome(props) {
       }
     }
 
-    const tryAd = () => {
-      try {
-        window._mNHandle.queue.push(function () {
-            window._mNDetails.loadTag("663225813", "300x250", "663225813");
-        });
-        console.log("Assss")
+    // const tryAd = () => {
+    //   try {
+    //     window._mNHandle.queue.push(function () {
+    //         window._mNDetails.loadTag("663225813", "300x250", "663225813");
+    //     });
+    //     console.log("Assss")
 
-      }
-      catch (error) {
-        console.log(error)
-      }
-    }
+    //   }
+    //   catch (error) {
+    //     console.log(error)
+    //   }
+    // }
     
 
     // Start Filtering Responses here. Since it's so fucking hard in GraphQL
@@ -306,17 +313,17 @@ export default function EventCardListHome(props) {
 
 
     return (
-      <div className='EventCardListHomeContainer' key={currentKey}>
+      <div id='scrollableDiv' style={{height: '65vh', overflowY: 'auto'}} key={currentKey}>
+        <Element name="listTop"></Element>
         <InfiniteScroll
             dataLength={values.eventsLength}
             next={loadMoreThrottled}
             hasMore={!values.loadedAllEvents}
-            scrollThreshold={0.95}
             //loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             loader={<LoadCardList />}
             style={{overflow: 'none'}}
         >
-          <GridContainer style={{minHeight: '8em'}}>
+          <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
               {
                 finalEvents.map((event, index) => {
                     return (

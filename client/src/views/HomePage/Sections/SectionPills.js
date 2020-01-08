@@ -467,7 +467,7 @@ export default function SectionPills(props) {
           >
             <ChevronRightIcon fontSize='large'  />
           </IconButton>
-            <h3 style={{textAlign: 'center', verticalAlign: 'middle'}}>{formatDate.format("dddd, MMM D")}</h3>
+            <h3 style={{marginTop: 15, marginBottom: 0 ,textAlign: 'center', verticalAlign: 'middle'}}>{formatDate.format("dddd, MMM D")}</h3>
         </div>
 
         <div className={classes.profileTabs} style={{marginTop: 10}}>

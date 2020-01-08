@@ -60,6 +60,9 @@ export default function EventCardListFuture(props) {
       events: [],
   });
 
+  const [activateFuture, setActivateFuture] = useState(false)
+
+
   // Update Query When new Events are added
   const loadMoreClicked = () => {
     const { client } = props;
@@ -89,9 +92,8 @@ export default function EventCardListFuture(props) {
         }
       })
       .then(data => {
-
-        if (data.data.events.length ) {
-          if(isMounted) {
+        if(isMounted) {
+          if (data.data.events.length ) {
             const mergedEvents = values.events.concat(data.data.events);
             // update state with new events
             setValues({
@@ -102,14 +104,14 @@ export default function EventCardListFuture(props) {
               loadedAllEvents: data.data.events.length < values.limit
             });
           }
-        }
-        else {
-          if(isMounted) {
-            setValues({
-              ...values,
-              loadedAllEvents: true
-            })
+          else {
+              setValues({
+                ...values,
+                loadedAllEvents: true
+              })
           }
+          setActivateFuture(true);
+
         }
       }).catch(error => {
         console.log(error);
@@ -165,8 +167,6 @@ export default function EventCardListFuture(props) {
       })
       .then(data => {
         if (data.data.events.length) {
-          // const mergedEvents = values.events.concat(data.data.events);
-
           // update state with new events
           if(isMounted) {
             setValues({
@@ -188,7 +188,9 @@ export default function EventCardListFuture(props) {
             })
             // TURN THIS ON TO MAKE IT WORK, BUT FIX BUG WHERE IT QUEUES INFINITELY
             setIsSearch(false);
-          }
+              //Only set to true if entire day has no events, so we can move onto the next - 
+              // day's future events
+              setActivateFuture(true)          }
         }
       });
 
@@ -247,7 +249,7 @@ export default function EventCardListFuture(props) {
 
     // Components to Render
     const futureEvents = () => {
-      if(values.loadedAllEvents) {
+      if(activateFuture) {
         return(
           <FutureContainer
             client={props.client}
@@ -272,6 +274,14 @@ export default function EventCardListFuture(props) {
       }
     }
 
+    if(values.events.length === 0 && !isSearch){
+      return(
+        <Fragment>
+          {futureEvents()}
+        </Fragment>
+      )
+    }
+
     // Final Event list sent to the component
     let finalEvents = values.events
     return (
@@ -279,13 +289,13 @@ export default function EventCardListFuture(props) {
         <h3 style={{textAlign: 'center'}}>{moment(props.filter.date).format("dddd, MMM D")}</h3>
         <InfiniteScroll
             dataLength={values.eventsLength}
-            next={loadMoreThrottled}
-            hasMore={!values.loadedAllEvents}
-            scrollThreshold={1}
-            loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
+            next={loadMoreClicked}
+            hasMore={!activateFuture}
+            // loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             style={{overflow: 'none'}}
+            scrollableTarget="scrollableDiv"
         >
-          <GridContainer style={{minHeight: '8em'}}>
+          <GridContainer justify='center' style={{minHeight: '8em', margin: 0}}>
             {noEvents()}
               {
                 finalEvents.map((event, index) => {
