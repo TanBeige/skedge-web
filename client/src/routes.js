@@ -54,11 +54,10 @@ import SearchPage from 'views/SearchPage/SearchPage.js';
 import CallbackPage from "views/CallbackPage/CallbackPage.js";
 import BottomNav from "components/BottomNav/BottomNav.js";
 
-
 //For Google Analytics
 import ReactGA from 'react-ga';
 
-
+require('./SkedgeStyle.css')
 var hist = createBrowserHistory();
 
 export const MakeMainRoutes = () => {
