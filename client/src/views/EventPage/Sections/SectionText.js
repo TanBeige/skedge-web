@@ -185,7 +185,6 @@ export default function SectionText({ eventInfo, client }) {
     formattedDate = moment(eventInfo.start_date, "YYYY-MM-DD").format("MMMM Do, YYYY")
   }
 
-  if(user) {
     return (
       <div className={classes.section} style={{paddingTop: 15}}>
         <GridContainer justify="center">
@@ -203,15 +202,18 @@ export default function SectionText({ eventInfo, client }) {
               </div>
             </div>
             <hr />
-            <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
-              <GoingSaveButtons 
-                ifGoing={values.ifGoing}
-                ifSaved={values.ifSaved}
-                client={client}
-                eventId={eventInfo.event_id}
-                eventHost={eventInfo.user_auth0_id}
-              />
-            </div>
+            {
+              user ? 
+              <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
+                <GoingSaveButtons 
+                  ifGoing={values.ifGoing}
+                  ifSaved={values.ifSaved}
+                  client={client}
+                  eventId={eventInfo.event_id}
+                  eventHost={eventInfo.user_auth0_id}
+                />
+              </div> : ""
+            }
 
             {/* <h4></h4> //Event Moments turned off for now
             <MomentPopover/>
@@ -236,33 +238,47 @@ export default function SectionText({ eventInfo, client }) {
               <MapIcon style={{verticalAlign: 'top'}}/>
               {`${eventInfo.city}, ${eventInfo.state}`}
             </h4>
-            <MapsApi 
-              street={eventInfo.street}
-              city={eventInfo.city}
-              state={eventInfo.state}
-              pageLoaded={true}
-            />
-            
+            {
+              user ? 
+              <MapsApi 
+                street={eventInfo.street}
+                city={eventInfo.city}
+                state={eventInfo.state}
+                pageLoaded={true}
+              /> : ""
+            }
+            {
+              !user ? 
+              <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em', maxWidth: '230px'}}>
+                <h3>To view more events, sign up on Skedge!</h3>
+                <Button
+                  color="primary"
+                  onClick={handleLogin}
+                >
+                  Login or Sign Up
+                </Button>
+              </div> : ""
+            }
           </GridItem>
         </GridContainer>
       </div>
     );
-  }
-  else {
-    return (
-      <div className={classes.section} style={{padding: '0px 15px 15px 15px', textAlign: 'center'}}>
-        <GridContainer justify="center">
-          <GridItem xs={12} sm={12} md={12}>
-            <h3>Sign up for more info!</h3>
-            <Button
-              color="primary"
-              onClick={handleLogin}
-            >
-              Login or Sign Up
-            </Button>
-          </GridItem>
-        </GridContainer>
-      </div>
-    );
-  }
+  
+  // else {
+  //   return (
+  //     <div className={classes.section} style={{padding: '0px 15px 15px 15px', textAlign: 'center'}}>
+  //       <GridContainer justify="center">
+  //         <GridItem xs={12} sm={12} md={12}>
+  //           <h3>To view more events, sign up on Skedge!</h3>
+  //           <Button
+  //             color="primary"
+  //             onClick={handleLogin}
+  //           >
+  //             Login or Sign Up
+  //           </Button>
+  //         </GridItem>
+  //       </GridContainer>
+  //     </div>
+  //   );
+  // }
 }
