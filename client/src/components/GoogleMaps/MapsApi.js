@@ -3,6 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import Geocode from "react-geocode";
 
 import PlaceIcon from '@material-ui/icons/Place';
+import { prototype } from 'react-infinite-scroll-component';
 
 
 
@@ -28,6 +29,7 @@ class SimpleMap extends Component {
   }
 
   getGeocode() {
+    console.log("GEOCODE USEEDDDDD")
     this.setState({loading: true})
     Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
     Geocode.enableDebug();
@@ -62,7 +64,11 @@ class SimpleMap extends Component {
   
   componentDidMount() {
     _isMounted = true;
-    this.getGeocode();
+    // if(this.props.pageLoaded)
+    console.log(this.props)
+    if(this.props.state !== "") {
+      this.getGeocode();
+    }
   }
 
   componentWillUnmount(){

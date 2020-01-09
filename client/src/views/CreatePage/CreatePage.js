@@ -127,7 +127,7 @@ const handleLocalOrPrivate = (type) => {
   const handleTagInfo = (cat, inTags) => {
     setValues({
         ...values,
-        currentPage: values.currentPage + 1,
+        currentPage: values.event_type === "local" ? values.currentPage + 2 : values.currentPage + 1,
         goingBack: false,
 
         categories: cat,
@@ -571,9 +571,9 @@ const handleLocalOrPrivate = (type) => {
       page = (<TagSelect 
         goingBack={values.goingBack} 
         savedTag={values.tags} 
-        savedCategory={values.category} 
+        savedCategory={values.category}
+        eventType={values.event_type} 
         handleTagInfo={handleTagInfo} 
-        
       />)
       break;
     case 3: 

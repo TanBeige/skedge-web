@@ -131,7 +131,9 @@ export default function TagSelect(props) {
                 onClick={submitTags}
                 disabled={values.categories.length === 0}
                 >
-                Invite Followers ->
+                {
+                    props.eventType === "local" ? "Invite Cohosts ->" : "Invite Followers ->"
+                }
                 </Button>
             </div>
             </ThemeProvider>

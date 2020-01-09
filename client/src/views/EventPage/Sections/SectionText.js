@@ -240,6 +240,7 @@ export default function SectionText({ eventInfo, client }) {
               street={eventInfo.street}
               city={eventInfo.city}
               state={eventInfo.state}
+              pageLoaded={true}
             />
             
           </GridItem>
