@@ -71,7 +71,7 @@ export default function ProfilePage(props, { ...rest }) {
   );
 
   //// Grab Current User ID and user info
-  const userId = props.match.params.id;
+  const userName = props.match.params.id;
   const { isAuthenticated, user } = useAuth0();
 
   // Page is Loading variable
@@ -82,7 +82,7 @@ export default function ProfilePage(props, { ...rest }) {
 
   //// Set State Values
   const [values, setValues] = useState({
-    user_id: userId,
+    user_id: 0,
     user_exists: true,
     currentUserId: 0,
 
@@ -146,7 +146,7 @@ export default function ProfilePage(props, { ...rest }) {
       refetchQueries: [{
         query: QUERY_USER_PROFILE,
         variables: {
-          userId: userId
+          username: userName
         }
       }],
       variables: {
@@ -189,7 +189,7 @@ export default function ProfilePage(props, { ...rest }) {
       refetchQueries: [{
         query: QUERY_USER_PROFILE,
         variables: {
-          userId: userId,
+          username: userName,
         }
       }],
       variables: {
@@ -249,7 +249,7 @@ export default function ProfilePage(props, { ...rest }) {
       refetchQueries: [{
         query: QUERY_USER_PROFILE,
         variables: {
-          userId: userId,
+          username: userName,
         }
       }],
       variables: {
@@ -287,7 +287,7 @@ export default function ProfilePage(props, { ...rest }) {
     props.client.query({
       query: QUERY_USER_PROFILE,
       variables: {
-        userId: userId,
+        username: userName,
       }
     }).then((data) => {
       if(isMounted) {
@@ -326,6 +326,7 @@ export default function ProfilePage(props, { ...rest }) {
             userEvents: data.data.users[0].events,
             userReposts: data.data.users[0].shared_event,
 
+            user_id: data.data.users[0].id,
             name: data.data.users[0].name,
             biography: data.data.users[0].biography,
             full_name: data.data.users[0].full_name,
@@ -362,7 +363,7 @@ export default function ProfilePage(props, { ...rest }) {
     return () => {
       isMounted = false;
     }
-  }, [values.auth0Id, userId])
+  }, [values.auth0Id, userName])
 
   //Google Analytics useEffects
   useEffect(()=>{

@@ -325,7 +325,7 @@ export default function EventPage(props) {
     )
   }
   else if(!user) {
-    const userLink = `/users/${values.user_id}`
+    const userLink = `/users/${values.user_name}`
 
     return(
       <div>
@@ -391,7 +391,7 @@ export default function EventPage(props) {
     )
   }
   else {
-    const userLink = `/users/${values.user_id}`
+    const userLink = `/users/${values.user_name}`
 
     return (
       <div>

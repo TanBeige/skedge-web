@@ -140,6 +140,7 @@ class PrimaryNav extends Component {
                   where: {auth0_id: { _eq: $userId }}
                 ) {
                   id
+                  name
                 }
               }
             `,
@@ -155,7 +156,7 @@ class PrimaryNav extends Component {
                       '/search',
                       '/create',
                       '/notifications',
-                      `/users/${data.data.users[0].id}`
+                      `/users/${data.data.users[0].name}`
                   ],
                   //notifs: (data.data.users[0].followers_aggregate.aggregate.count + data.data.users[0].notifications_aggregate.aggregate.count)
               })

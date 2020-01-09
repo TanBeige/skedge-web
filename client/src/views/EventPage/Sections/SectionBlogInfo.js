@@ -30,11 +30,11 @@ export default function SectionBlogInfo({eventInfo}) {
                   return(
                       <GridItem xs={6} sm={3} md={3} key={index}>
                         <CardAvatar plain profile style={{width: "60%"}}>
-                          <Link to={`/users/${cohost.cohost.id}`}>
+                          <Link to={`/users/${cohost.cohost.name}`}>
                             <img src={cohost.cohost.picture} alt={cohost.cohost.name} />
                           </Link>
                         </CardAvatar>
-                        <Link to={`/users/${cohost.cohost.id}`}>
+                        <Link to={`/users/${cohost.cohost.name}`}>
                           <h4 className={classes.cardTitle} style={{textAlign: 'center', color: "#02C39A"}}>{cohost.cohost.name}</h4>
                         </Link>
                       </GridItem>

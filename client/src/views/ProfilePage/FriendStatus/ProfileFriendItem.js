@@ -179,7 +179,7 @@ console.log("friend status: ",currentFriend.entity)
     return (
         <Fragment>
             <ListItem key={currentFriend.auth0_id} button style={{width: '100%'}}>
-                <Link to={`/users/${currentFriend.id}`}>
+                <Link to={`/users/${currentFriend.name}`}>
                     <ListItemAvatar>
                         <Avatar
                             alt={currentFriend.name}
@@ -189,7 +189,7 @@ console.log("friend status: ",currentFriend.entity)
                         </ListItemAvatar>
                     </Link>
 
-                    <Link to={`/users/${currentFriend.id}`} style={{color: 'black'}}>
+                    <Link to={`/users/${currentFriend.name}`} style={{color: 'black'}}>
                         <ListItemText
                             primary={friendUserName}
                             secondary={

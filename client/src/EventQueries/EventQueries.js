@@ -128,9 +128,9 @@ fragment FriendFragment on users {
 
 // Fetch Users
 const QUERY_USER_PROFILE = gql`
-  query fetch_user($userId: bigint!) {
+  query fetch_user($username: String!) {
     users(
-      where: {id: { _eq: $userId }}
+      where: {name: { _eq: $username }}
     ) {  
       ...UserFragment
     }

@@ -174,7 +174,7 @@ export default function UserSearchList(props) {
     return (
         <Fragment key={userItem.id}>
                 <ListItem style={{paddingLeft: 10, paddingRight: 0, height: '5em'}}>
-                    <Link to={`/users/${userItem.id}`}>
+                    <Link to={`/users/${userItem.name}`}>
                         <ListItemAvatar>
                             <Avatar 
                                 alt={userItem.name}
