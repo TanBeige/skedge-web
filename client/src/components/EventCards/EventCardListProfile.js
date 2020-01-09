@@ -10,6 +10,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import ProfileListFuture from './ProfileListFuture.js';
 import FutureContainer from './HomeEventList/FutureContainer.js';
 
+import * as Scroll from 'react-scroll';
+
+
 import {
     QUERY_FILTERED_EVENT,
     QUERY_PROFILE_EVENTS
@@ -47,6 +50,8 @@ export default function EventCardListProfile(props) {
   let currentKey;
   let futureEvents = "";
   const moment = require("moment")
+  let Element = Scroll.Element;
+
 
   const [values, setValues] = useState({
       loadedAllEvents: false,
@@ -264,7 +269,8 @@ export default function EventCardListProfile(props) {
 
 
     return (
-      <div className='EventCardListProfileContainer' key={currentKey}>
+      <div id='scrollableDiv' style={{height: '86vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey}>
+        <Element name="listTop"></Element>
         <InfiniteScroll
             dataLength={values.eventsLength}
             next={loadMoreClicked}
@@ -274,7 +280,7 @@ export default function EventCardListProfile(props) {
         >
           {/* <h3 style={{textAlign: 'center'}}>{moment(values.filter.date).format("dddd, MMM D")}</h3> */}
           {noEvents()}
-          <GridContainer style={{minHeight: '3em'}}>
+          <GridContainer justify='center' style={{minHeight: '3em', margin: '10px 0px 0px 0px'}}>
               {
                 values.events.map((event, index) => {
                     return (

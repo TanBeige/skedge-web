@@ -287,8 +287,8 @@ export default function FollowingFeedList(props) {
     if(values.events.length === 0 && !isSearch)
     {
       return(
-        <div>
-            <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no events this day.</h5>
+        <div id='scrollableDiv' style={{height: '85vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey} >
+          <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no events this day.</h5>
             <hr />
             {
                 values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
@@ -300,7 +300,7 @@ export default function FollowingFeedList(props) {
 
 
     return (
-      <div id='scrollableDiv' style={{height: '65vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey} >
+      <div id='scrollableDiv' style={{height: '85vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey} >
         <Element name="listTop"></Element>
         <InfiniteScroll
             dataLength={values.eventsLength}

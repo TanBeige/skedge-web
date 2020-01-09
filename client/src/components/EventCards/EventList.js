@@ -1,3 +1,9 @@
+
+/*
+    the tanmeister: this is a demo of the unified file for the Event Lists. - 
+        There will be one of these for the future lists as well.
+*/
+
 import React, { Fragment, useState, useEffect } from 'react'
 
 import EventCard from "components/EventCards/EventCard.js"
@@ -14,7 +20,6 @@ import { Instagram } from 'react-content-loader'
 import LoadCardList from '../LoadCardList.js';
 
 import * as Scroll from 'react-scroll';
-
 
 import { throttle } from 'lodash';
 
@@ -78,11 +83,6 @@ export default function EventCardListHome(props) {
         console.log("loading more")
       const { client } = props;
       const { filter } = props;
-
-      // setValues({
-      //   ...values,
-      //   loadedAllEvents: false
-      // })
 
       let cat = filter.category;
       if(filter.category == "Any") {
@@ -314,7 +314,7 @@ export default function EventCardListHome(props) {
 
 
     return (
-      <div id='scrollableDiv' style={{height: '85vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey}>
+      <div id='scrollableDiv' style={{height: '65vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey}>
         <Element name="listTop"></Element>
         <InfiniteScroll
             dataLength={values.eventsLength}
@@ -329,7 +329,7 @@ export default function EventCardListHome(props) {
                 finalEvents.map((event, index) => {
                     return (
                       <Fragment key={event.id}>
-                        <GridItem xs={12} sm={6} md={6} >
+                        <GridItem xs={12} sm={6} md={6}>
                           <EventCard 
                               event={event} 
                               listType={"home"}
@@ -355,4 +355,49 @@ export default function EventCardListHome(props) {
         {futureEvents}
       </div>
     )
+}
+
+const localFeedQuery = {
+    query: QUERY_FILTERED_EVENT,
+    variables: {
+      eventLimit: values.limit,
+      eventOffset: values.eventsLength,
+      search: `%${filter.searchText}%`,
+      category: `%${cat}%`,
+      city: `%${filter.city}%`,
+      state: `%${filter.state}%`,
+      lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
+      upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
+      type: filter.type,
+      date: filter.date ? filter.date.formatDate() : null,
+      weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
+    }
+}
+
+const followingFeedQuery = {
+    query: FETCH_FOLLOWING_FEED,
+    variables: {
+        userId: props.userId,
+        eventLimit: values.limit,
+        eventOffset: 0,
+        search: `%${filter.searchText}%`,
+        category: `%${cat}%`,
+        city: `%${filter.city}%`,
+        state: `%${filter.state}%`,
+        lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
+        upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
+        date: filter.date !== null ? filter.date.formatDate() : null,
+        weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
+    }
+}
+
+const profileFeedQuery = {
+    query: QUERY_PROFILE_EVENTS,
+    variables: {
+        eventLimit: values.limit,
+        eventOffset: values.eventsLength,
+        profileId: props.profileId,
+        date:values.filter.date ? values.filter.date.formatDate() : null,
+        weekday: values.filter.date !== null ? `%${values.filter.date.getDay()}%` : null
+    }
 }

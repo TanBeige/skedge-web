@@ -110,8 +110,8 @@ export default function EventCardListFuture(props) {
                 loadedAllEvents: true
               })
           }
+          //After data comes in allow future events to occur
           setActivateFuture(true);
-
         }
       }).catch(error => {
         console.log(error);
@@ -166,9 +166,9 @@ export default function EventCardListFuture(props) {
         }
       })
       .then(data => {
-        if (data.data.events.length) {
+        if(isMounted) {
+          if (data.data.events.length) {
           // update state with new events
-          if(isMounted) {
             setValues({
               ...values,
               events: data.data.events,
@@ -177,21 +177,17 @@ export default function EventCardListFuture(props) {
             });
             setIsSearch(false);
           }
-        }
         else {
-          if(isMounted) {
             setValues({
               ...values,
               events: data.data.events,
               eventsLength: data.data.events.length,
               loadedAllEvents: true
             })
-            // TURN THIS ON TO MAKE IT WORK, BUT FIX BUG WHERE IT QUEUES INFINITELY
             setIsSearch(false);
-              //Only set to true if entire day has no events, so we can move onto the next - 
-              // day's future events
-              setActivateFuture(true)          }
+            setActivateFuture(true)          
         }
+      }
       });
 
     return () => {
@@ -307,7 +303,6 @@ export default function EventCardListFuture(props) {
                               event={event} 
                               client={props.client}
                               userId={props.userId}
-                              filter={props.filter}
                               currentDate={props.filter.date}
                           />
                         </GridItem>
