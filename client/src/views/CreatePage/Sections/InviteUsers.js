@@ -1,8 +1,10 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
+import { ThemeProvider } from '@material-ui/styles';
+
 
 import ListFollowers from 'views/CreatePage/Sections/ListFollowers.js';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
@@ -33,6 +35,15 @@ const useStyles = makeStyles(theme => ({
       height: '4em'
     },
   }));
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#02C39A"
+    },
+  },
+});
+
 
 export default function InviteUsers (props) {
     const classes = useStyles();
@@ -78,64 +89,67 @@ export default function InviteUsers (props) {
     return(
         <Slide direction={dir} in mountOnEnter unmountOnExit>
             <Container component="main">
-              <div className={classes.paper}>
-                <h5 style={{height: '4em'}}>{privacyText}</h5>
-                <div style={{textAlign: 'left'}}>
-                  <FormControlLabel 
-                    style={{color: "black"}} 
-                    control={
-                        <Checkbox
-                        checked={inviteSettings.inviteOnly}
-                        onChange={handleChange("inviteOnly")}
-                        color='primary'/>
-                    } 
-                    label={"Invite Only"} 
-                  />
-                  <FormControlLabel 
-                    style={{color: "black"}} 
-                    control={
-                        <Checkbox
-                        disabled={!inviteSettings.inviteOnly}
-                        checked={inviteSettings.allowGuestInvites}
-                        onChange={handleChange("allowGuestInvites")}
-                        color='primary'/>
-                    } 
-                    label={"Allow Guests to Invite"} 
-                  />
-                  <FormControlLabel 
-                    style={{color: "black"}} 
-                    control={
-                        <Checkbox
-                        disabled={!inviteSettings.allowGuestInvites}
-                        checked={inviteSettings.inviteApproval}
-                        onChange={handleChange("inviteApproval")}
-                        color='primary'/>
-                    } 
-                    label={"Invite Must Be Approved"} 
-                  />
-                </div>
+              <ThemeProvider theme={theme}>
 
-                <h4>Send Invite:</h4>
-                <div className='AddCohost' style={{maxHeight: "60vh", overflow: 'hidden', overflowY: 'scroll'}}>
-                    <ListFollowers
-                      client={props.client}
-                      userId={props.userId}
-                      selectGuests={selectGuests}
-                      guests={guests}
+                <div className={classes.paper}>
+                  <h5 style={{height: '4em'}}>{privacyText}</h5>
+                  <div style={{textAlign: 'left'}}>
+                    <FormControlLabel 
+                      style={{color: "black"}} 
+                      control={
+                          <Checkbox
+                          checked={inviteSettings.inviteOnly}
+                          onChange={handleChange("inviteOnly")}
+                          color='primary'/>
+                      } 
+                      label={"Invite Only"} 
                     />
+                    <FormControlLabel 
+                      style={{color: "black"}} 
+                      control={
+                          <Checkbox
+                          disabled={!inviteSettings.inviteOnly}
+                          checked={inviteSettings.allowGuestInvites}
+                          onChange={handleChange("allowGuestInvites")}
+                          color='primary'/>
+                      } 
+                      label={"Allow Guests to Invite"} 
+                    />
+                    <FormControlLabel 
+                      style={{color: "black"}} 
+                      control={
+                          <Checkbox
+                          disabled={!inviteSettings.allowGuestInvites}
+                          checked={inviteSettings.inviteApproval}
+                          onChange={handleChange("inviteApproval")}
+                          color='primary'/>
+                      } 
+                      label={"Invite Must Be Approved"} 
+                    />
+                  </div>
+
+                  <h4>Send Invite:</h4>
+                  <div className='AddCohost' style={{maxHeight: "60vh", overflow: 'hidden', overflowY: 'scroll'}}>
+                      <ListFollowers
+                        client={props.client}
+                        userId={props.userId}
+                        selectGuests={selectGuests}
+                        guests={guests}
+                      />
+                  </div>
                 </div>
-              </div>
-              <div className='centerSubmit'>
-                <Button
-                fullWidth
-                variant="contained"
-                color="secondary"
-                style={{margin: 3, height: '4em'}}
-                onClick={() => props.handleGuests(guests, inviteSettings)}
-                >
-                  Invite Cohosts ->
-                </Button>
-              </div>
+                <div className='centerSubmit'>
+                  <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  style={{margin: 3, height: '4em', color: 'white'}}
+                  onClick={() => props.handleGuests(guests, inviteSettings)}
+                  >
+                    Invite Cohosts ->
+                  </Button>
+                </div>
+              </ThemeProvider>
             </Container>
         </Slide>
     )

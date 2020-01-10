@@ -96,7 +96,7 @@ export default function TagSelect(props) {
 
     return (
         <Slide direction={dir} in >
-        <Container component="main" >
+        <Container component="main" style={{paddingLeft: 0, paddingRight: 0}}>
         <ThemeProvider theme={theme}>
 
             <div className={classes.paper}>

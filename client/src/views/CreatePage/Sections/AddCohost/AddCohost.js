@@ -1,8 +1,10 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
+import { ThemeProvider } from '@material-ui/styles';
+
 
 import ListCohosts from 'views/CreatePage/Sections/AddCohost/ListCohosts.js'
 
@@ -30,7 +32,15 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(3, 0, 2),
       height: '4em'
     },
-  }));
+}));
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#02C39A"
+    },
+  },
+});
 
 export default function AddCohost (props) {
     const classes = useStyles();
@@ -47,7 +57,9 @@ export default function AddCohost (props) {
 
     return(
         <Slide direction={dir} in mountOnEnter unmountOnExit>
-            <Container component="main">
+          <Container component="main">
+            <ThemeProvider theme={theme}>
+
                 <div className={classes.paper}>
                     <div className='AddCohost'>
                         <ListCohosts
@@ -62,14 +74,15 @@ export default function AddCohost (props) {
                   <Button
                   fullWidth
                   variant="contained"
-                  color="secondary"
-                  style={{margin: 3, height: '4em'}}
+                  color="primary"
+                  style={{margin: 3, height: '4em', color: 'white'}}
                   onClick={() => props.handleCohost(values.cohostId)}
                   >
-                  Choose Banner ->
+                    Choose Banner ->
                   </Button>
                 </div>
-            </Container>
+              </ThemeProvider>
+          </Container>
         </Slide>
     )
 }

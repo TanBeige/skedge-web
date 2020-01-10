@@ -183,7 +183,7 @@ export default function UserSearchList(props) {
                             />
                         </ListItemAvatar>
                     </Link>
-                    <Link style={{color: '#008064'}} to={`/users/${userItem.id}`}>
+                    <Link style={{color: '#008064'}} to={`/users/${userItem.name}`}>
                         <ListItemText
                             primary={`${displayName}`}
                             secondary={

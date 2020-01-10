@@ -40,7 +40,7 @@ export default function ListFollowers(props) {
           let finalData = data.follower;
 
           return (
-            <div className="listFriends">
+            <div className="listFriends" style={{maxHeight: '50vh', overflow: 'auto'}}>
                   <List style={{width: '100%'}}>
                       {finalData.map((follower, index) => {
                       return (

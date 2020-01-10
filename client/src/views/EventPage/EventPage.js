@@ -152,6 +152,7 @@ export default function EventPage(props) {
           host_approval: data.data.events[0].host_approval,
           updated_at: data.data.events[0].updated_at,
       
+          cover_uuid: data.data.events[0].image.image_uuid,
           cover_url: cloudinary.url(data.data.events[0].image.image_uuid, {secure: true, height: window.innerHeight, crop: "scale", fetch_format: "auto", quality: "auto"}),
           user_id: data.data.events[0].user.id,
           user_pic: data.data.events[0].user.picture,
@@ -177,8 +178,36 @@ export default function EventPage(props) {
   }
 
   //Submit Changes
-  const handleEventChange = (newInfo) => {
-    console.log(moment(newInfo.start_time).format("HH:mm:ss"))
+  const handleEventChange = async (newInfo) => {
+
+    //Upload Image to Cloudinary, Delete Old picture Afterwards
+    let errorOccurred = false;
+    let response = "";
+    if(newInfo.picFile !== null) {
+      setImageUploading(true)
+      const form_data = new FormData();
+
+      form_data.append('file', newInfo.picFile)
+
+      // Upload file to Cloudinary
+      response = await axios.post(
+        `/profile/upload`, 
+        form_data, 
+        {
+        params: {
+          picId: values.cover_uuid
+        }}
+      ).catch((error => {
+        alert("Error occurred while uploading picture, try uploading a smaller image size or try again later.")
+        errorOccurred = true;
+        return;
+      }))
+    }
+    if (errorOccurred) {
+      return
+    }
+
+    //Make Changes to Database
     props.client.mutate({
       mutation: MUTATION_EVENT_UPDATE,
       refetchQueries: [{
@@ -224,6 +253,7 @@ export default function EventPage(props) {
       category: newInfo.category
     })
   }
+
   //DELETE EVENT
   const handleDeleteEvent = () => {
     props.client.mutate({

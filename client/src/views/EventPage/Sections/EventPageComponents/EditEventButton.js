@@ -114,6 +114,58 @@ export default function EditEventButton(props) {
       })
     }
 
+    //Editing Cover Image
+    const coverPic = () => {
+        // if(props.imageUploading) {
+        //     return (
+        //         <div>
+        //             <img src={vals.picture} alt="..." className={imageClasses} style={{opacity: '0.5'}}/>
+        //             <CircularProgress style={{position: 'absolute', left: '50%', marginLeft: '-20px', top: 50}}/>
+        //             {/* <LoadImage src={vals.picture} alt={vals.name} className={imageClasses} /> */}
+        //             {updateProfileButton}
+        //         </div>
+        //     )
+        // }
+        // else if(vals.editProfile) {
+            return (
+                <div>
+                    <div className="fileinput" style={{display: 'inline'}} onClick={() => editCoverPic()}>
+                        <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInput} />
+                        <img src={imagePreviewUrl}  alt="..." className={imageClasses} style={{opacity: '0.5', objectFit: 'cover'}}/>
+                        <AddAPhotoIcon style={{position: 'absolute', left: '50%', marginLeft: '-12px', top: 105}}/>
+                    </div>
+                    {updateProfileButton}
+                </div>
+            )
+        // }
+        // else {
+            return (
+                <div>
+                    <img src={vals.picture} alt="..." className={imageClasses} />
+                    {/* <LoadImage src={vals.picture} alt={vals.name} className={imageClasses} /> */}
+                    {updateProfileButton}
+                </div>
+            )
+        }
+    }
+    const editCoverPic = () => {
+        fileInput.current.click();
+    }
+    const handleImageChange = e => {
+        e.preventDefault();
+        let reader = new FileReader();
+        let inFile = e.target.files[0];
+        reader.onloadend = () => {
+        setValues({
+            ...vals,
+            picFile: inFile
+        });
+        setImagePreviewUrl(reader.result);
+        };
+        reader.readAsDataURL(inFile);
+    };
+
+
 
     // Show Edit Button if user is host
     let editButton = "";
@@ -225,7 +277,12 @@ export default function EditEventButton(props) {
                     id="classic-modal-slide-description"
                     className={classes.modalBody}
                 >
+                    {/* Cover Image */}
+                    <GridItem xs={12} sm={12}>
+                        {coverPic()}
+                    </GridItem>
 
+                    {/* Event Name */}
                     <GridItem xs={12} sm={12}>
                         <TextField
                             name="name"
@@ -238,6 +295,8 @@ export default function EditEventButton(props) {
                             placeholder="Name"
                         />
                     </GridItem>
+
+                    {/* Location Name */}
                     <GridItem xs={12} sm={12}>
                         <TextField
                             name="location_name"
@@ -252,6 +311,8 @@ export default function EditEventButton(props) {
 
                         />
                     </GridItem>
+
+                    {/* Street Name */}
                     <GridItem xs={12} sm={12}>
                         <TextField
                             name="street"
@@ -266,6 +327,8 @@ export default function EditEventButton(props) {
 
                         />
                     </GridItem>
+
+                    {/* City Name */}
                     <GridItem xs={12} sm={12}>
                         <TextField
                             name="city"
@@ -280,6 +343,8 @@ export default function EditEventButton(props) {
 
                         />
                     </GridItem>
+
+                    {/* State */}
                     <GridItem xs={12} sm={12}>
                         <TextField
                             id="state"
@@ -303,6 +368,7 @@ export default function EditEventButton(props) {
                         </TextField>
                     </GridItem>
 
+                    {/* Event Date/Time */}
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <GridItem xs={12}>
                             <DatePicker
@@ -332,6 +398,7 @@ export default function EditEventButton(props) {
                         </GridItem>
                     </MuiPickersUtilsProvider>
 
+                    {/* Category */}
                     <GridItem xs={12} sm={12}>
                         <TextField
                             id="category"
@@ -362,10 +429,7 @@ export default function EditEventButton(props) {
                         </TextField>
                     </GridItem>
 
-
-
-
-
+                    {/* Event Description */}
                     <GridItem xs={12} sm={12}>
                         <TextField 
                             id="description"
@@ -382,17 +446,12 @@ export default function EditEventButton(props) {
                         />
                     </GridItem>
 
+                    {/* Delete Event */}
                     <DeleteEventButton 
                         userId={props.userId}
                         creatorId={props.creatorId}
                         handleDeleteEvent={props.handleDeleteEvent}
                     />
-
-
-
-
-
-                    
                 </DialogContent>
                 <DialogActions className={classes.modalFooter}>
                     <Button onClick={() => setIsEditing(false)} color="secondary">
