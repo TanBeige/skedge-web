@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 // nodejs library to set properties for components
+import gql from "graphql-tag";
+
 import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -88,6 +90,8 @@ export default function EventPage(props) {
 
     cover_uuid: "",
     cover_url: "",
+    cover_pic: 0,
+
     user_id: 0,
     user_pic: "",
     user_name: "",
@@ -118,7 +122,6 @@ export default function EventPage(props) {
       }
     }).then((data) => {
       if(data.data.events === undefined || data.data.events.length === 0) {
-
         setValues({
           ...values,
           event_exists: false
@@ -156,6 +159,8 @@ export default function EventPage(props) {
       
           cover_uuid: data.data.events[0].image.image_uuid,
           cover_url: cloudinary.url(data.data.events[0].image.image_uuid, {secure: true, height: window.innerHeight, crop: "scale", fetch_format: "auto", quality: "auto"}),
+          cover_pic: data.data.events[0].cover_pic,
+
           user_id: data.data.events[0].user.id,
           user_pic: data.data.events[0].user.picture,
           user_name: data.data.events[0].user.name,
@@ -184,8 +189,10 @@ export default function EventPage(props) {
 
     //Upload Image to Cloudinary, Delete Old picture Afterwards
     let errorOccurred = false;
+    let coverPicId = values.cover_pic;
     let response = "";
-    if(newInfo.picFile !== null) {
+
+    if(newInfo.picFile) {
       setImageUploading(true)
       const form_data = new FormData();
 
@@ -193,7 +200,7 @@ export default function EventPage(props) {
 
       // Upload file to Cloudinary
       response = await axios.post(
-        `/profile/upload`, 
+        `/storage/update`, 
         form_data, 
         {
         params: {
@@ -204,10 +211,39 @@ export default function EventPage(props) {
         errorOccurred = true;
         return;
       }))
+
+
+      //After submitting image, save it in database
+      await props.client.mutate({
+        mutation: gql`
+          mutation insert_image($objects: [images_insert_input!]!){
+            insert_images(objects: $objects){
+              returning{
+                id
+              }
+            }
+          }
+        `,
+        variables: {
+          objects: {
+            image_name: newInfo.name,
+            image_uuid: response.data.id,
+            url: response.data.url
+          }
+        },
+      }).then((data) => {
+        coverPicId = data.data.insert_images.returning[0].id
+
+      }).catch(error => {
+        console.log(error);
+        errorOccurred = true;
+      })
     }
+
     if (errorOccurred) {
       return
     }
+
 
     //Make Changes to Database
     props.client.mutate({
@@ -230,10 +266,10 @@ export default function EventPage(props) {
         startTime: moment(newInfo.start_time).format("HH:mm:ss"),
         endTime: newInfo.end_time ? moment(newInfo.end_time).format("HH:mm:ss") : null,
         description: newInfo.description,
-        category: newInfo.category
+        category: newInfo.category,
+        coverPic: coverPicId
       }
     }).then((data)=> {
-      console.log(data)
       console.log("Success!")
     }).catch(error => {
       console.error(error);

@@ -142,12 +142,21 @@ export default function EditEventButton(props) {
         //     )
         // }
         // else if(vals.editProfile) {
+
+        const imageStyle = {
+            opacity: '0.5', 
+            objectFit: 'cover',
+            width: '100%', 
+            borderRadius: 8, 
+            marginBottom: 10, 
+            height: 225
+        }
         if(!eventInfo.picFile){
             return (
                 <div>
-                    <div className="fileinput" style={{display: 'inline', width:'100%', height: 225}} onClick={() => editCoverPic()}>
+                    <div className="fileinput" style={{display: 'inline', width:'100%'}} onClick={() => editCoverPic()}>
                         <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInput} />
-                        <img src={cloudinary.url(imagePreviewUrl, {secure: true, width: 800, height: 450, crop: "fill"})}  alt="..." style={{opacity: '0.5', objectFit: 'cover', width: '100%', borderRadius: 8, marginBottom: 10}}/>
+                        <img src={cloudinary.url(imagePreviewUrl, {secure: true, width: 800, height: 450, crop: "fill"})}  alt="..." style={imageStyle}/>
                         <AddAPhotoIcon style={{position: 'absolute', left: '50%', marginLeft: '-12px', top: 105}}/>
                     </div>
                 </div>
@@ -159,7 +168,7 @@ export default function EditEventButton(props) {
                     <div style={{width: '100%'}}>
                         <div className="fileinput" style={{display: 'inline'}} onClick={() => editCoverPic()}>
                             <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInput} />
-                            <img src={imagePreviewUrl}  alt="..." style={{opacity: '0.5', objectFit: 'cover', width: '100%', height: 225, borderRadius: 8, marginBottom: 10}}/>
+                            <img src={imagePreviewUrl}  alt="..." style={imageStyle}/>
                             <AddAPhotoIcon style={{position: 'absolute', left: '50%', marginLeft: '-12px', top: 105}}/>
                         </div>
                     </div>

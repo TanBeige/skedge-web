@@ -21,17 +21,17 @@ const modalStyle = theme => ({
     [theme.breakpoints.up("sm")]: {
       maxWidth: "500px",
       margin: "auto",
-      marginTop: "360px !important"
+      //marginTop: "360px !important"
     },
-    [theme.breakpoints.up("md")]: {
-      marginTop: "50px !important"
-    },
+    // [theme.breakpoints.up("md")]: {
+    //   marginTop: "50px !important"
+    // },
     margin: 10,
     borderRadius: "6px",
     overflow: "auto",
     //maxHeight: "unset",
     width: "100%",
-    //marginTop: "50px !important"
+    marginTop: "50px !important"
   },
   modalHeader: {
     borderBottom: "none",

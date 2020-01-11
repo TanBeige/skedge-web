@@ -762,6 +762,7 @@ const FETCH_EVENT_INFO = gql`
       updated_at
       event_date_id
 
+      cover_pic
       image {
         image_uuid
       }
@@ -963,7 +964,7 @@ mutation insert_events($objects: [events_insert_input!]!) {
 `;
 
 const MUTATION_EVENT_UPDATE = gql`
-mutation update_event($eventId: Int!, $eventDateId: Int, $name: String, $locationName: String, $street: String, $city: String, $state: String, $startDate: date, $startTime: time, $endTime: time, $description: String, $category: String){
+mutation update_event($eventId: Int!, $eventDateId: Int, $name: String, $locationName: String, $street: String, $city: String, $state: String, $startDate: date, $startTime: time, $endTime: time, $description: String, $category: String, $coverPic: Int){
   update_events(
     where: {id: {_eq: $eventId}}
     _set: {
@@ -975,7 +976,8 @@ mutation update_event($eventId: Int!, $eventDateId: Int, $name: String, $locatio
       start_time: $startTime,
       end_time: $endTime,
       description: $description,
-      category: $category
+      category: $category,
+      cover_pic: $coverPic
     }
   ) {
     affected_rows
