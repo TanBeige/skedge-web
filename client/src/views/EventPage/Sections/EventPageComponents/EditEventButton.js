@@ -45,6 +45,7 @@ import {
 
 // @material-ui/icons
 import Close from "@material-ui/icons/Close";
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 // core components
 import Button from "components/CustomButtons/Button.js";
 
@@ -55,16 +56,31 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const useStyles = makeStyles(style);
-var moment = require("moment")
+var moment = require("moment");
+
+// Cloudinary setup
+var cloudinary = require('cloudinary/lib/cloudinary').v2
+
+cloudinary.config({
+  cloud_name: "skedge"
+});
+
 
 
 export default function EditEventButton(props) {
     const [isEditing, setIsEditing] = React.useState(false);
     const [endTimeExists, setEndTimeExists] = React.useState(props.oldEvent.end_time ? true : false)
+    const [imagePreviewUrl, setImagePreviewUrl] = React.useState(props.oldEvent.cover_uuid);
+    let fileInput = React.createRef();
+
     const classes = useStyles();
 
 
     const [eventInfo, setEventInfo] = React.useState({
+        cover_url: props.oldEvent.cover_uuid,
+        picFile: null,
+
+
         name: props.oldEvent.name,
         location_name: props.oldEvent.location_name,
         street: props.oldEvent.street,
@@ -79,7 +95,6 @@ export default function EditEventButton(props) {
         category: props.oldEvent.category,
         tags: [],
         cohosts: [],
-        cover_pic: ""
     })
     // Submit Changes:
     const submitChanges = () => {
@@ -127,27 +142,41 @@ export default function EditEventButton(props) {
         //     )
         // }
         // else if(vals.editProfile) {
+        if(!eventInfo.picFile){
             return (
                 <div>
-                    <div className="fileinput" style={{display: 'inline'}} onClick={() => editCoverPic()}>
+                    <div className="fileinput" style={{display: 'inline', width:'100%', height: 225}} onClick={() => editCoverPic()}>
                         <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInput} />
-                        <img src={imagePreviewUrl}  alt="..." className={imageClasses} style={{opacity: '0.5', objectFit: 'cover'}}/>
+                        <img src={cloudinary.url(imagePreviewUrl, {secure: true, width: 800, height: 450, crop: "fill"})}  alt="..." style={{opacity: '0.5', objectFit: 'cover', width: '100%', borderRadius: 8, marginBottom: 10}}/>
                         <AddAPhotoIcon style={{position: 'absolute', left: '50%', marginLeft: '-12px', top: 105}}/>
                     </div>
-                    {updateProfileButton}
-                </div>
-            )
-        // }
-        // else {
-            return (
-                <div>
-                    <img src={vals.picture} alt="..." className={imageClasses} />
-                    {/* <LoadImage src={vals.picture} alt={vals.name} className={imageClasses} /> */}
-                    {updateProfileButton}
                 </div>
             )
         }
+        else {
+            return (
+                <div style={{width: '100%'}}>
+                    <div style={{width: '100%'}}>
+                        <div className="fileinput" style={{display: 'inline'}} onClick={() => editCoverPic()}>
+                            <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInput} />
+                            <img src={imagePreviewUrl}  alt="..." style={{opacity: '0.5', objectFit: 'cover', width: '100%', height: 225, borderRadius: 8, marginBottom: 10}}/>
+                            <AddAPhotoIcon style={{position: 'absolute', left: '50%', marginLeft: '-12px', top: 105}}/>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        // }
+        // else {
+            // return (
+            //     <div>
+            //         <img src={vals.picture} alt="..." className={imageClasses} />
+            //         {/* <LoadImage src={vals.picture} alt={vals.name} className={imageClasses} /> */}
+            //         {updateProfileButton}
+            //     </div>
+            // )
     }
+    
     const editCoverPic = () => {
         fileInput.current.click();
     }
@@ -156,11 +185,11 @@ export default function EditEventButton(props) {
         let reader = new FileReader();
         let inFile = e.target.files[0];
         reader.onloadend = () => {
-        setValues({
-            ...vals,
-            picFile: inFile
-        });
-        setImagePreviewUrl(reader.result);
+            setEventInfo({
+                ...eventInfo,
+                picFile: inFile
+            });
+            setImagePreviewUrl(reader.result);
         };
         reader.readAsDataURL(inFile);
     };
@@ -211,9 +240,9 @@ export default function EditEventButton(props) {
             category: props.oldEvent.category,
             tags: [],
             cohosts: [],
-            cover_pic: ""
         })
         setEndTimeExists(props.oldEvent.end_time ? true : false);
+        setImagePreviewUrl(props.oldEvent.cover_uuid)
     }, [isEditing])
 
     // Check Values
@@ -457,7 +486,7 @@ export default function EditEventButton(props) {
                     <Button onClick={() => setIsEditing(false)} color="secondary">
                         Close
                     </Button>
-                <Button color={continueDisabled ? "white" : "primary"} disabled={continueDisabled} onClick={submitChanges}>Save changes</Button>
+                    <Button color={continueDisabled ? "white" : "primary"} disabled={continueDisabled} onClick={submitChanges}>Save changes</Button>
                 </DialogActions>
             </Dialog>
         </div>

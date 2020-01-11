@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
@@ -60,8 +61,8 @@ export default function EventPage(props) {
   const { loading, user, isAuthenticated} = useAuth0();
 
   const [isLoading, setIsLoading] = useState(false);
-
   const [isEditing, setIsEditing] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false)
 
   const [values, setValues] = useState({
     event_id: eventId,
@@ -85,6 +86,7 @@ export default function EventPage(props) {
     host_approval: true,
     updated_at: "",
 
+    cover_uuid: "",
     cover_url: "",
     user_id: 0,
     user_pic: "",

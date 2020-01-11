@@ -20,14 +20,18 @@ const modalStyle = theme => ({
   modalEdit: {
     [theme.breakpoints.up("sm")]: {
       maxWidth: "500px",
-      margin: "auto"
+      margin: "auto",
+      marginTop: "360px !important"
+    },
+    [theme.breakpoints.up("md")]: {
+      marginTop: "50px !important"
     },
     margin: 10,
     borderRadius: "6px",
-    overflow: "visible",
-    maxHeight: "unset",
+    overflow: "auto",
+    //maxHeight: "unset",
     width: "100%",
-    marginTop: "150px !important"
+    //marginTop: "50px !important"
   },
   modalHeader: {
     borderBottom: "none",
