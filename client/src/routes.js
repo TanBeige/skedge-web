@@ -54,14 +54,18 @@ import SearchPage from 'views/SearchPage/SearchPage.js';
 import CallbackPage from "views/CallbackPage/CallbackPage.js";
 import BottomNav from "components/BottomNav/BottomNav.js";
 
+import hist from "./utils/history";
+
+
 //For Google Analytics
 import ReactGA from 'react-ga';
 
 require('./SkedgeStyle.css')
-var hist = createBrowserHistory();
+// var hist = createBrowserHistory();
 
 export const MakeMainRoutes = () => {
   
+  console.log(hist)
 
   // Variables/Imports from auth0-spa
   const {loading, getIdTokenClaims, isAuthenticated, user } = useAuth0();

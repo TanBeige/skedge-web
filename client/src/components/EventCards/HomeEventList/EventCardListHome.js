@@ -93,6 +93,7 @@ export default function EventCardListHome(props) {
           variables: {
             eventLimit: values.limit,
             eventOffset: values.eventsLength,
+            userId: props.userId,
             search: `%${filter.searchText}%`,
             category: `%${cat}%`,
             city: `%${filter.city}%`,
@@ -182,6 +183,7 @@ export default function EventCardListHome(props) {
           variables: {
             eventLimit: values.limit,
             eventOffset: 0,
+            userId: props.userId,
             search: `%${filter.searchText}%`,
             category: `%${cat}%`,
             city: `%${filter.city}%`,
@@ -327,6 +329,7 @@ export default function EventCardListHome(props) {
           <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
               {
                 finalEvents.map((event, index) => {
+                  console.log("props.userId", props.userId);
                     return (
                       <Fragment key={event.id}>
                         <GridItem xs={12} sm={6} md={6} >

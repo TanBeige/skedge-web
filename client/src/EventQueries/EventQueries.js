@@ -516,7 +516,7 @@ query fetch_event_going($eventId: Int) {
 
 // Filter Event
 const QUERY_FILTERED_EVENT = gql`
-query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String, $category: String, $city: String, $state: String, $type: String, $date: date, $weekday: String, $lowerPrice: money, $upperPrice: money) {
+query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $userId: String!, $search: String, $category: String, $city: String, $state: String, $type: String, $date: date, $weekday: String, $lowerPrice: money, $upperPrice: money) {
   events(
     order_by:[{start_time: asc}, {event_like_aggregate: {count: desc_nulls_last}}]
     limit: $eventLimit
@@ -569,8 +569,42 @@ query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String
   )
   {
     ...EventFragment
-    shared_event {
+
+    shared_event(where: {
+      _or: [
+        {user_id: {_eq: $userId}},
+        {user: {followers: {user_id: {_eq: $userId}}}}
+      ]}
+      order_by: {time_shared : desc}
+    )
+    {
       user_id
+      user{
+        id
+        name
+        full_name
+      }
+    }
+    event_invites(where: {
+      _or: [
+        {invited_id: {_eq: $userId}},
+        {_and: [
+          {response: {_eq: 1}},
+          {invited: {followers: {user_id: {_eq: $userId}}}}
+        ]}
+      ]
+    })
+    {
+      response
+      invited{
+        id
+        name
+        auth0_id
+      }
+      inviter {
+        id
+        name
+      }
     }
   }
 }
@@ -650,10 +684,18 @@ query fetch_following_feed($userId: String!, $eventLimit: Int, $eventOffset: Int
     ...EventFragment
     invite_only
 
-    shared_event(where: {user: {followers: {user_id: {_eq: $userId}}}}){
+    shared_event(where: {
+      _or: [
+        {user_id: {_eq: $userId}},
+        {user: {followers: {user_id: {_eq: $userId}}}}
+      ]}
+      order_by: {time_shared : desc}
+    ){
+      user_id
       user{
         id
         name
+        full_name
       }
     }
     event_invites(where: {

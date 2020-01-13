@@ -80,6 +80,7 @@ export default function EventCardListFuture(props) {
         variables: {
           eventLimit: values.limit,
           eventOffset: values.eventsLength,
+          userId: props.userId,
           search: `%${filter.searchText}%`,
           category: `%${cat}%`,
           city: `%${filter.city}%`,
@@ -154,6 +155,7 @@ export default function EventCardListFuture(props) {
         variables: {
           eventLimit: values.limit,
           eventOffset: 0,
+          userId: props.userId,
           search: `%${filter.searchText}%`,
           category: `%${cat}%`,
           city: `%${filter.city}%`,

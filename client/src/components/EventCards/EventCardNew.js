@@ -12,7 +12,6 @@ import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import TurnedInNotIcon from '@material-ui/icons/TurnedInNot';
 import TurnedInIcon from '@material-ui/icons/TurnedIn';
 import TurnedInTwoToneIcon from '@material-ui/icons/TurnedInTwoTone';
-import CreateIcon from '@material-ui/icons/Create';
 // core components
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -141,7 +140,6 @@ export default function EventCard({event, client, userId, currentDate, listType}
       lineHeight: 0,
     }
 
-
     
 
     // Setting Event Info
@@ -235,6 +233,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
     }
 
     const handleLike = () => {
+
       if(values.ifLiked !== "inherit") {
         client.mutate({
           mutation: MUTATION_UNLIKE_EVENT,
@@ -321,7 +320,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
     }
 
 
-    // Adding Impressions
+    // Adding Impress
     const addImpression = () => {
       client.mutate({
         mutation: MUTATION_EVENT_IMPRESSION,
@@ -332,7 +331,6 @@ export default function EventCard({event, client, userId, currentDate, listType}
     }
 
     useEffect(() => {
-      console.log("event info: ", event)
       addImpression();
 
       //Edit Bio
@@ -353,7 +351,50 @@ export default function EventCard({event, client, userId, currentDate, listType}
       })
     }, [])
 
-    // Date displayed on the top-left corner of the date
+    // Setting Display Variables    
+    //let displayDate = "";
+    // if(values.isRecurring) {
+    //   if(values.weekday.includes("1")) {
+    //     displayDate += "Mon";
+    //   }
+    //   if(values.weekday.includes("2")) {
+    //     if(displayDate.length > 0) {
+    //       displayDate += " "
+    //     }
+    //     displayDate += "Tue";
+    //   }
+    //   if(values.weekday.includes("3")) {
+    //     if(displayDate.length > 0) {
+    //       displayDate += " "
+    //     }
+    //     displayDate += "Wed";
+    //   }
+    //   if(values.weekday.includes("4")) {
+    //     if(displayDate.length > 0) {
+    //       displayDate += " "
+    //     }
+    //     displayDate += "Thur";
+    //   }
+    //   if(values.weekday.includes("5")) {
+    //     if(displayDate.length > 0) {
+    //       displayDate += " "
+    //     }
+    //     displayDate += "Fri";
+    //   }
+    //   if(values.weekday.includes("6")) {
+    //     if(displayDate.length > 0) {
+    //       displayDate += " "
+    //     }
+    //     displayDate += "Sat";
+    //   }
+    //   if(values.weekday.includes("0")) {
+    //     if(displayDate.length > 0) {
+    //       displayDate += " "
+    //     }
+    //     displayDate += "Sun";
+    //   }
+    // }
+    //else {
     let displayCornerDate = ""
     if(currentDate) {
       const displayMonth = moment(currentDate).format("MMM")
@@ -366,12 +407,11 @@ export default function EventCard({event, client, userId, currentDate, listType}
         </div>
       )
     }
+    //}
 
 
     // While on the following feed, we display information about
     //  who posted, shared, or is going to the event.
-    let imgMargin = '0.5em 0.5em 0em 0.5em'
-
     let followFeedInfo = ""
     if(listType === "following") {
       followFeedInfo = (
@@ -381,46 +421,18 @@ export default function EventCard({event, client, userId, currentDate, listType}
       )
     }
 
-    let shareInfo = ""
-    if(event.shared_event.length > 0) {
-      imgMargin = '0em 0.5em 0em 0.5em'
-      shareInfo = (
-        <div style={{display: 'flex'}}>
-          <RenewIcon color='primary'/> 
-          <div>
-            Shared by {event.shared_event[0].user.full_name}
-            {
-              event.shared_event.length > 1 ? ` and ${event.shared_event.length - 1} others` : ""
-            }
-          </div>
-        </div>
-      )
-    }
-    let coverImgStyle= {
-      position: 'relative', 
-      margin: imgMargin, 
-      borderRadius: 3, 
-      overflow: 'hidden',
-      border: '1px solid lightgray'
-    }
-
     // Rendering Card
     return(
       <ThemeProvider theme={theme}>
 
       <Grow in={true}>
-        <Card style={{border: "2px solid darkgrey", marginTop: 5}} raised>  
-          {/* <CardHeader image style={{marginBottom: -30}}> */}
-          <div style={{margin: 'auto'}}>
-            {shareInfo}
-          </div>
-
-          <div style={coverImgStyle}>
+        <Card blog style={{border: "2px solid darkgrey"}} raised>  
+          <CardHeader image style={{marginBottom: -30}}>
             <Link to={`/events/${event.id}`}>
-              <LoadImage className={classes.imgCardTop} color='white' src={values.image_url} aspectRatio={3/2}/>
+              <LoadImage color='white' src={values.image_url} aspectRatio={3/2}/>
             </Link>
 
-              <div className={classes.imgCardOverlay} style={{width: '100%'}}>
+              <div className={classes.imgCardOverlay} style={{display: 'inline-block',width: '100%'}}>
                 {displayCornerDate}
                 <div className='saveButton' onClick={handleSave}>
                   {
@@ -436,7 +448,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
                     style={{
                       color: "#02C39A",
                       position: "absolute",
-                      bottom: "0px",
+                      bottom: "20px",
                       left: "6px",
                     }}
                   >
@@ -447,10 +459,9 @@ export default function EventCard({event, client, userId, currentDate, listType}
                   </div>
                 </Link>
               </div>
-          </div>
-          {/* </CardHeader> */}
+          </CardHeader>
 
-            <CardBody style={{padding: '0px 15px'}}>
+            <CardBody style={{paddingBottom: 0}}>
             
               {/* {followFeedInfo} */}
 
@@ -515,3 +526,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
       </ThemeProvider>
     )
 }
+
+
+
+

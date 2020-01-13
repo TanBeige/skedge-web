@@ -9,6 +9,8 @@ import 'react-notifications-component/dist/theme.css'
 import { Auth0Provider } from "./Authorization/react-auth0-wrapper";
 import { AUTH_CONFIG } from "./Authorization/auth0-variables";
 import { MakeMainRoutes } from "./routes";
+import history from "./utils/history";
+
 
 require('dotenv').config();
 
@@ -16,14 +18,12 @@ require('dotenv').config();
 // A function that routes the user to the right place
 // after login
 const onRedirectCallback = appState => {
-    window.history.replaceState(
-      {},
-      document.title,
-      appState && appState.targetUrl
-        ? appState.targetUrl
-        : window.location.pathname
-    );
-  };
+  history.push(
+    appState && appState.targetUrl
+      ? appState.targetUrl
+      : window.location.pathname
+  );
+};
 
 ReactDOM.render(
     <Auth0Provider
