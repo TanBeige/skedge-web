@@ -199,7 +199,6 @@ export default function EventCardListHome(props) {
           if (data.data.events.length > 0) {
             //const mergedEvents = values.events.concat(data.data.events);
             // update state with new events
-            console.log("loaded all events: ", data.data.events.length < props.filter.limit)
             if(isMounted) {
               setValues({
                 ...values,
@@ -236,7 +235,6 @@ export default function EventCardListHome(props) {
 
     
     const insertAd = (index) => {
-      console.log("before ass")
       if((index % 6) === 5) {
         return (
           <GridItem xs={12} sm={6} md={6} key={index}>
@@ -329,7 +327,6 @@ export default function EventCardListHome(props) {
           <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
               {
                 finalEvents.map((event, index) => {
-                  console.log("props.userId", props.userId);
                     return (
                       <Fragment key={event.id}>
                         <GridItem xs={12} sm={6} md={6} >

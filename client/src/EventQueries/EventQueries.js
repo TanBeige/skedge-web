@@ -599,6 +599,7 @@ query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $userId: String
       invited{
         id
         name
+        full_name
         auth0_id
       }
       inviter {
@@ -712,6 +713,7 @@ query fetch_following_feed($userId: String!, $eventLimit: Int, $eventOffset: Int
       invited{
         id
         name
+        full_name
         auth0_id
       }
       inviter {

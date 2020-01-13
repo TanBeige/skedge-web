@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import _ from 'lodash';
 // @material-ui/icons
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import StarIcon from '@material-ui/icons/Star';
@@ -13,6 +14,7 @@ import TurnedInNotIcon from '@material-ui/icons/TurnedInNot';
 import TurnedInIcon from '@material-ui/icons/TurnedIn';
 import TurnedInTwoToneIcon from '@material-ui/icons/TurnedInTwoTone';
 import CreateIcon from '@material-ui/icons/Create';
+import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 // core components
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -192,7 +194,10 @@ export default function EventCard({event, client, userId, currentDate, listType}
         client.mutate({
           mutation: MUTATION_UNPOST_EVENT,
           refetchQueries: [{
-            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT
+            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
+            variables: {
+              userId: userId
+            }
           }],
           variables: {
             eventId: event.id,
@@ -211,7 +216,10 @@ export default function EventCard({event, client, userId, currentDate, listType}
         client.mutate({
           mutation: MUTATION_REPOST_EVENT,
           refetchQueries: [{
-            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT
+            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
+            variables: {
+              userId: userId
+            }
           }],
           variables: {
             eventId: event.id,
@@ -239,7 +247,10 @@ export default function EventCard({event, client, userId, currentDate, listType}
         client.mutate({
           mutation: MUTATION_UNLIKE_EVENT,
           refetchQueries: [{
-            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT
+            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
+            variables: {
+              userId: userId
+            }
           }],
           variables: {
             eventId: event.id,
@@ -258,7 +269,10 @@ export default function EventCard({event, client, userId, currentDate, listType}
         client.mutate({
           mutation: MUTATION_LIKE_EVENT,
           refetchQueries: [{
-            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT
+            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
+            variables: {
+              userId: userId
+            }
           }],
           variables: {
             eventId: event.id,
@@ -286,7 +300,10 @@ export default function EventCard({event, client, userId, currentDate, listType}
         client.mutate({
           mutation: MUTATION_EVENT_UNDO_SAVE,
           refetchQueries: [{
-            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT
+            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
+            variables: {
+              userId: userId
+            }
           }],
           variables: {
             eventId: event.id,
@@ -304,7 +321,10 @@ export default function EventCard({event, client, userId, currentDate, listType}
         client.mutate({
           mutation: MUTATION_EVENT_SAVE,
           refetchQueries: [{
-            query: QUERY_FILTERED_EVENT
+            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
+            variables: {
+              userId: userId
+            }
           }],
           variables: {
             eventId: event.id,
@@ -332,7 +352,6 @@ export default function EventCard({event, client, userId, currentDate, listType}
     }
 
     useEffect(() => {
-      console.log("event info: ", event)
       addImpression();
 
       //Edit Bio
@@ -383,19 +402,71 @@ export default function EventCard({event, client, userId, currentDate, listType}
 
     let shareInfo = ""
     if(event.shared_event.length > 0) {
-      imgMargin = '0em 0.5em 0em 0.5em'
+      //Set Variables
+      imgMargin = '0em 0.5em 0em 0.5em';
+      let shareInfoText = "";
+
+      //Remove current user from array
+      let tempSharedEvent = [...event.shared_event]
+      _.remove(tempSharedEvent, {
+        user_id: userId
+      });
+
+      //Add text about who shared event
+      if(tempSharedEvent.length > 0) {
+        shareInfoText = `Shared by ${tempSharedEvent[0].user.full_name}`
+        if(event.shared_event.length === 2) {
+          shareInfoText += ` and 1 other`
+        }
+        else if(event.shared_event.length > 2){
+          shareInfoText += ` and ${event.shared_event.length - 1} others`
+        }
+      }
+      else {
+        shareInfoText = `You shared this event`
+      }
+
+        shareInfo = (
+          <div style={{display: 'flex'}}>
+            <RenewIcon color='primary'/> 
+            <div>
+              {shareInfoText}
+            </div>
+          </div>
+        )
+    }
+    if(event.event_invites.length > 0) {
+      imgMargin = '0em 0.5em 0em 0.5em';
+      let shareInfoText = "";
+
+      if(event.event_invites.some(user => user.invited.auth0_id === userId)){
+        shareInfoText = `You `
+        if(event.event_invites.length > 1){
+          shareInfoText += ` and ${event.event_invites.length - 1} others`
+        }
+         shareInfoText += ` are going to this event`
+      }
+      else {
+        shareInfoText = `${event.event_invites[0].invited.full_name}`
+        console.log("sharedinfotext: ", event.event_invites)
+        if(event.event_invites.length > 1){
+          shareInfoText += ` and ${event.event_invites.length - 1} others are going to this event`
+        }
+        else {
+          shareInfoText += ` is going to this event`
+        }
+      }
       shareInfo = (
         <div style={{display: 'flex'}}>
-          <RenewIcon color='primary'/> 
+          <PersonPinCircleIcon color='secondary'/> 
           <div>
-            Shared by {event.shared_event[0].user.full_name}
-            {
-              event.shared_event.length > 1 ? ` and ${event.shared_event.length - 1} others` : ""
-            }
+            {shareInfoText}
           </div>
         </div>
       )
     }
+
+    // Style of the cover image div
     let coverImgStyle= {
       position: 'relative', 
       margin: imgMargin, 
@@ -407,111 +478,110 @@ export default function EventCard({event, client, userId, currentDate, listType}
     // Rendering Card
     return(
       <ThemeProvider theme={theme}>
+        <Grow in={true}>
+          <Card style={{border: "2px solid darkgrey", marginTop: 5}} raised>  
+            {/* <CardHeader image style={{marginBottom: -30}}> */}
+            <div style={{margin: 'auto'}}>
+              {shareInfo}
+            </div>
 
-      <Grow in={true}>
-        <Card style={{border: "2px solid darkgrey", marginTop: 5}} raised>  
-          {/* <CardHeader image style={{marginBottom: -30}}> */}
-          <div style={{margin: 'auto'}}>
-            {shareInfo}
-          </div>
-
-          <div style={coverImgStyle}>
-            <Link to={`/events/${event.id}`}>
-              <LoadImage className={classes.imgCardTop} color='white' src={values.image_url} aspectRatio={3/2}/>
-            </Link>
-
-              <div className={classes.imgCardOverlay} style={{width: '100%'}}>
-                {displayCornerDate}
-                <div className='saveButton' onClick={handleSave}>
-                  {
-                    values.ifSaved === true ? <TurnedInIcon fontSize='small'/>
-                      :
-                      <TurnedInNotIcon fontSize='small'/>
-                  }
-                </div>
-
-                <Link to={`/users/${values.username}`}>
-                  <div
-                    // className={classes.cardTitle}
-                    style={{
-                      color: "#02C39A",
-                      position: "absolute",
-                      bottom: "0px",
-                      left: "6px",
-                    }}
-                  >
-                    <Avatar style={{float:'left', border: '1px solid #02C39A', height: 32, width: 32}} width={32} alt={values.username} src={values.userProfilePic}/>
-                    <h5 style={usernameStyle}>
-                      @{values.username}
-                    </h5>
-                  </div>
-                </Link>
-              </div>
-          </div>
-          {/* </CardHeader> */}
-
-            <CardBody style={{padding: '0px 15px'}}>
-            
-              {/* {followFeedInfo} */}
-
+            <div style={coverImgStyle}>
               <Link to={`/events/${event.id}`}>
-                <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center"}}>{values.name}</h3>
+                <LoadImage className={classes.imgCardTop} color='white' src={values.image_url} aspectRatio={3/2}/>
               </Link>
-              {/* <EventMomentsWrapper 
-                eventId={event.id}
-                cover={values.image_url}
-                client={client}
-                type={type}
-                //ifGoing={values.ifGoing}
-              /> */}
-              <hr style={{margin: 2}}/>
 
-              <div style={{width: '100%', textAlign: 'left'}}>
-                <div style={{fontSize: 16}}>
-                  <div style={{position: 'absolute', right: 40,  textShadow: "-1px 1px #02C39A"}}>
-                    {values.price === "$0.00" ? "Free" : values.price}
+                <div className={classes.imgCardOverlay} style={{width: '100%'}}>
+                  {displayCornerDate}
+                  <div className='saveButton' onClick={handleSave}>
+                    {
+                      values.ifSaved === true ? <TurnedInIcon fontSize='small'/>
+                        :
+                        <TurnedInNotIcon fontSize='small'/>
+                    }
+                  </div>
+
+                  <Link to={`/users/${values.username}`}>
+                    <div
+                      // className={classes.cardTitle}
+                      style={{
+                        color: "#02C39A",
+                        position: "absolute",
+                        bottom: "0px",
+                        left: "6px",
+                      }}
+                    >
+                      <Avatar style={{float:'left', border: '1px solid #02C39A', height: 32, width: 32}} width={32} alt={values.username} src={values.userProfilePic}/>
+                      <h5 style={usernameStyle}>
+                        @{values.username}
+                      </h5>
+                    </div>
+                  </Link>
+                </div>
+            </div>
+            {/* </CardHeader> */}
+
+              <CardBody style={{padding: '0px 15px'}}>
+              
+                {/* {followFeedInfo} */}
+
+                <Link to={`/events/${event.id}`}>
+                  <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center"}}>{values.name}</h3>
+                </Link>
+                {/* <EventMomentsWrapper 
+                  eventId={event.id}
+                  cover={values.image_url}
+                  client={client}
+                  type={type}
+                  //ifGoing={values.ifGoing}
+                /> */}
+                <hr style={{margin: 2}}/>
+
+                <div style={{width: '100%', textAlign: 'left'}}>
+                  <div style={{fontSize: 16}}>
+                    <div style={{position: 'absolute', right: 40,  textShadow: "-1px 1px #02C39A"}}>
+                      {values.price === "$0.00" ? "Free" : values.price}
+                    </div>
+                    
+                    <AccessAlarmIcon fontSize='small' style={{verticalAlign: 'top'}}/>
+                    {` ${values.start_time.format("h:mma")}`}
+                    {values.end_time ? ` - ${values.end_time.format("h:mma")}` : ""}
                   </div>
                   
-                  <AccessAlarmIcon fontSize='small' style={{verticalAlign: 'top'}}/>
-                  {` ${values.start_time.format("h:mma")}`}
-                  {values.end_time ? ` - ${values.end_time.format("h:mma")}` : ""}
                 </div>
-                
-              </div>
 
-              <div style={{textAlign: 'left'}}>
-                <p style={{display: 'inline', width: '100%', fontSize: 16}}>
-                  <PlaceIcon color="secondary" fontSize='small' style={{verticalAlign: 'top'}} />
-                  {` ${event.location_name}`}
+                <div style={{textAlign: 'left'}}>
+                  <p style={{display: 'inline', width: '100%', fontSize: 16}}>
+                    <PlaceIcon color="secondary" fontSize='small' style={{verticalAlign: 'top'}} />
+                    {` ${event.location_name}`}
+                  </p>
+                </div>
+
+                <p style={{textAlign: 'left', fontSize: '12px', lineHeight: 1.2, marginTop: 5}}>
+                  {values.description}
                 </p>
-              </div>
+              </CardBody>
 
-              <p style={{textAlign: 'left', fontSize: '12px', lineHeight: 1.2, marginTop: 5}}>
-                {values.description}
-              </p>
-            </CardBody>
-
-            <CardFooter style={{paddingBottom: 5}}>
-              <Info style={{textAlign: 'left'}}>
-                <h6 color='rose' className={classes.cardCategory}>{values.category.toUpperCase()}</h6>
-              </Info>
-              <div style={{position: 'absolute',right: 15}}>
-                <IconButton onClick={handleRepost} aria-label="Share" style={{float: 'left', margin: 0}}>
-                  <RenewIcon color={values.ifReposted}/> 
-                  <div style={{fontSize: 14}}>
-                    {values.repostAmount}
-                  </div>
-                </IconButton>
-                <IconButton onClick={handleLike} aria-label="Like" style={{float: 'right'}}>
-                  <FavoriteIcon color={values.ifLiked}/>
-                  <div style={{fontSize: 14}}>
-                    {values.likeAmount}
-                  </div> 
-                </IconButton>
-              </div>
-            </CardFooter>
-        </Card>
-      </Grow>
+              <CardFooter style={{paddingBottom: 5}}>
+                <Info style={{textAlign: 'left'}}>
+                  <h6 color='rose' className={classes.cardCategory}>{values.category.toUpperCase()}</h6>
+                </Info>
+                <div style={{position: 'absolute',right: 15}}>
+                  <IconButton onClick={handleRepost} aria-label="Share" style={{float: 'left', margin: 0}}>
+                    <RenewIcon color={values.ifReposted}/> 
+                    <div style={{fontSize: 14}}>
+                      {values.repostAmount}
+                    </div>
+                  </IconButton>
+                  <IconButton onClick={handleLike} aria-label="Like" style={{float: 'right'}}>
+                    <FavoriteIcon color={values.ifLiked}/>
+                    <div style={{fontSize: 14}}>
+                      {values.likeAmount}
+                    </div> 
+                  </IconButton>
+                </div>
+              </CardFooter>
+          </Card>
+        </Grow>
       </ThemeProvider>
     )
 }
