@@ -323,6 +323,7 @@ export default function EventCardListHome(props) {
             //loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             loader={<LoadCardList />}
             style={{overflow: 'none'}}
+            scrollableTarget="scrollableDiv"
         >
           <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
               {
@@ -330,7 +331,7 @@ export default function EventCardListHome(props) {
                     return (
                       <Fragment key={event.id}>
                         <GridItem xs={12} sm={6} md={6} >
-                          <EventCard 
+                          <EventCard
                               event={event} 
                               listType={"home"}
                               client={props.client}

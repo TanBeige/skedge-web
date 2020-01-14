@@ -320,6 +320,7 @@ export default function EventCardListLand(props) {
             //loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             loader={<LoadCardList />}
             style={{overflow: 'none'}}
+            scrollableTarget="scrollableDiv"
         >
           <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
               {
