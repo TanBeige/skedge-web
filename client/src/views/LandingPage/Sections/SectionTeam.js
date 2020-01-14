@@ -41,7 +41,7 @@ export default function SectionTeam({client}) {
   }
   
   return (
-    <div className={classes.section} style={{padding: 10}}>
+    <div className={classes.section} style={{padding: '10px 10px 0px 10px'}}>
       {/* <img style={{margin: 5}} height={64} width={64} src={require('assets/img/logoheader.jpg')} /> */}
       {/* <h2 style={{margin:  0, padding: 0, color: "#02C39A"}}><PlayForWorkIcon fontSize='large' style={{fontSize: 50}}/></h2>       */}
       <h3 className={classes.title} style={{margin: 5, fontWeight: '300', fontFamily: `'Helvetica', 'Arial'`,fontSize: '1.5em'}}  >Events in Tallahassee, FL.</h3>

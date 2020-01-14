@@ -725,6 +725,72 @@ query fetch_following_feed($userId: String!, $eventLimit: Int, $eventOffset: Int
 }
 ${EVENT_FRAGMENT}
 `
+const FETCH_LANDING_FEED = gql`
+query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String, $category: String, $city: String, $state: String, $type: String, $date: date, $weekday: String, $lowerPrice: money, $upperPrice: money) {
+  events(
+    order_by:[{start_time: asc}, {event_like_aggregate: {count: desc_nulls_last}}]
+    limit: $eventLimit
+    offset: $eventOffset
+    where: {
+      _and: [
+        {event_type: {_eq: $type}},
+        {category: {_like: $category}},
+        {city: {_ilike: $city}},
+        {state: {_ilike: $state}},
+        {_and: [
+        	{price: {_gte: $lowerPrice}}
+          {price: {_lte: $upperPrice}}
+        ]},
+        {
+          _or: [
+            {name: {_ilike: $search}},
+            {user: {
+              _or: [
+                {full_name: {_ilike: $search}},
+                {name: {_ilike: $search}}
+              ]}
+            },
+            {event_tags: {
+              tag: 
+                {name: {_ilike: $search}}
+            }}
+          ]
+        }
+        {event_date:{
+          _or:[
+            {
+              _and: [
+                {is_recurring: {_eq: false}},
+                {start_date: {_eq: $date}}
+           		]
+            },
+            {
+              _and: [
+                {is_recurring: {_eq: true}},
+                {start_date: {_lte: $date}},
+              	{end_date: {_gte: $date}},
+                {weekday: {_like: $weekday}}
+              ]
+            }
+          ]
+        }}
+      ]
+    }
+  )
+  {
+    ...EventFragment
+    shared_event_aggregate {
+      aggregate {
+        count
+      }
+    }
+    shared_event {
+      user_id
+    }
+  }
+}
+  ${EVENT_FRAGMENT}
+`
 
 const FETCH_EVENT_LIKES_REPOSTS = gql`
 query event_likes_reblogs($eventId: Int) {
@@ -1327,6 +1393,7 @@ mutation add_moment($eventId: Int!, $sourceId: String!, $creatorId: String!){
 export {
   QUERY_FILTERED_EVENT,
   FETCH_FOLLOWING_FEED,
+  FETCH_LANDING_FEED,
   QUERY_USER_PROFILE,
   QUERY_PROFILE_EVENTS,
   FETCH_IF_ENTITY,

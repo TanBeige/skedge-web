@@ -4,6 +4,7 @@ import EventCardListHome from 'components/EventCards/HomeEventList/EventCardList
 import FollowingFeedList from 'components/EventCards/FollowingEventList/FollowingFeedList.js'
 import EventCardListSaved from 'components/EventCards/EventCardListSaved.js'
 import EventCardListProfile from 'components/EventCards/EventCardListProfile.js'
+import EventCardListLand from 'components/EventCards/LandingEventList/EventCardListLand.js'
 
 export default function EventCardList(props) {
 
@@ -15,7 +16,7 @@ export default function EventCardList(props) {
       return (<FollowingFeedList {...props} type='following' />)
     }
     else if(props.listType === 'landing'){
-      return (<EventCardListHome {...props} type='landing' />)
+      return (<EventCardListLand {...props} type='landing' />)
     }
     else if(props.listType === 'saved'){
       return (<EventCardListSaved {...props}/>)

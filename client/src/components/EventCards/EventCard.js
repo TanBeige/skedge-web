@@ -96,7 +96,6 @@ export default function EventCard({event, client, userId, currentDate, listType}
     const bioMaxLength = 100;
     const nameMaxLength = 25;
 
-
     //Styling Card
     const usernameStyle= {
       float: 'right',
@@ -390,82 +389,84 @@ export default function EventCard({event, client, userId, currentDate, listType}
     // While on the following feed, we display information about
     //  who posted, shared, or is going to the event.
     let imgMargin = '0.5em 0.5em 0em 0.5em'
-
-    let followFeedInfo = ""
-    if(listType === "following") {
-      followFeedInfo = (
-        <h4>
-          {event.shared_event.length >= 1 ? event.shared_event[0].user.name : ""} Created an event
-        </h4>
-      )
-    }
-
     let shareInfo = ""
-    if(event.shared_event.length > 0) {
-      //Set Variables
-      imgMargin = '0em 0.5em 0em 0.5em';
-      let shareInfoText = "";
 
-      //Remove current user from array
-      let tempSharedEvent = [...event.shared_event]
-      _.remove(tempSharedEvent, {
-        user_id: userId
-      });
-
-      //Add text about who shared event
-      if(tempSharedEvent.length > 0) {
-        shareInfoText = `Shared by ${tempSharedEvent[0].user.full_name}`
-        if(event.shared_event.length === 2) {
-          shareInfoText += ` and 1 other`
-        }
-        else if(event.shared_event.length > 2){
-          shareInfoText += ` and ${event.shared_event.length - 1} others`
-        }
-      }
-      else {
-        shareInfoText = `You shared this event`
+    if(listType !== 'landing') {
+      let followFeedInfo = ""
+      if(listType === "following") {
+        followFeedInfo = (
+          <h4>
+            {event.shared_event.length >= 1 ? event.shared_event[0].user.name : ""} Created an event
+          </h4>
+        )
       }
 
+      if(event.shared_event.length > 0) {
+        //Set Variables
+        imgMargin = '0em 0.5em 0em 0.5em';
+        let shareInfoText = "";
+
+        //Remove current user from array
+        let tempSharedEvent = [...event.shared_event]
+        _.remove(tempSharedEvent, {
+          user_id: userId
+        });
+
+        //Add text about who shared event
+        if(tempSharedEvent.length > 0) {
+          shareInfoText = `Shared by ${tempSharedEvent[0].user.full_name}`
+          if(event.shared_event.length === 2) {
+            shareInfoText += ` and 1 other`
+          }
+          else if(event.shared_event.length > 2){
+            shareInfoText += ` and ${event.shared_event.length - 1} others`
+          }
+        }
+        else {
+          shareInfoText = `You shared this event`
+        }
+
+          shareInfo = (
+            <div style={{display: 'flex'}}>
+              <RenewIcon color='primary'/> 
+              <div>
+                {shareInfoText}
+              </div>
+            </div>
+          )
+      }
+      if(event.event_invites.length > 0) {
+        imgMargin = '0em 0.5em 0em 0.5em';
+        let shareInfoText = "";
+
+        if(event.event_invites.some(user => user.invited.auth0_id === userId)){
+          shareInfoText = `You `
+          if(event.event_invites.length > 1){
+            shareInfoText += ` and ${event.event_invites.length - 1} others`
+          }
+          shareInfoText += ` are going to this event`
+        }
+        else {
+          shareInfoText = `${event.event_invites[0].invited.full_name}`
+          console.log("sharedinfotext: ", event.event_invites)
+          if(event.event_invites.length > 1){
+            shareInfoText += ` and ${event.event_invites.length - 1} others are going to this event`
+          }
+          else {
+            shareInfoText += ` is going to this event`
+          }
+        }
         shareInfo = (
           <div style={{display: 'flex'}}>
-            <RenewIcon color='primary'/> 
+            <PersonPinCircleIcon color='secondary'/> 
             <div>
               {shareInfoText}
             </div>
           </div>
         )
-    }
-    if(event.event_invites.length > 0) {
-      imgMargin = '0em 0.5em 0em 0.5em';
-      let shareInfoText = "";
-
-      if(event.event_invites.some(user => user.invited.auth0_id === userId)){
-        shareInfoText = `You `
-        if(event.event_invites.length > 1){
-          shareInfoText += ` and ${event.event_invites.length - 1} others`
-        }
-         shareInfoText += ` are going to this event`
       }
-      else {
-        shareInfoText = `${event.event_invites[0].invited.full_name}`
-        console.log("sharedinfotext: ", event.event_invites)
-        if(event.event_invites.length > 1){
-          shareInfoText += ` and ${event.event_invites.length - 1} others are going to this event`
-        }
-        else {
-          shareInfoText += ` is going to this event`
-        }
-      }
-      shareInfo = (
-        <div style={{display: 'flex'}}>
-          <PersonPinCircleIcon color='secondary'/> 
-          <div>
-            {shareInfoText}
-          </div>
-        </div>
-      )
     }
-
+  
     // Style of the cover image div
     let coverImgStyle= {
       position: 'relative', 

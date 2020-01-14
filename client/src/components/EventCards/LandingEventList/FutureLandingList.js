@@ -6,12 +6,12 @@ import GridItem from "components/Grid/GridItem.js";
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from "react-infinite-scroll-component";
-import FutureContainer from './FutureContainer.js';
+import LandingFutureContainer from './LandingFutureContainer.js';
 import { throttle } from 'lodash';
 
 
 import {
-    QUERY_FILTERED_EVENT
+  FETCH_LANDING_FEED
 } from "../../../EventQueries/EventQueries";
 
 const dateHeaderStyle = {
@@ -42,7 +42,7 @@ const moment = require("moment")
 
 
 // Functional Component
-export default function EventCardListFuture(props) {
+export default function FutureLandingList(props) {
   // Checks if we are still grabbing events
   const [isSearch, setIsSearch] = useState(false);
 
@@ -76,11 +76,10 @@ export default function EventCardListFuture(props) {
     }
     client
       .query({
-        query: QUERY_FILTERED_EVENT,
+        query: FETCH_LANDING_FEED,
         variables: {
           eventLimit: values.limit,
           eventOffset: values.eventsLength,
-          userId: props.userId,
           search: `%${filter.searchText}%`,
           category: `%${cat}%`,
           city: `%${filter.city}%`,
@@ -127,6 +126,7 @@ export default function EventCardListFuture(props) {
 
   useEffect(() => {
     //Restart the get events
+    console.log("Assss")
 
     setValues({
       type: props.type,
@@ -151,11 +151,10 @@ export default function EventCardListFuture(props) {
     }
     client
       .query({
-        query: QUERY_FILTERED_EVENT,
+        query: FETCH_LANDING_FEED,
         variables: {
           eventLimit: values.limit,
           eventOffset: 0,
-          userId: props.userId,
           search: `%${filter.searchText}%`,
           category: `%${cat}%`,
           city: `%${filter.city}%`,
@@ -250,7 +249,7 @@ export default function EventCardListFuture(props) {
     const futureEvents = () => {
       if(activateFuture) {
         return(
-          <FutureContainer
+          <LandingFutureContainer
             client={props.client}
             filter={props.filter}
             userId={props.userId}
@@ -300,9 +299,9 @@ export default function EventCardListFuture(props) {
                 finalEvents.map((event, index) => {
                     return (
                       <Fragment key={event.id}> 
-                        <GridItem xs={12} sm={6} md={4} >
+                        <GridItem xs={12} sm={6} md={4}>
                           <EventCard 
-                              listType={"home"}
+                              listType={"landing"}
                               event={event} 
                               client={props.client}
                               userId={props.userId}
