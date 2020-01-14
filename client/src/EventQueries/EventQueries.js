@@ -1028,8 +1028,42 @@ const FETCH_SAVED_EVENTS = gql`
     {
       event{
         ...EventFragment
-        shared_event {
+        shared_event(where: {
+          _or: [
+            {user_id: {_eq: $userId}},
+            {user: {followers: {user_id: {_eq: $userId}}}}
+          ]}
+          order_by: {time_shared : desc}
+        )
+        {
           user_id
+          user{
+            id
+            name
+            full_name
+          }
+        }
+        event_invites(where: {
+          _or: [
+            {invited_id: {_eq: $userId}},
+            {_and: [
+              {response: {_eq: 1}},
+              {invited: {followers: {user_id: {_eq: $userId}}}}
+            ]}
+          ]
+        })
+        {
+          response
+          invited{
+            id
+            name
+            full_name
+            auth0_id
+          }
+          inviter {
+            id
+            name
+          }
         }
       }
     }
