@@ -57,15 +57,15 @@ export default function HomePage(props) {
 
   //Scroll To Top of the page
   const scrollToTop = () => {
-    scroll.scrollTo('listTop', {
-      duration: 1500,
-      delay: 100,
-      isDynamic: true,
-      smooth: true,
-      containerId: 'scrollableDiv'
-    })
+    // scroll.scrollTo('listTop', {
+    //   duration: 1500,
+    //   delay: 100,
+    //   isDynamic: true,
+    //   smooth: true,
+    //   containerId: 'scrollableDiv'
+    // })
     
-    //scroll.scrollToTop();
+    scroll.scrollToTop();
   }  
   var ScrollLink = Scroll.Link;
  

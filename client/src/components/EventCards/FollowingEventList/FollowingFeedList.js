@@ -300,8 +300,7 @@ export default function FollowingFeedList(props) {
 
 
     return (
-      <div id='scrollableDiv' style={{height: '85vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey} >
-        <Element name="listTop"></Element>
+      <div id='scrollableDiv' key={currentKey} >
         <InfiniteScroll
             dataLength={values.eventsLength}
             next={loadMoreThrottled}
@@ -309,8 +308,7 @@ export default function FollowingFeedList(props) {
             //loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             loader={<LoadCardList />}
             style={{overflow: 'none'}}
-            scrollableTarget="scrollableDiv"
-
+            //scrollableTarget="root"
         >
           <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
               {

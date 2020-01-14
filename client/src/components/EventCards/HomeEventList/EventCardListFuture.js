@@ -292,7 +292,7 @@ export default function EventCardListFuture(props) {
             hasMore={!activateFuture}
             // loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             style={{overflow: 'none'}}
-            scrollableTarget="scrollableDiv"
+            //scrollableTarget="root"
         >
           <GridContainer justify='center' style={{minHeight: '8em', margin: 0}}>
             {noEvents()}

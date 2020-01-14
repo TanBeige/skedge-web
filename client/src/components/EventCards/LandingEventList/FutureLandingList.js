@@ -291,7 +291,7 @@ export default function FutureLandingList(props) {
             hasMore={!activateFuture}
             // loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             style={{overflow: 'none'}}
-            scrollableTarget="scrollableDiv"
+            //scrollableTarget="scrollableDiv"
         >
           <GridContainer justify='center' style={{minHeight: '8em', margin: 0}}>
             {noEvents()}

@@ -250,7 +250,7 @@ export default function SectionText({ eventInfo, client }) {
             {
               !user ? 
               <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em', maxWidth: '230px'}}>
-                <h3>To view more events, sign up on Skedge!</h3>
+                <h3>Sign up to see what your friends are up to.</h3>
                 <Button
                   color="primary"
                   onClick={handleLogin}

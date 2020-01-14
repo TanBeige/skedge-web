@@ -269,14 +269,14 @@ export default function EventCardListProfile(props) {
 
 
     return (
-      <div id='scrollableDiv' style={{height: '86vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey}>
-        <Element name="listTop"></Element>
+      <div id='scrollableDiv' key={currentKey}>
         <InfiniteScroll
             dataLength={values.eventsLength}
             next={loadMoreClicked}
             hasMore={!values.loadedAllEvents}
             loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             style={{overflow: 'none'}}
+            //scrollableTarget="scrollableDiv"
         >
           {/* <h3 style={{textAlign: 'center'}}>{moment(values.filter.date).format("dddd, MMM D")}</h3> */}
           {noEvents()}

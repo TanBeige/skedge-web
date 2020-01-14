@@ -115,7 +115,7 @@ export default function EventCardListFuture(props) {
   }
 
   //Throttle LoadMore so we don't load too much at once
-  const loadMoreThrottled = throttle(loadMoreClicked, 100);
+  const loadMoreThrottled = throttle(loadMoreClicked, 1000);
 
 
   // Replaces ComponentDidMount() in a Functional Component
@@ -292,11 +292,11 @@ export default function EventCardListFuture(props) {
         <h3 style={{textAlign: 'center'}}>{moment(props.filter.date).format("dddd, MMM D")}</h3>
         <InfiniteScroll
             dataLength={values.eventsLength}
-            next={loadMoreClicked}
+            next={loadMoreThrottled}
             hasMore={!activateFuture}
             // loader={<div style={{marginTop: -20, textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             style={{overflow: 'none'}}
-            scrollableTarget="scrollableDiv"
+            //scrollableTarget="root"
         >
           <GridContainer justify='center' style={{minHeight: '8em', margin: 0}}>
             {noEvents()}

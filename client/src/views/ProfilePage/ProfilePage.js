@@ -402,7 +402,7 @@ export default function ProfilePage(props, { ...rest }) {
     
     // Gradient colors: 'linear-gradient(#02C39A 200px, white 400px)'
     return (
-    <div style={{minHeight: '100vh', backgroundImage: 'linear-gradient(#52D3B6 300px, white 400px)' , paddingTop: '20px'}}>
+    <div id="scrollDiv" style={{minHeight: '100vh', backgroundImage: 'linear-gradient(#52D3B6 300px, white 400px)' , paddingTop: '20px'}}>
       <ThemeProvider theme={theme}>
         <Header
           color="primary"
