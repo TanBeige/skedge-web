@@ -15,7 +15,7 @@ const modalStyle = theme => ({
     overflow: "visible",
     maxHeight: "unset",
     width: "100%",
-    marginTop: "80px !important"
+    marginTop: "5vh !important"
   },
   modalEdit: {
     [theme.breakpoints.up("sm")]: {

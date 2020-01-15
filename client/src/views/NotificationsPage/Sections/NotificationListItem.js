@@ -91,7 +91,7 @@ export default function NotificationListItem(props) {
                             />
                         </ListItemAvatar>
                         <ListItemText
-                            primary={`${notification.other_user.name} liked your Event`}
+                            primary={`${notification.other_user.name} liked your event`}
                             onClick={redirectFunction}
                             secondary={
                             <React.Fragment>
@@ -129,7 +129,7 @@ export default function NotificationListItem(props) {
                         </ListItemAvatar>
                             <ListItemText
                                 onClick={redirectFunction}
-                                primary={`${notification.other_user.name} shared your Event`}
+                                primary={`${notification.other_user.name} shared your event`}
                                 secondary={
                                 <React.Fragment>
                                     <Typography

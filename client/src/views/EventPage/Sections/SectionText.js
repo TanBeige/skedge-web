@@ -7,12 +7,21 @@ import Button from "components/CustomButtons/Button.js";
 import GoingSaveButtons from './EventPageComponents/GoingSaveButtons.js';
 import EventMomentsWrapper from 'components/EventMoments/EventMomentsWrapper.js';
 import MomentPopover from 'components/EventMoments/MomentPopover.js';
+import UserModalList from  'components/UserList/UserModalList.js';
+
+
 
 
 
 // @material-ui/icons
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
+import LockIcon from '@material-ui/icons/Lock';
+import IconButton from '@material-ui/core/IconButton';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import RenewIcon from '@material-ui/icons/Autorenew'
+
+
 //import Quote from "components/Typography/Quote.js";
 //import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import TodayIcon from '@material-ui/icons/Today';
@@ -115,7 +124,7 @@ export default function SectionText({ eventInfo, client }) {
     }
   },[])
 
-  
+  console.log(eventInfo)
   // Fix date formatting
   var moment = require('moment');
   let formattedStartTime = ""
@@ -185,84 +194,117 @@ export default function SectionText({ eventInfo, client }) {
     formattedDate = moment(eventInfo.start_date, "YYYY-MM-DD").format("MMMM Do, YYYY")
   }
 
-    return (
-      <div className={classes.section} style={{paddingTop: 15}}>
-        <GridContainer justify="center">
-          <GridItem xs={12} sm={8} md={8}>
-            <div style={{textAlign: 'center'}}>
-              <h2>
-                <TodayIcon fontSize='large' style={{verticalAlign: 'middle'}}/>
-                {formattedDate}
-              </h2>
-              <div>
-                <h3 style={{marginTop: 0}}>
-                  Starts at: {moment(formattedStartTime).format("h:mm A")}
-                </h3>
-                {formattedEndTime}
-              </div>
-            </div>
-            <hr />
-            {
-              user ? 
-              <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
-                <GoingSaveButtons 
-                  ifGoing={values.ifGoing}
-                  ifSaved={values.ifSaved}
-                  client={client}
-                  eventId={eventInfo.event_id}
-                  eventHost={eventInfo.user_auth0_id}
-                />
-              </div> : ""
-            }
-
-            {/* <h4></h4> //Event Moments turned off for now
-            <MomentPopover/>
-            <EventMomentsWrapper
-              eventId={eventInfo.event_id}
-              cover={eventInfo.cover_url}
-              client={client}
-              ifGoing={values.ifGoing}
-            /> */}
-            <h3 className={classes.title}>
-              Details
-            </h3>
-            <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
-              {eventInfo.description}
-            </p>
-            
-            <h4>
-              <PlaceIcon style={{verticalAlign: 'top'}}/>
-              {`${eventInfo.location_name}`} <br />
-              <HomeWorkIcon style={{verticalAlign: 'top'}}/>
-              { eventInfo.street ? `${eventInfo.street} ` : ""} <br />
-              <MapIcon style={{verticalAlign: 'top'}}/>
-              {`${eventInfo.city}, ${eventInfo.state}`}
-            </h4>
-            {
-              user ? 
-              <MapsApi 
-                street={eventInfo.street}
-                city={eventInfo.city}
-                state={eventInfo.state}
-                pageLoaded={true}
-              /> : ""
-            }
-            {
-              !user ? 
-              <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em', maxWidth: '260px'}}>
-                <h3>Sign up to see what your friends are up to.</h3>
-                <Button
-                  color="primary"
-                  onClick={handleLogin}
-                >
-                  Login or Sign Up
-                </Button>
-              </div> : ""
-            }
-          </GridItem>
-        </GridContainer>
+  if(eventInfo.invite_only) {
+    return(
+      <div>
+        <LockIcon />
       </div>
-    );
+    )
+  }
+
+
+  return (
+    <div className={classes.section} style={{paddingTop: 15}}>
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={8} md={8}>
+          <div style={{textAlign: 'center'}}>
+            <h2>
+              <TodayIcon fontSize='large' style={{verticalAlign: 'middle'}}/>
+              {formattedDate}
+            </h2>
+            <div>
+              <h3 style={{marginTop: 0}}>
+                Starts at: {moment(formattedStartTime).format("h:mm A")}
+              </h3>
+              {formattedEndTime}
+            </div>
+          </div>
+          <hr />
+          {
+            user ? 
+            <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
+              <div style={{margin: '0em 2em 1em 2em', maxWidth: 240, margin: 'auto', marginBottom: '1em'}}>
+                <UserModalList
+                  buttonText={`${eventInfo.going_users.length} Going`}
+                  userList={eventInfo.going_users}
+                  emptyListText="No one is going currently"
+                  client={client}
+                  nestedLabel='invited'
+                />
+              </div>
+              <GoingSaveButtons
+                ifGoing={values.ifGoing}
+                ifSaved={values.ifSaved}
+                client={client}
+                eventId={eventInfo.event_id}
+                eventHost={eventInfo.user_auth0_id}
+              />
+            </div> : ""
+          }
+
+          {/* <h4></h4> //Event Moments turned off for now
+          <MomentPopover/>
+          <EventMomentsWrapper
+            eventId={eventInfo.event_id}
+            cover={eventInfo.cover_url}
+            client={client}
+            ifGoing={values.ifGoing}
+          /> */}
+          <h3 className={classes.title}>
+            Details
+          </h3>
+          <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
+            {eventInfo.description}
+          </p>
+
+          {/* <div>
+            <IconButton onClick={handleRepost} aria-label="Share" style={{float: 'left', margin: 0}}>
+              <RenewIcon color='primary'/> 
+              <div style={{fontSize: 14}}>
+                {eventInfo.shared_users.length}
+              </div>
+            </IconButton>
+            <IconButton onClick={handleLike} aria-label="Like" style={{float: 'right'}}>
+              <FavoriteIcon color='secondary'/>
+              <div style={{fontSize: 14}}>
+                {eventInfo.liked_users.length}
+              </div> 
+            </IconButton>
+          </div>
+           */}
+          <h4>
+            <PlaceIcon style={{verticalAlign: 'top'}}/>
+            {`${eventInfo.location_name}`} <br />
+            <HomeWorkIcon style={{verticalAlign: 'top'}}/>
+            { eventInfo.street ? `${eventInfo.street} ` : ""} <br />
+            <MapIcon style={{verticalAlign: 'top'}}/>
+            {`${eventInfo.city}, ${eventInfo.state}`}
+          </h4>
+          {
+            user ? 
+            <MapsApi 
+              street={eventInfo.street}
+              city={eventInfo.city}
+              state={eventInfo.state}
+              pageLoaded={true}
+            /> : ""
+          }
+          {
+            !user ? 
+            <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em', maxWidth: '260px'}}>
+              <h3>Sign up to see what your friends are up to.</h3>
+              <Button
+                color="primary"
+                onClick={handleLogin}
+              >
+                Login or Sign Up
+              </Button>
+            </div> : ""
+          }
+        </GridItem>
+      </GridContainer>
+    </div>
+  );
   
   // else {
   //   return (

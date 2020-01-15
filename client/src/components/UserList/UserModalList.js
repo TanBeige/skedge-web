@@ -1,20 +1,5 @@
-/*!
-
-=========================================================
-* Material Kit PRO React - v1.8.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-kit-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React, {useState} from "react";
+import React, {Fragment, useState} from "react";
+import PropTypes from 'prop-types';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Slide from "@material-ui/core/Slide";
@@ -26,15 +11,13 @@ import List from '@material-ui/core/List';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 
-import ProfileFriendItem from './ProfileFriendItem.js'
+
+import UserItem from './UserItem.js'
 // @material-ui/icons
 import Close from "@material-ui/icons/Close";
 // core components
 //import Button from "components/CustomButtons/Button.js";
 import Button from "@material-ui/core/Button";
-import {
-    QUERY_ACCEPTED_FRIENDS
-} from 'EventQueries/EventQueries.js'
 
 import modalStyle from "assets/jss/material-kit-pro-react/modalStyle.js";
 
@@ -54,37 +37,50 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const useStyles = makeStyles(style);
 
-export default function ProfileFollowerList(props) {
+
+
+export default function UserModalList({buttonText, userList, loadMoreFunction, emptyListText, client, nestedLabel}) {
   const [scrollingModal, setScrollingModal] = React.useState(false);
   const classes = useStyles();
 
-  const [friendData, setFriendData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false)
-
   const friendList = () => {
       setScrollingModal(true);
-      setIsLoading(true);
-      props.client.query({
-          query: QUERY_ACCEPTED_FRIENDS,
-          variables: {
-              userId: props.profileId
-          }
-      }).then((data) => {
-        setFriendData(data.data.follower);
-        setIsLoading(false);
-      })
   }
 
-  const followerText = props.followerCount !== 1 ? `${props.followerCount} Followers` : `${props.followerCount} Follower`
+  const listItems = () => {
+      if(userList.length === 0) {
+          return(<h3>{emptyListText}</h3>)
+      }
+
+      return(
+          <Fragment>
+            <List style={{width: '100%', height: '70vh', overflow:'auto'}}>  
+                {
+                    userList.map((user, index) => {
+                        return(
+                            <UserItem 
+                                key={index}
+                                account={user[nestedLabel]}
+                                profileId={user[nestedLabel].id}
+                                client={client}
+                            />
+                        )
+                    })
+                }
+            </List>
+          </Fragment>
+      )
+      
+  }
 
   return (
     <div>
       <Button 
         onClick={friendList} 
-        // simple
-        style={{width: '7em', marginRight: 5}}
+        variant='outlined'
+        style={{width: '100%'}}
       >
-          {followerText}
+          {buttonText}
       </Button>
       
       <Dialog
@@ -120,25 +116,7 @@ export default function ProfileFollowerList(props) {
           className={classes.modalBody}
           style={{padding: 5}}
         >
-          {
-            isLoading ? <LinearProgress style={{margin: '2em'}}/> : 
-            <List style={{width: '100%'}}>  
-            {
-                friendData.map((friend, index) => {
-                    return(
-                        <ProfileFriendItem 
-                            key={index}
-                            index={index}
-                            friend={friend.user}
-                            profileId={friend.user.auth0_id}
-                            userId={props.userId}
-                            client={props.client}
-                        />
-                    )
-                })
-            }
-            </List>
-          }
+          {listItems()}
         </DialogContent>
         <DialogActions className={classes.modalFooter}>
           <Button onClick={() => setScrollingModal(false)} color="secondary">
@@ -149,3 +127,11 @@ export default function ProfileFollowerList(props) {
     </div>
   );
 }
+
+UserModalList.propTypes = {
+    buttonText: PropTypes.string.isRequired,
+    userList: PropTypes.array.isRequired, 
+    loadMoreFunction: PropTypes.func, 
+    emptyListText: PropTypes.string.isRequired,
+    client: PropTypes.object.isRequired
+};

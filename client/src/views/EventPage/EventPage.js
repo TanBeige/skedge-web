@@ -71,6 +71,8 @@ export default function EventPage(props) {
     event_date_id: null,
     event_exists: true,
 
+    invite_only: true,
+
     name: "",
     description: "",
     event_type: "",
@@ -104,6 +106,8 @@ export default function EventPage(props) {
 
     ifSaved: false,
     ifGoing: false,
+
+    going_users: []
   })
 
   const goBack = () => {
@@ -133,6 +137,8 @@ export default function EventPage(props) {
 
           event_exists: true,
           event_date_id: data.data.events[0].event_date_id,
+
+          invite_only: data.data.events[0].invite_only,
 
           name: data.data.events[0].name,
           description: data.data.events[0].description,
@@ -175,6 +181,11 @@ export default function EventPage(props) {
 
           ifSaved: data.data.events[0].user_saved_events.some(user => user.user_id === user.sub),
           ifGoing: data.data.events[0].event_invites.some(user => user.invited_id === user.sub),
+
+          going_users: data.data.events[0].event_invites,
+
+          liked_users: data.data.events[0].event_like,
+          shared_users: data.data.events[0].shared_event,
         })
         //Say that we're not loading the event anymore.
         setIsLoading(false);

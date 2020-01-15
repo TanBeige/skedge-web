@@ -68,7 +68,7 @@ export default function InviteUsers (props) {
 
     let dir = props.goingBack ? 'right' : 'left';
 
-    let privacyText = "Your event can be seen and shared by all of your followers.";
+    let privacyText = "Your event can be seen and shared by all of your followers, and can also be viewed by anyone with a link.";
 
     if (inviteSettings.inviteOnly && inviteSettings.allowGuestInvites && inviteSettings.inviteApproval) {
       privacyText = "Your event can only be seen by invited users and guest invites must be approved before sent."

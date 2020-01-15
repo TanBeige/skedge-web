@@ -48,7 +48,6 @@ import NotificationsPage from "views/NotificationsPage/NotificationsPage.js";
 import SignupPage from "views/SignupPage/SignupPage.js";
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
 import LoadingPage from "views/LoadingPage/LoadingPage.js";
-import TodoPage from "todotest.js"
 import SearchPage from 'views/SearchPage/SearchPage.js';
 
 import CallbackPage from "views/CallbackPage/CallbackPage.js";
@@ -187,7 +186,6 @@ export const MakeMainRoutes = () => {
           <Route exact path="/product-page" render={props => provideClient(ProductPage, props)} />
           <Route exact path="/sections" render={props => provideClient(SectionsPage, props)} />
           <Route exact path="/notifications" render={props => provideClient(NotificationsPage, props)} />
-          <Route exact path="/signup-page" render={props => provideClient(TodoPage, props)} />
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
 
           <Route path="/events/:id" render={props => provideClient(EventPage, props)} />

@@ -887,10 +887,22 @@ const FETCH_EVENT_INFO = gql`
       event_going {
         user_id
       }
-      event_invites{
-        invited_id
+      event_invites(where: {response: {_eq: 1}}) {
         response
+        invited{
+          id
+          name
+          full_name
+          auth0_id
+          picture
+          entity
+          followers{
+            status
+            user_id
+          }
+        }
       }
+
       user_saved_events {
         user_id
       }

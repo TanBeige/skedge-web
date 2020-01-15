@@ -23,6 +23,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import List from '@material-ui/core/List';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
 
 import ProfileFriendItem from './ProfileFriendItem.js'
 // @material-ui/icons
@@ -57,9 +59,11 @@ export default function ProfileFollowerList(props) {
   const classes = useStyles();
 
   const [friendData, setFriendData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   const friendList = () => {
       setScrollingModal(true)
+      setIsLoading(true)
       props.client.query({
           query: QUERY_ACCEPTED_FOLLOWING,
           variables: {
@@ -67,6 +71,7 @@ export default function ProfileFollowerList(props) {
           }
       }).then((data) => {
         setFriendData(data.data.follower);
+        setIsLoading(false)
       })
   }
 
@@ -115,6 +120,8 @@ export default function ProfileFollowerList(props) {
           className={classes.modalBody}
           style={{padding: 5}}
         >
+          {
+            isLoading ? <LinearProgress style={{margin: '2em'}}/> : 
             <List style={{width: '100%'}}>  
             {
                 friendData.map((friend, index) => {
@@ -131,6 +138,7 @@ export default function ProfileFollowerList(props) {
                 })
             }
             </List>
+          }
         </DialogContent>
         <DialogActions className={classes.modalFooter}>
           <Button onClick={() => setScrollingModal(false)} color="secondary">
