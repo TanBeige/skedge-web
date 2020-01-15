@@ -8,6 +8,7 @@ import GoingSaveButtons from './EventPageComponents/GoingSaveButtons.js';
 import EventMomentsWrapper from 'components/EventMoments/EventMomentsWrapper.js';
 import MomentPopover from 'components/EventMoments/MomentPopover.js';
 import UserModalList from  'components/UserList/UserModalList.js';
+import EventActivity from 'views/EventPage/Sections/EventPageComponents/EventActivity.js';
 
 
 
@@ -124,7 +125,6 @@ export default function SectionText({ eventInfo, client }) {
     }
   },[])
 
-  console.log(eventInfo)
   // Fix date formatting
   var moment = require('moment');
   let formattedStartTime = ""
@@ -194,13 +194,13 @@ export default function SectionText({ eventInfo, client }) {
     formattedDate = moment(eventInfo.start_date, "YYYY-MM-DD").format("MMMM Do, YYYY")
   }
 
-  if(eventInfo.invite_only) {
-    return(
-      <div>
-        <LockIcon />
-      </div>
-    )
-  }
+  // if(eventInfo.invite_only) {
+  //   return(
+  //     <div>
+  //       <LockIcon />
+  //     </div>
+  //   )
+  // }
 
 
   return (
@@ -282,12 +282,20 @@ export default function SectionText({ eventInfo, client }) {
           </h4>
           {
             user ? 
-            <MapsApi 
-              street={eventInfo.street}
-              city={eventInfo.city}
-              state={eventInfo.state}
-              pageLoaded={true}
-            /> : ""
+            <div>
+              <MapsApi 
+                street={eventInfo.street}
+                city={eventInfo.city}
+                state={eventInfo.state}
+                pageLoaded={true}
+              />
+              {
+                user.sub === eventInfo.user_auth0_id ? 
+                <EventActivity info={eventInfo}/>
+                :
+                ""
+              }
+            </div> : ""
           }
           {
             !user ? 

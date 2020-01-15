@@ -54,6 +54,7 @@ fragment EventFragment on events {
       count
     }
   }
+
   user_saved_events{
     user_id
   }
@@ -512,14 +513,13 @@ query fetch_event_going($eventId: Int) {
   }
 }
 `
-
-
+//old order_by: [{start_time: asc}, {event_like_aggregate: {count: desc_nulls_last}}]
+//new order_by: [{event_like_aggregate: {count: desc}}, {shared_event_aggregate: {count: desc}}]
 // Filter Event
 const QUERY_FILTERED_EVENT = gql`
 query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $userId: String!, $search: String, $category: String, $city: String, $state: String, $type: String, $date: date, $weekday: String, $lowerPrice: money, $upperPrice: money) {
   events(
-    order_by:[{start_time: asc}, {event_like_aggregate: {count: desc_nulls_last}}]
-    limit: $eventLimit
+    order_by: [{event_like_aggregate: {count: desc}}, {shared_event_aggregate: {count: desc}}]    limit: $eventLimit
     offset: $eventOffset
     where: {
       _and: [
@@ -872,6 +872,9 @@ const FETCH_EVENT_INFO = gql`
       updated_at
       event_date_id
 
+      views
+      impressions
+
       cover_pic
       image {
         image_uuid
@@ -884,9 +887,6 @@ const FETCH_EVENT_INFO = gql`
         full_name
       }
 
-      event_going {
-        user_id
-      }
       event_invites(where: {response: {_eq: 1}}) {
         response
         invited{
@@ -928,6 +928,19 @@ const FETCH_EVENT_INFO = gql`
         }
       }
       event_like_aggregate {
+        aggregate {
+          count
+        }
+      }
+
+      shared_event {
+        user {
+          id
+          name
+        }
+      }
+    
+      shared_event_aggregate {
         aggregate {
           count
         }

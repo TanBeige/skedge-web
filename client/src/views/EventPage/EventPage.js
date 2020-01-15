@@ -98,10 +98,13 @@ export default function EventPage(props) {
     user_pic: "",
     user_name: "",
     user_full_name: "",
+
+    views: 0,
+    impressions: 0,
     
     event_cohosts: [],
     event_tags: [],
-    users_liked: [],
+    liked_users: [],
     like_amount: 0,
 
     ifSaved: false,
@@ -173,19 +176,24 @@ export default function EventPage(props) {
           user_full_name: data.data.events[0].user.full_name,
           user_biography: data.data.events[0].user.biography,
           user_auth0_id: data.data.events[0].user.auth0_id,
+
+          views: data.data.events[0].views,
+          impressions: data.data.events[0].impressions,
           
           event_cohosts: data.data.events[0].event_cohosts,
           event_tags: data.data.events[0].event_tags,
-          users_liked: data.data.events[0].event_like,
-          like_amount: data.data.events[0].event_like_aggregate.aggregate.count,
 
           ifSaved: data.data.events[0].user_saved_events.some(user => user.user_id === user.sub),
           ifGoing: data.data.events[0].event_invites.some(user => user.invited_id === user.sub),
 
+
           going_users: data.data.events[0].event_invites,
 
           liked_users: data.data.events[0].event_like,
+          like_amount: data.data.events[0].event_like_aggregate.aggregate.count,
+
           shared_users: data.data.events[0].shared_event,
+          share_amount: data.data.events[0]. shared_event_aggregate.aggregate.count
         })
         //Say that we're not loading the event anymore.
         setIsLoading(false);

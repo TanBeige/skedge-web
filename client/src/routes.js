@@ -64,7 +64,6 @@ require('./SkedgeStyle.css')
 
 export const MakeMainRoutes = () => {
   
-  console.log(hist)
 
   // Variables/Imports from auth0-spa
   const {loading, getIdTokenClaims, isAuthenticated, user } = useAuth0();
