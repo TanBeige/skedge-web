@@ -249,7 +249,7 @@ export default function SectionText({ eventInfo, client }) {
             }
             {
               !user ? 
-              <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em', maxWidth: '230px'}}>
+              <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em', maxWidth: '260px'}}>
                 <h3>Sign up to see what your friends are up to.</h3>
                 <Button
                   color="primary"

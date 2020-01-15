@@ -46,6 +46,7 @@ export default function NotificationList(props) {
       notifications: [],
       hasMore: true
     })
+    const [isLoading, setIsLoading] = useState(false)
 
     //Change notification badge number in Tab
     const handleNumberChange = (num) => {
@@ -54,6 +55,7 @@ export default function NotificationList(props) {
 
     useEffect(() => {
       _isMounted = true;
+      setIsLoading(true)
       props.client.query({
           query: FETCH_NOTIFICATIONS,
           variables: {
@@ -67,6 +69,7 @@ export default function NotificationList(props) {
                 ...notifs,
                 notifications: data.data.notifications
             })
+            setIsLoading(false)
         }
       }).catch(error => {
           alert("Could not retrieve your notifications currently, try again later or report this to info@theskedge.come");
@@ -107,12 +110,19 @@ export default function NotificationList(props) {
       })
     }
 
+    if(isLoading) {
+      return <TextDisplay text="Loading..."/>
+    }
+    else if(notifs.notifications.length === 0){
+      return <TextDisplay text="You have no notification"/>
+    }
+
     return (
       <InfiniteScroll 
         dataLength={notifs.notifications.length}
         next={loadMore}
         hasMore={true}
-        loading={<p>loading...</p>}
+        loading={<p style={{textAlign: 'center'}}>loading...</p>}
       >
         <List className={classes.root}>
             {notifs.notifications.map((notif, index) => {
