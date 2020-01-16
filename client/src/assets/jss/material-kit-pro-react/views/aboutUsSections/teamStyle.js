@@ -13,7 +13,7 @@ const teamStyle = {
   title,
   description: {
     ...description,
-    marginBottom: "80px"
+    // marginBottom: "80px"
   },
   cardTitle,
   cardDescription: {

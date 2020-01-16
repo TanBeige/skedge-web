@@ -47,7 +47,7 @@ export default function SectionTeam({client}) {
       <h3 className={classes.title} style={{margin: 5, fontWeight: '300', fontFamily: `'Helvetica', 'Arial'`,fontSize: '1.5em'}}  >Events in Tallahassee, FL.</h3>
       <hr />
       <GridContainer style={{padding: 0, marginTop: -45}}>
-        <GridItem xs={12} sm={12} md={12} >
+        <GridItem xs={12} sm={12} md={12} style={{paddingLeft: 0, paddingRight: 0}} >
           <Card profile plain className={classes.card3} style={{marginBottom: 0}}>
             <EventCardList
               client={client}

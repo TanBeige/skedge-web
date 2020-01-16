@@ -14,19 +14,16 @@ const useStyles = makeStyles(descriptionStyle);
 export default function SectionDescription() {
   const classes = useStyles();
   return (
-    <div className={classNames(classes.aboutDescription, classes.textCenter)}>
+    <div className={classNames(classes.textCenter)}>
       <GridContainer>
         <GridItem
           md={8}
           sm={8}
           className={classNames(classes.mrAuto, classes.mlAuto)}
         >
-          <h5 className={classes.description}>
-            This is the paragraph where you can write more details about your
-            product. Keep you user engaged by providing meaningful information.
-            Remember that by this time, the user is curious, otherwise he wouldn
-            {"'"}t scroll to get here. Add a button if you want the user to see
-            more.
+          <h2 className={classes.title}>What is Skedge?</h2>
+          <h5>
+            Skedge is a social event website with one simple goal: so that you all are able to find, share, and create your favorite events all in one place. 
           </h5>
         </GridItem>
       </GridContainer>

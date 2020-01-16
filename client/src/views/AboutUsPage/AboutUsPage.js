@@ -26,7 +26,7 @@ import aboutUsStyle from "assets/jss/material-kit-pro-react/views/aboutUsStyle.j
 
 const useStyles = makeStyles(aboutUsStyle);
 
-export default function AboutUsPage() {
+export default function AboutUsPage(props) {
   React.useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
@@ -34,16 +34,7 @@ export default function AboutUsPage() {
   const classes = useStyles();
   return (
     <div>
-      <Header
-        brand="Material Kit PRO React"
-        links={<HeaderLinks dropdownHoverColor="info" />}
-        fixed
-        color="transparent"
-        changeColorOnScroll={{
-          height: 300,
-          color: "info"
-        }}
-      />
+      <img onClick={() => {props.history.push("/")}} style={{position: 'fixed', zIndex: 10, top: 15, left: 15}} height={40} width={40} src={require('assets/img/logoheader.png')} />
       <Parallax image={require("assets/img/bg9.jpg")} filter="dark" small>
         <div className={classes.container}>
           <GridContainer justify="center">
@@ -57,20 +48,16 @@ export default function AboutUsPage() {
               )}
             >
               <h1 className={classes.title}>About Us</h1>
-              <h4>
-                Meet the amazing team behind this project and find out more
-                about how we work.
-              </h4>
             </GridItem>
           </GridContainer>
         </div>
       </Parallax>
-      <div className={classNames(classes.main, classes.mainRaised)}>
+      <div className={classNames(classes.main, classes.mainRaised)} style={{marginTop: '-20px', marginBottom: '20px'}}>
         <div className={classes.container}>
-          <SectionDescription />
+          {/* <SectionDescription /> */}
           <SectionTeam />
-          <SectionServices />
-          <SectionOffice />
+          {/* <SectionServices />
+          <SectionOffice /> */}
         </div>
       </div>
     </div>
