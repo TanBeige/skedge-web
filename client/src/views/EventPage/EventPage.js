@@ -369,7 +369,7 @@ export default function EventPage(props) {
         if(user.sub === values.user_auth0_id) {
           return (
             <div>
-                <Button style={{marginTop: 20, marginBottom: 8}} color="tumblr">Edit Invites</Button>
+                {/* <Button size='sm' style={{marginTop: 20, marginBottom: 8}} color="tumblr">Edit Invites</Button> */}
                 <EditEventButton 
                     client={props.client}
                     userId={user.sub}
@@ -378,7 +378,7 @@ export default function EventPage(props) {
                     oldEvent={values}
                     handleDeleteEvent={handleDeleteEvent}
                 />
-                <Button style={{marginTop: 20, marginBottom: 8}} color="pinterest">Edit Cohosts</Button>
+                {/* <Button size='sm' style={{marginTop: 20, marginBottom: 8}} color="pinterest">Edit Cohosts</Button> */}
               </div>
           )
         }

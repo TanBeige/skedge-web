@@ -61,7 +61,7 @@ export default function UserModalList({buttonText, userList, loadMoreFunction, e
                             <UserItem 
                                 key={index}
                                 account={user[nestedLabel]}
-                                profileId={user[nestedLabel].id}
+                                profileId={user[nestedLabel].auth0_id}
                                 client={client}
                             />
                         )
