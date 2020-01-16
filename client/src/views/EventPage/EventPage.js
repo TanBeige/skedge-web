@@ -366,16 +366,22 @@ export default function EventPage(props) {
 
   const editingEvent = () => {
       if(isAuthenticated) {
-        return (
-              <EditEventButton 
-                  client={props.client}
-                  userId={user.sub}
-                  creatorId={values.user_auth0_id}
-                  handleEventChange={handleEventChange}
-                  oldEvent={values}
-                  handleDeleteEvent={handleDeleteEvent}
-              />
-        )
+        if(user.sub === values.user_auth0_id) {
+          return (
+            <div>
+                <Button style={{marginTop: 20, marginBottom: 8}} color="tumblr">Edit Invites</Button>
+                <EditEventButton 
+                    client={props.client}
+                    userId={user.sub}
+                    creatorId={values.user_auth0_id}
+                    handleEventChange={handleEventChange}
+                    oldEvent={values}
+                    handleDeleteEvent={handleDeleteEvent}
+                />
+                <Button style={{marginTop: 20, marginBottom: 8}} color="pinterest">Edit Cohosts</Button>
+              </div>
+          )
+        }
       }
   }
   const deleteButton = () => {

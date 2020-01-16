@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {useEffect} from "react";
+import React, {Fragment, useEffect} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Slide from "@material-ui/core/Slide";
@@ -219,13 +219,18 @@ export default function EditEventButton(props) {
     let endTimeJS = ""
     if(endTimeExists) {
         endTimeJS = (
-            <TimePicker
-                label="End Time"
-                fullWidth
-                value={eventInfo.end_time}
-                onChange={handleEndTime}
-                margin="normal"
-            />
+            <div style={{display: 'inline-flex', alignItems: 'center', width: '100%'}}>
+                <div style={{width: '100%'}}>
+                    <TimePicker
+                        label="End Time"
+                        fullWidth
+                        value={eventInfo.end_time}
+                        onChange={handleEndTime}
+                        margin="normal"
+                    />
+                </div>
+                <Button onClick={() => setEndTimeExists(false)} style={{width: '1em'}}>X</Button>
+            </div>
         )
     }
     else {
@@ -277,7 +282,7 @@ export default function EditEventButton(props) {
 
     //return
      return (
-        <div>
+        <Fragment>
 
             {editButton}
 
@@ -498,7 +503,7 @@ export default function EditEventButton(props) {
                     <Button color={continueDisabled ? "white" : "primary"} disabled={continueDisabled} onClick={submitChanges}>Save changes</Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </Fragment>
   );
 }
 

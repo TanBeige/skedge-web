@@ -230,6 +230,7 @@ export default function SectionText({ eventInfo, client }) {
                   emptyListText="No one is going currently"
                   client={client}
                   nestedLabel='invited'
+                  modalTitle='Going'
                 />
               </div>
               <GoingSaveButtons

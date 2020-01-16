@@ -147,7 +147,10 @@ query fetch_profile_events($eventLimit: Int, $eventOffset: Int, $profileId: Stri
     where:{
     	_and: [
         {_or: [
-          {creator_id: {_eq: $profileId}},
+          {_and: [
+            {creator_id: {_eq: $profileId}},
+          	{invite_only: {_eq: false}}
+          ]},
           {shared_event: {user_id: {_eq: $profileId}}},
           {_and: [
           	{invite_only: {_eq: false}}
@@ -184,10 +187,19 @@ query fetch_profile_events($eventLimit: Int, $eventOffset: Int, $profileId: Stri
     }
   ) {
     ...EventFragment
-    shared_event(where: {user_id: {_eq: $profileId}}){
+
+    shared_event(where: {
+      _or: [
+        {user_id: {_eq: $profileId}},
+        {user: {followers: {user_id: {_eq: $userId}}}}
+      ]}
+      order_by: {time_shared : desc}
+    ){
+      user_id
       user{
         id
         name
+        full_name
       }
     }
     event_invites(where: {
@@ -204,9 +216,15 @@ query fetch_profile_events($eventLimit: Int, $eventOffset: Int, $profileId: Stri
       invited{
         id
         name
+        full_name
         auth0_id
       }
+      inviter {
+        id
+        name
+      }
     }
+    
   }
 }
 ${EVENT_FRAGMENT}

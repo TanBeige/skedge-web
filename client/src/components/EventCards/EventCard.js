@@ -448,7 +448,6 @@ export default function EventCard({event, client, userId, currentDate, listType}
         }
         else {
           shareInfoText = `${event.event_invites[0].invited.full_name}`
-          console.log("sharedinfotext: ", event.event_invites)
           if(event.event_invites.length > 1){
             shareInfoText += ` and ${event.event_invites.length - 1} others are going to this event`
           }

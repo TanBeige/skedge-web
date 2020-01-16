@@ -39,7 +39,7 @@ const useStyles = makeStyles(style);
 
 
 
-export default function UserModalList({buttonText, userList, loadMoreFunction, emptyListText, client, nestedLabel}) {
+export default function UserModalList({buttonText, userList, loadMoreFunction, emptyListText, client, nestedLabel, modalTitle}) {
   const [scrollingModal, setScrollingModal] = React.useState(false);
   const classes = useStyles();
 
@@ -109,7 +109,7 @@ export default function UserModalList({buttonText, userList, loadMoreFunction, e
             {" "}
             <Close className={classes.modalClose} />
           </Button>
-          <h4 className={classes.modalTitle}>Followers</h4>
+          <h4 className={classes.modalTitle}>{modalTitle}</h4>
         </DialogTitle>
         <DialogContent
           id="classic-modal-slide-description"
