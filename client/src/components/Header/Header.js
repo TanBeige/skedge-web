@@ -20,7 +20,10 @@ import PersonIcon from '@material-ui/icons/Person';
 import Menu from "@material-ui/icons/Menu";
 import Close from "@material-ui/icons/Close";
 
+// Auth0 
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
+// History
+import history from "utils/history";
 
 // core components
 import styles from "assets/jss/material-kit-pro-react/components/headerStyle.js";
@@ -36,39 +39,7 @@ export default function Header(props) {
   const { logout } = useAuth0();
 
   const classes = useStyles();
-  // React.useEffect(() => {
-  //   if (props.changeColorOnScroll) {
-  //     window.addEventListener("scroll", headerColorChange);
-  //   }
-  //   return function cleanup() {
-  //     if (props.changeColorOnScroll) {
-  //       window.removeEventListener("scroll", headerColorChange);
-  //     }
-  //   };
-  // });
-  // const handleDrawerToggle = () => {
-  //   setMobileOpen(!mobileOpen);
-  // };
-  // const headerColorChange = () => {
-  //   const { color, changeColorOnScroll } = props;
 
-  //   const windowsScrollTop = window.pageYOffset;
-  //   if (windowsScrollTop > changeColorOnScroll.height) {
-  //     document.body
-  //       .getElementsByTagName("header")[0]
-  //       .classList.remove(classes[color]);
-  //     document.body
-  //       .getElementsByTagName("header")[0]
-  //       .classList.add(classes[changeColorOnScroll.color]);
-  //   } else {
-  //     document.body
-  //       .getElementsByTagName("header")[0]
-  //       .classList.add(classes[color]);
-  //     document.body
-  //       .getElementsByTagName("header")[0]
-  //       .classList.remove(classes[changeColorOnScroll.color]);
-  //   }
-  // };
   const { color, links, brand, fixed, absolute } = props;
   const appBarClasses = classNames({
     [classes.appBar]: true,
@@ -76,6 +47,11 @@ export default function Header(props) {
     [classes.absolute]: absolute,
     [classes.fixed]: fixed
   });
+
+  const goToPage = (page) => {
+    history.push(`/${page}`)
+  }
+
   return (
     <AppBar className={appBarClasses}>
       <Toolbar className={classes.container}>
@@ -93,21 +69,21 @@ export default function Header(props) {
           anchorEl={anchorElTop}
           onClose={() => setAnchorElTop(null)}
           anchorOrigin={{
-            vertical: "center",
-            horizontal: "left"
+            vertical: "bottom",
+            horizontal: "center"
           }}
           transformOrigin={{
-            vertical: "center",
-            horizontal: "right"
+            vertical: "top",
+            horizontal: "center"
           }}
         >
           <div style={{textAlign: 'center'}}>
-            <div className={classes.popoverBody}>
-              <CustomButton round color="info" onClick={logout}>
-                Logout
-              </CustomButton>
-              <CustomButton round color="info" onClick={logout}>
+            <div className={classes.popoverBody} style={{display: 'grid'}}>
+              <CustomButton size='sm' round color="info" onClick={() => {goToPage("about-us")}}>
                 About Us
+              </CustomButton>
+              <CustomButton round color="danger" onClick={logout}>
+                Logout
               </CustomButton>
             </div>
           </div>

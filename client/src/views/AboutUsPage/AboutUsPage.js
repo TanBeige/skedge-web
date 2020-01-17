@@ -52,7 +52,7 @@ export default function AboutUsPage(props) {
           </GridContainer>
         </div>
       </Parallax>
-      <div className={classNames(classes.main, classes.mainRaised)} style={{marginTop: '-20px', marginBottom: '20px'}}>
+      <div className={classNames(classes.main, classes.mainRaised)} style={{marginTop: '-20px', marginBottom: '8vh'}}>
         <div className={classes.container}>
           {/* <SectionDescription /> */}
           <SectionTeam />
