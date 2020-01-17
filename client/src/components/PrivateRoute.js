@@ -7,15 +7,21 @@ const PrivateRoute = ({ component: Component, path, ...rest }) => {
   const { loading, isAuthenticated, loginWithRedirect } = useAuth0();
 
   useEffect(() => {
+
+
+
     if (loading || isAuthenticated) {
       return;
     }
+    // if(!isAuthenticated) {
+    //   console.log("pathname prviate", path)
+    //   localStorage.setItem('originPath', window.location.pathname);
+    // }
 
     const fn = async () => {
-      await loginWithRedirect({
-        appState: { targetUrl: path }
-      });
+      await loginWithRedirect();
     };
+    
     fn();
   }, [loading, isAuthenticated, loginWithRedirect, path]);
 

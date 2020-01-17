@@ -358,6 +358,7 @@ export default function EventPage(props) {
 
 
   useEffect(() => {
+    localStorage.setItem('originPath', window.location.pathname);
     getEvent();
     addView();
     

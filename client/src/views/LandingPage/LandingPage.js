@@ -58,8 +58,16 @@ export default function LandingPage(props) {
   const classes = useStyles();
 
   if (isAuthenticated) {
-    props.history.push("/home");
+    //Redirect to path they left off at
+    const redirectPagePath = localStorage.getItem('originPath') || '/home'
+
+    props.history.push(redirectPagePath);
     window.location.reload();
+  }
+  else {
+    //If user is not signed in, and they sign in through the homepage,
+    //  After logged in redirect to home
+    localStorage.setItem('originPath', '/home');
   }
 
   //Scroll To Top of the page

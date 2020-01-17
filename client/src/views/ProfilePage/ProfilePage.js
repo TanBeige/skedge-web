@@ -358,6 +358,7 @@ export default function ProfilePage(props, { ...rest }) {
   useEffect(() => {
     // Get Profile age
     isMounted = true;
+
     getUser();  
 
     return () => {
@@ -367,10 +368,15 @@ export default function ProfilePage(props, { ...rest }) {
 
   //Google Analytics useEffects
   useEffect(()=>{
-    //For Google Analytics 
-    console.log("ReactGA Called: ", window.location.pathname)
-    ReactGA.initialize('UA-151937222-1');
-    ReactGA.pageview(window.location.pathname)
+    if(window.location.pathname !== "/users/:id") {
+      //For Google Analytics 
+      console.log("ReactGA Called: ", window.location.pathname)
+      // console.log(userName)
+      localStorage.setItem('originPath', window.location.pathname);
+
+      ReactGA.initialize('UA-151937222-1');
+      ReactGA.pageview(window.location.pathname)
+    }
   }, [])
 
 
