@@ -57,7 +57,6 @@ export default function InviteUsers (props) {
     })
     
     const selectGuests = (inGuests) => {
-      console.log(inGuests)
       setGuests(inGuests);
     };
 

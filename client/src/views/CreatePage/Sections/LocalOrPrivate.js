@@ -33,8 +33,6 @@ const useStyles = makeStyles(popoverStyles);
 
 export default function LocalOrPrivate(props) {
 
-    console.log(props.entity)
-
 // Hook for popover
     const [anchorElBottom, setAnchorElBottom] = useState(null);
     const classes = useStyles();

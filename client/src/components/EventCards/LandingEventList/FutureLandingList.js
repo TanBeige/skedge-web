@@ -126,7 +126,6 @@ export default function FutureLandingList(props) {
 
   useEffect(() => {
     //Restart the get events
-    console.log("Assss")
 
     setValues({
       type: props.type,

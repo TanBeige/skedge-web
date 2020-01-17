@@ -350,7 +350,6 @@ export default function EventCard({event, client, userId, currentDate, listType}
     }
 
     useEffect(() => {
-      console.log(event.shared_event)
       addImpression();
 
       //Edit Bio

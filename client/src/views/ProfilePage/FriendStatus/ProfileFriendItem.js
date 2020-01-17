@@ -59,7 +59,6 @@ const ProfileFriendItem = ({
         friendFullName = friendFullName.substring(0, maxNameLength);
         friendFullName += "...";
     }
-console.log("friend status: ",currentFriend.entity)
 
     //Handling Friend Removing/Adding
     const handleFriend = () => {

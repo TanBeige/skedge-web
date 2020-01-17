@@ -165,7 +165,6 @@ export default function PostMomentButton(props) {
             return
         }
 
-        console.log("Later Reponse", response);
 
 
         //After uploading to cloudinary, update database

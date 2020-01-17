@@ -1132,6 +1132,42 @@ const FETCH_SAVED_EVENTS = gql`
   ${EVENT_FRAGMENT}
 `
 
+const FETCH_CREATED_EVENTS = gql`
+query created_events($eventLimit: Int, $eventOffset: Int, $userId: String) {
+  events(
+    where: {creator_id: {_eq: $userId}}
+    order_by: {created_at: desc}
+    limit: $eventLimit
+    offset: $eventOffset
+    )
+  {
+		...EventFragment
+    shared_event{
+      user_id
+      user{
+        id
+        name
+        full_name
+      }
+    }
+    event_invites{
+      response
+      invited{
+        id
+        name
+        full_name
+        auth0_id
+      }
+      inviter {
+        id
+        name
+      }
+    }
+  }
+}
+${EVENT_FRAGMENT}
+`
+
 // Mutate Events
 const MUTATION_EVENT_ADD = gql`
 mutation insert_events($objects: [events_insert_input!]!) {
@@ -1521,6 +1557,7 @@ export {
   QUERY_FEED_LOCAL_OLD_EVENT,
   FETCH_TAGGED_EVENTS,
   FETCH_SAVED_EVENTS,
+  FETCH_CREATED_EVENTS,
 
   MUTATION_EVENT_ADD,
   MUTATION_EVENT_UPDATE,

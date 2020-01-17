@@ -31,12 +31,6 @@ const useStyles = makeStyles(style);
 
 export default function EventActivityTable({impressions, views, shares, likes, going}) {
 
-    console.log(impressions)
-    console.log(views)
-    console.log(shares)
-    console.log(likes)
-    console.log(going)
-
   const classes = useStyles();
   const fillButtons = [
     { color: "info", icon: Person },

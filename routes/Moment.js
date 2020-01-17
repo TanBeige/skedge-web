@@ -56,7 +56,6 @@ router.post('/upload', parser.single('file'), (req, res) => {
     const image = {};
     image.id = req.file.public_id;
 
-    console.log("image id", image.id)
     // res.send(image);
     res.json(image);  // Returns image url and id to be stored
 });

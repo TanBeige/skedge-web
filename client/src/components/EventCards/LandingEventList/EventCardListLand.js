@@ -74,7 +74,6 @@ export default function EventCardListLand(props) {
 
     // Update Query When new Events are added
     const loadMoreClicked = () => {
-        console.log("loading more")
       const { client } = props;
       const { filter } = props;
 

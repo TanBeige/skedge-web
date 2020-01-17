@@ -119,7 +119,7 @@ export default function SearchPage(props) {
                         className={classes.margin}
                         label="Search Users"
                         variant="outlined"
-                        onChange={(e) => {console.log(e.target.value);setSearchText(e.target.value)}}
+                        onChange={(e) => {setSearchText(e.target.value)}}
 
                         InputProps={{
                           autoComplete: 'off',

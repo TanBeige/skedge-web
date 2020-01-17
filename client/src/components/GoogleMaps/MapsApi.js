@@ -29,7 +29,6 @@ class SimpleMap extends Component {
   }
 
   getGeocode() {
-    console.log("GEOCODE USEEDDDDD")
     this.setState({loading: true})
     Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
     Geocode.enableDebug();

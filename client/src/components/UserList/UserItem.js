@@ -43,7 +43,6 @@ const UserItem = ({
     const { user } = useAuth0()
 
     const currentAccount = account
-    console.log(account)
 
 
     let maxNameLength = 28
@@ -52,7 +51,6 @@ const UserItem = ({
     }
 
     let accountUserName = `${currentAccount.name}`
-    console.log(accountUserName)
 
     if(accountUserName.length > maxNameLength) {
         accountUserName = accountUserName.substring(0, maxNameLength);
@@ -62,13 +60,11 @@ const UserItem = ({
     if(currentAccount.full_name) {
         accountFullName = currentAccount.full_name;
     }
-    console.log(accountFullName)
 
     if(accountFullName.length > maxNameLength) {
         accountFullName = accountFullName.substring(0, maxNameLength);
         accountFullName += "...";
     }
-console.log("account status: ",currentAccount.entity)
 
     //Handling Account Removing/Adding
     const handleAccount = () => {

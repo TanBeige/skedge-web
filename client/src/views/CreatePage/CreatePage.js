@@ -429,7 +429,6 @@ const handleLocalOrPrivate = (type) => {
 
     //If user selects one of our images
     if(typeof bannerImg === "number") {
-      console.log("selected image")
       props.client.mutate({
         mutation: MUTATION_EVENT_ADD,
         // refetchQueries: [{
@@ -535,7 +534,6 @@ const handleLocalOrPrivate = (type) => {
           }
         })
         .then(data => {
-          console.log("Entity Data: ", data.data.users[0].entity)
           setValues({ 
             ...values, 
             isEntity: data.data.users[0].entity

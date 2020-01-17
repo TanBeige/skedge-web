@@ -63,7 +63,6 @@ export default function EventCardListFuture(props) {
 
   // Update Query When new Events are added
   const loadMoreClicked = () => {
-    console.log("LOADING MORE!!!!!!!!!!!")
     const { client } = props;
     const { filter } = props;
 
@@ -106,7 +105,6 @@ export default function EventCardListFuture(props) {
                 loadedAllEvents: true
               })
           }
-          console.log("activating future")
           setActivateFuture(true);
         }
       }).catch(error => {
@@ -122,7 +120,6 @@ export default function EventCardListFuture(props) {
 
   useEffect(() => {
     //Restart the get events
-    console.log("Initializing Feed For: ", props.filter.date.formatDate())
     setValues({
       type: props.type,
       filter: props.filter,
@@ -162,7 +159,6 @@ export default function EventCardListFuture(props) {
         }
       })
       .then(data => {
-        console.log(data)
         if(isMounted) {
           if (data.data.events.length) {
           // update state with new events
@@ -190,7 +186,6 @@ export default function EventCardListFuture(props) {
             }
           }
           // setActivateFuture(true);
-          console.log("Activate future: ", activateFuture)
         }
       });
 
@@ -252,7 +247,6 @@ export default function EventCardListFuture(props) {
     // Components to Render
     const futureEvents = () => {
       if(activateFuture) {
-        console.log("here u go the future")
         return(
           <FollowFeedFutureContainer
             client={props.client}

@@ -44,6 +44,10 @@ export default function NavPillsProfile(props) {
       value={active}
       onChange={handleChange}
       centered={alignCenter}
+      // style={{
+      //   margin: 0,
+      //   width: '5em'
+      // }}
     >
       {tabs.map((prop, key) => {
         var icon = {};
@@ -70,22 +74,36 @@ export default function NavPillsProfile(props) {
       })}
     </Tabs>
   );
-  const tabContent = active === 0 ? (
-    <div className={classes.contentWrapper}>
-      <div className={classes.tabContent} >
-        {tabs[0].tabContent}
-      </div>
-    </div>
-  ) : 
-  (
-    <div className={classes.contentWrapper}>
-      <div className={classes.tabContent} >
-        {tabs[1].tabContent}
-      </div>
-    </div>
-  )
   
-  ;
+  let tabContent = "";
+  if(active === 0) {
+    tabContent = (
+      <div className={classes.contentWrapper}>
+        <div className={classes.tabContent} >
+          {tabs[0].tabContent}
+        </div>
+      </div>
+    )
+  }
+  else if(active === 1) {
+    tabContent = (
+      <div className={classes.contentWrapper}>
+        <div className={classes.tabContent} >
+          {tabs[1].tabContent}
+        </div>
+      </div>
+    )
+  }
+  else {
+    tabContent = (
+      <div className={classes.contentWrapper}>
+        <div className={classes.tabContent} >
+          {tabs[2].tabContent}
+        </div>
+      </div>
+    )
+  }
+
   return horizontal !== undefined ? (
     <GridContainer>
       <GridItem {...horizontal.tabsGrid}>{tabButtons}</GridItem>

@@ -9,6 +9,12 @@ import { createMuiTheme } from '@material-ui/core/styles';
 //import Button from 'components/CustomButtons/Button.js'
 import Button from '@material-ui/core/Button';
 
+// query bannerPics {
+//     images(where: {image_uuid: {_ilike: "%default_images%"}}) {
+//     id
+//     image_uuid
+//     }
+// }
 
 
 // Cloudinary setup
@@ -67,7 +73,6 @@ const AddBanner = (props) => {
     const bannerSubmit = (e) => {
         const {bannerImg} = values;
         e.preventDefault();
-        console.log("Banner: ", bannerImg)
 
         props.submitEvent(bannerImg);
     }
@@ -104,7 +109,6 @@ const AddBanner = (props) => {
                 }
                 `
         }).then((data) => {
-            console.log("Image data: ", data)
             setValues({
                 ...values,
                 selectBanners: data.data.images
@@ -119,14 +123,16 @@ const AddBanner = (props) => {
                     <h3 >Click image to select and submit event.</h3>
                     {
                         values.selectBanners.map(image => {
-                            return  (
-                                <img
-                                    key ={image.id}
-                                    src={cloudinary.url(image.image_uuid, {secure: true, width: 600, height: 400, crop: "fill" ,fetch_format: "auto", quality: "auto"})} className='selectImage' 
-                                    style={{width: '100%', margin: '10px 0px', maxWidth: 500, borderRadius: 3}} 
-                                    onClick={()=>bannerChosen(image.id)}
-                                />
-                            )
+                            if(image) {
+                                return  (
+                                    <img
+                                        key ={image.id}
+                                        src={cloudinary.url(image.image_uuid, {secure: true, width: 600, height: 400, crop: "fill" ,fetch_format: "auto", quality: "auto"})} className='selectImage' 
+                                        style={{width: '100%', margin: '10px 0px', maxWidth: 500, borderRadius: 3}} 
+                                        onClick={()=>bannerChosen(image.id)}
+                                    />
+                                )
+                            }
                         })
                     }
                 </div>

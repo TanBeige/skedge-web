@@ -358,7 +358,6 @@ export default function EventPage(props) {
 
 
   useEffect(() => {
-    console.log(imageUploading)
     getEvent();
     addView();
     

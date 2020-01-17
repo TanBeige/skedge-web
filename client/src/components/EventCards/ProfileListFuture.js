@@ -272,7 +272,6 @@ export default function EventCardListHome(props) {
   }
 
   if(values.events.length === 0 && !isSearch){
-    console.log("no events, ", values.filter.date)
     return(
       <Fragment>
         {futureEvents()}

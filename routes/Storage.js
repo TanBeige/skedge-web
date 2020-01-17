@@ -63,13 +63,13 @@ router.post('/update', parser.single("file"), (req, res) => {
     //Delete previous Image
     let param = req.query.picId;
 
-    if(!defaultPics.includes(param)) {
-        cloudinary.v2.uploader.destroy(param, function(error,result) {
-            console.log("Deleting: ", param)
-            console.log("result: ", result) 
-            console.log("error: ", error)
-        });
-    }
+    // if(!defaultPics.includes(param)) {
+    //     cloudinary.v2.uploader.destroy(param, function(error,result) {
+    //         console.log("Deleting: ", param)
+    //         console.log("result: ", result) 
+    //         console.log("error: ", error)
+    //     });
+    // }
     //Editing URL to store jpeg version
     let tempImageUrl = req.file.secure_url.replace(".png",".jpg");
     image.url = tempImageUrl;

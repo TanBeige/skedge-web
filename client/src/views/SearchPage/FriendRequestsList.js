@@ -41,7 +41,6 @@ export default function FriendRequestsList(props) {
                 offset: values.usersLength
             }
         }).then((data) => {
-            console.log("datatatata", data)
 
             if(isMounted) {
                 setUsersList(data.data.follower);

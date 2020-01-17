@@ -1,25 +1,18 @@
-
-/*
-    the tanmeister: this is a demo of the unified file for the Event Lists. - 
-        There will be one of these for the future lists as well.
-*/
-
 import React, { Fragment, useState, useEffect } from 'react'
 
 import EventCard from "components/EventCards/EventCard.js"
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
+import LoadCardList from 'components/EventCards/LoadCardList.js'
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import EventCardListFuture from './EventCardListFuture.js';
-import FutureContainer from './FutureContainer.js';
 import { Instagram } from 'react-content-loader'
 
-import LoadCardList from '../LoadCardList.js';
-
 import * as Scroll from 'react-scroll';
+
 
 import { throttle } from 'lodash';
 
@@ -27,7 +20,7 @@ import { throttle } from 'lodash';
 //const MyInstagramLoader = () => <Instagram />
 
 import {
-    QUERY_FILTERED_EVENT
+    FETCH_CREATED_EVENTS
 } from "EventQueries/EventQueries";
 
 const dateHeaderStyle = {
@@ -55,25 +48,25 @@ Date.prototype.formatDate = function() {
 }
 
 // Functional Component
-export default function EventCardListHome(props) {
+export default function CardListCreated(props) {
   // Checks if we are still grabbing events
   const [isSearch, setIsSearch] = useState(false);
+
+  const eventLimit = 10
+
   let isMounted = true;
   let currentKey;
-  let futureEvents = "";
 
   let ScrollLink = Scroll.Link;
   let Element = Scroll.Element;
 
 
   const [values, setValues] = useState({
-      type: props.type,
-      filter: props.filter,
       loadedAllEvents: false,
       showOlder: true,
       eventsLength: 0,
       showNew: false,
-      limit: props.filter.limit,
+      limit: eventLimit,
       events: [],
   });
 
@@ -81,26 +74,14 @@ export default function EventCardListHome(props) {
     // Update Query When new Events are added
     const loadMoreClicked = () => {
       const { client } = props;
-      const { filter } = props;
 
-      let cat = filter.category;
-      if(filter.category == "Any") {
-        cat = ""
-      }
       client.query({
-          query: QUERY_FILTERED_EVENT,
+          query: FETCH_CREATED_EVENTS,
           variables: {
             eventLimit: values.limit,
             eventOffset: values.eventsLength,
-            search: `%${filter.searchText}%`,
-            category: `%${cat}%`,
-            city: `%${filter.city}%`,
-            state: `%${filter.state}%`,
-            lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
-            upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
-            type: filter.type,
-            date: filter.date ? filter.date.formatDate() : null,
-            weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
+            userId: props.userId,
+
           }
         })
         .then(data => {
@@ -136,27 +117,18 @@ export default function EventCardListHome(props) {
     const loadMoreThrottled = throttle(loadMoreClicked, 100);
 
 
-    // Replaces ComponentDidMount() in a Functional Component
-    if (values.loadedAllEvents) {
-      futureEvents = (
-        <FutureContainer
-          client={props.client}
-          filter={props.filter}
-          userId={props.userId}
-        />
-      )
-    }
+
 
     useEffect(() => {
       //Restart the get events
+      console.log("Created Events")
       setValues({
         type: props.type,
-        filter: props.filter,
         loadedAllEvents: false,
         showOlder: true,
         eventsLength: 0,
         showNew: false,
-        limit: props.filter.limit,
+        limit: eventLimit,
         events: [],
       });
 
@@ -167,29 +139,15 @@ export default function EventCardListHome(props) {
       // ----------------------------GRABBING EVENTS IF MOUNTED--------------------------------
       isMounted = true;
       const { client } = props;
-      const { filter } = props;
-
-      let cat = filter.category;
-      if(filter.category == "Any") {
-        cat = ""
-      }
       setIsSearch(true)
 
       client
         .query({
-          query: QUERY_FILTERED_EVENT,
+          query: FETCH_CREATED_EVENTS,
           variables: {
             eventLimit: values.limit,
             eventOffset: 0,
-            search: `%${filter.searchText}%`,
-            category: `%${cat}%`,
-            city: `%${filter.city}%`,
-            state: `%${filter.state}%`,
-            lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
-            upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
-            type: filter.type,
-            date: filter.date !== null ? filter.date.formatDate() : null,
-            weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
+            userId: props.userId,
           }
         })
         .then(data => {
@@ -202,7 +160,7 @@ export default function EventCardListHome(props) {
                 events: data.data.events,
                 showNew: true,
                 eventsLength: data.data.events.length,
-                loadedAllEvents: data.data.events.length < props.filter.limit
+                loadedAllEvents: data.data.events.length < eventLimit
               });
               setIsSearch(false);
             }
@@ -228,7 +186,7 @@ export default function EventCardListHome(props) {
       return () => {
         isMounted = false;
       }
-    }, [props.filter])
+    }, [])
 
     
     const insertAd = (index) => {
@@ -274,24 +232,7 @@ export default function EventCardListHome(props) {
     }
 
     // // Components to Render
-    // const futureEvents = () => {
-    //   console.log("LoadedAll: ", values.loadedAllEvents)
-    //   console.log("showNew: ", values.showNew)
-    //   //if(values.loadedAllEvents) {
-    //     return(
-    //       <div>
-    //         <FutureContainer
-    //           client={props.client}
-    //           filter={props.filter}
-    //           userId={props.userId}
-    //         />
-    //       </div>
-    //     )
-    //   // }
-    //   // else {
-    //   //   return ""
-    //   // }
-    // }
+
 
 
     if(values.events.length === 0 && !isSearch)
@@ -299,20 +240,14 @@ export default function EventCardListHome(props) {
       return(
         <div id='scrollableDiv' style={{height: '65vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey}>
           <Element name="listTop"></Element>
-          <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no events this day.</h5>
-            <hr />
-            {
-                values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
-            }
-          {futureEvents}
+          <h5 style={{marginTop: 20, textAlign: 'center'}}>You have not made any events.</h5>
         </div>
       )
     }
 
 
     return (
-      <div id='scrollableDiv' style={{height: '65vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey}>
-        <Element name="listTop"></Element>
+      <div id='scrollableDiv' key={currentKey}>
         <InfiniteScroll
             dataLength={values.eventsLength}
             next={loadMoreThrottled}
@@ -320,20 +255,20 @@ export default function EventCardListHome(props) {
             //loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             loader={<LoadCardList />}
             style={{overflow: 'none'}}
+            //scrollableTarget="root"
         >
           <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
               {
                 finalEvents.map((event, index) => {
                     return (
                       <Fragment key={event.id}>
-                        <GridItem xs={12} sm={6} md={6}>
-                          <EventCard 
+                        <GridItem xs={12} sm={6} md={6} >
+                          <EventCard
                               event={event} 
                               listType={"home"}
                               client={props.client}
                               userId={props.userId}
-                              filter={props.filter}
-                              currentDate={props.filter.date}
+                              //currentDate={props.filter.date}
                           />
                         </GridItem>
                         {
@@ -345,56 +280,6 @@ export default function EventCardListHome(props) {
             }
           </GridContainer>
         </InfiniteScroll>
-        <hr />
-        {
-            values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
-        }
-        {futureEvents}
       </div>
     )
-}
-
-const localFeedQuery = {
-    query: QUERY_FILTERED_EVENT,
-    variables: {
-      eventLimit: values.limit,
-      eventOffset: values.eventsLength,
-      search: `%${filter.searchText}%`,
-      category: `%${cat}%`,
-      city: `%${filter.city}%`,
-      state: `%${filter.state}%`,
-      lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
-      upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
-      type: filter.type,
-      date: filter.date ? filter.date.formatDate() : null,
-      weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
-    }
-}
-
-const followingFeedQuery = {
-    query: FETCH_FOLLOWING_FEED,
-    variables: {
-        userId: props.userId,
-        eventLimit: values.limit,
-        eventOffset: 0,
-        search: `%${filter.searchText}%`,
-        category: `%${cat}%`,
-        city: `%${filter.city}%`,
-        state: `%${filter.state}%`,
-        lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
-        upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
-        date: filter.date !== null ? filter.date.formatDate() : null,
-        weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
-    }
-}
-
-const profileFeedQuery = {
-    query: QUERY_PROFILE_EVENTS,
-    variables: {
-        eventLimit: values.limit,
-        eventOffset: values.eventsLength,
-        profileId: props.profileId,
-        date:values.filter.date ? values.filter.date.formatDate() : null,
-        weekday: values.filter.date !== null ? `%${values.filter.date.getDay()}%` : null
-    }
 }

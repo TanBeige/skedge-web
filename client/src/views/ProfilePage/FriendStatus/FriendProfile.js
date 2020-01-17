@@ -17,6 +17,7 @@ import TurnedInIcon from '@material-ui/icons/TurnedIn';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
 
 
 // core components
@@ -96,10 +97,9 @@ export default function FriendProfile(props) {
             <NavPillsProfile
                 alignCenter
                 color="primary"
-                includeSave
                 tabs={[
                 {
-                    tabButton: "My Events",
+                    tabButton: "Upcoming Events",
                     tabIcon: EventIcon,
                     tabContent: (
                         <EventCardList 
@@ -121,6 +121,17 @@ export default function FriendProfile(props) {
                             listType='saved'
                         />
                     )
+                },
+                {
+                    tabButton: "Created Events",
+                    tabIcon: PermContactCalendarIcon,
+                    tabContent: (
+                        <EventCardList 
+                            client={props.client}
+                            userId={props.userId}
+                            listType='created'
+                        />
+                    )
                 }
                 ]}
             />
@@ -133,7 +144,7 @@ export default function FriendProfile(props) {
                 color="primary"
                 tabs={[
                 {
-                    tabButton: "Events",
+                    tabButton: "Upcoming Events",
                     tabIcon: EventIcon,
                     tabContent: (
                         <EventCardList 

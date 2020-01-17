@@ -12,7 +12,6 @@ export default function ListCohosts(props) {
     //const [checked, setChecked] = React.useState(props.guests);
 
     const handleToggle = value =>{
-      console.log(value)
       const currentIndex = props.cohosts.indexOf(value);
       const newChecked = props.cohosts;
 

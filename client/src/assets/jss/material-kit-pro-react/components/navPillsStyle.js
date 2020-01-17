@@ -19,10 +19,10 @@ const navPillsStyle = theme => ({
     overflow: "visible !important"
   },
   flexContainer: {
-    height: '10vh',
+    // height: '10vh',
     [theme.breakpoints.down("xs")]: {
       display: "flex",
-      flexWrap: "wrap"
+      // flexWrap: "wrap"
     }
   },
   displayNone: {
@@ -48,11 +48,17 @@ const navPillsStyle = theme => ({
     opacity: "1",
     maxWidth: "100%",
     margin: "0 5px",
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: '5em',
+      margin: "0 2px",
+      // height: '8em'
+    },
     minHeight: "unset",
     lineHeight: "24px",
     textTransform: "uppercase",
     fontSize: "12px",
-    fontWeight: "500"
+    fontWeight: "500",
+    
   },
   pillsWithIcons: {
     //borderRadius: "4px"
