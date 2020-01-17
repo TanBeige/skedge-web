@@ -94,7 +94,11 @@ export default function FutureLandingList(props) {
       .then(data => {
         if(isMounted) {
           if (data.data.events.length ) {
-            const mergedEvents = values.events.concat(data.data.events);
+            let mergedEvents = values.events.concat(data.data.events);
+
+            //Remove Duplicates from array
+            mergedEvents = mergedEvents.filter((thing, index, self) => self.findIndex(t => t.id === thing.id) === index)
+
             // update state with new events
             setValues({
               ...values,
