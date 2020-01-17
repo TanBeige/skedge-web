@@ -191,7 +191,10 @@ query fetch_profile_events($eventLimit: Int, $eventOffset: Int, $profileId: Stri
     shared_event(where: {
       _or: [
         {user_id: {_eq: $profileId}},
-        {user: {followers: {user_id: {_eq: $userId}}}}
+        {_and: [
+        	{user: {followers: {user_id: {_eq: $userId}}}},
+          {user: {followers: {status: {_eq: 1}}}},
+        ]}
       ]}
       order_by: {time_shared : desc}
     ){
@@ -207,7 +210,8 @@ query fetch_profile_events($eventLimit: Int, $eventOffset: Int, $profileId: Stri
         {invited_id: {_eq: $profileId}},
         {_and: [
           {response: {_eq: 1}},
-          {invited: {followers: {user_id: {_eq: $profileId}}}}
+          {invited: {followers: {user_id: {_eq: $userId}}}}
+          {invited: {followers: {status: {_eq: 1}}}},
         ]}
       ]
     })
@@ -646,11 +650,18 @@ query fetch_following_feed($userId: String!, $eventLimit: Int, $eventOffset: Int
           {_and: [
             {invite_only: {_eq: false}},
             {_or: [
-              {user: {followers: {user_id: {_eq: $userId}}}}
-              {shared_event: {user: {followers: {user_id: {_eq: $userId}}}}},
+              {_and: [
+                {user: {followers: {user_id: {_eq: $userId}}}}
+                {user: {followers: {status: {_eq: 1}}}}
+              ]},
+              {_and: [
+                {shared_event: {user: {followers: {user_id: {_eq: $userId}}}}},
+                {shared_event: {user: {followers: {status: {_eq: 1}}}}},
+              ]},
               {_and: [
                 {event_invites: {response: {_eq: 1}}}
-              	{event_invites: {invited: {followers: {user_id: {_eq: $userId}}}}}
+                {event_invites: {invited: {followers: {user_id: {_eq: $userId}}}}}
+                {event_invites: {invited: {followers: {status: {_eq: 1}}}}}
               ]}
             ]}
           ]},
@@ -706,7 +717,10 @@ query fetch_following_feed($userId: String!, $eventLimit: Int, $eventOffset: Int
     shared_event(where: {
       _or: [
         {user_id: {_eq: $userId}},
-        {user: {followers: {user_id: {_eq: $userId}}}}
+        {_and: [
+        	{user: {followers: {user_id: {_eq: $userId}}}},
+          {user: {followers: {status: {_eq: 1}}}},
+        ]}
       ]}
       order_by: {time_shared : desc}
     ){
@@ -722,7 +736,10 @@ query fetch_following_feed($userId: String!, $eventLimit: Int, $eventOffset: Int
         {invited_id: {_eq: $userId}},
         {_and: [
           {response: {_eq: 1}},
-          {invited: {followers: {user_id: {_eq: $userId}}}}
+          {_and: [
+            {invited: {followers: {user_id: {_eq: $userId}}}}
+            {invited: {followers: {status: {_eq: 1}}}},
+          ]}
         ]}
       ]
     })

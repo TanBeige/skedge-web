@@ -106,6 +106,9 @@ export default function Header(props) {
               <CustomButton round color="info" onClick={logout}>
                 Logout
               </CustomButton>
+              <CustomButton round color="info" onClick={logout}>
+                About Us
+              </CustomButton>
             </div>
           </div>
         </Popover>
