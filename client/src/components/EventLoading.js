@@ -18,7 +18,7 @@ import style from "assets/jss/material-kit-pro-react/modalStyle.js";
 const useStyles = makeStyles(style);
 
 
-export default function EventLoading() {
+export default function EventLoading({text}) {
     const classes = useStyles();
 
     return (
@@ -38,7 +38,7 @@ export default function EventLoading() {
           disableTypography
           className={classes.modalHeader}
         >
-          <h3 className={classes.modalTitle}>Creating Event</h3>
+          <h3 className={classes.modalTitle}>{text}</h3>
         </DialogTitle>
         <DialogContent
           id="classic-modal-slide-description"

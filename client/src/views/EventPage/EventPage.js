@@ -9,6 +9,9 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import EventLoading from 'components/EventLoading.js'
+
+
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -205,6 +208,8 @@ export default function EventPage(props) {
 
   //Submit Changes
   const handleEventChange = async (newInfo) => {
+    setImageUploading(true)
+
 
     //Upload Image to Cloudinary, Delete Old picture Afterwards
     let errorOccurred = false;
@@ -212,7 +217,6 @@ export default function EventPage(props) {
     let response = "";
 
     if(newInfo.picFile) {
-      setImageUploading(true)
       const form_data = new FormData();
 
       form_data.append('file', newInfo.picFile)
@@ -290,6 +294,7 @@ export default function EventPage(props) {
       }
     }).then((data)=> {
       console.log("Success!")
+      setImageUploading(false)
     }).catch(error => {
       console.error(error);
     });
@@ -307,7 +312,10 @@ export default function EventPage(props) {
       start_time: newInfo.start_time,
       end_time: newInfo.end_time,
       description: newInfo.description,
-      category: newInfo.category
+      category: newInfo.category,
+      // cover_url: response.data.id
+      cover_url: cloudinary.url(response.data.id, {secure: true, height: window.innerHeight, crop: "scale", fetch_format: "auto", quality: "auto"}),
+
     })
   }
 
@@ -316,7 +324,10 @@ export default function EventPage(props) {
     props.client.mutate({
       mutation: MUTATION_EVENT_DELETE,
       refetchQueries: [{
-        query: QUERY_FILTERED_EVENT
+        query: QUERY_FILTERED_EVENT,
+        variables: {
+          userId: user.sub
+        }
       }],
       variables: {
         eventId: values.event_id
@@ -347,6 +358,7 @@ export default function EventPage(props) {
 
 
   useEffect(() => {
+    console.log(imageUploading)
     getEvent();
     addView();
     
@@ -400,6 +412,8 @@ export default function EventPage(props) {
     return <ErrorPage />
     //return <div>hello</div>
   }
+
+  //If Event info is loadng
   else if(isLoading) {
     return (
       <div>
@@ -417,11 +431,13 @@ export default function EventPage(props) {
       </div>
     )
   }
+  //If user is not logged in
   else if(!user) {
     const userLink = `/users/${values.user_name}`
-
     return(
       <div>
+        
+
         <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 50,  left: 22, zIndex: 100}} color="primary">
                 <ChevronLeftIcon/>
             </Button>
@@ -483,6 +499,7 @@ export default function EventPage(props) {
       </div>
     )
   }
+  //If user is signed in
   else {
     const userLink = `/users/${values.user_name}`
 
@@ -498,9 +515,16 @@ export default function EventPage(props) {
             color: "primary"
           }}
         /> */}
+
+        {
+          //If user is changing events
+          imageUploading ? 
+          <EventLoading text="Saving Changes" /> : ""
+        }
+
         <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 50,  left: 22, zIndex: 100}} color="primary">
-                <ChevronLeftIcon/>
-            </Button>
+          <ChevronLeftIcon/>
+        </Button>
         <Parallax image={values.cover_url} filter="dark">
           <div className={classes.container}>
             

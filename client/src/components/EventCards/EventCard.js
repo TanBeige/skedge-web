@@ -86,15 +86,14 @@ const theme = createMuiTheme({
   },
 });
 
-// Reload the blogs and likes every time an event card gets loaded, this is to update the amount
+// Reload the shares and likes every time an event card gets loaded, this is to update the amount
 //  whenever the user goes between tabs since apollo doesn't update until page i refreshed.
-
-
 
 export default function EventCard({event, client, userId, currentDate, listType}) {
     const classes = useStyles();
     const bioMaxLength = 100;
     const nameMaxLength = 25;
+    const shareInfoTextMax = 45;
 
     //Styling Card
     const usernameStyle= {

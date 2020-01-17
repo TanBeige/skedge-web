@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 
-import EventLoading from 'views/CreatePage/Sections/EventLoading.js'
+import EventLoading from 'components/EventLoading.js'
 // @material-ui/icons
 import Close from "@material-ui/icons/Close";
 import Favorite from "@material-ui/icons/Favorite";
@@ -242,7 +242,7 @@ const handleLocalOrPrivate = (type) => {
   const eventSubmitting = () => {
     if(values.eventSubmitted) {
       return(
-        <EventLoading />
+        <EventLoading text="Creating Event"/>
       )
     }
     else {
