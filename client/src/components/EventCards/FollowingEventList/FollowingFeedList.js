@@ -287,7 +287,7 @@ export default function FollowingFeedList(props) {
     if(values.events.length === 0 && !isSearch)
     {
       return(
-        <div id='scrollableDiv' style={{height: '85vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey} >
+        <div id='scrollableDiv' key={currentKey} >
           <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no events this day.</h5>
             <hr />
             {
