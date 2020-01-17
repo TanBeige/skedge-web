@@ -87,12 +87,10 @@ export default function EventCardListProfile(props) {
         })
         .then(data => {
           if (data.data.events.length) {
-            const mergedEvents = values.events.concat(data.data.events);
+            let mergedEvents = values.events.concat(data.data.events);
             //Remove Duplicates from array
             mergedEvents = mergedEvents.filter((thing, index, self) => self.findIndex(t => t.id === thing.id) === index)
-            //Remove Duplicates from array
-            mergedEvents = mergedEvents.filter((thing, index, self) => self.findIndex(t => t.id === thing.id) === index)
-
+            
 
             // update state with new events
             if(isMounted) {

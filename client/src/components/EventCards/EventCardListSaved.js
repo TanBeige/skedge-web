@@ -118,7 +118,8 @@ export default function EventCardListSaved(props) {
                 for(let i = 0; i < data.data.user_saved_events.length; ++i) {
                   tempEvents.push(data.data.user_saved_events[i].event)
                 }
-                const mergedEvents = values.events.concat(tempEvents);
+                let mergedEvents = values.events.concat(tempEvents);
+                
 
 
                 // update state with new events
