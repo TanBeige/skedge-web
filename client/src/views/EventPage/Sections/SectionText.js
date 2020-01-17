@@ -224,14 +224,14 @@ export default function SectionText({ eventInfo, client }) {
             user ? 
             <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
               <div style={{margin: '0em 2em 1em 2em', maxWidth: 240, margin: 'auto', marginBottom: '1em'}}>
-                <UserModalList
+                {/* <UserModalList
                   buttonText={`${eventInfo.going_users.length} Going`}
                   userList={eventInfo.going_users}
                   emptyListText="No one is going currently"
                   client={client}
                   nestedLabel='invited'
                   modalTitle='Going'
-                />
+                /> */}
               </div>
               <GoingSaveButtons
                 ifGoing={values.ifGoing}
