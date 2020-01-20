@@ -1,0 +1,19 @@
+[
+    {
+        "intro": "Protecting your private information is our priority. This Statement of Privacy applies to theskedge.com and Skedge LLC and governs data collection and usage. For the purposes of this Privacy Policy, unless otherwise noted, all references to Skedge LLC include theskedge.com and Skedge. The Skedge website is a social event site. By using the Skedge website, you consent to the data practices described in this statement.",
+        "collection": "In order to better provide you with products and services offered on our Site, Skedge may collect personally identifiable information, such as your:",
+        "collection_items": [
+            "First and Last Name",
+            "Email Address",
+            "Phone Number",
+            "Location",
+            "Amount of time used daily/weekly/monthly",
+            "How website is used (pagesviews, what is clicked/swiped on)",
+            "Log in details",
+            "Credit card numbers",
+            "Birthday (age)"
+        ]
+    
+    
+    }
+]
