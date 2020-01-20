@@ -36,7 +36,7 @@ export default function Header(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorElTop, setAnchorElTop] = useState(null);
 
-  const { logout } = useAuth0();
+  const { logout, isAuthenticated } = useAuth0();
 
   const classes = useStyles();
 
@@ -56,38 +56,45 @@ export default function Header(props) {
     <AppBar className={appBarClasses}>
       <Toolbar className={classes.container}>
         <Button className={classes.title}>
-          <Link to="/home"><img alt='Skedge' src={require("assets/img/logoheader.png")} height={40} width={40}/></Link>
+          <Link to="/"><img alt='Skedge' src={require("assets/img/logoheader.png")} height={40} width={40}/></Link>
         </Button>
-        <CustomButton round onClick={event => setAnchorElTop(event.currentTarget)} justIcon color="primary">
-          <PersonIcon style={{color: "white"}} className={classes.followIcon} />
-        </CustomButton>
-        <Popover
-          classes={{
-            paper: classes.popover
-          }}
-          open={Boolean(anchorElTop)}
-          anchorEl={anchorElTop}
-          onClose={() => setAnchorElTop(null)}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "center"
-          }}
-        >
-          <div style={{textAlign: 'center'}}>
-            <div className={classes.popoverBody} style={{display: 'grid'}}>
-              <CustomButton size='sm' round color="info" onClick={() => {goToPage("about-us")}}>
-                About Us
-              </CustomButton>
-              <CustomButton round color="danger" onClick={logout}>
-                Logout
-              </CustomButton>
-            </div>
+        {
+          isAuthenticated ? 
+          <div>
+            <CustomButton round onClick={event => setAnchorElTop(event.currentTarget)} justIcon color="primary">
+              <PersonIcon style={{color: "white"}} className={classes.followIcon} />
+            </CustomButton>
+            <Popover
+              classes={{
+                paper: classes.popover
+              }}
+              open={Boolean(anchorElTop)}
+              anchorEl={anchorElTop}
+              onClose={() => setAnchorElTop(null)}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center"
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center"
+              }}
+            >
+              <div style={{textAlign: 'center'}}>
+                <div className={classes.popoverBody} style={{display: 'grid'}}>
+                  <CustomButton size='sm' round color="info" onClick={() => {goToPage("about-us")}}>
+                    About Us
+                  </CustomButton>
+                  <CustomButton round color="danger" onClick={logout}>
+                    Logout
+                  </CustomButton>
+                </div>
+              </div>
+            </Popover>
           </div>
-        </Popover>
+          :
+          ""
+        }
       </Toolbar>
     </AppBar>
   );

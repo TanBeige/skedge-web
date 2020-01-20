@@ -87,7 +87,7 @@ export default function SectionTeam() {
 
           <hr />
 
-          <h2 h2 className={classes.title}>Skedge Founders</h2>
+          <h2 className={classes.title}>Skedge Founders</h2>
           <h5 className={classes.description}>Skedge was founded in 2019 by a college couple and a 3rd wheel.</h5>
         </GridItem>
       </GridContainer>

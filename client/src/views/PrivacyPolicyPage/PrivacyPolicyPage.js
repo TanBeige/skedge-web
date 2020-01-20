@@ -64,9 +64,9 @@ export default function PrivacyPolicyPage() {
                     <p>{policies[0].collection}</p>
                     <ul>
                       {
-                        policies[0].collection_items.map(i => {
+                        policies[0].collection_items.map((i, index) => {
                           return(
-                            <li>{i}</li>
+                            <li key={index}>{i}</li>
                           )
                         })
                       }

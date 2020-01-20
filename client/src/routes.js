@@ -40,6 +40,7 @@ import AboutUsPage from "views/AboutUsPage/AboutUsPage.js";
 //Pages I need to either remove, change, or use later
 import ContactUsPage from "views/ContactUsPage/ContactUsPage.js";
 import PrivacyPolicyPage from "views/PrivacyPolicyPage/PrivacyPolicyPage.js";
+import TermsConditionsPage from "views/TermsConditionsPage/TermsConditionsPage.js";
 import EcommercePage from "views/EcommercePage/EcommercePage.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
@@ -188,6 +189,7 @@ export const MakeMainRoutes = () => {
           {/*<Route exact path="/components" render={props => provideClient(ComponentsPage, props)} />*/}
           <Route exact path="/contact-us" render={props => provideClient(ContactUsPage, props)} />
           <Route exact path="/privacy" render={props => provideClient(PrivacyPolicyPage, props)} />
+          <Route exact path="/terms-and-conditions" render={props => provideClient(TermsConditionsPage, props)} />
           <Route exact path="/subscriptions" render={props => provideClient(EcommercePage, props)} />
           <Route exact path="/landing-page" render={props => provideClient(LandingPage, props)} />
           <Route exact path="/login-page" render={props => provideClient(LoginPage, props)} />

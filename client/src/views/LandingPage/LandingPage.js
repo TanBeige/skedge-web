@@ -26,6 +26,8 @@ import SectionTeam from "./Sections/SectionTeam.js";
 // import SectionWork from "./Sections/SectionWork.js";
 import SectionTitle from "./Sections/SectionTitle.js"
 
+import InformationPopover from 'components/InformationPopover.js'
+
 //Authorization
 import { useAuth0 } from '../../Authorization/react-auth0-wrapper';
 //import history from "../../utils/history";
@@ -100,6 +102,10 @@ export default function LandingPage(props) {
   return (
     <div>
       <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={50} width={50} src={require('assets/img/logoheader.png')} />
+      <div style={{position: 'absolute', zIndex: 10, top: 15, right: 25}} >
+        <InformationPopover/>
+      </div>
+      
       <Parallax image={paraImage} filter="dark">
         <div className={classes.container}>
           <GridContainer>
