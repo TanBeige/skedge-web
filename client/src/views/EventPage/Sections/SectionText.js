@@ -62,7 +62,7 @@ export default function SectionText({ eventInfo, client }) {
 
   let _isMounted = true;
 
-  const { user, loginWithRedirect } = useAuth0();
+  const { user, loginWithRedirect, loginWithPopup } = useAuth0();
 
   const classes = useStyles();
   const imgClasses = classNames(
@@ -86,7 +86,8 @@ export default function SectionText({ eventInfo, client }) {
       action: 'Created an Account/Logged In'
     });
     //Then Login/Sign up
-    loginWithRedirect({})
+    // loginWithRedirect({});
+    loginWithPopup({});
   }
 
 

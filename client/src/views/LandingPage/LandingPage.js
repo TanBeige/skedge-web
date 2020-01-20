@@ -46,7 +46,7 @@ const useStyles = makeStyles(landingPageStyle);
 
 export default function LandingPage(props) {
 
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, loginWithPopup } = useAuth0();
   // const myRef = useRef(null)
   // const executeScroll = () => scrollToRef(myRef)
 
@@ -84,7 +84,8 @@ export default function LandingPage(props) {
     });
     console.log("recorded event")
     //Then Login/Sign up
-    loginWithRedirect({})
+    // loginWithRedirect({})
+    loginWithPopup({})
   }
 
   //Mobile Image

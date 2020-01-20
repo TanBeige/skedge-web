@@ -1,5 +1,8 @@
 /*eslint-disable*/
-import React from "react";
+import React, {useState} from "react";
+import axios from 'axios';
+import { AUTH_CONFIG } from "Authorization/auth0-variables";
+
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -29,6 +32,52 @@ import image from "assets/img/bg7.jpg";
 const useStyles = makeStyles(loginPageStyle);
 
 export default function LoginPage() {
+
+  const [values, setValues] = useState({
+    email: "",
+    name: "", //username
+    password: "",
+    date_of_birth: "",
+    full_name: ""
+  });
+
+  const handleInputChange = (event) => {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+  //Submit the values
+  const submitLogin = (event) => {
+    axios({
+      method: "POST",
+      url: `https://${account.namespace}/dbconnections/signup`,
+      headers: [{
+        name: "Content-Type",
+        value: "application/json"
+      }],
+      postData: {
+        mimeType: "application/json",
+        text: {
+          client_id: AUTH_CONFIG.clientId,
+          email: values.email,
+          password: values.password,
+          connection: "YOUR_CONNECTION_NAME",
+          name: values.name,
+          user_metadata: {
+            full_name: values.full_name,
+            date_of_birth: values.date_of_birth,
+          }
+        }
+      }
+    });
+    event.preventDefault();
+  }
+
   React.useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
@@ -92,22 +141,7 @@ export default function LoginPage() {
                     Or Be Classical
                   </p>
                   <CardBody signup>
-                    <CustomInput
-                      id="first"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        placeholder: "First Name...",
-                        type: "text",
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Face className={classes.inputIconsColor} />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                    <CustomInput
+                  <CustomInput
                       id="email"
                       formControlProps={{
                         fullWidth: true
@@ -123,7 +157,22 @@ export default function LoginPage() {
                       }}
                     />
                     <CustomInput
-                      id="pass"
+                      id="name"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        placeholder: "Username",
+                        type: "name",
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Face className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                    <CustomInput
+                      id="signup-password"
                       formControlProps={{
                         fullWidth: true
                       }}

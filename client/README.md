@@ -1,3 +1,13 @@
+**Front-End Information**
+I used the creative-tim template for the front-end of react.
+The documentation for the creative-tim components can be found [here](https://demos.creative-tim.com/material-kit-pro-react/#/documentation/tutorial).
+
+While I use creative-tim's website template, their template is using Google's Material-UI for styling and functionality. You can check out Material-UI [here](https://material-ui.com/).
+
+Creative-tim gives custom versions that take the Material-UI components and customizes it so it fits the tempalte's look. Most of the time I try to use Creative-tim's custom components (such as buttons, modals, etc...) but the functionality of Material-UI's base component works better so I would use that.
+
+**Template Information by Creative-Tim Below**
+
 # [Material Kit PRO React](https://demos.creative-tim.com/material-kit-pro-react) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/home?status=Material%20Kit%20PRO%20is%20a%20Bootstrap%20UI%20Kit%20with%20a%20fresh,%20new%20design%20inspired%20by%20Google's%20Material%20Design%20%E2%9D%A4%EF%B8%8Fhttps%3A//demos.creative-tim.com/material-kit-pro/presentation.html%20%23bootstrap%20%23material%20%23design%20%23uikit%20%23premium%20%20via%20%40CreativeTim)
 
 

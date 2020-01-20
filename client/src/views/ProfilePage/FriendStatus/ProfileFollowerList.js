@@ -122,7 +122,7 @@ export default function ProfileFollowerList(props) {
         >
           {
             isLoading ? <LinearProgress style={{margin: '2em'}}/> : 
-            <List style={{width: '100%'}}>  
+            <List style={{width: '100%', height: '70vh', overflow:'auto'}}>  
             {
                 friendData.map((friend, index) => {
                     return(
