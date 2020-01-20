@@ -158,11 +158,11 @@ export default function HomePage(props) {
       ReactGA.pageview(window.location.pathname)
     }
 
-  },[loading, props.client]); // Empty array for param means effect will only run on first render.
+  },[props.client]); // Empty array for param means effect will only run on first render.
 
   //Place this here before returning the actual page so we can determine 
   // what displays while loading
-  if (loading || !user) {
+  if (!user) {
     return (
       <div>Loading...</div>
     )
@@ -181,15 +181,15 @@ export default function HomePage(props) {
             color: "primary"
           }}
         />
-        <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '5vh', marginTop: '8vh'}}>
+        {/* <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '5vh', marginTop: '8vh'}}> */}
           <Button style={{position: 'fixed', bottom: 55, right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
                 <ArrowUpwardIcon style={{color: "white"}} />
           </Button>
-          <div className={classes.container} >
+          <div className={classes.container} style={{marginTop: '3em'}} >
 
             {/* <h1 className='homeTitle'>Skedge</h1> */}
             {
-              loading ?
+              loading || !user ?
               "" :
               <SectionPills 
                 client={props.client}
@@ -198,7 +198,7 @@ export default function HomePage(props) {
               />
             }
           </div>
-        </div>
+        {/* </div> */}
       </div>
     );
   }

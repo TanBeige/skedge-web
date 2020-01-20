@@ -38,6 +38,9 @@ export default function ListCohosts(props) {
           }
           refetch();
           let finalData = data.follower;
+          if(finalData.length === 0) {
+            return(<h4 style={{textAlign: 'center'}}>No followers to invite.</h4>)
+          }
 
           return (
             <div className="listFriends" style={{maxHeight: '50vh', overflow: 'auto'}}>

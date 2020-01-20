@@ -178,6 +178,8 @@ export default function EventPage(props) {
           user_name: data.data.events[0].user.name,
           user_full_name: data.data.events[0].user.full_name,
           user_biography: data.data.events[0].user.biography,
+
+          // Creator of event:
           user_auth0_id: data.data.events[0].user.auth0_id,
 
           views: data.data.events[0].views,
@@ -369,6 +371,7 @@ export default function EventPage(props) {
   }, [])
 
   let titleSize = '10vw'
+  console.log("inner width: ", window.innerWidth)
 
   if (window.innerWidth > 1000) {
     titleSize = '5vw'
@@ -378,10 +381,10 @@ export default function EventPage(props) {
 
   const editingEvent = () => {
       if(isAuthenticated) {
-        if(user.sub === values.user_auth0_id) {
+        if(user.sub === values.user_auth0_id || values.event_cohosts.some(u => (u.cohost.auth0_id === user.sub && u.accepted === true))) {
           return (
             <div>
-                {/* <Button size='sm' style={{marginTop: 20, marginBottom: 8}} color="tumblr">Edit Invites</Button> */}
+                <Button size='sm' style={{marginTop: 20, marginBottom: 8}} color="tumblr">Edit Invites</Button>
                 <EditEventButton 
                     client={props.client}
                     userId={user.sub}
@@ -390,7 +393,7 @@ export default function EventPage(props) {
                     oldEvent={values}
                     handleDeleteEvent={handleDeleteEvent}
                 />
-                {/* <Button size='sm' style={{marginTop: 20, marginBottom: 8}} color="pinterest">Edit Cohosts</Button> */}
+                <Button disabled={!user.sub === values.user_auth0_id} size='sm' style={{marginTop: 20, marginBottom: 8}} color="pinterest">Edit Cohosts</Button>
               </div>
           )
         }
@@ -442,10 +445,10 @@ export default function EventPage(props) {
                 <ChevronLeftIcon/>
             </Button>
         <Parallax image={values.cover_url} filter="dark">
-          <div className={classes.container}>
+          <div className={classes.container} >
             
-            <GridContainer justify="center">
-              <GridItem md={10} className={classes.textCenter}>
+            <GridContainer justify="center" >
+              <GridItem  className={classes.textCenter} style={{paddingLeft: 0, paddingRight: 0}}>
                 <h1 className={classes.title} style={{fontSize: titleSize, wordWrap: 'break-word'}}>
                   {values.name}
                 </h1>
@@ -484,7 +487,7 @@ export default function EventPage(props) {
                   </ListItem>
                   <ListItem className={classes.inlineBlock}>
                     <a
-                      href="https://www.creative-tim.com/presentation?ref=mkpr-blog-post"
+                      href="/about-us"
                       target="_blank"
                       className={classes.block}
                     >
@@ -576,7 +579,7 @@ export default function EventPage(props) {
                   </ListItem>
                   <ListItem className={classes.inlineBlock}>
                     <a
-                      href="https://www.creative-tim.com/presentation?ref=mkpr-blog-post"
+                      href="/about-us"
                       target="_blank"
                       className={classes.block}
                     >

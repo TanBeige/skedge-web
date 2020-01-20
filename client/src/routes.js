@@ -67,8 +67,10 @@ export const MakeMainRoutes = () => {
 
   // Variables/Imports from auth0-spa
   const {loading, getIdTokenClaims, isAuthenticated, user } = useAuth0();
+  const [isLoading, setIsLoading] = useState(true);
   const [values, setValues] = useState({
     client: null,
+    userAnonymous: true,
     showBottomBar: false,
     currentPage: window.location.pathname
   })
@@ -89,32 +91,37 @@ export const MakeMainRoutes = () => {
     }
   }
 
-  // Supporting Functions
+  // Apollo Client Functions
+  const setupApolloClient = () => {
+    if(!loading){
+      getIdTokenClaims().then(function(result) {
+        newToken = isAuthenticated ? result.__raw : ""
+
+        setValues({
+          ...values,
+          client: makeApolloClient(newToken),
+          userAnonymous: isAuthenticated ? false : true
+        })
+        setIsLoading(false);
+      });
+    }
+  }
+
   const provideClient = (Component, renderProps) => { 
     return (
       <ApolloProvider client={values.client}>
-        <Component {...renderProps} client={values.client} /> 
+        <Component {...renderProps} client={values.client} anonymous={values.userAnonymous} /> 
       </ApolloProvider>
     );
   };
 
   // useEffect substitutes componentDidMount() and rerenders after loading value changes
   useEffect(() => {
+
     // For Apollo Provider on Auth load
-    // if(!loading) {
-    //   getIdTokenClaims().then(function(result) {
-    //     if(isAuthenticated) {
-    //       newToken = result.__raw;
-    //     }
-    //     else {
-    //       newToken = "";
-    //     }
-    //     setValues({
-    //       ...values,
-    //       client: makeApolloClient(newToken)
-    //     })
-    //   });
-    // }
+    // setIsLoading(true);
+    setupApolloClient();
+    
 
     // For Bottom Navbar
     if(window.location.pathname !== "/" && window.location.pathname !== "/shopping-cart-page") {
@@ -122,11 +129,11 @@ export const MakeMainRoutes = () => {
         ...values,
         showBottomBar: true
       })
-    }    
+    }
   
-  },[loading]);
+  },[loading, isAuthenticated]);
 
-  if (loading) {
+  if (isLoading) {
     return(
       <div>
         <LoadingPage reason="Loading" />
@@ -134,39 +141,40 @@ export const MakeMainRoutes = () => {
     )
   }
   // Wait for token to return and client to be made.
-  if(!values.client) {
-    console.log("Getting Client")
-    if(!loading) {
-      getIdTokenClaims().then(function(result) {
-        if(isAuthenticated) {
-          newToken = result.__raw;
-        }
-        else {
-          newToken = "";
-        }
-        setValues({
-          ...values,
-          client: makeApolloClient(newToken)
-        })
-      });
-    }
-    else {
-      newToken = "";
-      setValues({
-        ...values,
-        client: makeApolloClient(newToken)
-      })
-    }
+  // if(!values.client) {
+  //   console.log("Getting Client")
+  //   if(!loading) {
+  //     getIdTokenClaims().then(function(result) {
+  //       if(isAuthenticated) {
+  //         newToken = result.__raw;
+  //       }
+  //       else {
+  //         newToken = "";
+  //       }
+  //       setValues({
+  //         ...values,
+  //         client: makeApolloClient(newToken)
+  //       })
+  //     });
+  //   }
+  //   else {
+  //     newToken = "";
+  //     setValues({
+  //       ...values,
+  //       client: makeApolloClient(newToken)
+  //     })
+  //   }
 
-    return(
-      <div>
-        <LoadingPage reason="Getting Client" />
-      </div>
-    )
-  }
+  //   return(
+  //     <div>
+  //       <LoadingPage reason="Getting Client" />
+  //     </div>
+  //   )
+  // }
+
+
   // Finally load Website
   else {
-  // Finally load Website
     return(
       <Router history={hist}>
         <div>
@@ -184,7 +192,7 @@ export const MakeMainRoutes = () => {
           <Route exact path="/user" render={props => provideClient(ProfilePage, props)} />
           <Route exact path="/product-page" render={props => provideClient(ProductPage, props)} />
           <Route exact path="/sections" render={props => provideClient(SectionsPage, props)} />
-          <Route exact path="/notifications" render={props => provideClient(NotificationsPage, props)} />
+          <PrivateRoute path="/notifications" render={props => provideClient(NotificationsPage, props)} />
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
 
           <Route path="/events/:id" render={props => provideClient(EventPage, props)} />

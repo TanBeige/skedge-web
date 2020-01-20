@@ -358,13 +358,17 @@ export default function ProfilePage(props, { ...rest }) {
   useEffect(() => {
     // Get Profile age
     isMounted = true;
+    console.log("getting user")
 
-    getUser();  
+    console.log("is auth?: ", isAuthenticated)
+    if (isAuthenticated) {
+      getUser();  
+    }
 
     return () => {
       isMounted = false;
     }
-  }, [values.auth0Id, userName])
+  }, [values.auth0Id, userName, isAuthenticated])
 
   //Google Analytics useEffects
   useEffect(()=>{

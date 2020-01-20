@@ -103,7 +103,7 @@ export default function InviteUsers (props) {
                       } 
                       label={"Invite Only"} 
                     />
-                    <FormControlLabel 
+                    {/* <FormControlLabel 
                       style={{color: "black"}} 
                       control={
                           <Checkbox
@@ -124,7 +124,7 @@ export default function InviteUsers (props) {
                           color='primary'/>
                       } 
                       label={"Invite Must Be Approved"} 
-                    />
+                    /> */}
                   </div>
 
                   <h4>Send Invite:</h4>

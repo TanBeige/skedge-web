@@ -55,7 +55,7 @@ export default function NotificationList(props) {
 
     useEffect(() => {
       _isMounted = true;
-      setIsLoading(true)
+      setIsLoading(true);
       props.client.query({
           query: FETCH_NOTIFICATIONS,
           variables: {
@@ -72,8 +72,10 @@ export default function NotificationList(props) {
             setIsLoading(false)
         }
       }).catch(error => {
-          alert("Could not retrieve your notifications currently, try again later or report this to info@theskedge.come");
-          console.log(error);
+        if(_isMounted) {
+            // alert("Could not retrieve your notifications currently, try again later or report this to info@theskedge.com");
+            console.log(error);
+        }
       })
 
       return () => {

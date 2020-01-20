@@ -38,6 +38,8 @@ import { ThemeProvider } from '@material-ui/styles';
 import shoppingCartStyle from "assets/jss/material-kit-pro-react/views/shoppingCartStyle.js";
 
 import { Subscription } from "react-apollo";
+import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
+
 
 import {
   FETCH_FOLLOW_REQUESTS,
@@ -58,6 +60,10 @@ const theme = createMuiTheme({
 import './Sections/NotificationStyle.css';
 
 export default function NotificationsPage(props) {
+
+  const { user, isAuthenticated, loading } = useAuth0()
+
+  // const [renderPage, setRenderPage] = useState(isAuthenticated)
 
   const [active, setActive] = useState(0);
   const handleChange = (event, active) => {
@@ -80,11 +86,22 @@ export default function NotificationsPage(props) {
   const changeInviteNums = (num) => {
     setInviteNums(num)
   }
+  console.log("notifs auth : ", isAuthenticated)
 
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   });
+
+  useEffect(() => {
+    // If user is going to this link, save the link before 
+    // Signing In so we can redirect here later
+    // setRenderPage(!props.anonymous);
+
+    localStorage.setItem('originPath', window.location.pathname);
+  }, [])
+
+
   const classes = useStyles();
   return (
     <ThemeProvider theme={theme}>
@@ -103,47 +120,50 @@ export default function NotificationsPage(props) {
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div className={classes.container}>
             <Card plain >
-              <CardBody plain>
-                {/* <h3 className={classes.cardTitle}>Notifications</h3> */}
-                <Tabs
-                  value={active}
-                  onChange={handleChange}
-                  centered
-                >
-                  <Tab
-                    label={'Notifications'}
-                    icon={<Badge badgeContent={notifNums} max={999} overlap="circle" color="secondary"><NotificationsIcon /></Badge>}
-                  />
-                  <Tab
-                    label={'Requests'}
-                    icon={<Badge badgeContent={requestNums} max={999} overlap="circle" color="secondary"><Add /></Badge>}
-                  />
-                  <Tab
-                    label={'Invites'}
-                    icon={<Badge badgeContent={inviteNums} max={999} overlap="circle" color="secondary"><EventSeatIcon /></Badge>}
-                  />
-                </Tabs>
-                <SwipeableViews
-                  index={active}
-                  onChangeIndex={handleChangeIndex}
-                >
-                  <NotificationList 
-                    client={props.client}
-                    changeNotifNums={changeNotifNums}
-                  />
+              {
+                isAuthenticated && user ? 
+                  <CardBody plain>
+                    {/* <h3 className={classes.cardTitle}>Notifications</h3> */}
+                    <Tabs
+                      value={active}
+                      onChange={handleChange}
+                      centered
+                    >
+                      <Tab
+                        label={'Notifications'}
+                        icon={<Badge badgeContent={notifNums} max={999} overlap="circle" color="secondary"><NotificationsIcon /></Badge>}
+                      />
+                      <Tab
+                        label={'Requests'}
+                        icon={<Badge badgeContent={requestNums} max={999} overlap="circle" color="secondary"><Add /></Badge>}
+                      />
+                      <Tab
+                        label={'Invites'}
+                        icon={<Badge badgeContent={inviteNums} max={999} overlap="circle" color="secondary"><EventSeatIcon /></Badge>}
+                      />
+                    </Tabs>
+                    <SwipeableViews
+                      index={active}
+                      onChangeIndex={handleChangeIndex}
+                    >
+                      <NotificationList 
+                        client={props.client}
+                        changeNotifNums={changeNotifNums}
+                      />
 
-                  <RequestList 
-                    client={props.client}
-                    changeRequestNums={changeRequestNums}
-                  />
+                      <RequestList 
+                        client={props.client}
+                        changeRequestNums={changeRequestNums}
+                      />
 
-                  <EventInviteList 
-                    client={props.client}
-                    changeInviteNums={changeInviteNums}
-                  
-                  />
-                </SwipeableViews>
-              </CardBody>
+                      <EventInviteList 
+                        client={props.client}
+                        changeInviteNums={changeInviteNums}
+                      
+                      />
+                    </SwipeableViews>
+                  </CardBody> : ""
+              }
             </Card>
           </div>
         </div>

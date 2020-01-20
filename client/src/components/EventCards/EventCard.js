@@ -161,7 +161,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
       description: event.description ? event.description : "",
       category: event.category ? event.category : "No Category",
       image_id: event.image ? event.image.image_uuid : "cover_images/uzhvjyuletkpvrz5itxv",
-      image_url: cloudinary.url(event.image.image_uuid, {secure: true, width: 800, height: 533, crop: "fill" ,fetch_format: "auto", quality: "auto"}),
+      image_url: cloudinary.url(event.image.image_uuid, {secure: true, width: 800, height: 400, crop: "fill" ,fetch_format: "auto", quality: "auto"}),
       
       price: event.price,
 
@@ -486,7 +486,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
 
             <div style={coverImgStyle}>
               <Link to={`/events/${event.id}`}>
-                <LoadImage className={classes.imgCardTop} color='white' src={values.image_url} aspectRatio={3/2}/>
+                <LoadImage className={classes.imgCardTop} color='white' src={values.image_url} aspectRatio={2/1}/>
               </Link>
 
                 <div className={classes.imgCardOverlay} style={{width: '100%'}}>
@@ -524,7 +524,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
                 {/* {followFeedInfo} */}
 
                 <Link to={`/events/${event.id}`}>
-                  <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center"}}>{values.name}</h3>
+                  <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center", fontSize: '1.5em'}}>{values.name}</h3>
                 </Link>
                 {/* <EventMomentsWrapper 
                   eventId={event.id}
@@ -535,9 +535,9 @@ export default function EventCard({event, client, userId, currentDate, listType}
                 /> */}
                 <hr style={{margin: 2}}/>
 
-                <div style={{width: '100%', textAlign: 'left'}}>
-                  <div style={{fontSize: 16}}>
-                    <div style={{position: 'absolute', right: 40,  textShadow: "-1px 1px #02C39A"}}>
+                <div style={{fontSize: 14}}>
+                  <div style={{width: '100%', textAlign: 'left'}}>
+                    <div style={{position: 'absolute', right: 20,  textShadow: "-1px 1px #02C39A"}}>
                       {values.price === "$0.00" ? "Free" : values.price}
                     </div>
                     
@@ -546,32 +546,32 @@ export default function EventCard({event, client, userId, currentDate, listType}
                     {values.end_time ? ` - ${values.end_time.format("h:mma")}` : ""}
                   </div>
                   
+                  <div style={{textAlign: 'left'}}>
+                    <p style={{display: 'inline', width: '100%'}}>
+                      <PlaceIcon color="secondary" fontSize='small' style={{verticalAlign: 'top'}} />
+                      {` ${event.location_name}`}
+                    </p>
+                  </div>
                 </div>
 
-                <div style={{textAlign: 'left'}}>
-                  <p style={{display: 'inline', width: '100%', fontSize: 16}}>
-                    <PlaceIcon color="secondary" fontSize='small' style={{verticalAlign: 'top'}} />
-                    {` ${event.location_name}`}
-                  </p>
-                </div>
 
                 <p style={{textAlign: 'left', fontSize: '12px', lineHeight: 1.2, marginTop: 5}}>
                   {values.description}
                 </p>
               </CardBody>
 
-              <CardFooter style={{paddingBottom: 5}}>
+              <CardFooter style={{padding: '0rem 1rem'}}>
                 <Info style={{textAlign: 'left'}}>
                   <h6 color='rose' className={classes.cardCategory}>{values.category.toUpperCase()}</h6>
                 </Info>
                 <div style={{position: 'absolute',right: 15}}>
-                  <IconButton onClick={handleRepost} aria-label="Share" style={{float: 'left', margin: 0}}>
+                  <IconButton onClick={handleRepost} aria-label="Share" style={{padding: 6}}>
                     <RenewIcon color={values.ifReposted}/> 
                     <div style={{fontSize: 14}}>
                       {values.repostAmount}
                     </div>
                   </IconButton>
-                  <IconButton onClick={handleLike} aria-label="Like" style={{float: 'right'}}>
+                  <IconButton onClick={handleLike} aria-label="Like" style={{padding: 6}}>
                     <FavoriteIcon color={values.ifLiked}/>
                     <div style={{fontSize: 14}}>
                       {values.likeAmount}

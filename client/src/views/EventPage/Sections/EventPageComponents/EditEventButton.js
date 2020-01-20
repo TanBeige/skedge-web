@@ -207,13 +207,13 @@ export default function EditEventButton(props) {
 
     // Show Edit Button if user is host
     let editButton = "";
-    if(props.userId === props.creatorId) {
+    // if(props.userId === props.creatorId) {
         editButton = (
             <Button style={{marginTop: 20, marginBottom: 8}} color="info" onClick={() => setIsEditing(!isEditing)}>
                 Edit Event
             </Button>
         )
-    }
+    // }
 
     //If Event has an end time, toggle it here
     let endTimeJS = ""
