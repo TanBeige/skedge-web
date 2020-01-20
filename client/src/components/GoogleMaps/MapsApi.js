@@ -5,6 +5,9 @@ import Geocode from "react-geocode";
 import PlaceIcon from '@material-ui/icons/Place';
 import { prototype } from 'react-infinite-scroll-component';
 
+// Import custom styles to customize the style of Google Map
+const styles = require('./GoogleMapStyles.json')
+
 
 
 require('dotenv');
@@ -13,6 +16,27 @@ require('dotenv');
  
 const AnyReactComponent = () => <PlaceIcon />;
 let _isMounted = true;
+
+//Styling maps
+function createMapOptions(maps) {
+  // next props are exposed at maps
+  // "Animation", "ControlPosition", "MapTypeControlStyle", "MapTypeId",
+  // "NavigationControlStyle", "ScaleControlStyle", "StrokePosition", "SymbolPath", "ZoomControlStyle",
+  // "DirectionsStatus", "DirectionsTravelMode", "DirectionsUnitSystem", "DistanceMatrixStatus",
+  // "DistanceMatrixElementStatus", "ElevationStatus", "GeocoderLocationType", "GeocoderStatus", "KmlLayerStatus",
+  // "MaxZoomStatus", "StreetViewStatus", "TransitMode", "TransitRoutePreference", "TravelMode", "UnitSystem"
+  return {
+    // zoomControlOptions: {
+    //   position: maps.ControlPosition.RIGHT_CENTER,
+    //   style: maps.ZoomControlStyle.SMALL
+    // },
+    // mapTypeControlOptions: {
+    //   position: maps.ControlPosition.TOP_RIGHT
+    // },
+    // mapTypeControl: true,
+    styles: styles
+  };
+}
  
 class SimpleMap extends Component {
   constructor(props) {
@@ -84,11 +108,12 @@ class SimpleMap extends Component {
     else {
       return (
         // Important! Always set the container height explicitly
-        <div style={{ height: '50vh', width: '100%', border: '2px solid black', borderRadius: 5 }}>
+        <div style={{ height: '50vh', width: '100%', borderRadius: 20, overflow: 'hidden' }}>
           <GoogleMapReact
             bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_API}}
             defaultCenter={this.state.center}
             defaultZoom={this.state.zoom}
+            options={createMapOptions} 
             yesIWantToUseGoogleMapApiInternals
           >
             <AnyReactComponent
