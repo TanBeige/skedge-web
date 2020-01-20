@@ -174,7 +174,7 @@ export default function UserSearchList(props) {
     return (
         <Fragment key={userItem.id}>
                 <ListItem style={{paddingLeft: 10, paddingRight: 0, height: '5em'}}>
-                    <Link to={`/users/${userItem.name}`}>
+                    <Link to={`/${userItem.name}`}>
                         <ListItemAvatar>
                             <Avatar 
                                 alt={userItem.name}
@@ -183,7 +183,7 @@ export default function UserSearchList(props) {
                             />
                         </ListItemAvatar>
                     </Link>
-                    <Link style={{color: '#008064'}} to={`/users/${userItem.name}`}>
+                    <Link style={{color: '#008064'}} to={`/${userItem.name}`}>
                         <ListItemText
                             primary={`${displayName}`}
                             secondary={

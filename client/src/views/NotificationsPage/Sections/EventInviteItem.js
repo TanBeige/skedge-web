@@ -186,7 +186,7 @@ export default function CardExampleCardBackground(props) {
                                 {eventBio}
                             </p>
                         </Link>
-                        <Link to={`/users/${props.eventItem.inviter.name}`}>
+                        <Link to={`/${props.eventItem.inviter.name}`}>
                             <Button simple color="white">
                                 <Avatar src={inviterPicture} style={{float:'left', border: '1px solid #02C39A', height: 24, width: 24, marginRight: 3}} width={24} alt={props.eventItem.inviter.name} />
                                 Invited by: {props.eventItem.inviter.name}

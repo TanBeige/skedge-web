@@ -95,7 +95,7 @@ export default function HeaderLinks(props) {
   return (
     <List className={classes.list + " " + classes.mlAuto} style={{marginTop: 10}}>
       <ListItem className={classes.listItem}>
-        <Link to={`/users/${props.userId}`}>
+        <Link to={`/${props.userId}`}>
           <Button className={classes.dropdownLink} simple color="white">
             <AccountBalance className={classes.dropdownIcons} /> Profile
           </Button>

@@ -44,7 +44,7 @@ class PrimaryNav extends Component {
                 '/search',
                 '/create',
                 '/notifications',
-                `/users/0`,
+                `/0`,
             ],
             showBar: true,
             notifs: 0
@@ -156,13 +156,13 @@ class PrimaryNav extends Component {
                       '/search',
                       '/create',
                       '/notifications',
-                      `/users/${data.data.users[0].name}`
+                      `/${data.data.users[0].name}`
                   ],
                   //notifs: (data.data.users[0].followers_aggregate.aggregate.count + data.data.users[0].notifications_aggregate.aggregate.count)
               })
 
               //Set current Page View
-              if(this.state.path.includes("/users/")) {
+              if(this.state.path.includes(`/${data.data.users[0].name}`)) {
                 const {pathMap} = this.state  
                 const value = pathMap.indexOf(this.state.path);
                 if (value > -1) {

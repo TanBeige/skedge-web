@@ -64,7 +64,7 @@ export default function NotificationListItem(props) {
     }
 
     const redirectFunction = () => {
-        history.push(`/users/${notification.other_user.name}`)
+        history.push(`/${notification.other_user.name}`)
     }
 
     useEffect(() => {
@@ -154,7 +154,7 @@ export default function NotificationListItem(props) {
     const followAcceptNotif = () => {
         return (
             <Fragment key={notification.id}>
-                <Link to={`/users/${notification.other_user.name}`} className='ListLink'>
+                <Link to={`/${notification.other_user.name}`} className='ListLink'>
                     <ListItem style={notifStyle}>
                         <PersonAddIcon style={{position: "absolute", left: 0, top: 5, zIndex: 10}} />
                         <ListItemAvatar>

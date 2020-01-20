@@ -30,11 +30,11 @@ export default function SectionBlogInfo({eventInfo}) {
                   return(
                       <GridItem xs={6} sm={3} md={3} key={index}>
                         <CardAvatar plain profile style={{width: "60%"}}>
-                          <Link to={`/users/${cohost.cohost.name}`}>
+                          <Link to={`/${cohost.cohost.name}`}>
                             <img src={cohost.cohost.picture} alt={cohost.cohost.name} />
                           </Link>
                         </CardAvatar>
-                        <Link to={`/users/${cohost.cohost.name}`}>
+                        <Link to={`/${cohost.cohost.name}`}>
                           <h4 className={classes.cardTitle} style={{textAlign: 'center', color: "#02C39A"}}>{cohost.cohost.name}</h4>
                         </Link>
                       </GridItem>
@@ -68,11 +68,11 @@ export default function SectionBlogInfo({eventInfo}) {
             <GridContainer>
               <GridItem xs={12} sm={12} md={12}>
                 <CardAvatar plain profile>
-                  <Link to={`/users/${eventInfo.user_id}`}>
+                  <Link to={`/${eventInfo.user_id}`}>
                     <img src={eventInfo.user_pic} alt={eventInfo.user_name} />
                   </Link>
                 </CardAvatar>
-                <Link to={`/users/${eventInfo.user_id}`}>
+                <Link to={`/${eventInfo.user_id}`}>
                   <h3 className={classes.cardTitle} style={{textAlign: 'center', color: "#02C39A"}}>{eventInfo.user_name}</h3>
                 </Link>
                 <p className={classes.description}>

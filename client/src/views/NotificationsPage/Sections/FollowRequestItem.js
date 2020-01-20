@@ -218,7 +218,7 @@ export default function FollowRequestItem(props) {
     return (
         <Fragment key={userItem.id}>
                 <ListItem className='notificationList' style={{paddingLeft: 10, paddingRight: 0, height: '5em'}}>
-                  <Link to={`/users/${userItem.name}`}>
+                  <Link to={`/${userItem.name}`}>
                     <ListItemAvatar>
                         <Avatar 
                             alt={userItem.name}
@@ -227,7 +227,7 @@ export default function FollowRequestItem(props) {
                         />
                     </ListItemAvatar>
                   </Link> 
-                  <Link to={`/users/${userItem.name}`}>
+                  <Link to={`/${userItem.name}`}>
                     <ListItemText
                         primary={`${displayName}`}
                         secondary={

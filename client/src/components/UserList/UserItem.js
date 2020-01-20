@@ -184,7 +184,7 @@ const UserItem = ({
     return (
         <Fragment>
             <ListItem key={currentAccount.auth0_id} button style={{width: '100%'}}>
-                <Link to={`/users/${currentAccount.name}`}>
+                <Link to={`/${currentAccount.name}`}>
                     <ListItemAvatar>
                         <Avatar
                             alt={currentAccount.name}
@@ -194,7 +194,7 @@ const UserItem = ({
                         </ListItemAvatar>
                     </Link>
 
-                    <Link to={`/users/${currentAccount.name}`} style={{color: 'black'}}>
+                    <Link to={`/${currentAccount.name}`} style={{color: 'black'}}>
                         <ListItemText
                             primary={accountUserName}
                             secondary={

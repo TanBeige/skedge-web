@@ -436,7 +436,7 @@ export default function EventPage(props) {
   }
   //If user is not logged in
   else if(!user) {
-    const userLink = `/users/${values.user_name}`
+    const userLink = `/${values.user_name}`
     return(
       <div>
         
@@ -504,7 +504,7 @@ export default function EventPage(props) {
   }
   //If user is signed in
   else {
-    const userLink = `/users/${values.user_name}`
+    const userLink = `/${values.user_name}`
 
     return (
       <div>

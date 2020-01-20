@@ -178,7 +178,7 @@ const ProfileFriendItem = ({
     return (
         <Fragment>
             <ListItem key={currentFriend.auth0_id} button style={{width: '100%'}}>
-                <Link to={`/users/${currentFriend.name}`}>
+                <Link to={`/${currentFriend.name}`}>
                     <ListItemAvatar>
                         <Avatar
                             alt={currentFriend.name}
@@ -188,7 +188,7 @@ const ProfileFriendItem = ({
                         </ListItemAvatar>
                     </Link>
 
-                    <Link to={`/users/${currentFriend.name}`} style={{color: 'black'}}>
+                    <Link to={`/${currentFriend.name}`} style={{color: 'black'}}>
                         <ListItemText
                             primary={friendUserName}
                             secondary={

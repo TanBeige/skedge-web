@@ -499,7 +499,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
                     }
                   </div>
 
-                  <Link to={`/users/${values.username}`}>
+                  <Link to={`/${values.username}`}>
                     <div
                       // className={classes.cardTitle}
                       style={{
