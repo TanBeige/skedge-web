@@ -11,6 +11,7 @@ const storage = require('./routes/Storage');
 const profile = require('./routes/Profile');
 const moment = require('./routes/Moment');
 const auth0calls = require('./routes/Auth0calls');
+const email = require('./routes/Email');
 
 var app = express();
 var env = process.env.NODE_ENV || 'development';
@@ -55,6 +56,7 @@ app.use('/storage', storage);
 app.use('/profile', profile);
 app.use('/moment', moment);
 app.use('/auth0', auth0calls);
+app.use('/email', email);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,5 +1,6 @@
 /*eslint-disable*/
-import React from "react";
+import React, {useState} from "react";
+import axios from 'axios'
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // react components used to create a google map
@@ -112,6 +113,42 @@ export default function ContactUsPage() {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   });
+  
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    message: ""
+  })
+  
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+
+  const resetForm = () => {
+    setValues({
+      name: "",
+      email: "",
+      message: ""
+    });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    axios({
+      method: "POST", 
+      url:"/email/send", 
+      data:  values
+    }).then((response)=>{
+      if (response.data.status === 'success'){
+        alert("Message Sent."); 
+        resetForm();
+      }else if(response.data.status === 'fail'){
+        alert("Message failed to send.")
+      }
+    })
+  }
+
   const classes = useStyles();
   return (
     <div>
@@ -121,7 +158,7 @@ export default function ContactUsPage() {
         fixed
         color="dark"
       />
-      <div className={classes.bigMap}>
+      {/* <div className={classes.bigMap}>
         <CustomSkinMap
           googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"
           loadingElement={<div style={{ height: `100%` }} />}
@@ -136,15 +173,15 @@ export default function ContactUsPage() {
           }
           mapElement={<div style={{ height: `100%` }} />}
         />
-      </div>
+      </div> */}
       <div className={classNames(classes.main, classes.mainRaised)}>
-        <div className={classes.contactContent}>
+        <div className={classes.contactContent} style={{textAlign: 'center'}}>
           <div className={classes.container}>
             <h2 className={classes.title}>Send us a message</h2>
             <GridContainer>
-              <GridItem md={6} sm={6}>
+              <GridItem md={12} sm={12}>
                 <p>
-                  You can contact us with anything related to our Products. We
+                  You can contact us with anything related to Skedge. We
                   {"'"}ll get in touch with you as soon as possible.
                   <br />
                   <br />
@@ -152,44 +189,47 @@ export default function ContactUsPage() {
                 <form>
                   <CustomInput
                     labelText="Your Name"
-                    id="float"
+                    id="name"
+                    inputProps={{
+                      value: values.name
+                    }}
                     formControlProps={{
+                      onChange: handleChange('name'),
                       fullWidth: true
                     }}
                   />
                   <CustomInput
                     labelText="Email address"
-                    id="float"
-                    formControlProps={{
-                      fullWidth: true
+                    id="email"
+                    inputProps={{
+                      value: values.email
                     }}
-                  />
-                  <CustomInput
-                    labelText="Phone"
-                    id="float"
                     formControlProps={{
+                      onChange: handleChange('email'),
                       fullWidth: true
                     }}
                   />
                   <CustomInput
                     labelText="Your message"
-                    id="float"
+                    id="message"
                     formControlProps={{
+                      onChange: handleChange('message'),
                       fullWidth: true
                     }}
                     inputProps={{
+                      value: values.message,
                       multiline: true,
                       rows: 6
                     }}
                   />
                   <div className={classes.textCenter}>
-                    <Button color="primary" round>
+                    <Button onClick={handleSubmit} color="primary" round>
                       Contact us
                     </Button>
                   </div>
                 </form>
               </GridItem>
-              <GridItem md={4} sm={4} className={classes.mlAuto}>
+              {/* <GridItem md={4} sm={4} className={classes.mlAuto}>
                 <InfoArea
                   className={classes.info}
                   title="Find us at the office"
@@ -226,7 +266,7 @@ export default function ContactUsPage() {
                   icon={BusinessCenter}
                   iconColor="primary"
                 />
-              </GridItem>
+              </GridItem> */}
             </GridContainer>
           </div>
         </div>
@@ -238,48 +278,23 @@ export default function ContactUsPage() {
               <List className={classes.list}>
                 <ListItem className={classes.inlineBlock}>
                   <a
-                    href="https://www.creative-tim.com/?ref=mkpr-contact-us"
+                    href="/"
                     target="_blank"
                     className={classes.block}
                   >
-                    Creative Tim
+                    Skedge
                   </a>
                 </ListItem>
                 <ListItem className={classes.inlineBlock}>
                   <a
-                    href="https://www.creative-tim.com/presentation?ref=mkpr-contact-us"
+                    href="About Us"
                     target="_blank"
                     className={classes.block}
                   >
                     About us
                   </a>
                 </ListItem>
-                <ListItem className={classes.inlineBlock}>
-                  <a href="//blog.creative-tim.com/" className={classes.block}>
-                    Blog
-                  </a>
-                </ListItem>
-                <ListItem className={classes.inlineBlock}>
-                  <a
-                    href="https://www.creative-tim.com/license?ref=mkpr-contact-us"
-                    target="_blank"
-                    className={classes.block}
-                  >
-                    Licenses
-                  </a>
-                </ListItem>
               </List>
-            </div>
-            <div className={classes.right}>
-              &copy; {1900 + new Date().getYear()} , made with{" "}
-              <Favorite className={classes.icon} /> by{" "}
-              <a
-                href="https://www.creative-tim.com?ref=mkpr-contact-us"
-                target="_blank"
-              >
-                Creative Tim
-              </a>{" "}
-              for a better web.
             </div>
           </div>
         }

@@ -400,7 +400,6 @@ export default function EventCreateInfo(props) {
               id="city"
               label="City"
               variant="outlined"
-              onChange={handleChange}
               required
               fullWidth
               className={classes.textField}

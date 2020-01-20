@@ -9,7 +9,10 @@ import {
 
 const contactUsStyle = {
   main,
-  mainRaised,
+  mainRaised: {
+    ...mainRaised,
+    margin: '60px 30px 0px' 
+  },
   title,
   mlAuto,
   description,
@@ -18,8 +21,8 @@ const contactUsStyle = {
     maxWidth: "970px !important"
   },
   contactContent: {
-    paddingBottom: "40px",
-    paddingTop: "40px"
+    paddingBottom: "10px",
+    paddingTop: "10px"
   },
   bigMap: {
     height: "55vh",
