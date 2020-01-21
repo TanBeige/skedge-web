@@ -193,14 +193,14 @@ export const MakeMainRoutes = () => {
           <Route exact path="/subscriptions" render={props => provideClient(EcommercePage, props)} />
           <Route exact path="/landing-page" render={props => provideClient(LandingPage, props)} />
           <Route exact path="/login-page" render={props => provideClient(LoginPage, props)} />
-          <Route exact path="/user" render={props => provideClient(ProfilePage, props)} />
+          {/* <Route exact path="/user" render={props => provideClient(ProfilePage, props)} /> */}
           <Route exact path="/product-page" render={props => provideClient(ProductPage, props)} />
           <Route exact path="/sections" render={props => provideClient(SectionsPage, props)} />
           <PrivateRoute path="/notifications" render={props => provideClient(NotificationsPage, props)} />
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
 
           <Route path="/events/:id" render={props => provideClient(EventPage, props)} />
-          <PrivateRoute path="/:id" render={props => provideClient(ProfilePage, props)} />
+          <Route path="/:id" render={props => provideClient(ProfilePage, props)} />
           <Route path="/callback" 
                 render={props => {
                   return <CallbackPage {...props} />;

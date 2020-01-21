@@ -17,7 +17,7 @@ const styles = {
   main,
   mainRaised: {
     ...mainRaised,
-    margin: "80px 30px 60px 30px",
+    margin: "8vh 30px 8vh 30px",
   },
   mrAuto,
   mlAuto,

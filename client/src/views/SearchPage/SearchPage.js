@@ -75,7 +75,7 @@ export default function SearchPage(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
+      <div style={{backgroundColor: '#02C39A', paddingTop: '1px', paddingBottom: '5vh', minHeight: '100vh'}}>
         <Header
           brand="Skedge"
           links={<HeaderLinks dropdownHoverColor="info"/>}

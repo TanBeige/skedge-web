@@ -1520,6 +1520,45 @@ mutation add_moment($eventId: Int!, $sourceId: String!, $creatorId: String!){
 `
 
 
+// --------------ANONYMOUS USER REQUESTS--------------
+
+const USER_FRAGMENT_ANONYMOUS = gql`
+  fragment UserFragmentAnonymous on users {
+    auth0_id
+    full_name
+    name
+    email
+    biography
+    picture
+    verified
+    entity
+    
+    followers_aggregate(where: {status: {_eq: 1}}) {
+      aggregate {
+        count
+      }
+    }
+
+    following_aggregate(where: {status: {_eq: 1}}) {
+      aggregate {
+        count
+      }
+    }
+  }
+`;
+
+// Fetch Users
+const QUERY_USER_PROFILE_ANONYMOUS = gql`
+  query fetch_user($username: String!) {
+    users(
+      where: {name: { _eq: $username }}
+    ) {  
+      ...UserFragmentAnonymous
+    }
+  }
+  ${USER_FRAGMENT_ANONYMOUS}
+`;
+
 export {
   QUERY_FILTERED_EVENT,
   FETCH_FOLLOWING_FEED,
@@ -1577,7 +1616,9 @@ export {
   QUERY_CHECK_FRIEND,
   QUERY_BOTTOM_NAV,
   QUERY_EVENT_PAGE_MOMENTS,
-  MUTATION_ADD_MOMENT
+  MUTATION_ADD_MOMENT,
+
+  QUERY_USER_PROFILE_ANONYMOUS
 };
 
 

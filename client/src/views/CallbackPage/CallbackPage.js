@@ -25,7 +25,7 @@ class CallbackPage extends Component {
     
     return (
       <div style={style}>
-        <img src={loading} alt="loading" />
+        <img src={loading} alt="Callback loading" />
       </div>
     );
   }

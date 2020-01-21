@@ -49,7 +49,8 @@ cloudinary.config({
 
 export default function ProfileTopSection(props) {
 
-  const { logout } = useAuth0();
+  const { user } = useAuth0();
+  
   let fileInput = React.createRef();
 
 
@@ -129,7 +130,7 @@ export default function ProfileTopSection(props) {
 
   //Follow/Following Button
   const followButton = () => {
-    if (props.values.currentUserProfile) {
+    if (props.values.currentUserProfile || !user) {
       return null;
     }
     else if(props.values.followingStatus === 1) {

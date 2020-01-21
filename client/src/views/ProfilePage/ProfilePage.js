@@ -13,6 +13,8 @@ import GridItem from "components/Grid/GridItem.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import NavPills from "components/NavPills/NavPills.js";
 import LockIcon from '@material-ui/icons/Lock';
+import Button from "components/CustomButtons/Button.js";
+
 
 //Popup Notification
 import SnackbarContent from "components/Snackbar/SnackbarContent";
@@ -38,6 +40,7 @@ import {
   MUTATION_FOLLOW_REQUEST,
   MUTATION_FOLLOW_DELETE,
   MUTATION_EDIT_USER,
+  QUERY_USER_PROFILE_ANONYMOUS,
   REFETCH_USER_INFO
 } from 'EventQueries/EventQueries.js'
 import { getArgumentValues } from "graphql/execution/values";
@@ -72,7 +75,7 @@ export default function ProfilePage(props, { ...rest }) {
 
   //// Grab Current User ID and user info
   const userName = props.match.params.id;
-  const { isAuthenticated, user } = useAuth0();
+  const { isAuthenticated, user, loginWithPopup } = useAuth0();
 
   // Page is Loading variable
   const [isLoading, setIsLoading] = useState(false);
@@ -104,6 +107,19 @@ export default function ProfilePage(props, { ...rest }) {
     userEvents: [],
     userReposts: []
   })
+
+  //Record if the user signs up/in
+  const handleLogin = () => {
+    //Google Analytics Record when someone Clicks this
+    ReactGA.initialize('UA-151937222-1');
+    ReactGA.event({
+      category: 'User',
+      action: 'Created an Account/Logged In'
+    });
+    //Then Login/Sign up
+    // loginWithRedirect({});
+    loginWithPopup({});
+  }
 
   const handleProfileEdit = async (vals) => {
     // setValues({
@@ -285,7 +301,7 @@ export default function ProfilePage(props, { ...rest }) {
     setIsLoading(true);
 
     props.client.query({
-      query: QUERY_USER_PROFILE,
+      query: user ? QUERY_USER_PROFILE : QUERY_USER_PROFILE_ANONYMOUS,
       variables: {
         username: userName,
       }
@@ -298,25 +314,29 @@ export default function ProfilePage(props, { ...rest }) {
           })
         }
         else {
-          //Find the relationship between Current User and Profile User
-          let followType = 0
-
-          //if user has followers
-          if(data.data.users[0].followers) {
-            const followValues = data.data.users[0].followers.find(users => users.user_id === user.sub) 
-            //If current user is following profile confirmed
-            if(followValues) {
-              followType = followValues.status;
+          let followType = -1
+          if(user){
+            //Find the relationship between Current User and Profile User
+            //if user has followers
+            if(data.data.users[0].followers) {
+              const followValues = data.data.users[0].followers.find(users => users.user_id === user.sub) 
+              //If current user is following profile confirmed
+              if(followValues) {
+                followType = followValues.status;
+              }
+              else{
+                // If user is not following profile confirmed
+                followType = -1;
+              }
             }
-            else{
-              // If user is not following profile confirmed
+            //User has no followers
+            else {
               followType = -1;
             }
           }
-          //User has no followers
-          else {
-            followType = -1;
-          }
+
+          let tempUserSub = user ? user.sub : undefined
+          
 
           // Set Values
           setValues({
@@ -337,7 +357,7 @@ export default function ProfilePage(props, { ...rest }) {
             followerCount: data.data.users[0].followers_aggregate.aggregate.count,
             followingCount: data.data.users[0].following_aggregate.aggregate.count,
 
-            currentUserProfile: (user.sub === data.data.users[0].auth0_id) ? true : false,
+            currentUserProfile: (tempUserSub === data.data.users[0].auth0_id) ? true : false,
 
             followingStatus: followType,
             isEntity: data.data.users[0].entity
@@ -361,14 +381,14 @@ export default function ProfilePage(props, { ...rest }) {
     console.log("getting user")
 
     console.log("is auth?: ", isAuthenticated)
-    if (isAuthenticated) {
+    // if (isAuthenticated) {
       getUser();  
-    }
+    // }
 
     return () => {
       isMounted = false;
     }
-  }, [values.auth0Id, userName, isAuthenticated])
+  }, [values.auth0Id, userName, props.client])
 
   //Google Analytics useEffects
   useEffect(()=>{
@@ -405,14 +425,31 @@ export default function ProfilePage(props, { ...rest }) {
     }
     else {
       profileContent = (
-        //<h3 style={{margin: '50px 20px', textAlign: 'center'}}>Must be following to view.</h3>
-        <LockIcon style={{margin: '50px 0px', textAlign: 'center', width: '100%', height: 75}} />
+        // <h3 style={{margin: '50px 20px', textAlign: 'center'}}>Must be following to view.</h3>
+        <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em', maxWidth: '260px'}}>
+          <LockIcon style={{marginTop: '30px', textAlign: 'center', width: '100%', height: 60}} />
+          {
+            !user ? 
+            <div>
+              <h3>Sign up to see what your friends are up to!</h3>
+              <Button
+                color="primary"
+                onClick={handleLogin}
+              >
+                Login or Sign Up
+              </Button>
+            </div>
+             : 
+            <h4 style={{textAlign: 'center'}}>Must be following to view account</h4>
+
+          }
+        </div>
       )
     }
     
     // Gradient colors: 'linear-gradient(#02C39A 200px, white 400px)'
     return (
-    <div id="scrollDiv" style={{minHeight: '100vh', backgroundImage: 'linear-gradient(#52D3B6 300px, white 400px)' , paddingTop: '20px'}}>
+    <div id="scrollDiv" style={{minHeight: '100vh', backgroundColor: '#02C39A' ,paddingBottom: '5vh', paddingTop: '1px'}}>
       <ThemeProvider theme={theme}>
         <Header
           color="primary"
@@ -424,7 +461,7 @@ export default function ProfilePage(props, { ...rest }) {
         />
         { isLoading ? (<LoadingPage />) : 
           (
-            <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '90vh', marginBottom: '6vh', marginTop: '8vh'}}>
+            <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '82vh', marginBottom: '6vh', marginTop: '8vh'}}>
               <div className={classes.container}>
                 <ProfileTopSection 
                   values={values} 
