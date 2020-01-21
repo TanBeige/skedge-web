@@ -79,7 +79,7 @@ export default function InviteUsers (props) {
       privacyText = "Your event can be seen by all of your followers."
     }
     else if (inviteSettings.inviteOnly) {
-      privacyText = "Your event can only be seen by users you invite."
+      privacyText = "Your event can only be seen by users you invite. No one else."
     }
     else if(inviteSettings.allowGuestInvites){
       privacyText = "Your event can only be seen by invited users."

@@ -384,7 +384,7 @@ export default function EventPage(props) {
         if(user.sub === values.user_auth0_id || values.event_cohosts.some(u => (u.cohost.auth0_id === user.sub && u.accepted === true))) {
           return (
             <div>
-                <Button size='sm' style={{marginTop: 20, marginBottom: 8}} color="tumblr">Edit Invites</Button>
+                {/* <Button size='sm' style={{marginTop: 20, marginBottom: 8}} color="tumblr">Edit Invites</Button> */}
                 <EditEventButton 
                     client={props.client}
                     userId={user.sub}
@@ -393,7 +393,7 @@ export default function EventPage(props) {
                     oldEvent={values}
                     handleDeleteEvent={handleDeleteEvent}
                 />
-                <Button disabled={!user.sub === values.user_auth0_id} size='sm' style={{marginTop: 20, marginBottom: 8}} color="pinterest">Edit Cohosts</Button>
+                {/* <Button disabled={!user.sub === values.user_auth0_id} size='sm' style={{marginTop: 20, marginBottom: 8}} color="pinterest">Edit Cohosts</Button> */}
               </div>
           )
         }
