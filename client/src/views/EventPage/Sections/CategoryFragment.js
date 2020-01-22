@@ -21,91 +21,91 @@ export default function CategoryFragment({category}) {
     switch(category) {
       case "Music": 
         genre = (
-          <Button color="rose" size="lg" round>
+          <Button color="rose"  round>
             <MusicNoteIcon /> {category}
           </Button>
         )
         break;
       case "Arts/Culture": 
         genre = (
-          <Button color="rose" size="lg" round>
+          <Button color="rose"  round>
             <BrushIcon /> {category}
           </Button>
         )
         break;
     case "Business": 
         genre = (
-          <Button color="rose" size="lg" round>
+          <Button color="rose"  round>
             <DomainIcon /> {category}
           </Button>
         )
         break;
     case "Comedy": 
         genre = (
-          <Button color="rose" size="lg" round>
+          <Button color="rose"  round>
             <MicNoneIcon /> {category}
           </Button>
         )
         break;
     case "Education": 
         genre = (
-          <Button color="rose" size="lg" round>
+          <Button color="rose"  round>
             <SchoolIcon /> {category}
           </Button>
         )
         break;
     case "Food/Drink": 
         genre = (
-          <Button color="rose" size="lg" round>
+          <Button color="rose"  round>
             <FastfoodIcon /> {category}
           </Button>
         )
         break;
     case "Games": 
         genre = (
-          <Button color="rose" size="lg" round>
+          <Button color="rose"  round>
             <SportsEsportsIcon /> {category}
           </Button>
         )
         break;
     case "Movies/Theater": 
         genre = (
-          <Button color="rose" size="lg" round>
+          <Button color="rose"  round>
             <TheatersIcon /> {category}
           </Button>
         )
         break;
     case "Night Life": 
         genre = (
-          <Button color="rose" size="lg" round>
+          <Button color="rose"  round>
             <TheatersIcon /> {category}
           </Button>
         )
         break;
     case "Party": 
         genre = (
-          <Button color="rose" size="lg" round>
+          <Button color="rose"  round>
             <WhatshotIcon /> {category}
           </Button>
         )
         break;
     case "Politics": 
         genre = (
-          <Button color="rose" size="lg" round>
+          <Button color="rose"  round>
             <HowToRegIcon /> {category}
           </Button>
         )
         break;
     case "Seasonal": 
         genre = (
-          <Button color="rose" size="lg" round>
+          <Button color="rose"  round>
             <AcUnitIcon /> {category}
           </Button>
         )
         break;
     case "Sports": 
         genre = (
-          <Button color="rose" size="lg" round>
+          <Button color="rose"  round>
             <SportsBasketballIcon /> {category}
           </Button>
         )
@@ -113,7 +113,7 @@ export default function CategoryFragment({category}) {
     }
 
     return (
-        <div>
+        <div styyle={{position: 'absolute', right: 0, top: 30}}>
             {genre}
         </div>
     )

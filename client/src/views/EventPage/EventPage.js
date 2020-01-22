@@ -181,7 +181,7 @@ export default function EventPage(props) {
           updated_at: data.data.events[0].updated_at,
       
           cover_uuid: data.data.events[0].image.image_uuid,
-          cover_url: cloudinary.url(data.data.events[0].image.image_uuid, {secure: true, height: window.innerHeight, crop: "scale", fetch_format: "auto", quality: "auto"}),
+          cover_url: cloudinary.url(data.data.events[0].image.image_uuid, {secure: true, height: Math.floor(window.innerHeight * 0.6), crop: "scale", fetch_format: "auto", quality: "auto"}),
           cover_pic: data.data.events[0].cover_pic,
 
           user_id: data.data.events[0].user.id,
@@ -382,7 +382,6 @@ export default function EventPage(props) {
   }, [])
 
   let titleSize = '10vw'
-  console.log("inner width: ", window.innerWidth)
 
   if (window.innerWidth > 1000) {
     titleSize = '5vw'
@@ -450,25 +449,23 @@ export default function EventPage(props) {
     const userLink = `/${values.user_name}`
     return(
       <div>
-        
-
-        <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 50,  left: 22, zIndex: 100}} color="primary">
+        <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 5,  left: 20, zIndex: 100}} color="primary">
                 <ChevronLeftIcon/>
             </Button>
         <Parallax image={values.cover_url} filter="dark">
           <div className={classes.container} >
             
             <GridContainer justify="center" >
-              <GridItem  className={classes.textCenter} style={{paddingLeft: 0, paddingRight: 0}}>
+              <GridItem  className={classes.textCenter} style={{paddingLeft: 0, paddingRight: 0}}>                
                 <h1 className={classes.title} style={{fontSize: titleSize, wordWrap: 'break-word'}}>
                   {values.name}
                 </h1>
-                <h4 className={classes.subtitle}>
-                  Created by: <Link to={userLink}>{values.user_name}</Link>
-                </h4>
-                <br />
+                <div>
+                  <h4 className={classes.subtitle} style={{alignSelf: 'center'}}>
+                    {` Created by:` } <Link to={userLink}>{values.user_name}</Link>
+                  </h4>
                   <CategoryFragment category={values.category}/>
-                <br />       
+                </div>  
                 {
                   !user ? 
                   <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em',paddingBottom: '12', maxWidth: '260px'}}>
@@ -557,15 +554,17 @@ export default function EventPage(props) {
             
             <GridContainer justify="center">
               <GridItem md={10} className={classes.textCenter}>
+
                 <h1 className={classes.title} style={{fontSize: titleSize, wordWrap: 'break-word'}}>
                   {values.name}
                 </h1>
-                <h4 className={classes.subtitle}>
-                  Created by: <Link to={userLink}>{values.user_name}</Link>
-                </h4>
-                <br />
-                  <CategoryFragment category={values.category}/>
-                <br />
+                <div>
+                  <h4 className={classes.subtitle} style={{alignSelf: 'center'}}>
+                    {` Created by:` } <Link to={userLink}>{values.user_name}</Link>
+                    <CategoryFragment category={values.category}/>
+
+                  </h4>
+                </div>  
 
                 {editingEvent()}
                 

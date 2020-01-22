@@ -131,15 +131,15 @@ export default function LandingPage(props) {
 
         </div>
       </Parallax>
-      <div className={classNames(classes.main, classes.mainRaised)}>
-      <Button style={{position: 'fixed', bottom: 55, right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
+      {/* <div className={classNames(classes.main, classes.mainRaised)}> */}
+        <Button style={{position: 'fixed', bottom: 55, right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
               <ArrowUpwardIcon style={{color: "white"}} />
         </Button>
         <div className={classes.container} style={{paddingBottom: 0}}>
           <SectionTeam client={props.client}/>
           {/* <SectionWork /> */}
         </div>
-      </div>
+      {/* </div> */}
       <Footer
         content={
           <div>
