@@ -179,7 +179,7 @@ export const MakeMainRoutes = () => {
   else {
     return(
       <Router history={hist}>
-        <div>
+        <div style={{backgroundColor: 'white'}}>
         <Switch>
           <Route exact path="/about-us" render={props => provideClient(AboutUsPage, props)} />
           <PrivateRoute path="/event" render={props => provideClient(EventPage, props)} />

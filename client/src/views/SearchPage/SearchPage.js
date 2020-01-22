@@ -75,7 +75,7 @@ export default function SearchPage(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <div style={{backgroundColor: '#02C39A', paddingTop: '1px', paddingBottom: '5vh', minHeight: '100vh'}}>
+      <div style={{paddingTop: '7vh', paddingBottom: '5vh', minHeight: '100vh'}}>
         <Header
           brand="Skedge"
           links={<HeaderLinks dropdownHoverColor="info"/>}
@@ -87,7 +87,7 @@ export default function SearchPage(props) {
           }}
         />
 
-        <div className={classNames(classes.main, classes.mainRaised)}>
+        {/* <div className={classNames(classes.main, classes.mainRaised)}> */}
           <div className={classes.container}>
             <Card plain>
               <CardBody plain>
@@ -148,7 +148,7 @@ export default function SearchPage(props) {
               </CardBody>
             </Card>
           </div>
-        </div>
+        {/* </div> */}
       </div>
     </ThemeProvider>
   );

@@ -63,7 +63,7 @@ const useStyles = makeStyles(blogPostPageStyle);
 export default function EventPage(props) {
   const eventId = props.match.params.id;
 
-  const { loading, user, isAuthenticated} = useAuth0();
+  const { loading, user, isAuthenticated, loginWithPopup} = useAuth0();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -118,6 +118,17 @@ export default function EventPage(props) {
 
   const goBack = () => {
     props.history.goBack()
+  }
+  const handleLogin = () => {
+    //Google Analytics Record when someone Clicks this
+    ReactGA.initialize('UA-151937222-1');
+    ReactGA.event({
+      category: 'User',
+      action: 'Created an Account/Logged In'
+    });
+    //Then Login/Sign up
+    // loginWithRedirect({});
+    loginWithPopup({});
   }
 
   const getEvent = () => {
@@ -457,7 +468,20 @@ export default function EventPage(props) {
                 </h4>
                 <br />
                   <CategoryFragment category={values.category}/>
-                <br />                
+                <br />       
+                {
+                  !user ? 
+                  <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em',paddingBottom: '12', maxWidth: '260px'}}>
+                    <h3 style={{color:'white'}}>Sign up to see what your friends are up to.</h3>
+                    <Button
+                      color="white"
+                      style={{color: 'black'}}
+                      onClick={handleLogin}
+                    >
+                      Login or Sign Up
+                    </Button>
+                  </div> : ""
+                }         
               </GridItem>
             </GridContainer>
           </div>

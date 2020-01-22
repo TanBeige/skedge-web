@@ -105,7 +105,7 @@ export default function NotificationsPage(props) {
   const classes = useStyles();
   return (
     <ThemeProvider theme={theme}>
-      <div style={{minHeight: '92vh', backgroundColor: "#02C39A", paddingTop: '1px', paddingBottom: '5vh'}}>
+      <div style={{minHeight: '92vh', paddingTop: '20px', paddingBottom: '5vh'}}>
         <Header
           brand="Skedge"
           links={<HeaderLinks dropdownHoverColor="info"/>}
@@ -117,7 +117,7 @@ export default function NotificationsPage(props) {
           }}
         />
 
-        <div className={classNames(classes.main, classes.mainRaised)}>
+        {/* <div className={classNames(classes.main, classes.mainRaised)}> */}
           <div className={classes.container}>
             <Card plain >
               {
@@ -166,7 +166,7 @@ export default function NotificationsPage(props) {
               }
             </Card>
           </div>
-        </div>
+        {/* </div> */}
       </div>
     </ThemeProvider>
   );
