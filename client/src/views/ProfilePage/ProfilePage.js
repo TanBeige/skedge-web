@@ -75,7 +75,7 @@ export default function ProfilePage(props, { ...rest }) {
 
   //// Grab Current User ID and user info
   const userName = props.match.params.id;
-  const { isAuthenticated, user, loginWithPopup } = useAuth0();
+  const { isAuthenticated, user, loginWithPopup, loginWithRedirect } = useAuth0();
 
   // Page is Loading variable
   const [isLoading, setIsLoading] = useState(false);
@@ -117,8 +117,8 @@ export default function ProfilePage(props, { ...rest }) {
       action: 'Created an Account/Logged In'
     });
     //Then Login/Sign up
-    // loginWithRedirect({});
-    loginWithPopup({});
+    loginWithRedirect({});
+    // loginWithPopup({});
   }
 
   const handleProfileEdit = async (vals) => {

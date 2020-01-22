@@ -86,8 +86,8 @@ export default function LandingPage(props) {
     });
     console.log("recorded event")
     //Then Login/Sign up
-    // loginWithRedirect({})
-    loginWithPopup({})
+    loginWithRedirect({})
+    // loginWithPopup({})
   }
 
   //Mobile Image

@@ -63,7 +63,7 @@ const useStyles = makeStyles(blogPostPageStyle);
 export default function EventPage(props) {
   const eventId = props.match.params.id;
 
-  const { loading, user, isAuthenticated, loginWithPopup} = useAuth0();
+  const { loading, user, isAuthenticated, loginWithRedirect, loginWithPopup} = useAuth0();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -127,8 +127,8 @@ export default function EventPage(props) {
       action: 'Created an Account/Logged In'
     });
     //Then Login/Sign up
-    // loginWithRedirect({});
-    loginWithPopup({});
+    loginWithRedirect({});
+    // loginWithPopup({});
   }
 
   const getEvent = () => {
