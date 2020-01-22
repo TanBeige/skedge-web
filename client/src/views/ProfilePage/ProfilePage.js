@@ -409,9 +409,8 @@ export default function ProfilePage(props, { ...rest }) {
   }
   else {
     let profileContent = ""
-
     // If user are friends
-    if(values.followingStatus === 1 || values.currentUserProfile || values.isEntity) {
+    if(isAuthenticated && (values.followingStatus === 1 || values.currentUserProfile || values.isEntity)) {
       profileContent = (
         <FriendProfile 
           client={props.client}
@@ -431,7 +430,7 @@ export default function ProfilePage(props, { ...rest }) {
           {
             !user ? 
             <div>
-              <h3>Sign up to see what your friends are up to!</h3>
+              <h4>Sign up to see what your friend is up to.</h4>
               <Button
                 color="primary"
                 onClick={handleLogin}
