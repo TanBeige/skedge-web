@@ -215,7 +215,7 @@ html {
   -webkit-tap-highlight-color: transparent; }
 
 body {
-  background-color: #eee;
+  /* background-color: #eee; */
   color: #3c4858;
   margin: 0;
   font-size: 1rem;
@@ -278,7 +278,9 @@ dl {
   margin-bottom: 30px; }
 
 #root {
-  overflow: hidden; }
+  overflow: hidden;
+  background-color: white;
+ }
 
 #cd-vertical-nav {
   position: fixed;
@@ -499,7 +501,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   border-radius: 3px; }
 
 .noUi-connect {
-  background: #888;
+  background: white;
   border-radius: 3px;
   -webkit-transition: background 450ms;
   transition: background 450ms; }

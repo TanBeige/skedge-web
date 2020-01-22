@@ -105,7 +105,7 @@ export default function NotificationsPage(props) {
   const classes = useStyles();
   return (
     <ThemeProvider theme={theme}>
-      <div style={{backgroundColor: "#02C39A", paddingTop: '1px', paddingBottom: '5vh'}}>
+      <div style={{minHeight: '92vh', backgroundColor: "#02C39A", paddingTop: '1px', paddingBottom: '5vh'}}>
         <Header
           brand="Skedge"
           links={<HeaderLinks dropdownHoverColor="info"/>}

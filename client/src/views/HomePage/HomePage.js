@@ -170,7 +170,7 @@ export default function HomePage(props) {
   else {
     return (
       // <div style={{backgroundColor: "#52D3B6"}}>
-      <div style={{backgroundColor: '#02C39A', paddingTop: '1px', paddingBottom: '5vh'}}>
+      <div style={{paddingTop: '1px', paddingBottom: '5vh'}}>
         <Header
           brand="Skedge"
           //links={<HeaderLinks dropdownHoverColor="info"/>}
@@ -181,11 +181,11 @@ export default function HomePage(props) {
             color: "primary"
           }}
         />
-        <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '5vh', marginTop: '8vh'}}>
+        {/* <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '5vh', marginTop: '8vh'}}> */}
           <Button style={{position: 'fixed', bottom: 55, right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
                 <ArrowUpwardIcon style={{color: "white"}} />
           </Button>
-          <div className={classes.container} style={{marginTop: '3em'}} >
+          <div className={classes.container} style={{ marginTop: '7vh'}} >
 
             {/* <h1 className='homeTitle'>Skedge</h1> */}
             {
@@ -198,7 +198,7 @@ export default function HomePage(props) {
               />
             }
           </div>
-        </div>
+        {/* </div> */}
       </div>
     );
   }

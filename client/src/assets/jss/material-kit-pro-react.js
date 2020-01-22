@@ -159,18 +159,18 @@ const containerFluid = {
 };
 const container = {
   ...containerFluid,
-  // "@media (min-width: 576px)": {
-  //   maxWidth: "540px"
-  // },
-  // "@media (min-width: 768px)": {
-  //   maxWidth: "720px"
-  // },
-  // "@media (min-width: 992px)": {
-  //   maxWidth: "960px"
-  // },
-  // "@media (min-width: 1200px)": {
-  //   maxWidth: "1140px"
-  // }
+  "@media (min-width: 576px)": {
+    maxWidth: "540px"
+  },
+  "@media (min-width: 768px)": {
+    maxWidth: "720px"
+  },
+  "@media (min-width: 992px)": {
+    maxWidth: "960px"
+  },
+  "@media (min-width: 1200px)": {
+    maxWidth: "1140px"
+  }
 };
 
 const card = {
@@ -361,14 +361,14 @@ const main = {
 };
 
 const mainRaised = {
-  "@media (max-width: 576px)": {
-    //marginTop: "-30px"
-  },
-  "@media (max-width: 830px)": {
-    marginLeft: "10px",
-    marginRight: "10px"
-  },
-  margin: "-60px 30px 0px",
+  // "@media (max-width: 576px)": {
+  //   //marginTop: "-30px"
+  // },
+  // "@media (max-width: 830px)": {
+  //   marginLeft: "10px",
+  //   marginRight: "10px"
+  // },
+  // margin: "-60px 30px 0px",
   borderRadius: "6px",
   boxShadow:
     "0 16px 24px 2px rgba(" +

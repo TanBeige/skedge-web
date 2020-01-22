@@ -52,7 +52,7 @@ const profilePageStyle = {
   },
   mainRaised: {
     ...mainRaised,
-    margin: "0px 30px 0px",
+    // margin: "0px 30px 0px",
   },
   title: {
     ...title,

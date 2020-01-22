@@ -448,7 +448,7 @@ export default function ProfilePage(props, { ...rest }) {
     
     // Gradient colors: 'linear-gradient(#02C39A 200px, white 400px)'
     return (
-    <div id="scrollDiv" style={{minHeight: '100vh', backgroundColor: '#02C39A' ,paddingBottom: '5vh', paddingTop: '1px'}}>
+    <div id="scrollDiv" style={{paddingBottom: '5vh', paddingTop: '1px'}}>
       <ThemeProvider theme={theme}>
         <Header
           color="primary"
@@ -460,8 +460,8 @@ export default function ProfilePage(props, { ...rest }) {
         />
         { isLoading ? (<LoadingPage />) : 
           (
-            <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '82vh', marginBottom: '6vh', marginTop: '8vh'}}>
-              <div className={classes.container}>
+            // <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '82vh', marginBottom: '6vh', marginTop: '8vh'}}>
+              <div className={classes.container} style={{marginTop: '7vh'}}>
                 <ProfileTopSection 
                   values={values} 
                   followInvite={handleFollowInvite} 
@@ -472,7 +472,7 @@ export default function ProfilePage(props, { ...rest }) {
                 />    
                 {profileContent}
               </div>
-            </div>
+            // </div>
           )
         }
       </ThemeProvider>
