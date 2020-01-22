@@ -105,7 +105,7 @@ export default function NotificationsPage(props) {
   const classes = useStyles();
   return (
     <ThemeProvider theme={theme}>
-      <div style={{minHeight: '92vh', paddingTop: '20px', paddingBottom: '5vh'}}>
+      <div style={{minHeight: '92vh', paddingTop: '5vh', paddingBottom: '5vh'}}>
         <Header
           brand="Skedge"
           links={<HeaderLinks dropdownHoverColor="info"/>}
@@ -122,7 +122,7 @@ export default function NotificationsPage(props) {
             <Card plain >
               {
                 isAuthenticated && user ? 
-                  <CardBody plain>
+                  <CardBody style={{paddingTop: 0}} plain>
                     {/* <h3 className={classes.cardTitle}>Notifications</h3> */}
                     <Tabs
                       value={active}
