@@ -49,14 +49,27 @@ const useStyles = makeStyles(landingPageStyle);
 export default function LandingPage(props) {
 
   const { isAuthenticated, loginWithRedirect, loginWithPopup } = useAuth0();
-  // const myRef = useRef(null)
-  // const executeScroll = () => scrollToRef(myRef)
+  // const [showButton, setShowButton] = useState(false)
 
+  // Button Showing on Scroll
+//   const handleShowButton = () => {
+//     console.log(window.scrollY);
+//     window.scrollY > 400 ? setShowButton(true) : setShowButton(false);
+//  }
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   });
+
+  // React.useEffect(() => {
+  //   window.addEventListener('scroll', handleShowButton);
+
+  //   return () => {
+  //     window.removeEventListener('scroll', handleShowButton);
+  //   }
+  // }, []);
+
   const classes = useStyles();
 
   if (isAuthenticated) {
@@ -136,6 +149,13 @@ export default function LandingPage(props) {
               <ArrowUpwardIcon style={{color: "white"}} />
         </Button>
         <div className={classes.container} style={{paddingBottom: 0}}>
+          {/* <Button
+            color="primary"
+            onClick={handleLogin}
+            style={{position: 'fixed', top: 100, zIndex: 100 , visibility: showButton ? 'visible' : 'hidden'}}
+          >
+            Login or Sign Up
+          </Button> */}
           <SectionTeam client={props.client}/>
           {/* <SectionWork /> */}
         </div>

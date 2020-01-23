@@ -468,8 +468,8 @@ export default function EventPage(props) {
                 </div>  
                 {
                   !user ? 
-                  <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em',paddingBottom: '12', maxWidth: '260px'}}>
-                    <h3 style={{color:'white'}}>Sign up to see what your friends are up to.</h3>
+                  <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em',paddingBottom: '12', maxWidth: '300px'}}>
+                    <h3 style={{color:'white'}}>Sign up to see more events like this happening soon.</h3>
                     <Button
                       color="white"
                       style={{color: 'black'}}
