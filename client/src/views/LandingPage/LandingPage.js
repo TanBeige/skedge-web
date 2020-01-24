@@ -27,6 +27,7 @@ import SectionTeam from "./Sections/SectionTeam.js";
 import SectionTitle from "./Sections/SectionTitle.js"
 
 import InformationPopover from 'components/InformationPopover.js'
+import AppearOnScroll from 'components/AppearOnScroll.js'
 
 //Authorization
 import { useAuth0 } from '../../Authorization/react-auth0-wrapper';
@@ -42,8 +43,6 @@ import ReactGA from 'react-ga';
 
 const useStyles = makeStyles(landingPageStyle);
 
-//Scrolling down when arrow is clicked
-//const scrollToRef = (ref) => ref.current.scrollIntoView({behavior: 'smooth'})   
 
 
 export default function LandingPage(props) {
@@ -68,7 +67,7 @@ export default function LandingPage(props) {
   //   return () => {
   //     window.removeEventListener('scroll', handleShowButton);
   //   }
-  // }, []);
+  // });
 
   const classes = useStyles();
 
@@ -125,13 +124,15 @@ export default function LandingPage(props) {
             <GridItem xs={12} sm={6} md={6}>
               <SectionTitle className={classes.title} />
               <h4>
-                The social event app where you find, share, and create your favorite events all in one place. 
-                Don’t worry, it’s free.
+                The social event app where you find, share, and create your favorite events, all in one place. 
+                Sign up to see what your friends are planning.
               </h4>
               <br />
               <Button
                 color="primary"
                 onClick={handleLogin}
+                // style={{position: 'fixed', top: 300}}
+                className='signup'
               >
                 Login or Sign Up
               </Button>
@@ -149,13 +150,16 @@ export default function LandingPage(props) {
               <ArrowUpwardIcon style={{color: "white"}} />
         </Button>
         <div className={classes.container} style={{paddingBottom: 0}}>
-          {/* <Button
-            color="primary"
-            onClick={handleLogin}
-            style={{position: 'fixed', top: 100, zIndex: 100 , visibility: showButton ? 'visible' : 'hidden'}}
-          >
-            Login or Sign Up
-          </Button> */}
+          
+          <AppearOnScroll scrollInHeight={500}>
+            <Button
+              color="primary"
+              onClick={handleLogin}
+              style={{margin: 'auto', width: '100%',height: '6vh'}}
+            >
+              Login or Sign Up
+            </Button>
+          </AppearOnScroll>
           <SectionTeam client={props.client}/>
           {/* <SectionWork /> */}
         </div>
