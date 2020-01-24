@@ -124,7 +124,7 @@ export default function EventPage(props) {
     ReactGA.initialize('UA-151937222-1');
     ReactGA.event({
       category: 'User',
-      action: 'Signup/Login through Event Page'
+      action: 'Created an Account/Logged In'
     });
     //Then Login/Sign up
     loginWithRedirect({});
