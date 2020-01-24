@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
+var compression = require('compression')
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -49,6 +51,10 @@ app.use(express.static(path.join(__dirname, 'client/build')))
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/build/index.html'))
 })
+
+//compression
+app.use(compression())
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
