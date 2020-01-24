@@ -52,7 +52,7 @@ export default function RequestList(props) {
                         return <TextDisplay text='Error loading requests.'/>
                     }
                     if(data.follower.length === 0) {
-                        return <TextDisplay text='No follow requests at this time.'/>
+                        return <TextDisplay text='You have no new friend requests.'/>
                     }
                     else {
                         handleNumberChange(data.follower.length)

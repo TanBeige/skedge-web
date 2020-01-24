@@ -43,7 +43,7 @@ const moment = require("moment")
 
 
 // Functional Component
-export default function EventCardListHome(props) {
+export default function ProfileFuture(props) {
   // Checks if we are still grabbing events
   const [isSearch, setIsSearch] = useState(false);
 
@@ -240,10 +240,12 @@ export default function EventCardListHome(props) {
 
   
   if(isSearch) {
-    return (""
-    // <div style={{textAlign: 'center'}}>
-    //   <CircularProgress size={20} color='primary'/>
-    // </div>
+    return (
+    <div style={{textAlign: 'center', position: 'absolute', bottom: 0, left: '50%', width: '200px', marginLeft: '-100px', marginBottom: '-30px'}}>
+      <p>Checking {values.filter.date.formatDate()}</p>
+      {/* <br /> */}
+      <CircularProgress size={20} color='primary'/>
+    </div>
     )
   }
 
@@ -269,8 +271,8 @@ export default function EventCardListHome(props) {
     {
       return(
         <Fragment>
-            <h5 style={{marginTop: 20, textAlign: 'center', width: '100%'}}>There are no events this day.</h5>
-          </Fragment>
+          <h5 style={{marginTop: 20, textAlign: 'center', width: '100%'}}>There are no events this day.</h5>
+        </Fragment>
       )
     }
   }
@@ -293,7 +295,7 @@ export default function EventCardListHome(props) {
           dataLength={values.eventsLength}
           next={loadMoreClicked}
           hasMore={!activateFuture}
-          // loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
+          // loader={<div style={{textAlign: 'center'}}>Checking {values.filter.date.formatDate()}<CircularProgress size={20} color='primary'/></div>}
           style={{overflow: 'none'}}
           //scrollableTarget="scrollableDiv"
       >

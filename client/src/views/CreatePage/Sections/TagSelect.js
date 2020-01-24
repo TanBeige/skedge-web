@@ -102,7 +102,7 @@ export default function TagSelect(props) {
             <div className={classes.paper}>
                 <div className='TagSelect'>
                     <FormControl component="fieldset">
-                        <FormLabel component="legend">Choose Primary and Secondary categories</FormLabel>
+                        <FormLabel component="legend">Choose up to two (2) categories.</FormLabel>
                             <FormGroup>
                                 <EventTags values={values} handleToggle={handleToggle}/>
                             </FormGroup>
@@ -116,7 +116,7 @@ export default function TagSelect(props) {
                             value={values.tags}
                             onChange={handleTags}
                             tagProps={{ className: "react-tagsinput-tag primary" }}
-                            //inputProps={{ placeholder: 'Press enter between tags.'}}
+                            inputProps={{ placeholder: 'Add a tag (separate w/ commas).'}}
                             place
                             />
                         </div>

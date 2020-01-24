@@ -1726,7 +1726,7 @@ button.slick-arrow.slick-next {
   margin-top: 1px;
   outline: none;
   padding: 5px;
-  width: 80px; }
+  width: 100%; }
 
 .react-tagsinput .react-tagsinput-tag {
   -webkit-transition: all 300ms ease 0s;

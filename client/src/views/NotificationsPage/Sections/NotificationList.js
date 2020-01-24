@@ -116,7 +116,7 @@ export default function NotificationList(props) {
       return <TextDisplay text="Loading..."/>
     }
     else if(notifs.notifications.length === 0){
-      return <TextDisplay text="You have no notification"/>
+      return <TextDisplay text={`You have no notifications. \nFollow friends & businesses near you for more.`}/>
     }
 
     return (
@@ -143,7 +143,7 @@ export default function NotificationList(props) {
 
 function TextDisplay({text}) {
     return(
-        <div style={{textAlign: 'center', fontSize: 20, marginTop: 25}}>
+        <div style={{textAlign: 'center', fontSize: 20, marginTop: 25, whiteSpace: 'pre-line'}}>
             {text}
         </div>
     )

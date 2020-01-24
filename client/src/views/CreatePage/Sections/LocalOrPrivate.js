@@ -87,10 +87,11 @@ export default function LocalOrPrivate(props) {
                         horizontal: "center"
                     }}
                 >
-                <h3 className={classes.popoverHeader}>For Paid Users.</h3>
+                <h3 className={classes.popoverHeader}>For Entities only.</h3>
                 <div className={classes.popoverBody}>
-                    Local events are displayed to every user on Skedge. 
-                    To create local events, check <Link to="/subscriptions">here</Link>.
+                    You must create an entity (business) account in order to post Local events. 
+                    <br />Entity accounts will be available soon.
+                    {/* To create local events, check <Link to="/subscriptions">here</Link>. */}
                 </div>
                 </Popover>
             </div>
