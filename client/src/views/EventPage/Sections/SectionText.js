@@ -83,11 +83,11 @@ export default function SectionText({ eventInfo, client }) {
     ReactGA.initialize('UA-151937222-1');
     ReactGA.event({
       category: 'User',
-      action: 'Created an Account/Logged In'
+      action: 'Signup/Login through Event Page'
     });
     //Then Login/Sign up
-    // loginWithRedirect({});
-    loginWithPopup({});
+    loginWithRedirect({});
+    // loginWithPopup({});
   }
 
 
