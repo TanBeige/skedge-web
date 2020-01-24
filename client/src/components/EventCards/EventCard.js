@@ -27,6 +27,10 @@ import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
 // import Badge from 'components/Badge/Badge.js';
 
+//Notification Popups
+import { store } from 'react-notifications-component';
+
+
 //Event Moments
 import EventMomentsWrapper from 'components/EventMoments/EventMomentsWrapper.js';
 
@@ -207,7 +211,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
             ...values,
             ifReposted: "inherit",
             repostAmount: (values.repostAmount - 1)
-          })
+          });
         })
       }
       else {
@@ -235,7 +239,20 @@ export default function EventCard({event, client, userId, currentDate, listType}
             ...values,
             ifReposted: "primary",
             repostAmount: (values.repostAmount + 1)
-          })
+          });
+          store.addNotification({
+            title: `Event shared!`,
+            message: `You have shared this event.`,
+            type: "info",
+            insert: "bottom",
+            container: "bottom-center",
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+              duration: 5000,
+              onScreen: false
+            }
+        });
         })
       }
     }
@@ -288,7 +305,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
             ...values,
             ifLiked: "secondary",
             likeAmount: (values.likeAmount + 1)
-          })
+          });
         })
       }
     }

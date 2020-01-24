@@ -1,6 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import Button from 'components/CustomButtons/Button.js'
+
 import { useAuth0 } from 'Authorization/react-auth0-wrapper';
+import { store } from 'react-notifications-component';
+
+
+
 
 import {
     MUTATION_EVENT_SAVE,
@@ -51,6 +56,19 @@ export default function GoingSaveButtons (props) {
                 ...values,
                 ifGoing: false,
             })
+            store.addNotification({
+                title: `Not Going`,
+                message: `You are not going to this event.`,
+                type: "danger",
+                insert: "bottom",
+                container: "bottom-center",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 5000,
+                  onScreen: false
+                }
+            });
         })
     }
     // Change to Going To Event
@@ -74,7 +92,20 @@ export default function GoingSaveButtons (props) {
             setValues({
                 ...values,
                 ifGoing: true
-            })
+            });
+            store.addNotification({
+                title: `Now Going!`,
+                message: `Now going to this event.`,
+                type: "success",
+                insert: "bottom",
+                container: "bottom-center",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 5000,
+                  onScreen: false
+                }
+            });
         })
     }
     }
@@ -96,10 +127,23 @@ export default function GoingSaveButtons (props) {
             userId: user.sub
         }
         }).then(() => {
-        setValues({
-            ...values,
-            ifSaved: false,
-        })
+            setValues({
+                ...values,
+                ifSaved: false,
+            });
+            store.addNotification({
+                title: `Unsaved event`,
+                message: `This event is now unsaved to your profile.`,
+                type: "danger",
+                insert: "bottom",
+                container: "bottom-center",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 5000,
+                  onScreen: false
+                }
+            });
         })
     }
     else {
@@ -118,10 +162,23 @@ export default function GoingSaveButtons (props) {
             userId: user.sub
         }
         }).then(() => {
-        setValues({
-            ...values,
-            ifSaved: true
-        })
+            setValues({
+                ...values,
+                ifSaved: true
+            });
+            store.addNotification({
+                title: `Saved event!`,
+                message: `This event is now saved to your profile.`,
+                type: "info",
+                insert: "bottom",
+                container: "bottom-center",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 5000,
+                  onScreen: false
+                }
+            });
         })
     }
     }

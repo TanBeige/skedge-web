@@ -116,7 +116,7 @@ export default function TagSelect(props) {
                             value={values.tags}
                             onChange={handleTags}
                             tagProps={{ className: "react-tagsinput-tag primary" }}
-                            inputProps={{ placeholder: 'Add a tag (separate w/ commas).'}}
+                            inputProps={{ placeholder: 'Add a tag (separate w/ commas)'}}
                             place
                             />
                         </div>
