@@ -430,7 +430,7 @@ export default function ProfilePage(props, { ...rest }) {
           {
             !user ? 
             <div>
-              <h4>Sign up to see what your friends are planning.</h4>
+              <h4>Sign up to follow your friends.</h4>
               <Button
                 color="primary"
                 onClick={handleLogin}
