@@ -25,6 +25,8 @@ import AddCohost from 'views/CreatePage/Sections/AddCohost/AddCohost.js';
 import AddBanner from 'views/CreatePage/Sections/AddBanner.js';
 import Header from "components/Header/Header.js";
 
+import DealInfo from 'views/CreatePage/Sections/CreateDeal/DealInfo.js';
+
 //Popups notifications
 import { store } from 'react-notifications-component';
 
@@ -615,7 +617,7 @@ const handleLocalOrPrivate = (type) => {
   //  page 2. So I have to have BOTH fontWeight: 'bolder' AND <strong> for all of them.
   //  This is probably becsue I used a material-ui theme in EventCreateInfo.js
   return (
-    <div style={{ overflowY: 'scroll'}}>
+    <div style={{marginTop: '7vh'}}>
       <Header
         brand="Skedge"
         fixed
@@ -625,7 +627,7 @@ const handleLocalOrPrivate = (type) => {
           color: "primary"
         }}
       />
-      <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '70vh', marginBottom: '2em', marginTop: '8vh'}}>
+      {/* <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '70vh', marginBottom: '2em', marginTop: '8vh'}}> */}
         <div className={classes.container}>
           <IconButton style={{position: 'absolute', left: 0}} onClick={handleGoBack}>
             <ChevronLeftIcon style={{fontSize: '2em'}} />
@@ -635,7 +637,7 @@ const handleLocalOrPrivate = (type) => {
           {eventSubmitting()}
           { page }
         </div>
-      </div>
+      {/* </div> */}
     </div>
   );
 }

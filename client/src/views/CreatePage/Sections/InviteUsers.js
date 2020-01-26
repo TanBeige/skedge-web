@@ -91,7 +91,7 @@ export default function InviteUsers (props) {
               <ThemeProvider theme={theme}>
 
                 <div className={classes.paper}>
-                  <h5 style={{height: '4em'}}>{privacyText}</h5>
+                  <h5 style={{height: '4em', textAlign: 'center'}}>{privacyText}</h5>
                   <div style={{textAlign: 'left'}}>
                     <FormControlLabel 
                       style={{color: "black"}} 

@@ -44,6 +44,9 @@ export default function LocalOrPrivate(props) {
     const handlePrivate = () => {
         props.handleLocalOrPrivate('private')
     }
+    const handleDeal = () => {
+        props.handleLocalOrPrivate('deal')
+    }
 
 //Rendering
 
@@ -55,9 +58,14 @@ export default function LocalOrPrivate(props) {
 
     if(props.entity === true){
         localEntityButton = (
-            <Button variant='contained' color='primary' style={buttonStyle} onClick={handleLocal}>
-                Local
-            </Button>
+            <div>
+                <Button variant='contained' color='primary' style={buttonStyle} onClick={handleLocal}>
+                    Local
+                </Button>
+                <Button size='sm' variant='contained' color='info' style={buttonStyle} onClick={handleDeal}>
+                    Deal
+                </Button>
+            </div>
         )
     }
     else {
@@ -94,6 +102,7 @@ export default function LocalOrPrivate(props) {
                     {/* To create local events, check <Link to="/subscriptions">here</Link>. */}
                 </div>
                 </Popover>
+                
             </div>
         )
     }
