@@ -292,7 +292,7 @@ export default function FollowingFeedList(props) {
     {
       return(
         <div id='scrollableDiv' key={currentKey} >
-          <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no events this day.</h5>
+          <h5 style={{marginTop: 20, textAlign: 'center'}}>Follow friends & businesses near you to see what they’re up to here.</h5>
             <hr />
             {
                 values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""

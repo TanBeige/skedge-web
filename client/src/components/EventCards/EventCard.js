@@ -242,7 +242,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
           });
           store.addNotification({
             title: `Event shared!`,
-            message: `You have shared this event.`,
+            message: `This event is now shared with all of your followers.`,
             type: "info",
             insert: "bottom",
             container: "bottom-center",
