@@ -710,7 +710,7 @@ export default function DealInfo(props) {
                         color="primary"
                         style={{color: 'white', marginTop: '1em'}}
                         className={classes.submit}
-                        onClick={submitDealInfo}
+                        // onClick={submitDealInfo}
                     >
                     Submit Deal ->
                     </Button>
