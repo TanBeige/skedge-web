@@ -53,7 +53,7 @@ export default function TagSelect(props) {
         category: props.savedCategory,
         categories: [],
         tags: props.savedTag
-      });
+    });
     
     const handleChange = (event) => {
         setValues({ ...values, category: event.target.value });

@@ -8,6 +8,12 @@ import Button from "components/CustomButtons/Button.js";
 import defaultImage from "assets/img/image_placeholder.jpg";
 import defaultAvatar from "assets/img/placeholder.jpg";
 
+const previewStyle = {
+  objectFit: 'cover', 
+  maxHeight: 200,
+  minHeight: 200
+}
+
 export default function ImageUpload(props) {
   //const [file, setFile] = React.useState(null);
   const file = props.bannerImg;
@@ -44,8 +50,8 @@ export default function ImageUpload(props) {
   return (
     <div className="fileinput text-center">
       <input type="file" onChange={handleImageChange} ref={fileInput} />
-      <div className={"thumbnail" + (avatar ? " img-circle" : "")}>
-        <img src={imagePreviewUrl} alt="..." />
+      <div className={"thumbnail" + (avatar ? " img-circle" : "")} style={avatar ? {} : previewStyle}>
+        <img src={imagePreviewUrl} style={avatar ? {} : previewStyle} alt="..." />
       </div>
       <div>
         {file === null ? (

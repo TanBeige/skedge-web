@@ -200,7 +200,9 @@ export default function EditEventButton(props) {
             });
             setImagePreviewUrl(reader.result);
         };
-        reader.readAsDataURL(inFile);
+        if(inFile){
+            reader.readAsDataURL(inFile);
+        }
     };
 
 

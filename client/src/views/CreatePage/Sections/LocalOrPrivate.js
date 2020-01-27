@@ -62,8 +62,8 @@ export default function LocalOrPrivate(props) {
                 <Button variant='contained' color='primary' style={buttonStyle} onClick={handleLocal}>
                     Local
                 </Button>
-                <Button size='sm' variant='contained' color='info' style={buttonStyle} onClick={handleDeal}>
-                    Deal
+                <Button style={{marginTop: '2.5em'}} size='sm' variant='contained' color='primary' onClick={handleDeal}>
+                    Deals
                 </Button>
             </div>
         )
@@ -78,6 +78,15 @@ export default function LocalOrPrivate(props) {
                     onClick={event => setAnchorElBottom(event.currentTarget)}
                 >
                     Local
+                </Button>
+                <Button 
+                    variant='contained' 
+                    color="info" 
+                    style={{marginTop: '2.5em'}} 
+                    size='sm'
+                    onClick={event => setAnchorElBottom(event.currentTarget)}
+                >
+                    Deals
                 </Button>
                 <Popover
                     classes={{
@@ -97,7 +106,7 @@ export default function LocalOrPrivate(props) {
                 >
                 <h3 className={classes.popoverHeader}>For Entities only.</h3>
                 <div className={classes.popoverBody}>
-                    You must create an entity (business) account in order to post Local events. 
+                    You must create an entity (business) account in order to post local events and deals. 
                     <br />Entity accounts will be available soon.
                     {/* To create local events, check <Link to="/subscriptions">here</Link>. */}
                 </div>

@@ -87,10 +87,10 @@ const AddBanner = (props) => {
                     type='button'
                     variant="contained"
                     color="primary"
-                   // style={{height: '4em', width: '90%', marginTop: '2em'}}
+                    style={{color: 'white'}}
                     onClick={(e)=>bannerSubmit(e)}
                     >
-                    Finish Creating Event!
+                    Finish Creating Event ->
                 </Button>
             </div>
         )

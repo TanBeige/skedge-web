@@ -217,7 +217,7 @@ export default function EventCreateInfo(props) {
   else {
     repeatEvent = (
       <div className='weekdayCheckboxes'>
-      <FormControl required error={error} component="fieldset" style={{marginBottom: 15}}>
+      <FormControl required error={error} component="fieldset" style={{marginBottom: 15, width: '100%'}}>
         <FormLabel component="legend" style={{marginBottom: 15}}>Check at least one</FormLabel>
         <FormGroup>
           <Grid container direction='row' alignContent='center'>
@@ -253,8 +253,8 @@ export default function EventCreateInfo(props) {
               labelPlacement="top"
             />
             </Grid>
-          </Grid>
-          <Grid container direction='row'>
+          {/* </Grid> */}
+          {/* <Grid container direction='row'> */}
             <Grid item xs={3}>
             <FormControlLabel
               control={
@@ -441,7 +441,7 @@ export default function EventCreateInfo(props) {
   //**************************** Return ******************************
   return (
     <Slide direction={dir} in mountOnEnter unmountOnExit>
-    <Container component="main" maxWidth="xs" style={{paddingBottom: '0.5em'}}>
+    <Container component="main" maxWidth="md" style={{paddingBottom: '0.5em'}}>
       <CssBaseline />
       <ThemeProvider theme={theme}>
         <form className={classes.form} noValidate>

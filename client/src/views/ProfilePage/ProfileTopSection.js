@@ -33,7 +33,6 @@ import Popover from "@material-ui/core/Popover";
 import { useAuth0 } from 'Authorization/react-auth0-wrapper'
 import CustomInput from 'components/CustomInput/CustomInput.js';
 import LoadImage from 'material-ui-image'
-import ImageUpload from 'components/CustomUpload/ImageUpload.js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 

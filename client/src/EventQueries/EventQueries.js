@@ -595,7 +595,10 @@ query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $userId: String
     shared_event(where: {
       _or: [
         {user_id: {_eq: $userId}},
-        {user: {followers: {user_id: {_eq: $userId}}}}
+        {_and: [
+        	{user: {followers: {user_id: {_eq: $userId}}}},
+          {user: {followers: {status: {_eq: 1}}}},
+        ]}
       ]}
       order_by: {time_shared : desc}
     )
@@ -612,7 +615,8 @@ query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $userId: String
         {invited_id: {_eq: $userId}},
         {_and: [
           {response: {_eq: 1}},
-          {invited: {followers: {user_id: {_eq: $userId}}}}
+          {invited: {followers: {user_id: {_eq: $userId}}}},
+          {invited: {followers: {status: {_eq: 1}}}},
         ]}
       ]
     })

@@ -100,12 +100,19 @@ export default function PricingPage(props) {
 
   // Functions
   const handleGoBack = () => {
-    if (values.currentPage > 0) {
+    if (values.currentPage > 0 && values.currentPage !== 6) {
         setValues({
           ...values,
           currentPage: values.currentPage - 1,
           goingBack: true
         })
+    }
+    else if(values.currentPage === 6) {
+      setValues({
+        ...values,
+        currentPage: 0,
+        goingBack: true
+      })
     }
     else {
         let path = `home`;
@@ -122,7 +129,7 @@ const handleLocalOrPrivate = (type) => {
         ...values,
         goingBack: false,
         event_type: type,
-        currentPage: values.currentPage + 1
+        currentPage: type === 'deal' ? 6 : values.currentPage + 1 // If making deal, go to page 6
     });
 }
 // Page 1: Event Info Submission
@@ -419,7 +426,7 @@ const handleLocalOrPrivate = (type) => {
         let path = `/events/${data.data.insert_events.returning[0].id}`;
         props.history.push(path);
       }).catch(error => {
-        console.log(error)
+        console.log(error);
         alert("Error Occurred: ", error.name)
         setValues({
           ...values,
@@ -544,7 +551,7 @@ const handleLocalOrPrivate = (type) => {
     }
   }, [])
 
-
+  //---------------------- Page Numbers -------------------------
   // Handling What page displays here:
   let currentPageNumber = values.currentPage;
   let appBarTitle = "";
@@ -610,6 +617,14 @@ const handleLocalOrPrivate = (type) => {
           submitEvent={submitEvent} 
           client={props.client}
       />
+      break;
+    case 6:
+      appBarTitle = "Create a Deal";
+      page = <DealInfo 
+          goingBack={values.goingBack} 
+          client={props.client}
+      />
+      break;
   }
 
   // For the appBarTitle, for some reason page 2 is not bold when using the <strong> tag
