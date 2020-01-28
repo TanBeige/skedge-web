@@ -28,6 +28,9 @@ console.log(props.listType)
     else if(props.listType === 'created'){
       return (<CardListCreated {...props}/>)
     }
+    else if(props.listType === 'deals'){
+      return (<CardListCreated {...props}/>)
+    }
     else {
       return <h1>Not Home</h1>
       //return (<EventCardListHome {...props}/>)

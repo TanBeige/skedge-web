@@ -124,8 +124,7 @@ export default function LandingPage(props) {
             <GridItem xs={12} sm={6} md={6}>
               <SectionTitle className={classes.title} />
               <h4>
-                The social event app where you find, share, and create your favorite events, all in one place. 
-                Sign up to see what your friends are planning.
+                Where you go to find, share, and create your favorite things to do. Check the deals & events below.
               </h4>
               <br />
               <Button

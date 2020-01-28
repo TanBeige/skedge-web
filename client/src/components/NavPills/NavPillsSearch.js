@@ -111,6 +111,15 @@ export default function NavPillsSearch(props) {
       </div>
     )
   }
+  else if (active === 2 ) {
+    tabContent = (
+      <div>
+        <div className={classes.tabContent} >
+          {tabs[2].tabContent}
+        </div>
+      </div>
+    )
+  }
 
 
 

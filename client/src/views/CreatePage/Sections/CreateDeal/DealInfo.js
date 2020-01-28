@@ -261,7 +261,7 @@ export default function DealInfo(props) {
         if (values.selectingBanner) {
             return (
                 <div style={{textAlign: 'center'}}>
-                    <h3 >Click image to select and submit event.</h3>
+                    <h3 >Click image to select and submit deal.</h3>
                     {
                         values.selectBanners.map(image => {
                             if(image) {
@@ -409,8 +409,8 @@ export default function DealInfo(props) {
             props.setLoadingPage(false);
 
             store.addNotification({
-                title: `You created the event ${values.name}`,
-                message: `Viewing your event right now!`,
+                title: `You created the deal ${values.name}`,
+                message: `Viewing your deal right now!`,
                 //content: <div style={{backgroundColor: primaryColor}}><a href={`/events/${data.data.insert_events.returning[0].id}`}>Click here to go to event</a></div>,
                 type: "info",
                 insert: "bottom",

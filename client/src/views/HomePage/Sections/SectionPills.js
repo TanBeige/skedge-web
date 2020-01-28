@@ -36,6 +36,8 @@ import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import LocalAtmIcon from '@material-ui/icons/LocalAtm';
+import DateRangeIcon from '@material-ui/icons/DateRange';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
@@ -48,6 +50,8 @@ import NavPillsSearch from "components/NavPills/NavPillsSearch.js";
 import EventCardList from "components/EventCards/EventCardList.js";
 import CustomInput from 'components/CustomInput/CustomInput.js';
 import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js";
+import DateSelect from 'views/HomePage/Sections/DateSelect.js';
+import SearchFilterBar from 'views/HomePage/Sections/SearchFilterBar.js';
 
 // Constants
 import { categoryList } from "utils/constants";
@@ -231,8 +235,8 @@ export default function SectionPills(props) {
         searchText={localFilter.searchText}
         tabs={[
         {
-          tabButton: "Local",
-          tabIcon: ApartmentIcon,
+          tabButton: "Events",
+          tabIcon: DateRangeIcon,
           tabContent: (
             <div>
               <EventCardList 
@@ -240,6 +244,21 @@ export default function SectionPills(props) {
                   userId={props.userId}
                   filter={localFilter}
                   listType='local'
+              />
+
+            </div>
+          )
+        },
+        {
+          tabButton: "Deals",
+          tabIcon: LocalAtmIcon,
+          tabContent: (
+            <div>
+              <EventCardList 
+                  client={props.client}
+                  userId={props.userId}
+                  filter={privateFilter}
+                  listType='deals'
               />
             </div>
           )
@@ -265,213 +284,18 @@ export default function SectionPills(props) {
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.section} style={{paddingTop: 0, paddingBottom: '1em'}}>
-        {/* <div style={{paddingTop: 20}}>
-          <TextField
-            id="outlined-select-currency"
-            select
-            value={skedgeLocations[0]}
-            fullWidth
-            //onChange={handleChange}
-            variant="outlined"
-          >
-            {skedgeLocations.map((item, index) => (
-              <MenuItem key={index} value={item}>
-                {item.city}, {item.state}
-              </MenuItem>
-            ))}
-            <MenuItem disabled>
-                More To Come!
-            </MenuItem>
-          </TextField>
-        </div> */}
-        <GridContainer justify="center">
-          <GridItem xs={12}>
-            <Paper elevation={10} style={{paddingLeft:20, paddingRight: 20, margin: '10px 0 20px 0'}} color="primary">
-              <GridContainer>
-                <GridItem xs={12}>
-                  <FormControl fullWidth className={classes.selectFormControl} style={{marginBottom: 0}}>            
-                    <CustomInput
-                      labelText="Search by name, date, category, etc."
-                      id="search"
-                      
-                      inputProps={{
-                        onChange: handleFilters("searchText"),
-                        onKeyPress: (ev) => {
-                          if (ev.key === 'Enter') {
-                            // Do code here
-                            ev.preventDefault();
-                            submitSearch();
-                          }
-                        }
-                      }}
-                    />
-                  </FormControl>
-                </GridItem>
-                  <IconButton
-                    className={clsx(classes.expand, {
-                      [classes.expandOpen]: expanded,
-                    })}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                    style={{position: 'absolute', right: 20, top: 20}}
-                  >
-                    <ExpandMoreIcon />
-                  </IconButton>
-              </GridContainer>
-
-              <Collapse in={expanded} timeout="auto" >
-                <div>
-                  <GridContainer>
-                    <GridItem xs={12} style={{textAlign: 'center'}}>
-                        <MuiPickersUtilsProvider utils={MomentUtils}>
-                          <DatePicker 
-                            autoOk
-                            label="Event Date"
-                            style={{width: '100%', marginBottom: 10}} 
-                            disableToolbar
-                            value={values.date} 
-                            format="MMMM D, YYYY"
-                            onChange={handleDateChange} 
-                            variant="dialog"
-                            openTo="date"
-                          />
-                      </MuiPickersUtilsProvider >  
-                    </GridItem>
-                    <GridItem xs={6}>
-                      <FormControl fullWidth className={classes.selectFormControl}>            
-                        <InputLabel
-                          htmlFor="simple-select"
-                          className={classes.selectLabel}
-                        >
-                          Category
-                        </InputLabel>
-                        <Select
-                          MenuProps={{
-                            className: classes.selectMenu
-                          }}
-                          classes={{
-                            select: classes.select
-                          }}
-                          value={values.category}
-                          onChange={handleFilters("category")}
-
-                          inputProps={{
-                            name: "category",
-                            id: "category",
-                          }}
-                        >
-                          <MenuItem
-                            disabled
-                            classes={{
-                              root: classes.selectMenuItem
-                            }}
-                          >
-                            Categories
-                          </MenuItem>
-                          {
-                            categoryList.map((category, index) => {
-                              return(
-                                <MenuItem
-                                  key={index}
-                                  onChange={handleFilters}
-                                  classes={{
-                                    root: classes.selectMenuItem,
-                                    selected: classes.selectMenuItemSelected
-                                  }}
-                                  value={category}
-                                >
-                                  {category}
-                                </MenuItem>
-                              )
-                            })
-                          }
-                        </Select>
-                      </FormControl>
-                    </GridItem>
-                    <GridItem xs={6} style={{marginTop: -12}}>
-                      <CustomInput
-                        labelText="Max Price ($)"
-                        id="price"
-                        //value={values.price}
-                        inputProps={{
-                          onChange: handleFilters("upperPrice"),
-                          defaultValue: "",
-                          type:'number'
-                        }}
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                      >
-                      </CustomInput>
-                    </GridItem>
-                  </GridContainer>
-                  <GridContainer>
-                    <GridItem xs={6}>
-                      <FormControl fullWidth className={classes.selectFormControl}>
-                        <CustomInput
-                          labelText="City"
-                          id="city"
-                          inputProps={{
-                            onChange: handleFilters("city"),
-                            defaultValue: ""
-                          }}
-                          formControlProps={{
-                            fullWidth: true
-                          }}
-                        />
-                      </FormControl>
-                    </GridItem>
-                    <GridItem xs={6}>
-                      <FormControl fullWidth className={classes.selectFormControl}>            
-                        <CustomInput
-                          labelText="State"
-                          id="state"
-                          inputProps={{
-                            onChange: handleFilters("state"),
-                            defaultValue: ""
-                          }}
-                          formControlProps={{
-                            fullWidth: true
-                          }}
-                        />
-                      </FormControl>
-                    </GridItem>
-                  </GridContainer>
-                  <GridContainer>
-                    <GridItem xs={12} style={{textAlign: 'center'}}>
-                      <Button color='info' onClick={submitSearch}>Search</Button>
-                    </GridItem>
-                  </GridContainer>
-                </div>
-              </Collapse>
-            </Paper>
-          </GridItem>
-          
-          <GridItem>
-            <Divider />        
-          </GridItem>
-        </GridContainer>
-
-        <div style={{display: "block", margin: '10px 0px'}}>
-          <IconButton 
-            onClick={handleDayBack}
-            style={{position: 'absolute', left: 5, marginTop: '-12px', padding: '12px 18px'}}
-          >
-            <ChevronLeftIcon fontSize='large' />
-          </IconButton>
-          <IconButton 
-            onClick={handleDayForward}
-            style={{position: 'absolute', right: 5, marginTop: '-12px', padding: '12px 18px'}}
-          >
-            <ChevronRightIcon fontSize='large'  />
-          </IconButton>
-            <h3 style={{marginTop: 15, marginBottom: 0 ,textAlign: 'center', verticalAlign: 'middle'}}>{formatDate.format("dddd, MMM D")}</h3>
-        </div>
-
+        <IconButton>
+          Search
+          <ExpandMoreIcon onClick={handleExpandClick}/>
+        </IconButton>
+        <Collapse in={expanded} timeout="auto">
+          <SearchFilterBar handleFilters={handleFilters} handleDateChange={handleDateChange} submitSearch={submitSearch} values={values}/>
+        </Collapse>
+        <Divider />        
+        <DateSelect handleDayBack={handleDayBack} handleDayForward={handleDayForward} date={formatDate.format("dddd, MMM D")}/>
         <div className={classes.profileTabs} style={{marginTop: 10}}>
               {navPillsDisplay}
-          </div>
+        </div>
       </div>
     </ThemeProvider>
   );
