@@ -4,15 +4,16 @@ import Geocode from "react-geocode";
 
 import PlaceIcon from '@material-ui/icons/Place';
 import { prototype } from 'react-infinite-scroll-component';
+import {
+  QUERY_DEAL_INFO,
+  FETCH_EVENT_INFO,
+  ADD_GEOCODE_EVENT,
+  ADD_GEOCODE_DEAL,
+} from 'EventQueries/EventQueries.js'
 
 // Import custom styles to customize the style of Google Map
 const styles = require('./GoogleMapStyles.json')
-
-
-
 require('dotenv');
-
-
  
 const AnyReactComponent = () => <PlaceIcon />;
 let _isMounted = true;
@@ -43,8 +44,8 @@ class SimpleMap extends Component {
     super(props);
     this.state = { 
       center: {
-        lat: 59.95,
-        lng: 30.33
+        lat: props.latitude,
+        lng: props.longitude
       },
       zoom: 17,
       loading: true,
@@ -52,43 +53,69 @@ class SimpleMap extends Component {
     }
   }
 
+  geocodeToDatabase(lat, long, itemId, mutation) {
+    this.props.client.mutate({
+      mutation: mutation,
+      variables: {
+        itemId: itemId,
+        latitude: lat,
+        longitude: long
+      }
+    })
+  }
+
   getGeocode() {
     this.setState({loading: true})
-    Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
-    Geocode.enableDebug();
 
-    const fullAddy = `${this.props.street} ${this.props.city}, ${this.props.state}`
-
-    Geocode.fromAddress(fullAddy).then(
-      response => {
-        const { lat, lng } = response.results[0].geometry.location;
-        console.log(lat, lng);
-        if(_isMounted) {
-          this.setState({
-            center: {
-              lat: lat,
-              lng: lng
-            },
-            loading: false
-          })
-        }
-      },
-      error => {
-        // if(_isMounted) {
-        //   this.setState({
-        //     loading: false,
-        //     error: true
-        //   })
-        // }
-        console.error(error);
+    if(this.props.latitude && this.props.longitude) {
+      if(_isMounted) {
+        this.setState({
+          center: {
+            lat: this.props.latitude,
+            lng: this.props.longitude
+          },
+          loading: false
+        })
       }
-    );
+      console.log("has lat long", this.props)
+      return
+    }
+    // if(!this.props.latitude || !this.props.longitude) {
+      Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
+      Geocode.enableDebug();
+
+      console.log("doesnt have lat long", this.props)
+
+
+
+      const fullAddy = `${this.props.street} ${this.props.city}, ${this.props.state}`
+
+      Geocode.fromAddress(fullAddy).then(
+        response => {
+          const { lat, lng } = response.results[0].geometry.location;
+          console.log(lat, lng);
+          this.geocodeToDatabase(lat, lng, this.props.itemId, this.props.page === 'events' ? ADD_GEOCODE_EVENT : ADD_GEOCODE_DEAL );
+
+          if(_isMounted) {
+            this.setState({
+              center: {
+                lat: lat,
+                lng: lng
+              },
+              loading: false
+            })
+          }
+        },
+        error => {
+          console.error(error);
+        }
+      );
+    // }
   }
   
   componentDidMount() {
     _isMounted = true;
     // if(this.props.pageLoaded)
-    console.log(this.props)
     if(this.props.state !== "") {
       this.getGeocode();
     }

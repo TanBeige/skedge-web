@@ -94,7 +94,7 @@ export default function LandingPage(props) {
     ReactGA.initialize('UA-151937222-1');
     ReactGA.event({
       category: 'User',
-      action: 'Created an Account/Logged In'
+      action: 'Login/Sign Up: Landing Page'
     });
     console.log("recorded event")
     //Then Login/Sign up

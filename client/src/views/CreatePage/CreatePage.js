@@ -248,10 +248,17 @@ const handleLocalOrPrivate = (type) => {
     });
   }
 
+  const setLoadingPage = (val) => {
+    setValues({
+      ...values,
+      eventSubmitted: val
+    });
+  }
+
   const eventSubmitting = () => {
     if(values.eventSubmitted) {
       return(
-        <EventLoading text="Creating Event"/>
+        <EventLoading text={values.currentPage === 6 ? "Creating Deal" : "Creating Event"}/>
       )
     }
     else {
@@ -623,6 +630,7 @@ const handleLocalOrPrivate = (type) => {
       page = <DealInfo 
           goingBack={values.goingBack} 
           client={props.client}
+          setLoadingPage={setLoadingPage}
       />
       break;
   }

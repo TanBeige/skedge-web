@@ -911,6 +911,9 @@ const FETCH_EVENT_INFO = gql`
       updated_at
       event_date_id
 
+      latitude
+      longitude
+
       views
       impressions
 
@@ -1351,6 +1354,14 @@ mutation unpost_event($eventId: Int, $userId: String) {
 }
 `
 
+const ADD_GEOCODE_EVENT = gql`
+  mutation update_event_geolocation($itemId: Int!, $latitude: numeric, $longitude: numeric) {
+    update_events(where: {id: {_eq: $itemId}}, _set: {latitude: $latitude longitude: $longitude}) {
+      affected_rows
+    }
+  }
+`
+
 
 const SUBSCRIPTION_EVENT_LOCAL_LIST = gql`
   subscription($eventId: Int) {
@@ -1536,6 +1547,85 @@ const MUTATION_DEAL_ADD = gql `
   }
 `
 
+const QUERY_DEAL_INFO = gql `
+query query_deal_info($dealId: Int!) {
+  deals(where: {id: {_eq: $dealId}}) {
+    name
+    point_1
+    point_2
+    description
+    location_name
+
+    start_date
+    end_date
+    is_recurring
+    weekday
+  
+
+    start_time
+    end_time
+
+    category
+
+    city
+    state
+    street
+    savings
+    web_url
+
+    latitude
+    longitude
+
+    views
+    impressions
+
+    cover_pic
+    user {
+      id
+      auth0_id
+      picture
+      name
+      full_name
+    }
+
+    user_saved_deals {
+      user_id
+    }
+
+    deal_likes {
+      user {
+        id
+        name
+      }
+    }
+    deal_likes_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+`
+
+const MUTATION_DEAL_VIEW = gql`
+  mutation update_deals_mutation($dealId: Int!) {
+    update_deals(
+      where: {id: {_eq: $dealId}},
+      _inc: {views: 1}
+    ) {
+      affected_rows
+    }
+  }
+`
+
+const ADD_GEOCODE_DEAL = gql`
+  mutation update_deal_geolocation($itemId: Int!, $latitude: numeric, $longitude: numeric) {
+    update_deals(where: {id: {_eq: $itemId}}, _set: {latitude: $latitude longitude: $longitude}) {
+      affected_rows
+    }
+  }
+`
+
 
 // --------------ANONYMOUS USER REQUESTS--------------
 
@@ -1576,6 +1666,53 @@ const QUERY_USER_PROFILE_ANONYMOUS = gql`
   ${USER_FRAGMENT_ANONYMOUS}
 `;
 
+const QUERY_DEAL_INFO_ANONYMOUS = gql `
+query query_deal_info($dealId: Int!) {
+  deals(where: {id: {_eq: $dealId}}) {
+    name
+    point_1
+    point_2
+    description
+    location_name
+
+    start_date
+    end_date
+    is_recurring
+    weekday
+  
+    start_time
+    end_time
+
+    category
+
+    city
+    state
+    street
+    savings
+    web_url
+
+    latitude
+    longitude
+
+
+    cover_pic
+    user {
+      id
+      auth0_id
+      picture
+      name
+      full_name
+    }
+
+    deal_likes_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+`
+
 export {
   QUERY_FILTERED_EVENT,
   FETCH_FOLLOWING_FEED,
@@ -1614,6 +1751,7 @@ export {
   FETCH_TAGGED_EVENTS,
   FETCH_SAVED_EVENTS,
   FETCH_CREATED_EVENTS,
+  
 
   MUTATION_EVENT_ADD,
   MUTATION_EVENT_UPDATE,
@@ -1626,8 +1764,12 @@ export {
   MUTATION_UNPOST_EVENT,
   MUTATION_FOLLOW_REQUEST,
   MUTATION_FOLLOW_DELETE,
+  ADD_GEOCODE_EVENT,
 
   MUTATION_DEAL_ADD,
+  QUERY_DEAL_INFO,
+  MUTATION_DEAL_VIEW,
+  ADD_GEOCODE_DEAL,
   
   SUBSCRIPTION_EVENT_LOCAL_LIST,
   QUERY_ACCEPTED_FRIENDS,
@@ -1637,7 +1779,8 @@ export {
   QUERY_EVENT_PAGE_MOMENTS,
   MUTATION_ADD_MOMENT,
 
-  QUERY_USER_PROFILE_ANONYMOUS
+  QUERY_USER_PROFILE_ANONYMOUS,
+  QUERY_DEAL_INFO_ANONYMOUS
 };
 
 

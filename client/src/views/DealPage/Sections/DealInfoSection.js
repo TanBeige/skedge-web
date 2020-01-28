@@ -4,10 +4,6 @@ import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "components/CustomButtons/Button.js";
-import GoingSaveButtons from './EventPageComponents/GoingSaveButtons.js';
-import EventMomentsWrapper from 'components/EventMoments/EventMomentsWrapper.js';
-import MomentPopover from 'components/EventMoments/MomentPopover.js';
-import UserModalList from  'components/UserList/UserModalList.js';
 import EventActivity from 'views/EventPage/Sections/EventPageComponents/EventActivity.js';
 
 
@@ -58,7 +54,7 @@ import {
 
 const useStyles = makeStyles(sectionTextStyle);
 
-export default function SectionText({ eventInfo, client }) {
+export default function DealInfoSection({ dealInfo, client }) {
 
   let _isMounted = true;
 
@@ -96,7 +92,7 @@ export default function SectionText({ eventInfo, client }) {
     client.query({
       query: FETCH_EVENT_GOING_SAVE,
       variables: {
-        eventId: eventInfo.event_id,
+        eventId: dealInfo.event_id,
         userId: user.sub
       }
     }).then((data) => {
@@ -128,15 +124,16 @@ export default function SectionText({ eventInfo, client }) {
 
   // Fix date formatting
   var moment = require('moment');
+  console.log(dealInfo)
   let formattedStartTime = ""
-  if(eventInfo.start_time) {
-    formattedStartTime = moment(eventInfo.start_time, "HH:mm:ss");
+  if(dealInfo.start_time) {
+    formattedStartTime = moment(dealInfo.start_time, "HH:mm:ss");
   }
   
   //style={{borderRadius: 5, backgroundColor: "#02C39A", color: 'white'}}
   let formattedEndTime = ""
-  if(eventInfo.end_time) {
-    const tempEndTime = moment(eventInfo.end_time, "HH:mm:ss")
+  if(dealInfo.end_time) {
+    const tempEndTime = moment(dealInfo.end_time, "HH:mm:ss")
     formattedEndTime = (
       <h3 style={{marginTop: 0}}>
         Until: {moment(tempEndTime).format("h:mm A")}
@@ -144,58 +141,58 @@ export default function SectionText({ eventInfo, client }) {
     )
   }
   let formattedDate = ""
-  if(eventInfo.is_recurring) {
+  if(dealInfo.is_recurring) {
     // Setting Display Variables    
     let displayDate = "Every ";
-    if(eventInfo.weekday.includes("1")) {
+    if(dealInfo.weekday.includes("1")) {
       displayDate += "Monday";
     }
-    if(eventInfo.weekday.includes("2")) {
+    if(dealInfo.weekday.includes("2")) {
       if(displayDate.length > 6) {
         displayDate += ", "
       }
       displayDate += "Tuesday";
     }
-    if(eventInfo.weekday.includes("3")) {
+    if(dealInfo.weekday.includes("3")) {
       if(displayDate.length > 6) {
         displayDate += ", "
       }
       displayDate += "Wednesday";
     }
-    if(eventInfo.weekday.includes("4")) {
+    if(dealInfo.weekday.includes("4")) {
       if(displayDate.length > 6) {
         displayDate += ", "
       }
       displayDate += "Thursday";
     }
-    if(eventInfo.weekday.includes("5")) {
+    if(dealInfo.weekday.includes("5")) {
       if(displayDate.length > 6) {
         displayDate += ", "
       }
       displayDate += "Friday";
     }
-    if(eventInfo.weekday.includes("6")) {
+    if(dealInfo.weekday.includes("6")) {
       if(displayDate.length > 6) {
         displayDate += ", "
       }
       displayDate += "Saturday";
     }
-    if(eventInfo.weekday.includes("0")) {
+    if(dealInfo.weekday.includes("0")) {
       if(displayDate.length > 6) {
         displayDate += ", "
       }
       displayDate += "Sunday";
     }
 
-    //displayDate += `until ${eventInfo.end_date}`
+    //displayDate += `until ${dealInfo.end_date}`
     formattedDate = displayDate;
     
   }
   else {
-    formattedDate = moment(eventInfo.start_date, "YYYY-MM-DD").format("MMMM Do, YYYY")
+    formattedDate = moment(dealInfo.start_date, "YYYY-MM-DD").format("MMMM Do, YYYY")
   }
 
-  // if(eventInfo.invite_only) {
+  // if(dealInfo.invite_only) {
   //   return(
   //     <div>
   //       <LockIcon />
@@ -221,84 +218,42 @@ export default function SectionText({ eventInfo, client }) {
             </div>
           </div>
           <hr />
-          {
-            user ? 
+          
+            {/* user ? 
             <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
-              <div style={{margin: '0em 2em 1em 2em', maxWidth: 240, margin: 'auto', marginBottom: '1em'}}>
-                {/* <UserModalList
-                  buttonText={`${eventInfo.going_users.length} Going`}
-                  userList={eventInfo.going_users}
-                  emptyListText="No one is going currently"
-                  client={client}
-                  nestedLabel='invited'
-                  modalTitle='Going'
-                /> */}
-              </div>
-              <GoingSaveButtons
-                ifGoing={values.ifGoing}
-                ifSaved={values.ifSaved}
-                client={client}
-                eventId={eventInfo.event_id}
-                eventHost={eventInfo.user_auth0_id}
-              />
-            </div> : ""
-          }
+            </div> : "" */}
 
-          {/* <h4></h4> //Event Moments turned off for now
-          <MomentPopover/>
-          <EventMomentsWrapper
-            eventId={eventInfo.event_id}
-            cover={eventInfo.cover_url}
-            client={client}
-            ifGoing={values.ifGoing}
-          /> */}
           <h3 className={classes.title}>
             Details
           </h3>
           <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
-            {eventInfo.description}
+            {dealInfo.description}
           </p>
-
-          {/* <div>
-            <IconButton onClick={handleRepost} aria-label="Share" style={{float: 'left', margin: 0}}>
-              <RenewIcon color='primary'/> 
-              <div style={{fontSize: 14}}>
-                {eventInfo.shared_users.length}
-              </div>
-            </IconButton>
-            <IconButton onClick={handleLike} aria-label="Like" style={{float: 'right'}}>
-              <FavoriteIcon color='secondary'/>
-              <div style={{fontSize: 14}}>
-                {eventInfo.liked_users.length}
-              </div> 
-            </IconButton>
-          </div>
-           */}
           <h4>
             <PlaceIcon style={{verticalAlign: 'top'}}/>
-            {`${eventInfo.location_name}`} <br />
+            {`${dealInfo.location_name}`} <br />
             <HomeWorkIcon style={{verticalAlign: 'top'}}/>
-            { eventInfo.street ? `${eventInfo.street} ` : ""} <br />
+            { dealInfo.street ? `${dealInfo.street} ` : ""} <br />
             <MapIcon style={{verticalAlign: 'top'}}/>
-            {`${eventInfo.city}, ${eventInfo.state}`}
+            {`${dealInfo.city}, ${dealInfo.state}`}
           </h4>
           {
             user ? 
             <div>
               <MapsApi 
-                street={eventInfo.street}
-                city={eventInfo.city}
-                state={eventInfo.state}
-                longitude={eventInfo.longitude}
-                latitude={eventInfo.latitude}
-                itemId={eventInfo.event_id}
-                page='events'
+                street={dealInfo.street}
+                city={dealInfo.city}
+                state={dealInfo.state}
+                longitude={dealInfo.longitude}
+                latitude={dealInfo.latitude}
+                itemId={dealInfo.deal_id}
+                page='deals'
                 client={client}
                 pageLoaded={true}
               />
               {
-                user.sub === eventInfo.user_auth0_id ? 
-                <EventActivity info={eventInfo}/>
+                user.sub === dealInfo.user_auth0_id ? 
+                <EventActivity info={dealInfo}/>
                 :
                 ""
               }

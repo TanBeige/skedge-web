@@ -9,7 +9,10 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import EventLoading from 'components/EventLoading.js'
+import EventLoading from 'components/EventLoading.js';
+
+import DealInfoSection from 'views/DealPage/Sections/DealInfoSection.js'
+import SkedgeDisclosure from 'components/Footer/SkedgeDisclosure';
 
 
 // @material-ui/icons
@@ -26,24 +29,17 @@ import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 // sections for this page
-import SectionText from "./Sections/SectionText.js";
-import SkedgeDisclosure from "components/Footer/SkedgeDisclosure.js";
-import SectionComments from "./Sections/SectionComments.js";
-import SectionSimilarStories from "./Sections/SectionSimilarStories.js";
-import CategoryFragment from './Sections/CategoryFragment.js';
 import LoadingPage from '../LoadingPage/LoadingPage.js';
-import EditEventButton from './Sections/EventPageComponents/EditEventButton.js';
-import DeleteEventButton from './Sections/EventPageComponents/DeleteEventButton.js';
 
 
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 import {
-  FETCH_EVENT_INFO,
-  MUTATION_EVENT_VIEW,
+  QUERY_DEAL_INFO,
+  QUERY_DEAL_INFO_ANONYMOUS,
+  MUTATION_DEAL_VIEW,
   MUTATION_EVENT_UPDATE,
   MUTATION_EVENT_DELETE,
-  QUERY_FILTERED_EVENT
 } from 'EventQueries/EventQueries.js'
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
 
@@ -60,8 +56,8 @@ cloudinary.config({
 
 const useStyles = makeStyles(blogPostPageStyle);
 
-export default function EventPage(props) {
-  const eventId = props.match.params.id;
+export default function DealPage(props) {
+  const dealId = parseInt(props.match.params.id);
 
   const { loading, user, isAuthenticated, loginWithRedirect, loginWithPopup} = useAuth0();
 
@@ -70,16 +66,14 @@ export default function EventPage(props) {
   const [imageUploading, setImageUploading] = useState(false)
 
   const [values, setValues] = useState({
-    event_id: eventId,
-    event_date_id: null,
-    event_exists: true,
-
-    invite_only: true,
+    deal_id: dealId,
+    deal_exists: true,
 
     name: "",
     description: "",
-    event_type: "",
     start_date: "",
+    end_date: "",
+
     start_time: "",
     end_time: "",
     category: "",
@@ -87,10 +81,8 @@ export default function EventPage(props) {
     city: "",
     state: "",
     street: "",
-    price: "",
+    savings: "",
     web_url: "",
-    allow_invites: false,
-    host_approval: true,
     updated_at: "",
 
     cover_uuid: "",
@@ -105,8 +97,6 @@ export default function EventPage(props) {
     views: 0,
     impressions: 0,
     
-    event_cohosts: [],
-    event_tags: [],
     liked_users: [],
     like_amount: 0,
 
@@ -124,94 +114,77 @@ export default function EventPage(props) {
     ReactGA.initialize('UA-151937222-1');
     ReactGA.event({
       category: 'User',
-      action: 'Login/Sign Up: Event Page'
+      action: 'Login/Sign Up: Deal Page'
     });
     //Then Login/Sign up
     loginWithRedirect({});
     // loginWithPopup({});
   }
 
-  const getEvent = () => {
+  const getDeal = () => {
     // Says we're loading the event
     setIsLoading(true);
 
-    //Get Event Info from Database
+    //Get Deal Info from Database
     props.client.query({
-      query: FETCH_EVENT_INFO,
+      query: user ? QUERY_DEAL_INFO : QUERY_DEAL_INFO_ANONYMOUS,
       variables: {
-        eventId: eventId
+        dealId: dealId
       }
     }).then((data) => {
-      if(data.data.events === undefined || data.data.events.length === 0) {
+      console.log(data);
+      if(data.data.deals === undefined || data.data.deals.length === 0) {
         setValues({
           ...values,
-          event_exists: false
+          deal_exists: false
         })
       }
       else {
         setValues({
           ...values,
 
-          event_exists: true,
-          event_date_id: data.data.events[0].event_date_id,
+          deal_exists: true,
 
-          invite_only: data.data.events[0].invite_only,
+          name: data.data.deals[0].name,
+          description: data.data.deals[0].description,
 
-          name: data.data.events[0].name,
-          description: data.data.events[0].description,
-          event_type: data.data.events[0].event_type,
+          start_date: data.data.deals[0].start_date,
+          end_date: data.data.deals[0].end_date,
 
-          start_date: data.data.events[0].event_date.start_date,
-          end_date: data.data.events[0].event_date.end_date,
+          is_recurring: data.data.deals[0].is_recurring,
+          weekday: data.data.deals[0].weekday,
 
-          is_recurring: data.data.events[0].event_date.is_recurring,
-          weekday: data.data.events[0].event_date.weekday,
-
-          start_time: data.data.events[0].start_time,
-          end_time: data.data.events[0].end_time,
-          category: data.data.events[0].category,
-          location_name: data.data.events[0].location_name,
-          city: data.data.events[0].city,
-          state: data.data.events[0].state,
-          street: data.data.events[0].street,
-          price: data.data.events[0].price,
-          web_url: data.data.events[0].web_url,
-          allow_invites: data.data.events[0].allow_invites,
-          host_approval: data.data.events[0].host_approval,
-          updated_at: data.data.events[0].updated_at,
-          latitude: data.data.events[0].latitude,
-          longitude: data.data.events[0].longitude,
+          start_time: data.data.deals[0].start_time,
+          end_time: data.data.deals[0].end_time,
+          category: data.data.deals[0].category,
+          location_name: data.data.deals[0].location_name,
+          city: data.data.deals[0].city,
+          state: data.data.deals[0].state,
+          street: data.data.deals[0].street,
+          savings: data.data.deals[0].savings,
+          web_url: data.data.deals[0].web_url,
+          updated_at: data.data.deals[0].updated_at,
       
-          cover_uuid: data.data.events[0].image.image_uuid,
-          cover_url: cloudinary.url(data.data.events[0].image.image_uuid, {secure: true, height: Math.floor(window.innerHeight * 0.6), crop: "scale", fetch_format: "auto", quality: "auto"}),
-          cover_pic: data.data.events[0].cover_pic,
+          cover_uuid: data.data.deals[0].cover_pic,
+          cover_url: cloudinary.url(data.data.deals[0].cover_pic, {secure: true, height: Math.floor(window.innerHeight * 0.6), crop: "scale", fetch_format: "auto", quality: "auto"}),
+          cover_pic: data.data.deals[0].cover_pic,
 
-          user_id: data.data.events[0].user.id,
-          user_pic: data.data.events[0].user.picture,
-          user_name: data.data.events[0].user.name,
-          user_full_name: data.data.events[0].user.full_name,
-          user_biography: data.data.events[0].user.biography,
+          user_id: data.data.deals[0].user.id,
+          user_pic: data.data.deals[0].user.picture,
+          user_name: data.data.deals[0].user.name,
+          user_full_name: data.data.deals[0].user.full_name,
 
           // Creator of event:
-          user_auth0_id: data.data.events[0].user.auth0_id,
+          user_auth0_id: data.data.deals[0].user.auth0_id,
 
-          views: data.data.events[0].views,
-          impressions: data.data.events[0].impressions,
+          views: data.data.deals[0].views,
+          impressions: data.data.deals[0].impressions,
           
-          event_cohosts: data.data.events[0].event_cohosts,
-          event_tags: data.data.events[0].event_tags,
 
-          ifSaved: data.data.events[0].user_saved_events.some(user => user.user_id === user.sub),
-          ifGoing: data.data.events[0].event_invites.some(user => user.invited_id === user.sub),
+          ifSaved: data.data.deals[0].user_saved_deals ? data.data.deals[0].user_saved_deals.some(user => user.user_id === user.sub) : false,
 
-
-          going_users: data.data.events[0].event_invites,
-
-          liked_users: data.data.events[0].event_like,
-          like_amount: data.data.events[0].event_like_aggregate.aggregate.count,
-
-          shared_users: data.data.events[0].shared_event,
-          share_amount: data.data.events[0]. shared_event_aggregate.aggregate.count
+          liked_users: data.data.deals[0].deal_likes ? data.data.deals[0].deal_likes : [],
+          like_amount: data.data.deals[0].deal_likes_aggregate.aggregate.count,
         })
         //Say that we're not loading the event anymore.
         setIsLoading(false);
@@ -222,7 +195,7 @@ export default function EventPage(props) {
   }
 
   //Submit Changes
-  const handleEventChange = async (newInfo) => {
+  const handleDealChange = async (newInfo) => {
     setImageUploading(true)
 
 
@@ -287,13 +260,13 @@ export default function EventPage(props) {
     props.client.mutate({
       mutation: MUTATION_EVENT_UPDATE,
       refetchQueries: [{
-        query: FETCH_EVENT_INFO,
+        query: QUERY_DEAL_INFO,
         variables: {
-          eventId: eventId
+          dealId: dealId
         }
       }],
       variables: {
-        eventId: values.event_id,
+        dealId: values.deal_id,
         eventDateId: values.event_date_id,
         name: newInfo.name,
         locationName: newInfo.location_name,
@@ -335,33 +308,27 @@ export default function EventPage(props) {
   }
 
   //DELETE EVENT
-  const handleDeleteEvent = () => {
+  const handleDeleteDeal = () => {
     props.client.mutate({
       mutation: MUTATION_EVENT_DELETE,
-      refetchQueries: [{
-        query: QUERY_FILTERED_EVENT,
-        variables: {
-          userId: user.sub
-        }
-      }],
       variables: {
-        eventId: values.event_id
+        dealId: values.deal_id
       }
     }).then(()=> {
       console.log("Success!");
       props.history.push("/home")
     }).catch(error => {
       console.error(error);
-      alert("Error Deleted Event Occurred")
+      alert("Error Deleted Deal Occurred")
     });
   }
 
   // Add a View to the event
   const addView = () => {
     props.client.mutate({
-      mutation: MUTATION_EVENT_VIEW,
+      mutation: MUTATION_DEAL_VIEW,
       variables: {
-        eventId: eventId
+        dealId: dealId
       }
     });
   }
@@ -374,7 +341,7 @@ export default function EventPage(props) {
 
   useEffect(() => {
     localStorage.setItem('originPath', window.location.pathname);
-    getEvent();
+    getDeal();
     addView();
     
     //For Google Analytics 
@@ -391,44 +358,33 @@ export default function EventPage(props) {
 
   const classes = useStyles();
 
-  const editingEvent = () => {
+  const editingDeal = () => {
       if(isAuthenticated) {
-        if(user.sub === values.user_auth0_id || values.event_cohosts.some(u => (u.cohost.auth0_id === user.sub && u.accepted === true))) {
+        if(user.sub === values.user_auth0_id ) {
           return (
             <div>
                 {/* <Button size='sm' style={{marginTop: 20, marginBottom: 8}} color="tumblr">Edit Invites</Button> */}
-                <EditEventButton 
+                {/* <EditEventButton 
                     client={props.client}
                     userId={user.sub}
                     creatorId={values.user_auth0_id}
-                    handleEventChange={handleEventChange}
+                    handleEventChange={handleDealChange}
                     oldEvent={values}
-                    handleDeleteEvent={handleDeleteEvent}
-                />
+                    handleDeleteEvent={handleDeleteDeal}
+                /> */}
                 {/* <Button disabled={!user.sub === values.user_auth0_id} size='sm' style={{marginTop: 20, marginBottom: 8}} color="pinterest">Edit Cohosts</Button> */}
               </div>
           )
         }
       }
   }
-  const deleteButton = () => {
-    if(isAuthenticated) {
-      return (
-        <DeleteEventButton 
-          userId={user.sub}
-          creatorId={values.user_auth0_id}
-          handleDeleteEvent={handleDeleteEvent}
-        />
-      )
-    }
-  }
 
-  if(values.event_exists === false) {
+  if(values.deal_exists === false) {
     return <ErrorPage />
     //return <div>hello</div>
   }
 
-  //If Event info is loadng
+  //If Deal info is loadng
   else if(isLoading) {
     return (
       <div>
@@ -442,7 +398,7 @@ export default function EventPage(props) {
             color: "primary"
           }}
         />
-        <LoadingPage reason="Loading Events"/>
+        <LoadingPage reason="Loading deal"/>
       </div>
     )
   }
@@ -466,12 +422,11 @@ export default function EventPage(props) {
                   <h4 className={classes.subtitle} style={{alignSelf: 'center'}}>
                     {` Created by:` } <Link to={userLink}>{values.user_name}</Link>
                   </h4>
-                  <CategoryFragment category={values.category}/>
                 </div>  
                 {
                   !user ? 
                   <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em',paddingBottom: '12', maxWidth: '300px'}}>
-                    <h3 style={{color:'white'}}>Sign up to see more events like this happening soon.</h3>
+                    <h3 style={{color:'white'}}>Sign up to see more deals like this happening soon.</h3>
                     <Button
                       color="white"
                       style={{color: 'black'}}
@@ -487,11 +442,11 @@ export default function EventPage(props) {
         </Parallax>
         <div className={classes.main}>
           <div className={classes.container}>
-            <SectionText 
-              eventInfo={values}
+            <DealInfoSection 
+              dealInfo={values}
               client={props.client}
             />
-            <SkedgeDisclosure />
+            <SkedgeDisclosure/>
             {/* <SectionComments /> */}
           </div>
         </div>
@@ -544,7 +499,7 @@ export default function EventPage(props) {
         /> */}
 
         {
-          //If user is changing events
+          //If user is changing deals
           imageUploading ? 
           <EventLoading text="Saving Changes" /> : ""
         }
@@ -564,12 +519,11 @@ export default function EventPage(props) {
                 <div>
                   <h4 className={classes.subtitle} style={{alignSelf: 'center'}}>
                     {` Created by:` } <Link to={userLink}>{values.user_name}</Link>
-                    <CategoryFragment category={values.category}/>
 
                   </h4>
                 </div>  
 
-                {editingEvent()}
+                {editingDeal()}
                 
               </GridItem>
             </GridContainer>
@@ -577,11 +531,11 @@ export default function EventPage(props) {
         </Parallax>
         <div className={classes.main}>
           <div className={classes.container}>
-            <SectionText 
-              eventInfo={values}
+            <DealInfoSection 
+              dealInfo={values}
               client={props.client}
             />
-            <SkedgeDisclosure/>
+            <SkedgeDisclosure />
             {/* <SectionComments /> */}
           </div>
         </div>

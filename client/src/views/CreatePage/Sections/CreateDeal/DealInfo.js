@@ -299,6 +299,8 @@ export default function DealInfo(props) {
 
         // Overlay website when deal is uploading
         setUploading(true);
+        props.setLoadingPage(true);
+        
 
         // Upload Image to Cloudinary
         let errorOccurred = false;
@@ -314,6 +316,7 @@ export default function DealInfo(props) {
         }))
         // Cancel Deal making if image upload failed
         if (errorOccurred) {
+            props.setLoadingPage(false);
             return
         }
 
@@ -403,6 +406,8 @@ export default function DealInfo(props) {
             }
         }).then((data)=> {
             setUploading(false);
+            props.setLoadingPage(false);
+
             store.addNotification({
                 title: `You created the event ${values.name}`,
                 message: `Viewing your event right now!`,
@@ -419,6 +424,9 @@ export default function DealInfo(props) {
             });
             let path = `/deals/${data.data.insert_deals.returning[0].id}`;
             history.push(path);
+        }).catch(error => {
+            props.setLoadingPage(false);
+            console.log(error)
         })
     }
 

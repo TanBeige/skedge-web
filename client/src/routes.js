@@ -31,6 +31,7 @@ import makeApolloClient from "./apollo";
 // pages for this product
 import LandingPage from "views/LandingPage/LandingPage.js";
 import EventPage from "views/EventPage/EventPage.js";
+import DealPage from "views/DealPage/DealPage.js";
 import Home from "views/HomePage/HomePage.js";
 import CreatePage from "views/CreatePage/CreatePage.js";  //Create Event
 
@@ -200,6 +201,7 @@ export const MakeMainRoutes = () => {
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
 
           <Route path="/events/:id" render={props => provideClient(EventPage, props)} />
+          <Route path="/deals/:id" render={props => provideClient(DealPage, props)} />
           <Route path="/:id" render={props => provideClient(ProfilePage, props)} />
           <Route path="/callback" 
                 render={props => {
