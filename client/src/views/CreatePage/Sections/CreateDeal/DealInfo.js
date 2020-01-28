@@ -1,7 +1,7 @@
 // React Imports
 import React, {Fragment, useEffect} from 'react';
 import gql from 'graphql-tag';
-
+import axios from 'axios';
 
 // Material Ui Imports
 import Button from '@material-ui/core/Button';
@@ -26,7 +26,6 @@ import { categoryList } from "utils/constants";
 import ImageUpload from 'components/CustomUpload/ImageUpload.js';
 
 
-
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
@@ -44,7 +43,14 @@ import {
     DatePicker,
     MuiPickersUtilsProvider,
     TimePicker
-  } from '@material-ui/pickers';  //if i dont need this later uninstall
+} from '@material-ui/pickers';  //if i dont need this later uninstall
+
+import { store } from 'react-notifications-component';
+import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
+import {
+    MUTATION_DEAL_ADD,
+} from 'EventQueries/EventQueries.js'
+import history from "utils/history";
 
 // Lodash import
 import _ from 'lodash'
@@ -67,6 +73,7 @@ cloudinary.config({
 
 
 // Begin Code !
+var moment = require('moment');
 const useStyles = makeStyles(pricingStyle);
 
 const theme = createMuiTheme({
@@ -79,6 +86,10 @@ const theme = createMuiTheme({
 
 export default function DealInfo(props) {
     const classes = useStyles();
+    const { user } = useAuth0();
+    
+
+    const [uploading, setUploading] = React.useState(false);
 
     const [values, setValues] = React.useState({
         // Deal Creation
@@ -96,8 +107,11 @@ export default function DealInfo(props) {
         endTimeExists: false,
         end_time: null,
 
-        price: "0",
+        savings: "0",
+        web_url: "",
         description: "",
+        point_1: "",
+        point_2: "",
 
         //Recurring Deals
         repeatCheck: false,
@@ -170,9 +184,6 @@ export default function DealInfo(props) {
             ...values,
             endTimeExists: !values.endTimeExists
         })
-    }
-    const submitDealInfo = () => {
-        props.handleDealInfo(values);
     }
 
     // Deal Categories Functions:
@@ -281,6 +292,135 @@ export default function DealInfo(props) {
     // useEffect(() => {
     //     getBannerPics();
     // }, [])
+
+
+    // Actually Submitting the Deal
+    const submitDealInfo = async () => {
+
+        // Overlay website when deal is uploading
+        setUploading(true);
+
+        // Upload Image to Cloudinary
+        let errorOccurred = false;
+        let response = "";
+
+        const form_data = new FormData();
+        form_data.append('file', values.bannerImg)
+
+        response = await axios.post(`/deal/upload`, form_data).catch((error => {
+            alert("Error occurred while uploading picture, try uploading a smaller image size or try again later.")
+            errorOccurred = true;
+            return;
+        }))
+        // Cancel Deal making if image upload failed
+        if (errorOccurred) {
+            return
+        }
+
+        //Create Weekday string for Database:
+        let weekdayString = ""
+        if(values.monday) {
+            if(weekdayString === "") {
+                weekdayString += "1"
+            }
+            else {
+                weekdayString += " 1"
+            }
+        }
+        if(values.tuesday) {
+            if(weekdayString === "") {
+                weekdayString += "2"
+            }
+            else {
+                weekdayString += " 2"
+            }
+        }
+        if(values.wednesday) {
+            if(weekdayString === "") {
+                weekdayString += "3"
+            }
+            else {
+                weekdayString += " 3"
+            }
+        }
+        if(values.thursday) {
+            if(weekdayString === "") {
+                weekdayString += "4"
+            }
+            else {
+                weekdayString += " 4"
+            }
+        }
+        if(values.friday) {
+            if(weekdayString === "") {
+                weekdayString += "5"
+            }
+            else {
+                weekdayString += " 5"
+            }
+        }
+        if(values.saturday) {
+            if(weekdayString === "") {
+                weekdayString += "6"
+            }
+            else {
+                weekdayString += " 6"
+            }
+        }
+        if(values.sunday) {
+            if(weekdayString === "") {
+                weekdayString += "0"
+            }
+            else {
+                weekdayString += " 0"
+            }
+        }
+
+        props.client.mutate({
+            mutation: MUTATION_DEAL_ADD,
+            variables: {
+                objects: {
+                    category: "", 
+                    city: values.city, 
+                    cover_pic: response.data.id, 
+                    creator_id: user.sub, 
+                    description: values.description, 
+                    end_date: values.repeatCheck ? moment(values.end_date).format('YYYY-MM-DD') : moment(values.start_date).format('YYYY-MM-DD'), 
+                    end_time: values.endTimeExists ? moment(values.end_time).format('HH:mm:ss') : null, 
+                    is_recurring: values.repeatCheck, 
+                    location_name: values.location_name, 
+                    name: values.name, 
+                    point_1: values.point_1, 
+                    point_2: values.point_2, 
+                    savings: values.savings, 
+                    start_date: moment(values.start_date).format('YYYY-MM-DD'), 
+                    start_time: moment(values.start_time).format('HH:mm:ss'),
+                    state: values.state, 
+                    street: values.street, 
+                    web_url: values.web_url, 
+                    weekday: weekdayString
+                }
+            }
+        }).then((data)=> {
+            setUploading(false);
+            store.addNotification({
+                title: `You created the event ${values.name}`,
+                message: `Viewing your event right now!`,
+                //content: <div style={{backgroundColor: primaryColor}}><a href={`/events/${data.data.insert_events.returning[0].id}`}>Click here to go to event</a></div>,
+                type: "info",
+                insert: "bottom",
+                container: "bottom-center",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                  duration: 5000,
+                  onScreen: false
+                }
+            });
+            let path = `/deals/${data.data.insert_deals.returning[0].id}`;
+            history.push(path);
+        })
+    }
 
 
     //When click Back button
@@ -492,7 +632,7 @@ export default function DealInfo(props) {
             continueDisabled = true;
         }
     }
-    if(values.categories.length < 1 || values.bannerImg == null) {
+    if(values.bannerImg == null) {
         continueDisabled = true;
     }
 
@@ -502,7 +642,7 @@ export default function DealInfo(props) {
         <Fragment>
             <Grid item xs={12}>
                 <TextField
-                    id="locations"
+                    id="City, State"
                     select
                     label="Locations"
                     variant="outlined"
@@ -612,18 +752,63 @@ export default function DealInfo(props) {
                                 
                                 <Grid item xs={12} >
                                     <FormControl fullWidth variant="outlined" style={{marginTop: '1em'}}>
-                                        <InputLabel htmlFor="outlined-adornment-amount">Deal Price</InputLabel>
+                                        <InputLabel htmlFor="outlined-adornment-amount">Deal Savings</InputLabel>
                                         <OutlinedInput
                                         id="outlined-adornment-amount"
-                                        value={values.price}
+                                        value={values.savings}
                                         type='number'
-                                        onChange={handleChange('price')}
-                                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                        onChange={handleChange('savings')}
+                                        startAdornment={<InputAdornment position="start">-$</InputAdornment>}
                                         labelWidth={110}
                                         />
                                     </FormControl>
                                 </Grid>
-
+                                <Grid item xs={12} sm={12}>
+                                    <TextField
+                                        className={classes.input}
+                                        name="web_url"
+                                        variant="outlined"
+                                        value={values.web_url}
+                                        fullWidth
+                                        onChange={handleChange('web_url')}
+                                        id="web_url"
+                                        label="Link to Deal"
+                                        autoFocus
+                                        // placeholder="50 character max."
+                                    />
+                                </Grid>
+                                <div style={{margin: '8px 8px 0px 8px'}}>
+                                    <h4 style={{marginBottom: 0}}>Deal Bullet Points</h4>
+                                    <p>- These will be shown on the display cards</p>
+                                </div>
+                                <Grid item xs={12} sm={12}>
+                                    <TextField
+                                        error={values.name.length > 50}
+                                        className={classes.input}
+                                        name="point_1"
+                                        variant="outlined"
+                                        value={values.point_1}
+                                        fullWidth
+                                        onChange={handleChange('point_1')}
+                                        id="point_1"
+                                        label="Point 1"
+                                        placeholder="50 character max."
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <TextField
+                                        error={values.name.length > 50}
+                                        className={classes.input}
+                                        name="point_2"
+                                        variant="outlined"
+                                        value={values.point_2}
+                                        fullWidth
+                                        onChange={handleChange('point_2')}
+                                        id="point_2"
+                                        label="Point 2"
+                                        placeholder="50 character max."
+                                    />
+                                </Grid>
                                 <Grid item xs={12}>
                                     <TextField 
                                         id="description"
@@ -638,10 +823,11 @@ export default function DealInfo(props) {
                                         onChange={handleChange('description')}
                                         margin="normal"/>
                                 </Grid>
+                                
                             </Grid>
 
                             {/* ----Deal Tags---- */}
-                            <div className='TagSelect'>
+                            {/* <div className='TagSelect'>
                                 <FormControl component="fieldset">
                                     <FormLabel component="legend">Choose up to two (2) categories.</FormLabel>
                                         <FormGroup>
@@ -660,7 +846,7 @@ export default function DealInfo(props) {
                                         inputProps={{ placeholder: 'Add a tag (separate w/ commas)'}}/>
                                     </div>
                                 </Grid>
-                            </div>
+                            </div> */}
                         </div>
                     {
                         continueDisabled ? 
@@ -698,9 +884,9 @@ export default function DealInfo(props) {
                                 !values.sunday
                                 ? `Weekdays ` : "" 
                             }
-                            {
+                            {/*
                                 values.categories.length < 1 ? `Category ` : ""  
-                            }
+                            */}
                         </p> : ""
                     }
                     <Button
@@ -710,7 +896,7 @@ export default function DealInfo(props) {
                         color="primary"
                         style={{color: 'white', marginTop: '1em'}}
                         className={classes.submit}
-                        // onClick={submitDealInfo}
+                        onClick={submitDealInfo}
                     >
                     Submit Deal ->
                     </Button>

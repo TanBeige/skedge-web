@@ -1523,6 +1523,19 @@ mutation add_moment($eventId: Int!, $sourceId: String!, $creatorId: String!){
 }
 `
 
+// -------------- DEALS -------------
+const MUTATION_DEAL_ADD = gql `
+  mutation insert_deal($objects: [deals_insert_input!]!){
+    insert_deals(objects: $objects){
+      affected_rows
+      returning{
+        id
+        name
+      }
+    }
+  }
+`
+
 
 // --------------ANONYMOUS USER REQUESTS--------------
 
@@ -1613,6 +1626,8 @@ export {
   MUTATION_UNPOST_EVENT,
   MUTATION_FOLLOW_REQUEST,
   MUTATION_FOLLOW_DELETE,
+
+  MUTATION_DEAL_ADD,
   
   SUBSCRIPTION_EVENT_LOCAL_LIST,
   QUERY_ACCEPTED_FRIENDS,

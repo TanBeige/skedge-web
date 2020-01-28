@@ -10,6 +10,7 @@ var compression = require('compression')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const storage = require('./routes/Storage');
+const deal = require('./routes/Deal');
 const profile = require('./routes/Profile');
 const moment = require('./routes/Moment');
 const auth0calls = require('./routes/Auth0calls');
@@ -59,6 +60,7 @@ app.use(compression())
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/storage', storage);
+app.use('/deal', deal);
 app.use('/profile', profile);
 app.use('/moment', moment);
 app.use('/auth0', auth0calls);
