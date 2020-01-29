@@ -1607,6 +1607,79 @@ query query_deal_info($dealId: Int!) {
 }
 `
 
+const QUERY_DEAL_FEED = gql`
+  query query_deal_feed($limit: Int, $offset: Int, $userId: String, $city: String, $state: String, $date: date, $weekday: String) {
+    deals(
+      order_by: [{deal_likes_aggregate: {count: desc}}, {id: desc}]    
+      limit: $limit
+      offset: $offset
+      where: {
+        _and: [
+          {city: {_ilike: $city}},
+          {state: {_ilike: $state}},
+          {_or:[
+              {
+                _and: [
+                  {is_recurring: {_eq: false}},
+                  {start_date: {_eq: $date}}
+                ]
+              },
+              {
+                _and: [
+                  {is_recurring: {_eq: true}},
+                  {start_date: {_lte: $date}},
+                  {end_date: {_gte: $date}},
+                  {weekday: {_like: $weekday}}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    )
+    {
+      id
+      name
+      description
+      location_name
+      start_date
+      end_date
+      is_recurring
+      weekday
+      start_time
+      end_time
+      category
+      city
+      state
+      cover_pic
+      savings
+      user {
+        id
+        auth0_id
+        picture
+        name
+        full_name
+      }
+  
+      user_saved_deals {
+        user_id
+      }
+  
+      deal_likes {
+        user {
+          id
+          name
+        }
+      }
+      deal_likes_aggregate {
+        aggregate {
+          count
+        }
+      }
+    }
+  }
+`
+
 const MUTATION_DEAL_VIEW = gql`
   mutation update_deals_mutation($dealId: Int!) {
     update_deals(
@@ -1770,6 +1843,7 @@ export {
   QUERY_DEAL_INFO,
   MUTATION_DEAL_VIEW,
   ADD_GEOCODE_DEAL,
+  QUERY_DEAL_FEED,
   
   SUBSCRIPTION_EVENT_LOCAL_LIST,
   QUERY_ACCEPTED_FRIENDS,

@@ -1,9 +1,3 @@
-
-/*
-    the tanmeister: this is a demo of the unified file for the Event Lists. - 
-        There will be one of these for the future lists as well.
-*/
-
 import React, { Fragment, useState, useEffect } from 'react'
 
 import EventCard from "components/EventCards/EventCard.js"
@@ -13,22 +7,11 @@ import GridItem from "components/Grid/GridItem.js";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import EventCardListFuture from './EventCardListFuture.js';
-import FutureContainer from './FutureContainer.js';
-import { Instagram } from 'react-content-loader'
-
-import LoadCardList from '../LoadCardList.js';
-
+// import EventCardListFuture from './EventCardListFuture.js';
+// import FutureContainer from './FutureContainer.js';
+import LoadCardList from './LoadCardList.js';
 import * as Scroll from 'react-scroll';
-
 import { throttle } from 'lodash';
-
-
-//const MyInstagramLoader = () => <Instagram />
-
-import {
-    QUERY_FILTERED_EVENT
-} from "EventQueries/EventQueries";
 
 const dateHeaderStyle = {
   textAlign: 'center',
@@ -38,6 +21,11 @@ const dateHeaderStyle = {
   borderTopLeftRadius: 8,
   borderTopRightRadius: 8,
 }
+
+var moment = require("moment")
+
+
+const limitValue = 10;
 
 // Formatting Date Filter
 Date.prototype.formatDate = function() {
@@ -55,7 +43,7 @@ Date.prototype.formatDate = function() {
 }
 
 // Functional Component
-export default function EventCardListHome(props) {
+export default function EventList({ listType, filter, client, CardComponent, userId, query}) {
   // Checks if we are still grabbing events
   const [isSearch, setIsSearch] = useState(false);
   let isMounted = true;
@@ -65,51 +53,40 @@ export default function EventCardListHome(props) {
   let ScrollLink = Scroll.Link;
   let Element = Scroll.Element;
 
+  // Variables Sent To The Query:
+  let usedVariables = {};
+
 
   const [values, setValues] = useState({
-      type: props.type,
-      filter: props.filter,
+      type: listType,
+      filter: filter,
       loadedAllEvents: false,
       showOlder: true,
       eventsLength: 0,
       showNew: false,
-      limit: props.filter.limit,
+      limit: limitValue,
       events: [],
   });
+
+  let table = listType === 'deals' ? 'deals' : 'events';
+
 
 
     // Update Query When new Events are added
     const loadMoreClicked = () => {
-      const { client } = props;
-      const { filter } = props;
 
-      let cat = filter.category;
-      if(filter.category == "Any") {
-        cat = ""
-      }
-      client.query({
-          query: QUERY_FILTERED_EVENT,
-          variables: {
-            eventLimit: values.limit,
-            eventOffset: values.eventsLength,
-            search: `%${filter.searchText}%`,
-            category: `%${cat}%`,
-            city: `%${filter.city}%`,
-            state: `%${filter.state}%`,
-            lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
-            upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
-            type: filter.type,
-            date: filter.date ? filter.date.formatDate() : null,
-            weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
-          }
+        const queryVariables = getVariables(listType, userId, values.eventsLength, filter)
+
+        client.query({
+          query: query,
+          variables: queryVariables
         })
         .then(data => {
-          if (data.data.events.length) {
-            let mergedEvents = values.events.concat(data.data.events);
+          if (data.data[table].length) {
+            let mergedEvents = values.events.concat(data.data[table]);
 
             //Remove Duplicates from array
             mergedEvents = mergedEvents.filter((thing, index, self) => self.findIndex(t => t.id === thing.id) === index)
-
 
             // update state with new events
             if(isMounted) {
@@ -117,7 +94,7 @@ export default function EventCardListHome(props) {
                 ...values,
                 events: mergedEvents,
                 showNew: true,
-                eventsLength: values.events.length + data.data.events.length
+                eventsLength: values.events.length + data.data[table].length
               });
               setIsSearch(false)
             }
@@ -139,39 +116,32 @@ export default function EventCardListHome(props) {
     //Throttle LoadMore so we don't load too much at once
     const loadMoreThrottled = throttle(loadMoreClicked, 100);
 
-
-    // Replaces ComponentDidMount() in a Functional Component
-    if (values.loadedAllEvents) {
-      futureEvents = (
-        <FutureContainer
-          client={props.client}
-          filter={props.filter}
-          userId={props.userId}
-        />
-      )
-    }
+    // if (values.loadedAllEvents) {
+    //   futureEvents = (
+    //     <FutureContainer
+    //       client={client}
+    //       filter={filter}
+    //       userId={userId}
+    //     />
+    //   )
+    // }
 
     useEffect(() => {
       //Restart the get events
       setValues({
-        type: props.type,
-        filter: props.filter,
+        type: listType,
+        filter: filter,
         loadedAllEvents: false,
         showOlder: true,
         eventsLength: 0,
         showNew: false,
-        limit: props.filter.limit,
+        limit: limitValue,
         events: [],
       });
 
       currentKey = Math.floor(Math.random() * Math.floor(1000))
-      //setIsMounted(true)
-
-      //grabEvents();
       // ----------------------------GRABBING EVENTS IF MOUNTED--------------------------------
       isMounted = true;
-      const { client } = props;
-      const { filter } = props;
 
       let cat = filter.category;
       if(filter.category == "Any") {
@@ -179,34 +149,26 @@ export default function EventCardListHome(props) {
       }
       setIsSearch(true)
 
+      const queryVariables = getVariables(listType, userId, values.eventsLength, filter)
+      console.log("q variables: ", queryVariables)
+
       client
         .query({
-          query: QUERY_FILTERED_EVENT,
-          variables: {
-            eventLimit: values.limit,
-            eventOffset: 0,
-            search: `%${filter.searchText}%`,
-            category: `%${cat}%`,
-            city: `%${filter.city}%`,
-            state: `%${filter.state}%`,
-            lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
-            upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
-            type: filter.type,
-            date: filter.date !== null ? filter.date.formatDate() : null,
-            weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
-          }
+          query: query,
+          variables: queryVariables
         })
         .then(data => {
-          if (data.data.events.length > 0) {
-            //const mergedEvents = values.events.concat(data.data.events);
+          console.log(data)
+          if (data.data[table].length > 0) {
+            //const mergedEvents = values.events.concat(data.data[table]);
             // update state with new events
             if(isMounted) {
               setValues({
                 ...values,
-                events: data.data.events,
+                events: data.data[table],
                 showNew: true,
-                eventsLength: data.data.events.length,
-                loadedAllEvents: data.data.events.length < props.filter.limit
+                eventsLength: data.data[table].length,
+                loadedAllEvents: data.data[table].length < limitValue
               });
               setIsSearch(false);
             }
@@ -215,8 +177,8 @@ export default function EventCardListHome(props) {
             if(isMounted) {
               setValues({
                 ...values,
-                events: data.data.events,
-                eventsLength: data.data.events.length,
+                events: data.data[table],
+                eventsLength: data.data[table].length,
                 loadedAllEvents: true
               })
               setIsSearch(false);
@@ -232,7 +194,7 @@ export default function EventCardListHome(props) {
       return () => {
         isMounted = false;
       }
-    }, [props.filter])
+    }, [filter])
 
     
     const insertAd = (index) => {
@@ -303,7 +265,7 @@ export default function EventCardListHome(props) {
       return(
         <div id='scrollableDiv' style={{height: '65vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey}>
           <Element name="listTop"></Element>
-          <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no events this day.</h5>
+          <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no local events today. Try your Following Feed.</h5>
             <hr />
             {
                 values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
@@ -315,8 +277,7 @@ export default function EventCardListHome(props) {
 
 
     return (
-      <div id='scrollableDiv' style={{height: '65vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey}>
-        <Element name="listTop"></Element>
+      <div id='scrollableDiv' key={currentKey}>
         <InfiniteScroll
             dataLength={values.eventsLength}
             next={loadMoreThrottled}
@@ -324,20 +285,21 @@ export default function EventCardListHome(props) {
             //loader={<div style={{textAlign: 'center'}}><CircularProgress size={20} color='primary'/></div>}
             loader={<LoadCardList />}
             style={{overflow: 'none'}}
+            //scrollableTarget="root"
         >
           <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
               {
-                finalEvents.map((event, index) => {
+                finalEvents.map((item, index) => {
                     return (
-                      <Fragment key={event.id}>
-                        <GridItem xs={12} sm={6} md={6}>
-                          <EventCard 
-                              event={event} 
-                              listType={"home"}
-                              client={props.client}
-                              userId={props.userId}
-                              filter={props.filter}
-                              currentDate={props.filter.date}
+                      <Fragment key={item.id}>
+                        <GridItem xs={12} sm={6} md={6} >
+                          <CardComponent
+                              itemInfo={item} 
+                              listType={listType}
+                              client={client}
+                              userId={userId}
+                              filter={filter}
+                              currentDate={filter.date}
                           />
                         </GridItem>
                         {
@@ -358,47 +320,59 @@ export default function EventCardListHome(props) {
     )
 }
 
-const localFeedQuery = {
-    query: QUERY_FILTERED_EVENT,
-    variables: {
-      eventLimit: values.limit,
-      eventOffset: values.eventsLength,
+
+const getVariables = (listType, userId, eventsLength, filter) => {
+  // usedVariables holds the variabels that'll be sent into the query
+  const limitValue = 10;
+  let usedVariables = {};
+
+  console.log("listtype: ", listType)
+  if(listType === 'local') {
+    let cat = filter.category === "Any" ? "" : filter.category;
+
+    usedVariables = {
+      eventLimit: limitValue,
+      eventOffset: eventsLength,
+      userId: userId,
       search: `%${filter.searchText}%`,
       category: `%${cat}%`,
       city: `%${filter.city}%`,
       state: `%${filter.state}%`,
       lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
       upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
-      type: filter.type,
+      type: 'local',
       date: filter.date ? filter.date.formatDate() : null,
       weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
     }
-}
+  }
+  else if(listType === 'following') {
+    let cat = filter.category === "Any" ? "" : filter.category;
 
-const followingFeedQuery = {
-    query: FETCH_FOLLOWING_FEED,
-    variables: {
-        userId: props.userId,
-        eventLimit: values.limit,
-        eventOffset: 0,
-        search: `%${filter.searchText}%`,
-        category: `%${cat}%`,
-        city: `%${filter.city}%`,
-        state: `%${filter.state}%`,
-        lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
-        upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
-        date: filter.date !== null ? filter.date.formatDate() : null,
-        weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
+    usedVariables = {
+      eventLimit: limitValue,
+      eventOffset: eventsLength,
+      userId: userId,
+      search: `%${filter.searchText}%`,
+      category: `%${cat}%`,
+      city: `%${filter.city}%`,
+      state: `%${filter.state}%`,
+      lowerPrice: filter.lowerPrice === "" ? null : filter.lowerPrice,
+      upperPrice: filter.upperPrice === "" ? null : filter.upperPrice,
+      date: filter.date ? filter.date.formatDate() : null,
+      weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
     }
-}
+  }
+  else if(listType === 'deals') {
+    usedVariables = {
+      limit: limitValue,
+      offset: eventsLength,
+      city: `%${filter.city}%`,
+      state: `%${filter.state}%`,
+      userId: userId,
+      date: filter.date ? filter.date.formatDate() : null,
+      weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
+    }
+  }
 
-const profileFeedQuery = {
-    query: QUERY_PROFILE_EVENTS,
-    variables: {
-        eventLimit: values.limit,
-        eventOffset: values.eventsLength,
-        profileId: props.profileId,
-        date:values.filter.date ? values.filter.date.formatDate() : null,
-        weekday: values.filter.date !== null ? `%${values.filter.date.getDay()}%` : null
-    }
+  return usedVariables;
 }

@@ -635,7 +635,8 @@ export default function DealInfo(props) {
             !values.thursday &&
             !values.friday &&
             !values.saturday &&
-            !values.sunday
+            !values.sunday &&
+            !values.end_date
         ) {
             continueDisabled = true;
         }
@@ -891,6 +892,11 @@ export default function DealInfo(props) {
                                 !values.saturday &&
                                 !values.sunday
                                 ? `Weekdays ` : "" 
+                            }
+                            {
+                                values.repeatCheck &&
+                                !values.end_date
+                                ? `End Date ` : "" 
                             }
                             {/*
                                 values.categories.length < 1 ? `Category ` : ""  

@@ -7,8 +7,34 @@ import EventCardListProfile from 'components/EventCards/EventCardListProfile.js'
 import EventCardListLand from 'components/EventCards/LandingEventList/EventCardListLand.js'
 import CardListCreated from 'components/EventCards/CardListCreated.js'
 
+import EventList from 'components/EventCards/EventList.js'
+
+
+//Cards
+import DealCard from 'components/Deals/DealCard.js';
+
+import { useAuth0 } from 'Authorization/react-auth0-wrapper.js';
+
+import {
+  QUERY_FILTERED_EVENT,
+  QUERY_PROFILE_EVENTS,
+  QUERY_FOLLOWING_FEED,
+  QUERY_DEAL_FEED
+} from "EventQueries/EventQueries";
+import { datePickerDefaultProps } from '@material-ui/pickers/constants/prop-types'
+
+/*
+props: 
+  client={props.client}
+  userId={props.userId}
+  filter={privateFilter}
+  listType='following'
+*/
+
 export default function EventCardList(props) {
-console.log(props.listType)
+
+  const { user } = useAuth0();
+
   const eventList = () => {
     if(props.listType === 'local'){
       return (<EventCardListHome {...props}/>)
@@ -29,7 +55,16 @@ console.log(props.listType)
       return (<CardListCreated {...props}/>)
     }
     else if(props.listType === 'deals'){
-      return (<CardListCreated {...props}/>)
+      return (
+        <EventList 
+          listType={props.listType} 
+          client={props.client}
+          CardComponent={DealCard}
+          userId={user.sub}
+          query={QUERY_DEAL_FEED}
+          filter={props.filter}
+        />
+      )
     }
     else {
       return <h1>Not Home</h1>
