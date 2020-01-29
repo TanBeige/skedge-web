@@ -1641,6 +1641,8 @@ const QUERY_DEAL_FEED = gql`
       id
       name
       description
+      point_1
+      point_2
       location_name
       start_date
       end_date

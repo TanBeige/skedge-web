@@ -170,7 +170,7 @@ export default function HomePage(props) {
   else {
     return (
       // <div style={{backgroundColor: "#52D3B6"}}>
-      <div style={{paddingTop: '1px', paddingBottom: '5vh'}}>
+      <div style={{paddingTop: '1px', paddingBottom: '5vh', minHeight: '140vh'}}>
         <Header
           brand="Skedge"
           //links={<HeaderLinks dropdownHoverColor="info"/>}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // nodejs library to set properties for components
@@ -9,13 +9,25 @@ import SwipeableViews from "react-swipeable-views";
 import { makeStyles } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
+import Collapse from '@material-ui/core/Collapse';
 
 // core components
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
+import IconButton from '@material-ui/core/IconButton';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import SearchIcon from '@material-ui/icons/Search';
+
+
+
+
 
 import styles from "assets/jss/material-kit-pro-react/components/navPillsStyle.js";
 import { Button } from "@material-ui/core";
+
+import DateSelect from 'views/HomePage/Sections/DateSelect.js';
+import SearchFilterBar from 'views/HomePage/Sections/SearchFilterBar.js';
+
 
 const useStyles = makeStyles(styles);
 
@@ -36,6 +48,8 @@ const tableButtonSelectedStyle = {
 }
 
 export default function NavPillsSearch(props) {
+  const [expanded, setExpanded] = useState(false)
+
   const [active, setActive] = React.useState(props.active);
   const [tableValue, setTableValue] = React.useState(0);
   const handleChange = (event, active) => {
@@ -46,6 +60,10 @@ export default function NavPillsSearch(props) {
   };
   const handletableChange = index => {
     setTableValue(index)
+  }
+  // Expand Filter
+  const handleExpandClick = () => {
+    setExpanded(!expanded)
   }
   const { tabs, userSearch, direction, color, horizontal, alignCenter } = props;
   const classes = useStyles();
@@ -121,18 +139,37 @@ export default function NavPillsSearch(props) {
     )
   }
 
-
-
   return horizontal !== undefined ? (
     <GridContainer>
       <GridItem {...horizontal.tabsGrid}>{tabButtons}</GridItem>
+
+      <IconButton onClick={handleExpandClick}>
+        <SearchIcon />
+      </IconButton>
+      <Collapse in={expanded} timeout="auto">
+        <SearchFilterBar handleFilters={props.handleFilters} handleDateChange={props.handleDateChange} submitSearch={props.submitSearch} values={props.values}/>
+      </Collapse>
+      
+      <DateSelect handleDayBack={props.handleDayBack} handleDayForward={props.handleDayForward} date={props.formattedDate}/>
+      
       <GridItem {...horizontal.contentGrid}>{tabContent}</GridItem>
     </GridContainer>
   ) : (
+    //I think this is the one that gets show every time
     <div>
       <GridContainer justify="center">
         <GridItem xs={12} sm={12} md={12} style={{paddingLeft: 0, paddingRight: 0}} className={classes.textCenter}>
           {tabButtons}
+          
+          <IconButton style={{position: 'absolute', top: '6vh', right: '1vw', padding: '8px',backgroundColor: 'white', border: window.innerWidth < 350 ? '1px solid darkgrey' : "none"}} onClick={handleExpandClick}>
+            <SearchIcon/>
+          </IconButton>
+          <Collapse in={expanded} timeout="auto">
+            <SearchFilterBar handleFilters={props.handleFilters} handleDateChange={props.handleDateChange} submitSearch={props.submitSearch} values={props.values}/>
+          </Collapse>
+
+          <DateSelect handleDayBack={props.handleDayBack} handleDayForward={props.handleDayForward} date={props.formattedDate}/>
+          
           {tabContent}
         </GridItem>
       </GridContainer>

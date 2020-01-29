@@ -109,6 +109,8 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
     ifSaved: itemInfo.user_saved_deals.some(user  => user.user_id === userId) ? true : false,
 
     name: itemInfo.name ? itemInfo.name : "",
+    point_1: itemInfo.point_1 ? itemInfo.point_1 : "",
+    point_2: itemInfo.point_2 ? itemInfo.point_2 : "",
     description: itemInfo.description ? itemInfo.description : "",
     // category: itemInfo.category ? itemInfo.category : "No Category",
     image_id: itemInfo.cover_pic ? itemInfo.cover_pic : "cover_images/uzhvjyuletkpvrz5itxv",
@@ -316,7 +318,7 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
                   <div style={{fontSize: 14}}>
                     <div style={{width: '100%', textAlign: 'left'}}>
                       <div style={{position: 'absolute', right: 20,  textShadow: "-1px 1px #02C39A"}}>
-                        {values.price === "$0.00" ? "Free" : values.price}
+                        {values.savings === "$0.00" ? "Free" : values.savings}
                       </div>
                       
                       <AccessAlarmIcon fontSize='small' style={{verticalAlign: 'top'}}/>
@@ -333,9 +335,10 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
                   </div>
   
   
-                  <p style={{textAlign: 'left', fontSize: '12px', lineHeight: 1.2, marginTop: 5}}>
-                    {values.description}
-                  </p>
+                  <ul style={{textAlign: 'left', fontSize: '12px', lineHeight: 1.2, marginTop: 5}}>
+                    <li>{itemInfo.point_1}</li>
+                    <li>{itemInfo.point_2}</li>
+                  </ul>
                 </CardBody>
   
                 <CardFooter style={{padding: '0rem 1rem'}}>

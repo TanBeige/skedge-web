@@ -38,6 +38,7 @@ import ApartmentIcon from '@material-ui/icons/Apartment';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import LocalAtmIcon from '@material-ui/icons/LocalAtm';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import SearchIcon from '@material-ui/icons/Search';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
@@ -230,6 +231,16 @@ export default function SectionPills(props) {
     <NavPillsSearch
         alignCenter
         color="primary"
+
+        handleDayBack={handleDayBack}
+        handleDayForward={handleDayForward}
+        formattedDate={formatDate.format("dddd, MMM D")}
+        values={values}
+        
+        handleFilters={handleFilters}
+        handleDateChange={handleDateChange}
+        submitSearch={submitSearch}
+
         client={props.client}
         isEntity={props.isEntity}
         searchText={localFilter.searchText}
@@ -283,15 +294,7 @@ export default function SectionPills(props) {
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.section} style={{paddingTop: 0, paddingBottom: '1em'}}>
-        <IconButton>
-          Search
-          <ExpandMoreIcon onClick={handleExpandClick}/>
-        </IconButton>
-        <Collapse in={expanded} timeout="auto">
-          <SearchFilterBar handleFilters={handleFilters} handleDateChange={handleDateChange} submitSearch={submitSearch} values={values}/>
-        </Collapse>
         <Divider />        
-        <DateSelect handleDayBack={handleDayBack} handleDayForward={handleDayForward} date={formatDate.format("dddd, MMM D")}/>
         <div className={classes.profileTabs} style={{marginTop: 10}}>
               {navPillsDisplay}
         </div>

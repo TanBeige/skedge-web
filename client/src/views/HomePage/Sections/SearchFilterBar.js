@@ -48,7 +48,7 @@ export default function SearchFilterBar({handleFilters, handleDateChange, submit
     return(
         <GridContainer justify="center">
           <GridItem xs={12}>
-            <Paper elevation={10} style={{paddingLeft:20, paddingRight: 20, margin: '10px 0 20px 0'}} color="primary">
+            <Paper elevation={10} style={{paddingLeft:'1em', paddingRight: '1em', margin: '10px 1em 20px 1em'}} color="primary">
               <GridContainer>
                 <GridItem xs={12}>
                   <FormControl fullWidth className={classes.selectFormControl} style={{marginBottom: 0}}>            
