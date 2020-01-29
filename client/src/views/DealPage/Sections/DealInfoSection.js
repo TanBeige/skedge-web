@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {Fragment, useState, useEffect } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -27,6 +27,9 @@ import PlaceIcon from '@material-ui/icons/Place';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
 //import Button from 'components/CustomButtons/Button.js'
 import MapIcon from '@material-ui/icons/Map';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import LoyaltyIcon from '@material-ui/icons/Loyalty';
+
 // style components
 import sectionTextStyle from "assets/jss/material-kit-pro-react/views/blogPostSections/sectionTextStyle.js";
 
@@ -79,7 +82,7 @@ export default function DealInfoSection({ dealInfo, client }) {
     ReactGA.initialize('UA-151937222-1');
     ReactGA.event({
       category: 'User',
-      action: 'Login/Sign Up: Event Page'
+      action: 'Login/Sign Up: Deal Page'
     });
     //Then Login/Sign up
     // loginWithRedirect({});
@@ -129,59 +132,65 @@ export default function DealInfoSection({ dealInfo, client }) {
   if(dealInfo.start_time) {
     formattedStartTime = moment(dealInfo.start_time, "HH:mm:ss");
   }
-  
-  //style={{borderRadius: 5, backgroundColor: "#02C39A", color: 'white'}}
-  let formattedEndTime = ""
+
+  let formattedEndTime = "";
   if(dealInfo.end_time) {
-    const tempEndTime = moment(dealInfo.end_time, "HH:mm:ss")
-    formattedEndTime = (
-      <h3 style={{marginTop: 0}}>
-        Until: {moment(tempEndTime).format("h:mm A")}
-      </h3>
-    )
+    formattedEndTime = moment(dealInfo.end_time, "HH:mm:ss");
   }
+  
+  
   let formattedDate = ""
   if(dealInfo.is_recurring) {
     // Setting Display Variables    
     let displayDate = "Every ";
     if(dealInfo.weekday.includes("1")) {
-      displayDate += "Monday";
+      displayDate += "Mon";
     }
     if(dealInfo.weekday.includes("2")) {
       if(displayDate.length > 6) {
         displayDate += ", "
       }
-      displayDate += "Tuesday";
+      displayDate += "Tues";
     }
     if(dealInfo.weekday.includes("3")) {
       if(displayDate.length > 6) {
         displayDate += ", "
       }
-      displayDate += "Wednesday";
+      displayDate += "Wed";
     }
     if(dealInfo.weekday.includes("4")) {
       if(displayDate.length > 6) {
         displayDate += ", "
       }
-      displayDate += "Thursday";
+      displayDate += "Thur";
     }
     if(dealInfo.weekday.includes("5")) {
       if(displayDate.length > 6) {
         displayDate += ", "
       }
-      displayDate += "Friday";
+      displayDate += "Fri";
     }
     if(dealInfo.weekday.includes("6")) {
       if(displayDate.length > 6) {
         displayDate += ", "
       }
-      displayDate += "Saturday";
+      displayDate += "Sat";
     }
     if(dealInfo.weekday.includes("0")) {
       if(displayDate.length > 6) {
         displayDate += ", "
       }
-      displayDate += "Sunday";
+      displayDate += "Sun";
+    }
+
+    if(dealInfo.weekday === '1 2 3 4 5 6 0') {
+      displayDate = "Everyday";
+    }
+    else if(dealInfo.weekday === '1 2 3 4 5') {
+      displayDate = "Every weekday";
+    }
+    else if(dealInfo.weekday === '5 6 0') {
+      displayDate = "Every weekend";
     }
 
     //displayDate += `until ${dealInfo.end_date}`
@@ -202,28 +211,35 @@ export default function DealInfoSection({ dealInfo, client }) {
 
 
   return (
-    <div className={classes.section} style={{paddingTop: 15}}>
+    <div className={classes.section} style={{paddingTop: 0}}>
       <GridContainer justify="center">
-        <GridItem xs={12} sm={8} md={8}>
-          <div style={{textAlign: 'center'}}>
-            <h2>
-              <TodayIcon fontSize='large' style={{verticalAlign: 'middle'}}/>
+        <GridItem xs={12} sm={10} md={10}>
+          <div style={{marginTop: 8, textAlign: 'center'}}>
+            
+            <h2 style={{marginTop: 0}}>
               {formattedDate}
             </h2>
-            <div>
-              <h3 style={{marginTop: 0}}>
-                Starts at: {moment(formattedStartTime).format("h:mm A")}
-              </h3>
-              {formattedEndTime}
-            </div>
+            
           </div>
           <hr />
           
             {/* user ? 
             <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
             </div> : "" */}
+            <div style={{position: 'absolute', right: 24}}>
+              <h4 style={{marginTop: 0, float: 'right', textAlign: 'right'}}>
+                From {moment(formattedStartTime).format("h:mm A")}
+                {
+                dealInfo.end_time ? 
+                    <Fragment>
+                      <br />until {formattedEndTime.format("h:mm A")}
+                    </Fragment>
+                   : ""
+                }
+              </h4>
+            </div>
 
-          <h3 className={classes.title}>
+          <h3 className={classes.title} style={{margin: '0px 0px 2em 0px'}}>
             Details
           </h3>
           <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>

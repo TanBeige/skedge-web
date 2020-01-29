@@ -295,7 +295,7 @@ export default function FollowingFeedList(props) {
           <h5 style={{marginTop: 20, textAlign: 'center'}}>Follow friends & businesses near you to see what they’re up to here.</h5>
             <hr />
             {
-                values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
+                values.loadedAllEvents ? <h3 style={{textAlign: 'center'}}>Future Events</h3> : ""
             }
           {futureEvents}
         </div>
@@ -340,7 +340,7 @@ export default function FollowingFeedList(props) {
         </InfiniteScroll>
         <hr />
         {
-            values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
+            values.loadedAllEvents ? <h3 style={{textAlign: 'center'}}>Future Events</h3> : ""
         }
         {futureEvents}
       </div>

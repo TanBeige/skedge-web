@@ -10,6 +10,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Card from "components/Card/Card.js";
 import EventCardList from "components/EventCards/EventCardList.js"
+import LandingList from "components/EventCards/LandingEventList/LandingList.js"
 
 import teamsStyle from "assets/jss/material-kit-pro-react/views/sectionsSections/teamsStyle.js";
 import teamStyle from "assets/jss/material-kit-pro-react/views/landingPageSections/teamStyle.js";
@@ -33,9 +34,9 @@ export default function SectionTeam({client}) {
     searchText: "", //Search Text can look for Event Names, Tags, or Event Creators!
     type: "local",
     category: "",
-    city: "",
-    state: "",
-    limit: 4,
+    city: "Tallahassee",
+    state: "Florida",
+    limit: 3,
     date: new Date(),
     weekday: new Date().getDay()
   }
@@ -44,18 +45,16 @@ export default function SectionTeam({client}) {
     <div className={classes.section} style={{padding: '10px 10px 0px 10px'}}>
       {/* <img style={{margin: 5}} height={64} width={64} src={require('assets/img/logoheader.jpg')} /> */}
       {/* <h2 style={{margin:  0, padding: 0, color: "#02C39A"}}><PlayForWorkIcon fontSize='large' style={{fontSize: 50}}/></h2>       */}
-      <h3 className={classes.title} style={{margin: 5, fontWeight: '300', fontFamily: `'Helvetica', 'Arial'`,fontSize: '1.5em'}}  >Events in Tallahassee, FL.</h3>
-      <hr />
       <GridContainer style={{padding: 0, marginTop: -45}}>
         <GridItem xs={12} sm={12} md={12} style={{paddingLeft: 0, paddingRight: 0}} >
-          <Card profile plain className={classes.card3} style={{marginBottom: 0}}>
-            <EventCardList
+          {/* <Card profile plain className={classes.card3} style={{marginBottom: 0}}> */}
+            <LandingList
               client={client}
               filter={filter}
               listType="landing"
               //futureEvents={setFutureEvents}
             />
-          </Card>
+          {/* </Card> */}
         </GridItem>
       </GridContainer>
     </div>

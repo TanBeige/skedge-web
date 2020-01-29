@@ -127,6 +127,48 @@ fragment FriendFragment on users {
 }
 `;
 
+const DEAL_FRAGMENT = gql`
+  fragment DealFragment on deals {
+      id
+      name
+      description
+      point_1
+      point_2
+      location_name
+      start_date
+      end_date
+      is_recurring
+      weekday
+      start_time
+      end_time
+      category
+      city
+      state
+      cover_pic
+      savings
+      user {
+        id
+        auth0_id
+        picture
+        name
+        full_name
+      }
+  
+      deal_likes {
+        user {
+          id
+          name
+        }
+      }
+      deal_likes_aggregate {
+        aggregate {
+          count
+        }
+      }
+  }
+  
+`
+
 // Fetch Users
 const QUERY_USER_PROFILE = gql`
   query fetch_user($username: String!) {
@@ -829,6 +871,77 @@ query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String
   }
 }
   ${EVENT_FRAGMENT}
+`
+const QUERY_LANDING_FEED = gql`
+query landing_feed($limit: Int, $city: String, $state: String, $date: date, $weekday:String) {
+  events(
+    limit: $limit
+    order_by: {id: desc}
+    where: {_and: [
+      {city: {_eq: $city}},
+      {state: {_eq: $state}},
+      {event_type: {_eq: "local"}},
+      {event_date:{
+          _or:[
+            {
+              _and: [
+                {is_recurring: {_eq: false}},
+                {start_date: {_eq: $date}}
+           		]
+            },
+            {
+              _and: [
+                {is_recurring: {_eq: true}},
+                {start_date: {_lte: $date}},
+              	{end_date: {_gte: $date}},
+                {weekday: {_like: $weekday}}
+              ]
+            } 
+          ]
+          }
+      	}
+      ]
+    }) {
+      ...EventFragment
+      shared_event_aggregate {
+        aggregate {
+          count
+        }
+      }
+      shared_event {
+        user_id
+      }
+  }
+  deals(
+    limit: $limit
+    where: {_and: [
+      {city: {_eq: $city}},
+      {state: {_eq: $state}},
+			{_or:[
+            {
+              _and: [
+                {is_recurring: {_eq: false}},
+                {start_date: {_eq: $date}}
+           		]
+            },
+            {
+              _and: [
+                {is_recurring: {_eq: true}},
+                {start_date: {_lte: $date}},
+              	{end_date: {_gte: $date}},
+                {weekday: {_like: $weekday}}
+              ]
+            }
+          ]
+      }
+    ]
+    } 
+  ) {
+    ...DealFragment
+  }
+}
+${EVENT_FRAGMENT}
+${DEAL_FRAGMENT}
 `
 
 const FETCH_EVENT_LIKES_REPOSTS = gql`
@@ -1638,48 +1751,10 @@ const QUERY_DEAL_FEED = gql`
       }
     )
     {
-      id
-      name
-      description
-      point_1
-      point_2
-      location_name
-      start_date
-      end_date
-      is_recurring
-      weekday
-      start_time
-      end_time
-      category
-      city
-      state
-      cover_pic
-      savings
-      user {
-        id
-        auth0_id
-        picture
-        name
-        full_name
-      }
-  
-      user_saved_deals {
-        user_id
-      }
-  
-      deal_likes {
-        user {
-          id
-          name
-        }
-      }
-      deal_likes_aggregate {
-        aggregate {
-          count
-        }
-      }
+      ...DealFragment
     }
   }
+  ${DEAL_FRAGMENT}
 `
 
 const MUTATION_DEAL_VIEW = gql`
@@ -1792,6 +1867,7 @@ export {
   QUERY_FILTERED_EVENT,
   FETCH_FOLLOWING_FEED,
   FETCH_LANDING_FEED,
+  QUERY_LANDING_FEED,
   QUERY_USER_PROFILE,
   QUERY_PROFILE_EVENTS,
   FETCH_IF_ENTITY,

@@ -143,7 +143,7 @@ export default function NavPillsSearch(props) {
     <GridContainer>
       <GridItem {...horizontal.tabsGrid}>{tabButtons}</GridItem>
 
-      <IconButton onClick={handleExpandClick}>
+      <IconButton style={{position: 'absolute', top: '7vh', right: '1vw', padding: '8px',backgroundColor: 'white', border: window.innerWidth < 350 ? '1px solid darkgrey' : "none"}} onClick={handleExpandClick}>
         <SearchIcon />
       </IconButton>
       <Collapse in={expanded} timeout="auto">
@@ -161,7 +161,7 @@ export default function NavPillsSearch(props) {
         <GridItem xs={12} sm={12} md={12} style={{paddingLeft: 0, paddingRight: 0}} className={classes.textCenter}>
           {tabButtons}
           
-          <IconButton style={{position: 'absolute', top: '6vh', right: '1vw', padding: '8px',backgroundColor: 'white', border: window.innerWidth < 350 ? '1px solid darkgrey' : "none"}} onClick={handleExpandClick}>
+          <IconButton style={{position: 'absolute', top: '8vh', right: '1vw', padding: '8px',backgroundColor: 'white', border: window.innerWidth < 350 ? '1px solid darkgrey' : "none"}} onClick={handleExpandClick}>
             <SearchIcon/>
           </IconButton>
           <Collapse in={expanded} timeout="auto">

@@ -207,7 +207,7 @@ export default function SectionText({ eventInfo, client }) {
   return (
     <div className={classes.section} style={{paddingTop: 15}}>
       <GridContainer justify="center">
-        <GridItem xs={12} sm={8} md={8}>
+        <GridItem xs={12} sm={10} md={10}>
           <div style={{textAlign: 'center'}}>
             <h2>
               <TodayIcon fontSize='large' style={{verticalAlign: 'middle'}}/>

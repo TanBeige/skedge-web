@@ -148,7 +148,7 @@ export default function LandingPage(props) {
         <Button style={{position: 'fixed', bottom: 55, right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
               <ArrowUpwardIcon style={{color: "white"}} />
         </Button>
-        <div className={classes.container} style={{paddingBottom: 0}}>
+        <div style={{paddingBottom: 0}}>
           
           <AppearOnScroll scrollInHeight={500}>
             <Button
@@ -159,6 +159,7 @@ export default function LandingPage(props) {
               Login or Sign Up
             </Button>
           </AppearOnScroll>
+          
           <SectionTeam client={props.client}/>
           {/* <SectionWork /> */}
         </div>

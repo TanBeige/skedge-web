@@ -15,6 +15,10 @@ import TurnedInIcon from '@material-ui/icons/TurnedIn';
 import TurnedInTwoToneIcon from '@material-ui/icons/TurnedInTwoTone';
 import CreateIcon from '@material-ui/icons/Create';
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
+import FlareIcon from '@material-ui/icons/Flare';
+
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import LoyaltyIcon from '@material-ui/icons/Loyalty';
 // core components
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -102,11 +106,11 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
   // Setting Event Info
   const [values, setValues] = useState({
 
-    likeAmount: itemInfo.deal_likes_aggregate.aggregate.count,
-    usersLiked: itemInfo.deal_likes,
-    ifLiked: itemInfo.deal_likes.some(user => user.user_id === userId) ? "secondary" : "inherit",
+    // likeAmount: itemInfo.deal_likes_aggregate.aggregate.count,
+    // usersLiked: itemInfo.deal_likes,
+    // ifLiked: itemInfo.deal_likes.some(user => user.user_id === userId) ? "secondary" : "inherit",
 
-    ifSaved: itemInfo.user_saved_deals.some(user  => user.user_id === userId) ? true : false,
+    // ifSaved: itemInfo.user_saved_deals.some(user  => user.user_id === userId) ? true : false,
 
     name: itemInfo.name ? itemInfo.name : "",
     point_1: itemInfo.point_1 ? itemInfo.point_1 : "",
@@ -271,13 +275,7 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
   
                   <div className={classes.imgCardOverlay} style={{width: '100%'}}>
                     {displayCornerDate}
-                    <div className='saveButton' onClick={handleSave}>
-                      {
-                        values.ifSaved === true ? <TurnedInIcon fontSize='small'/>
-                          :
-                          <TurnedInNotIcon fontSize='small'/>
-                      }
-                    </div>
+
   
                     <Link to={`/${values.username}`}>
                       <div
@@ -317,10 +315,6 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
   
                   <div style={{fontSize: 14}}>
                     <div style={{width: '100%', textAlign: 'left'}}>
-                      <div style={{position: 'absolute', right: 20,  textShadow: "-1px 1px #02C39A"}}>
-                        {values.savings === "$0.00" ? "Free" : values.savings}
-                      </div>
-                      
                       <AccessAlarmIcon fontSize='small' style={{verticalAlign: 'top'}}/>
                       {` ${values.start_time.format("h:mma")}`}
                       {values.end_time ? ` - ${values.end_time.format("h:mma")}` : ""}
@@ -333,26 +327,27 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
                       </p>
                     </div>
                   </div>
-  
-  
-                  <ul style={{textAlign: 'left', fontSize: '12px', lineHeight: 1.2, marginTop: 5}}>
-                    <li>{itemInfo.point_1}</li>
-                    <li>{itemInfo.point_2}</li>
-                  </ul>
+                    <div style={{display: 'flex', color: 'gold'}}> 
+                      <FlareIcon size='small' style={{fontSize: 12, margin: 'auto 4px'}}/>
+                      <p style={{color: 'black'}}>{itemInfo.point_1}</p>
+                    </div>
                 </CardBody>
   
                 <CardFooter style={{padding: '0rem 1rem'}}>
                   <Info style={{textAlign: 'left'}}>
-                    {/* <h6 color='rose' className={classes.cardCategory}>{values.category.toUpperCase()}</h6> */}
+                    <h6 color='primary' className={classes.cardCategory}>Deal</h6>
                   </Info>
-                  <div style={{position: 'absolute',right: 15}}>
+                  {/* <div style={{position: 'absolute',right: 15}}>
+                    <IconButton onClick={handleLike} aria-label="Like" style={{padding: 6}}>
+                      <LoyaltyIcon /> 
+                    </IconButton>
                     <IconButton onClick={handleLike} aria-label="Like" style={{padding: 6}}>
                       <FavoriteIcon color={values.ifLiked}/>
                       <div style={{fontSize: 14}}>
                         {values.likeAmount}
                       </div> 
                     </IconButton>
-                  </div>
+                  </div> */}
                 </CardFooter>
             </Card>
           </Grow>

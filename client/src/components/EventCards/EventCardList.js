@@ -7,7 +7,7 @@ import EventCardListProfile from 'components/EventCards/EventCardListProfile.js'
 import EventCardListLand from 'components/EventCards/LandingEventList/EventCardListLand.js'
 import CardListCreated from 'components/EventCards/CardListCreated.js'
 
-import EventList from 'components/EventCards/EventList.js'
+import EventList from 'components/EventCards/List/EventList.js'
 
 
 //Cards

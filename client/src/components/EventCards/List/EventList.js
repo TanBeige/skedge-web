@@ -9,7 +9,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 // import EventCardListFuture from './EventCardListFuture.js';
 // import FutureContainer from './FutureContainer.js';
-import LoadCardList from './LoadCardList.js';
+import LoadCardList from '../LoadCardList.js';
 import * as Scroll from 'react-scroll';
 import { throttle } from 'lodash';
 
@@ -265,12 +265,12 @@ export default function EventList({ listType, filter, client, CardComponent, use
       return(
         <div id='scrollableDiv' style={{height: '65vh', overflowY: 'auto', overflowX: 'hidden'}} key={currentKey}>
           <Element name="listTop"></Element>
-          <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no local events today. Try your Following Feed.</h5>
+          <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no deals for today.</h5>
             <hr />
             {
-                values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
+                values.loadedAllEvents ? <h4 style={{textAlign: 'center'}}>Try tomorrow!</h4> : ""
             }
-          {futureEvents}
+          {/* {futureEvents} */}
         </div>
       )
     }
@@ -313,9 +313,9 @@ export default function EventList({ listType, filter, client, CardComponent, use
         </InfiniteScroll>
         <hr />
         {
-            values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
+          values.loadedAllEvents ? <h4 style={{textAlign: 'center'}}>That's all for today.<br/>Try tomorrow! -></h4> : ""
         }
-        {futureEvents}
+        {/* {futureEvents} */}
       </div>
     )
 }
