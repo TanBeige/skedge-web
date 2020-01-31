@@ -236,10 +236,12 @@ export default function SectionPills(props) {
         handleDayForward={handleDayForward}
         formattedDate={formatDate.format("dddd, MMM D")}
         values={values}
+        active={props.lastTab}
         
         handleFilters={handleFilters}
         handleDateChange={handleDateChange}
         submitSearch={submitSearch}
+        setLastTab={props.setLastTab}
 
         client={props.client}
         isEntity={props.isEntity}

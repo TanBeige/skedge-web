@@ -54,6 +54,7 @@ export default function NavPillsSearch(props) {
   const [tableValue, setTableValue] = React.useState(0);
   const handleChange = (event, active) => {
     setActive(active);
+    props.setLastTab(active);
   };
   const handleChangeIndex = index => {
     setActive(index);

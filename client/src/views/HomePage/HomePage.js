@@ -57,6 +57,7 @@ export default function HomePage(props) {
 
   //Variables
   const [isEntity, setIsEntity] = useState(true);
+  console.log(props)
 
 
   //Scroll To Top of the page
@@ -202,6 +203,8 @@ export default function HomePage(props) {
               <SectionPills 
                 client={props.client}
                 // userId={user.sub}
+                lastTab={props.lastTab}
+                setLastTab={props.setLastTab}
                 isEntity={isEntity}
               />
             }

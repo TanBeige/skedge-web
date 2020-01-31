@@ -75,7 +75,9 @@ export const MakeMainRoutes = () => {
     client: null,
     userAnonymous: true,
     showBottomBar: false,
-    currentPage: window.location.pathname
+    currentPage: window.location.pathname,
+
+    lastTab: 0
   })
 
   let newToken = "";
@@ -93,6 +95,10 @@ export const MakeMainRoutes = () => {
       return ""
     }
   }
+
+  const setLastTab = (tab) => {
+    setValues({ ...values, lastTab: tab });
+};
 
   // Apollo Client Functions
   const setupApolloClient = () => {
@@ -113,7 +119,7 @@ export const MakeMainRoutes = () => {
   const provideClient = (Component, renderProps) => { 
     return (
       <ApolloProvider client={values.client}>
-        <Component {...renderProps} client={values.client} anonymous={values.userAnonymous} /> 
+        <Component {...renderProps} client={values.client} anonymous={values.userAnonymous} setLastTab={setLastTab} lastTab={values.lastTab} /> 
       </ApolloProvider>
     );
   };
