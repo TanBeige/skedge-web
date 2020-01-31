@@ -36,6 +36,7 @@ import LoadingPage from '../LoadingPage/LoadingPage.js';
 import EditEventButton from './Sections/EventPageComponents/EditEventButton.js';
 import DeleteEventButton from './Sections/EventPageComponents/DeleteEventButton.js';
 import EditInvites from './Sections/EventPageComponents/Invites/EditInvites.js';
+import EditCohosts from './Sections/EventPageComponents/Cohosts/EditCohosts.js';
 
 
 
@@ -391,6 +392,7 @@ export default function EventPage(props) {
   if (window.innerWidth > 1000) {
     titleSize = '5vw'
   }
+  console.log(values)
 
   const classes = useStyles();
 
@@ -399,7 +401,7 @@ export default function EventPage(props) {
         if(user.sub === values.user_auth0_id || values.event_cohosts.some(u => (u.cohost.auth0_id === user.sub && u.accepted === true))) {
           return (
             <div>
-                <EditInvites size='sm' style={{marginTop: 20, marginBottom: 8}} color="tumblr"
+                <EditInvites
                   userList={values.invited_users}
                   client={props.client}
                   eventId={values.event_id}
@@ -413,8 +415,13 @@ export default function EventPage(props) {
                     handleDeleteEvent={handleDeleteEvent}
                 />
                 
-                  <Button disabled={!(user.sub === values.user_auth0_id)} size='sm' style={{marginTop: 20, marginBottom: 8}} color="pinterest">Edit Cohosts</Button>
-                
+                <EditCohosts
+                  userList={values.event_cohosts}
+                  client={props.client}
+                  userId={user.sub}
+                  disabled={!(user.sub === values.user_auth0_id)}
+                  eventId={values.event_id}
+                />
                 </div>
           )
         }
