@@ -239,7 +239,7 @@ export default function DealInfoSection({ dealInfo, client }) {
           </p>
           {
              dealInfo.web_url && dealInfo.web_url.length !== ""  ?
-            <div style={{width: '100%'}}><a href={ dealInfo.web_url.includes("https://") ? dealInfo.web_url : `//${dealInfo.web_url}`} target='_blank'><Button color='primary' style={{width: '100%'}}  size='sm'>Link to deal.</Button></a></div> : ""
+            <div style={{width: '100%'}}><a href={ dealInfo.web_url.includes("https://") || dealInfo.web_url.includes("http://") ? dealInfo.web_url : `//${dealInfo.web_url}`} target='_blank'><Button color='primary' style={{width: '100%'}}  size='sm'>Link to deal.</Button></a></div> : ""
           }
           <h4>
             <PlaceIcon style={{verticalAlign: 'top'}}/>
