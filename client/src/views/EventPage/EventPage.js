@@ -9,6 +9,8 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import Avatar from '@material-ui/core/Avatar';
+
 import EventLoading from 'components/EventLoading.js'
 
 
@@ -187,7 +189,8 @@ export default function EventPage(props) {
           cover_pic: data.data.events[0].cover_pic,
 
           user_id: data.data.events[0].user.id,
-          user_pic: data.data.events[0].user.picture,
+          user_pic: cloudinary.url(data.data.events[0].user.picture, {secure: true, width: 32, height: 32, crop: "fill"}),
+          
           user_name: data.data.events[0].user.name,
           user_full_name: data.data.events[0].user.full_name,
           user_biography: data.data.events[0].user.biography,
@@ -469,8 +472,12 @@ export default function EventPage(props) {
                   {values.name}
                 </h1>
                 <div>
-                  <h4 className={classes.subtitle} style={{alignSelf: 'center'}}>
-                    {` Created by:` } <Link to={userLink}>{values.user_name}</Link>
+                  <h4 className={classes.subtitle} style={{alignSelf: 'center', display: 'inline-flex'}}>
+                    {` Created by: ` } 
+                    <Link to={userLink}>
+                      <Avatar style={{float: 'left', border: '0.5px solid #02C39A', height: 24, width: 24, margin: '0px 5px'}} width={24} alt={values.username} src={values.user_pic}/>                    
+                      {values.user_name}
+                    </Link>
                   </h4>
                 </div>  
                 {
@@ -567,8 +574,12 @@ export default function EventPage(props) {
                   {values.name}
                 </h1>
                 <div>
-                  <h4 className={classes.subtitle} style={{alignSelf: 'center'}}>
-                    {` Created by:` } <Link to={userLink}>{values.user_name}</Link>
+                  <h4 className={classes.subtitle} style={{alignSelf: 'center', display: 'inline-flex'}}>
+                    {` Created by: ` } 
+                    <Link to={userLink}>
+                      <Avatar style={{float: 'left', border: '0.5px solid #02C39A', height: 24, width: 24, margin: '0px 5px'}} width={24} alt={values.username} src={values.user_pic}/>                    
+                      {values.user_name}
+                    </Link>
                   </h4>
                 </div>  
 

@@ -264,7 +264,6 @@ export default function SectionText({ eventInfo, client }) {
           {
             eventInfo.web_url && eventInfo.web_url !== "" ?
             <div style={{width: '100%'}}><a href={ eventInfo.web_url.includes("https://") ? eventInfo.web_url : `//${eventInfo.web_url}`} target='_blank'><Button color='primary' style={{width: '100%'}}  size='sm'>Link to event</Button></a></div> : ""
-
           }
 
           {/* <div>
