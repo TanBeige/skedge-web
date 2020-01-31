@@ -184,7 +184,7 @@ export const MakeMainRoutes = () => {
         <Switch>
           <Route exact path="/about-us" render={props => provideClient(AboutUsPage, props)} />
           <PrivateRoute path="/event" render={props => provideClient(EventPage, props)} />
-          <PrivateRoute path="/home" render={props => provideClient(Home, props)} />
+          <Route exact path="/home" render={props => provideClient(Home, props)} />
           <PrivateRoute path="/create" render={props => provideClient(CreatePage, props)} />
           <PrivateRoute path="/search" render={props => provideClient(SearchPage, props)} />
           {/*<Route exact path="/components" render={props => provideClient(ComponentsPage, props)} />*/}

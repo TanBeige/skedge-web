@@ -782,7 +782,6 @@ export default function DealInfo(props) {
                                         onChange={handleChange('web_url')}
                                         id="web_url"
                                         label="Link to Deal"
-                                        autoFocus
                                         // placeholder="50 character max."
                                     />
                                 </Grid>

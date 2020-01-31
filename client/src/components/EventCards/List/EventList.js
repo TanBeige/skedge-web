@@ -149,7 +149,7 @@ export default function EventList({ listType, filter, client, CardComponent, use
       }
       setIsSearch(true)
 
-      const queryVariables = getVariables(listType, userId, values.eventsLength, filter)
+      const queryVariables = getVariables(listType, userId, 0, filter)
       console.log("q variables: ", queryVariables)
 
       client

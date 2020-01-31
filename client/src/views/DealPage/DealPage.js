@@ -55,7 +55,7 @@ cloudinary.config({
 });
 
 const useStyles = makeStyles(blogPostPageStyle);
-
+require('views/DealPage/DealPage.css');
 export default function DealPage(props) {
   const dealId = parseInt(props.match.params.id);
 
@@ -180,7 +180,6 @@ export default function DealPage(props) {
           views: data.data.deals[0].views,
           impressions: data.data.deals[0].impressions,
           
-
           ifSaved: data.data.deals[0].user_saved_deals ? data.data.deals[0].user_saved_deals.some(user => user.user_id === user.sub) : false,
 
           liked_users: data.data.deals[0].deal_likes ? data.data.deals[0].deal_likes : [],

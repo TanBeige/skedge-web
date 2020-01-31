@@ -255,9 +255,14 @@ export default function SectionText({ eventInfo, client }) {
           <h3 className={classes.title}>
             Details
           </h3>
-          <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
+
+          <p style={{wordWrap: 'break-word', whiteSpace: "pre-line", marginBottom: 10}}>
             {eventInfo.description}
           </p>
+          {
+            eventInfo.web_url && eventInfo.web_url !== "" ?
+            <a style={{textAlign:'center'}} href={ eventInfo.web_url.includes("https://") ? eventInfo.web_url : `//${eventInfo.web_url}`} target='_blank'>Link to event.</a> : ""
+          }
 
           {/* <div>
             <IconButton onClick={handleRepost} aria-label="Share" style={{float: 'left', margin: 0}}>

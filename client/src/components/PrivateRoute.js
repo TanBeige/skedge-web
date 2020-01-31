@@ -8,8 +8,6 @@ const PrivateRoute = ({ component: Component, path, ...rest }) => {
 
   useEffect(() => {
 
-
-
     if (loading || isAuthenticated) {
       return;
     }
@@ -18,12 +16,12 @@ const PrivateRoute = ({ component: Component, path, ...rest }) => {
     //   localStorage.setItem('originPath', window.location.pathname);
     // }
 
-    const fn = async () => {
-      await loginWithRedirect();
-    };
+    // const fn = async () => {
+    //   await loginWithRedirect();
+    // };
     
-    fn();
-  }, [loading, isAuthenticated, loginWithRedirect, path]);
+    // fn();
+  }, [loading, isAuthenticated, path]);
 
   const render = props => isAuthenticated === true ? <Component {...props} /> : <LoadingPage />;
 

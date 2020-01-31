@@ -6,8 +6,13 @@ import EventCardListSaved from 'components/EventCards/EventCardListSaved.js'
 import EventCardListProfile from 'components/EventCards/EventCardListProfile.js'
 import EventCardListLand from 'components/EventCards/LandingEventList/EventCardListLand.js'
 import CardListCreated from 'components/EventCards/CardListCreated.js'
+import Button from "components/CustomButtons/Button.js";
+
 
 import EventList from 'components/EventCards/List/EventList.js'
+import ReactGA from 'react-ga';
+
+
 
 
 //Cards
@@ -33,26 +38,80 @@ props:
 
 export default function EventCardList(props) {
 
-  const { user } = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+
+  const handleLogin = () => {
+    //Google Analytics Record when someone Clicks this
+    ReactGA.initialize('UA-151937222-1');
+    ReactGA.event({
+      category: 'User',
+      action: 'Login/Sign Up: Home Page'
+    });
+    //Then Login/Sign up
+    loginWithRedirect({});
+    // loginWithPopup({});
+  }
 
   const eventList = () => {
-    if(props.listType === 'local'){
-      return (<EventCardListHome {...props}/>)
+    if(!isAuthenticated){
+      return (
+        <div style={{textAlign: 'center', marginTop: '3em'}}>
+          <h3>
+            Log in to view feeds.
+            <Button
+                color="primary"
+                // style={{color: 'black'}}
+                onClick={handleLogin}
+            >
+                Login or Sign Up
+            </Button>
+          </h3>
+        </div>
+      )
+    }
+    else if(props.listType === 'local'){
+      return (
+        <EventCardListHome
+          userId={user.sub}
+          {...props}
+        />)
     }
     else if(props.listType === 'following'){
-      return (<FollowingFeedList {...props} type='following' />)
+      return (
+        <FollowingFeedList
+          userId={user.sub}
+          type='following'
+          {...props}  
+        />)
     }
     else if(props.listType === 'landing'){
-      return (<EventCardListLand {...props} type='landing' />)
+      return (
+        <EventCardListLand
+          userId={user.sub}
+          type='landing' 
+          {...props} 
+        />)
     }
     else if(props.listType === 'saved'){
-      return (<EventCardListSaved {...props}/>)
+      return (
+        <EventCardListSaved
+          userId={user.sub}
+          {...props}
+        />)
     }
     else if(props.listType === 'profile'){
-      return (<EventCardListProfile {...props}/>)
+      return (
+        <EventCardListProfile
+          userId={user.sub}
+          {...props}
+        />)
     }
     else if(props.listType === 'created'){
-      return (<CardListCreated {...props}/>)
+      return (
+        <CardListCreated
+          userId={user.sub}
+          {...props}
+        />)
     }
     else if(props.listType === 'deals'){
       return (

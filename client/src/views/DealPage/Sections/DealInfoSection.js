@@ -1,4 +1,5 @@
 import React, {Fragment, useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -209,6 +210,7 @@ export default function DealInfoSection({ dealInfo, client }) {
   //   )
   // }
 
+  console.log(dealInfo.web_url)
 
   return (
     <div className={classes.section} style={{paddingTop: 0}}>
@@ -242,9 +244,13 @@ export default function DealInfoSection({ dealInfo, client }) {
           <h3 className={classes.title} style={{margin: '0px 0px 2em 0px'}}>
             Details
           </h3>
-          <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
+          <p style={{wordWrap: 'break-word', whiteSpace: "pre-line", marginBottom: 10}}>
             {dealInfo.description}
           </p>
+          {
+             dealInfo.web_url && dealInfo.web_url.length !== ""  ?
+            <a style={{textAlign:'center'}} href={ dealInfo.web_url.includes("https://") ? dealInfo.web_url : `//${dealInfo.web_url}`} target='_blank'>Link to deal.</a> : ""
+          }
           <h4>
             <PlaceIcon style={{verticalAlign: 'top'}}/>
             {`${dealInfo.location_name}`} <br />

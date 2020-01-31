@@ -74,6 +74,7 @@ export default function EventCreateInfo(props) {
 
     price: savedValues.price,
     description: savedValues.description,
+    web_url: savedValues.web_url,
 
     //Recurring Events
     repeatCheck: savedValues.is_recurring,
@@ -560,6 +561,20 @@ export default function EventCreateInfo(props) {
                   labelWidth={110}
                 />
               </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={12}>
+                <TextField
+                    className={classes.input}
+                    name="web_url"
+                    variant="outlined"
+                    value={values.web_url}
+                    fullWidth
+                    onChange={handleChange('web_url')}
+                    id="web_url"
+                    label="Link"
+                    placeholder="Ex) Ticket link"
+
+                />
             </Grid>
 
             <Grid item xs={12}>

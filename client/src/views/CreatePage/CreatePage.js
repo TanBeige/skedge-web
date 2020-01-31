@@ -82,6 +82,7 @@ export default function PricingPage(props) {
       start_time: new Date(),
       end_time: null,
       price: "0.00",
+      web_url: "",
 
       invite_only: false,
       guest_invites: false,
@@ -216,6 +217,7 @@ const handleLocalOrPrivate = (type) => {
       city: valuesInfo.city,
       state: valuesInfo.state,
       price: valuesInfo.price,
+      web_url: valuesInfo.web_url,
       start_date: valuesInfo.start_date,
       end_date: valuesInfo.end_date,
       start_time: valuesInfo.start_time,
@@ -372,6 +374,7 @@ const handleLocalOrPrivate = (type) => {
                       start_time: MomentUtils(values.start_time).format('HH:mm:ss'),
                       end_time: values.end_time !== null ? MomentUtils(values.end_time).format('HH:mm:ss') : null,
                       price: values.price,
+                      web_url: values.web_url ? values.web_url : "",
                       //allow_invites: values.allow_invites,
                       //host_approval: values.host_approval,
 
@@ -463,6 +466,7 @@ const handleLocalOrPrivate = (type) => {
                     start_time: MomentUtils(values.start_time).format('HH:mm:ss'),
                     end_time: values.end_time !== null ? MomentUtils(values.end_time).format('HH:mm:ss') : null,
                     price: values.price,
+                    web_url: values.web_url ? values.web_url : "",
                     //allow_invites: values.allow_invites,
                     //host_approval: values.host_approval,
                     invite_only: values.invite_only,

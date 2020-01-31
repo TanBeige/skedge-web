@@ -22,6 +22,10 @@ import HeaderLinks from "components/Header/HeaderLinks.js";
 // import Parallax from "components/Parallax/Parallax.js";
 import Button from "components/CustomButtons/Button.js";
 
+import NotSignedIn from "views/ErrorPage/NotSignedIn.js";
+
+
+
 // sections for this page
 import SectionPills from "./Sections/SectionPills.js";
 //import auth from "../../Authorization/Auth";
@@ -158,16 +162,20 @@ export default function HomePage(props) {
       ReactGA.pageview(window.location.pathname)
     }
 
+    // if(!isAuthenticated){
+    //   props.history.push("/")
+    // }
+
   },[props.client]); // Empty array for param means effect will only run on first render.
 
   //Place this here before returning the actual page so we can determine 
   // what displays while loading
-  if (!user) {
-    return (
-      <div>Loading...</div>
-    )
-  }
-  else {
+  // if (!user) {
+  //   return (
+  //     <NotSignedIn />
+  //   )
+  // }
+  // else {
     return (
       // <div style={{backgroundColor: "#52D3B6"}}>
       <div style={{paddingTop: '1px', paddingBottom: '5vh', minHeight: '140vh'}}>
@@ -189,11 +197,11 @@ export default function HomePage(props) {
 
             {/* <h1 className='homeTitle'>Skedge</h1> */}
             {
-              loading || !user ?
+              loading ?
               "" :
               <SectionPills 
                 client={props.client}
-                userId={user.sub}
+                // userId={user.sub}
                 isEntity={isEntity}
               />
             }
@@ -201,5 +209,5 @@ export default function HomePage(props) {
         {/* </div> */}
       </div>
     );
-  }
+  // }
 }
