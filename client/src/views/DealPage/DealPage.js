@@ -132,7 +132,6 @@ export default function DealPage(props) {
         dealId: dealId
       }
     }).then((data) => {
-      console.log(data);
       if(data.data.deals === undefined || data.data.deals.length === 0) {
         setValues({
           ...values,
@@ -407,8 +406,8 @@ export default function DealPage(props) {
     return(
       <div>
         <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 5,  left: 20, zIndex: 100}} color="primary">
-                <ChevronLeftIcon/>
-            </Button>
+          <ChevronLeftIcon/>
+        </Button>
         <Parallax image={values.cover_url} filter="dark">
           <div className={classes.container} >
             
