@@ -380,10 +380,7 @@ export default function ProfilePage(props, { ...rest }) {
     isMounted = true;
     console.log("getting user")
 
-    console.log("is auth?: ", isAuthenticated)
-    // if (isAuthenticated) {
-      getUser();  
-    // }
+    getUser();  
 
     return () => {
       isMounted = false;

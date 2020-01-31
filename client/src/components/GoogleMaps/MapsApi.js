@@ -77,23 +77,17 @@ class SimpleMap extends Component {
           loading: false
         })
       }
-      console.log("has lat long", this.props)
       return
     }
     // if(!this.props.latitude || !this.props.longitude) {
       Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
       Geocode.enableDebug();
 
-      console.log("doesnt have lat long", this.props)
-
-
-
       const fullAddy = `${this.props.street} ${this.props.city}, ${this.props.state}`
 
       Geocode.fromAddress(fullAddy).then(
         response => {
           const { lat, lng } = response.results[0].geometry.location;
-          console.log(lat, lng);
           this.geocodeToDatabase(lat, lng, this.props.itemId, this.props.page === 'events' ? ADD_GEOCODE_EVENT : ADD_GEOCODE_DEAL );
 
           if(_isMounted) {

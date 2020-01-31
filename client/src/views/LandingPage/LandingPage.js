@@ -96,7 +96,6 @@ export default function LandingPage(props) {
       category: 'User',
       action: 'Login/Sign Up: Landing Page'
     });
-    console.log("recorded event")
     //Then Login/Sign up
     loginWithRedirect({})
     // loginWithPopup({})

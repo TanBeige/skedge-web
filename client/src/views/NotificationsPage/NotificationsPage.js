@@ -86,8 +86,6 @@ export default function NotificationsPage(props) {
   const changeInviteNums = (num) => {
     setInviteNums(num)
   }
-  console.log("notifs auth : ", isAuthenticated)
-
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;

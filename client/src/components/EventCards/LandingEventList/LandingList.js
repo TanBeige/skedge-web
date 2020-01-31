@@ -113,7 +113,6 @@ export default function EventCardListLand(props) {
           }
         })
         .then(data => {
-            console.log(data)
             if(isMounted) {
               setValues({
                 ...values,

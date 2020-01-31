@@ -143,7 +143,6 @@ export default function DealInfo(props) {
     };
 
     const handleEntityLocation = event => {
-        console.log(event.target.value)
         setValues({
         ...values,
         city: event.target.value.city,
@@ -207,7 +206,6 @@ export default function DealInfo(props) {
         } else {
             newChecked.splice(currentIndex, 1);
         }
-        console.log("Array: ", newChecked)
 
 
         setValues({

@@ -97,7 +97,6 @@ export default function EventCreateInfo(props) {
   };
 
   const handleEntityLocation = event => {
-    console.log(event.target.value)
     setValues({
       ...values,
       city: event.target.value.city,

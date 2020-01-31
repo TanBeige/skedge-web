@@ -79,7 +79,6 @@ export default function TagSelect(props) {
         } else {
             newChecked.splice(currentIndex, 1);
         }
-        console.log("Array: ", newChecked)
 
 
         setValues({

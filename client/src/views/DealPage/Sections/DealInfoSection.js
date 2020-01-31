@@ -128,7 +128,6 @@ export default function DealInfoSection({ dealInfo, client }) {
 
   // Fix date formatting
   var moment = require('moment');
-  console.log(dealInfo)
   let formattedStartTime = ""
   if(dealInfo.start_time) {
     formattedStartTime = moment(dealInfo.start_time, "HH:mm:ss");
@@ -202,15 +201,6 @@ export default function DealInfoSection({ dealInfo, client }) {
     formattedDate = moment(dealInfo.start_date, "YYYY-MM-DD").format("MMMM Do, YYYY")
   }
 
-  // if(dealInfo.invite_only) {
-  //   return(
-  //     <div>
-  //       <LockIcon />
-  //     </div>
-  //   )
-  // }
-
-  console.log(dealInfo.web_url)
 
   return (
     <div className={classes.section} style={{paddingTop: 0}}>

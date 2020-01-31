@@ -18,16 +18,12 @@ require('dotenv').config();
 // A function that routes the user to the right place
 // after login
 const onRedirectCallback = appState => {
-  console.log("appstat: ", appState);
-
   history.push(
     appState && appState.targetUrl
       ? appState.targetUrl
       : window.location.pathname
   );
 };
-console.log("window location origin", window.location.origin)
-console.log("window location pathname", window.location.pathname)
 
 ReactDOM.render(
     <Auth0Provider

@@ -32,7 +32,6 @@ router.post('/send', (req, res, next) => {
   var email = req.body.email
   var message = req.body.message
   var content = `name: ${name} \n email: ${email} \n message: ${message} `
-  console.log(content);
 
   var mail = {
     from: `"${name}" <${creds.EMAIL_ADDRESS}>`,

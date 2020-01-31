@@ -150,7 +150,6 @@ export default function EventList({ listType, filter, client, CardComponent, use
       setIsSearch(true)
 
       const queryVariables = getVariables(listType, userId, 0, filter)
-      console.log("q variables: ", queryVariables)
 
       client
         .query({
@@ -158,7 +157,6 @@ export default function EventList({ listType, filter, client, CardComponent, use
           variables: queryVariables
         })
         .then(data => {
-          console.log(data)
           if (data.data[table].length > 0) {
             //const mergedEvents = values.events.concat(data.data[table]);
             // update state with new events

@@ -153,7 +153,6 @@ export default function PostMomentButton(props) {
             };
             response = await axios(request_config).then((res)=>{
                 //After uploading to cloudinary
-                console.log("res", res);
                 return res;
             }).catch(error => {
                 console.log(error);
