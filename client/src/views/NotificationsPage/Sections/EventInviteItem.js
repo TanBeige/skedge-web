@@ -123,7 +123,7 @@ cloudinary.config({
 
 const useStyles = makeStyles(style);
 
-export default function CardExampleCardBackground(props) {
+export default function EventInviteItem(props) {
     const classes = useStyles();
     const bioMaxLength = 100;
     const { user } = useAuth0();
@@ -135,8 +135,8 @@ export default function CardExampleCardBackground(props) {
             mutation: MUTATION_EVENT_RESPONSE,
             variables: { 
                 invitedId: user.sub,
-                inviterId: props.eventItem.inviter.auth0_id,
                 eventId: props.eventItem.event.id,
+                inviterId: props.eventItem.inviter.auth0_id,
                 response: response
             }
         }).then(() => {

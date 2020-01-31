@@ -10,9 +10,7 @@ import MomentPopover from 'components/EventMoments/MomentPopover.js';
 import UserModalList from  'components/UserList/UserModalList.js';
 import EventActivity from 'views/EventPage/Sections/EventPageComponents/EventActivity.js';
 
-
-
-
+import CategoryFragment from './CategoryFragment.js';
 
 // @material-ui/icons
 import GridContainer from "components/Grid/GridContainer.js";
@@ -209,6 +207,7 @@ export default function SectionText({ eventInfo, client }) {
       <GridContainer justify="center">
         <GridItem xs={12} sm={10} md={10}>
           <div style={{textAlign: 'center'}}>
+
             <h2>
               <TodayIcon fontSize='large' style={{verticalAlign: 'middle'}}/>
               {formattedDate}
@@ -252,6 +251,9 @@ export default function SectionText({ eventInfo, client }) {
             client={client}
             ifGoing={values.ifGoing}
           /> */}
+          <div style={{position: 'absolute', right: 0, marginTop: 25}}>
+            <CategoryFragment category={eventInfo.category}/>
+          </div>
           <h3 className={classes.title}>
             Details
           </h3>

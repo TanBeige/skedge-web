@@ -401,8 +401,19 @@ subscription follow_requests($userId: String!) {
     }
   }
 }
-
 `
+const MUTATION_REMOVE_INVITE = gql`
+mutation remove_invite($eventId: Int!, $userId: String!) {
+  delete_event_invites(
+    where: { 
+      _and:[
+        {event_id: { _eq: $eventId }},
+        {invited_id: { _eq: $userId }}
+      ]
+    }) {
+    affected_rows
+  }
+}`
 
 // Fetch User Search
 const USER_SEARCH = gql`
@@ -1042,7 +1053,7 @@ const FETCH_EVENT_INFO = gql`
         full_name
       }
 
-      event_invites(where: {response: {_eq: 1}}) {
+      event_invites(where: {_or: [{response: {_eq: 1}}, {response: {_eq: 0}}]}) {
         response
         invited{
           id
@@ -1878,6 +1889,7 @@ export {
   USER_SEARCH,
   FETCH_FOLLOW_REQUESTS,
   FETCH_EVENT_INVITES,
+  MUTATION_REMOVE_INVITE,
 
   MUTATION_EVENT_SAVE,
   MUTATION_EVENT_UNDO_SAVE,

@@ -22,7 +22,7 @@ import { useAuth0 } from 'Authorization/react-auth0-wrapper.js';
 
 // SHOWS REQUESTS FOR EVENTS TOO
 
-export default function RequestList(props) {
+export default function EventInviteList(props) {
 
     let isMounted = true;
 

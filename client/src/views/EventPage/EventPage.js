@@ -30,10 +30,10 @@ import SectionText from "./Sections/SectionText.js";
 import SkedgeDisclosure from "components/Footer/SkedgeDisclosure.js";
 import SectionComments from "./Sections/SectionComments.js";
 import SectionSimilarStories from "./Sections/SectionSimilarStories.js";
-import CategoryFragment from './Sections/CategoryFragment.js';
 import LoadingPage from '../LoadingPage/LoadingPage.js';
 import EditEventButton from './Sections/EventPageComponents/EditEventButton.js';
 import DeleteEventButton from './Sections/EventPageComponents/DeleteEventButton.js';
+import EditInvites from './Sections/EventPageComponents/Invites/EditInvites.js';
 
 
 
@@ -205,8 +205,8 @@ export default function EventPage(props) {
           ifGoing: data.data.events[0].event_invites.some(user => user.invited_id === user.sub),
 
 
-          going_users: data.data.events[0].event_invites,
-
+          going_users: data.data.events[0].event_invites.filter(function (invites) {return invites.response === 1}),
+          invited_users: data.data.events[0].event_invites,
           liked_users: data.data.events[0].event_like,
           like_amount: data.data.events[0].event_like_aggregate.aggregate.count,
 
@@ -396,7 +396,11 @@ export default function EventPage(props) {
         if(user.sub === values.user_auth0_id || values.event_cohosts.some(u => (u.cohost.auth0_id === user.sub && u.accepted === true))) {
           return (
             <div>
-                {/* <Button size='sm' style={{marginTop: 20, marginBottom: 8}} color="tumblr">Edit Invites</Button> */}
+                <EditInvites size='sm' style={{marginTop: 20, marginBottom: 8}} color="tumblr"
+                  userList={values.invited_users}
+                  client={props.client}
+                  eventId={values.event_id}
+                />
                 <EditEventButton 
                     client={props.client}
                     userId={user.sub}
@@ -405,8 +409,10 @@ export default function EventPage(props) {
                     oldEvent={values}
                     handleDeleteEvent={handleDeleteEvent}
                 />
-                {/* <Button disabled={!user.sub === values.user_auth0_id} size='sm' style={{marginTop: 20, marginBottom: 8}} color="pinterest">Edit Cohosts</Button> */}
-              </div>
+                
+                  <Button disabled={!(user.sub === values.user_auth0_id)} size='sm' style={{marginTop: 20, marginBottom: 8}} color="pinterest">Edit Cohosts</Button>
+                
+                </div>
           )
         }
       }
@@ -466,7 +472,6 @@ export default function EventPage(props) {
                   <h4 className={classes.subtitle} style={{alignSelf: 'center'}}>
                     {` Created by:` } <Link to={userLink}>{values.user_name}</Link>
                   </h4>
-                  <CategoryFragment category={values.category}/>
                 </div>  
                 {
                   !user ? 
@@ -564,8 +569,6 @@ export default function EventPage(props) {
                 <div>
                   <h4 className={classes.subtitle} style={{alignSelf: 'center'}}>
                     {` Created by:` } <Link to={userLink}>{values.user_name}</Link>
-                    <CategoryFragment category={values.category}/>
-
                   </h4>
                 </div>  
 

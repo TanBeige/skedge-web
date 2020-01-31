@@ -47,8 +47,8 @@ export default function GoingSaveButtons (props) {
             }],
             variables: {
                 invitedId: user.sub,
-                inviterId: props.eventHost,
                 eventId: props.eventId,
+                inviterId: props.eventHost,
                 response: 2
             }
         }).then(() => {
@@ -84,8 +84,8 @@ export default function GoingSaveButtons (props) {
             }],
             variables: {
                 invitedId: user.sub,
-                inviterId: props.eventHost,
                 eventId: props.eventId,
+                inviterId: props.eventHost,
                 response: 1
             }
         }).then(() => {

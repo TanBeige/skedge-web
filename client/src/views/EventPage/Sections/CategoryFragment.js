@@ -1,5 +1,4 @@
 import React from 'react'
-import FormatAlignLeft from "@material-ui/icons/FormatAlignLeft";
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import BrushIcon from '@material-ui/icons/Brush';
 import DomainIcon from '@material-ui/icons/Domain';
@@ -12,109 +11,85 @@ import HowToRegIcon from '@material-ui/icons/HowToReg';
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import SportsBasketballIcon from '@material-ui/icons/SportsBasketball';
 import MicNoneIcon from '@material-ui/icons/MicNone';
+import LocalBarIcon from '@material-ui/icons/LocalBar';
+
+import Chip from '@material-ui/core/Chip';
+
+
 
 import Button from 'components/CustomButtons/Button.js'
 
 export default function CategoryFragment({category}) {
 
-    let genre = ""
+    let genre;
     switch(category) {
       case "Music": 
         genre = (
-          <Button color="rose"  round>
-            <MusicNoteIcon /> {category}
-          </Button>
+            <MusicNoteIcon />
         )
         break;
       case "Arts/Culture": 
         genre = (
-          <Button color="rose"  round>
-            <BrushIcon /> {category}
-          </Button>
+            <BrushIcon />
         )
         break;
     case "Business": 
         genre = (
-          <Button color="rose"  round>
-            <DomainIcon /> {category}
-          </Button>
+            <DomainIcon />
         )
         break;
     case "Comedy": 
         genre = (
-          <Button color="rose"  round>
-            <MicNoneIcon /> {category}
-          </Button>
+            <MicNoneIcon />
         )
         break;
     case "Education": 
         genre = (
-          <Button color="rose"  round>
-            <SchoolIcon /> {category}
-          </Button>
+            <SchoolIcon />
         )
         break;
     case "Food/Drink": 
         genre = (
-          <Button color="rose"  round>
-            <FastfoodIcon /> {category}
-          </Button>
+            <FastfoodIcon />
         )
         break;
     case "Games": 
         genre = (
-          <Button color="rose"  round>
-            <SportsEsportsIcon /> {category}
-          </Button>
+            <SportsEsportsIcon />
         )
         break;
     case "Movies/Theater": 
-        genre = (
-          <Button color="rose"  round>
-            <TheatersIcon /> {category}
-          </Button>
-        )
+        genre = (<TheatersIcon />) 
+        
         break;
     case "Night Life": 
         genre = (
-          <Button color="rose"  round>
-            <TheatersIcon /> {category}
-          </Button>
+            <LocalBarIcon /> 
         )
         break;
     case "Party": 
         genre = (
-          <Button color="rose"  round>
-            <WhatshotIcon /> {category}
-          </Button>
+            <WhatshotIcon /> 
         )
         break;
     case "Politics": 
         genre = (
-          <Button color="rose"  round>
-            <HowToRegIcon /> {category}
-          </Button>
+            <HowToRegIcon /> 
         )
         break;
     case "Seasonal": 
         genre = (
-          <Button color="rose"  round>
-            <AcUnitIcon /> {category}
-          </Button>
+            <AcUnitIcon />
         )
         break;
     case "Sports": 
         genre = (
-          <Button color="rose"  round>
-            <SportsBasketballIcon /> {category}
-          </Button>
+            <SportsBasketballIcon /> 
         )
         break;
     }
 
     return (
-        <div styyle={{position: 'absolute', right: 0, top: 30}}>
-            {genre}
-        </div>
+        <Chip icon={genre} label={category} color='default'/>
     )
 }
