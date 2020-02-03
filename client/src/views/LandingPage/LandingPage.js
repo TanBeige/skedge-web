@@ -123,7 +123,7 @@ export default function LandingPage(props) {
             <GridItem xs={12} sm={6} md={6}>
               <SectionTitle className={classes.title} />
               <h4>
-                Where you go to find, share, and create your favorite things to do. Check the deals & events below.
+                Where you go to find, share, and create your favorite things to do. Sign up to see all events & deals.
               </h4>
               <br />
               <Button
@@ -155,7 +155,7 @@ export default function LandingPage(props) {
               onClick={handleLogin}
               style={{margin: 'auto', width: '100%',height: '6vh'}}
             >
-              Login or Sign Up
+              For more deals & events, login or sign up.
             </Button>
           </AppearOnScroll>
           

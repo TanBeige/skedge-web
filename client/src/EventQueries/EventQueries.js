@@ -588,6 +588,27 @@ query fetch_event_going($eventId: Int) {
   }
 }
 `
+
+const MUTATION_REMOVE_COHOST = gql`
+mutation remove_cohost($eventId: Int!, $userId: String!) {
+  delete_event_cohosts(where: {
+    _and: [
+      {event_id: {_eq: $eventId}},
+      {cohost_id: {_eq: $userId}}
+    ]
+  }) {
+    affected_rows
+  }
+}
+`
+
+const MUTATION_ADD_COHOST = gql`
+mutation insert_cohost($object: [event_cohosts_insert_input!]!) {
+	insert_event_cohosts(objects: $object) {
+    affected_rows
+  }
+}
+`
 //old order_by: [{start_time: asc}, {event_like_aggregate: {count: desc_nulls_last}}]
 //new order_by: [{event_like_aggregate: {count: desc}}, {shared_event_aggregate: {count: desc}}]
 // Filter Event
@@ -1890,6 +1911,9 @@ export {
   FETCH_FOLLOW_REQUESTS,
   FETCH_EVENT_INVITES,
   MUTATION_REMOVE_INVITE,
+
+  MUTATION_REMOVE_COHOST,
+  MUTATION_ADD_COHOST,
 
   MUTATION_EVENT_SAVE,
   MUTATION_EVENT_UNDO_SAVE,

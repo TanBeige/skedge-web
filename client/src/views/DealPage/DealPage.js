@@ -146,6 +146,8 @@ export default function DealPage(props) {
           deal_exists: true,
 
           name: data.data.deals[0].name,
+          point_1: data.data.deals[0].point_1 ? data.data.deals[0].point_1 : "",
+          point_2: data.data.deals[0].point_2 ? data.data.deals[0].point_2 : "",
           description: data.data.deals[0].description,
 
           start_date: data.data.deals[0].start_date,

@@ -99,7 +99,7 @@ export default function FriendProfile(props) {
                 color="primary"
                 tabs={[
                 {
-                    tabButton: "Upcoming Events",
+                    tabButton: "My Events",
                     tabIcon: EventIcon,
                     tabContent: (
                         <EventCardList 
@@ -112,7 +112,7 @@ export default function FriendProfile(props) {
                     )
                 },
                 {
-                    tabButton: "Saved Events",
+                    tabButton: "Saved",
                     tabIcon: TurnedInIcon,
                     tabContent: (
                         <EventCardList 
@@ -122,17 +122,17 @@ export default function FriendProfile(props) {
                         />
                     )
                 },
-                {
-                    tabButton: "Created Events",
-                    tabIcon: PermContactCalendarIcon,
-                    tabContent: (
-                        <EventCardList 
-                            client={props.client}
-                            userId={props.userId}
-                            listType='created'
-                        />
-                    )
-                }
+                // {
+                //     tabButton: "Created Events",
+                //     tabIcon: PermContactCalendarIcon,
+                //     tabContent: (
+                //         <EventCardList 
+                //             client={props.client}
+                //             userId={props.userId}
+                //             listType='created'
+                //         />
+                //     )
+                // }
                 ]}
             />
         )
@@ -144,7 +144,7 @@ export default function FriendProfile(props) {
                 color="primary"
                 tabs={[
                 {
-                    tabButton: "Upcoming Events",
+                    tabButton: "Events",
                     tabIcon: EventIcon,
                     tabContent: (
                         <EventCardList 

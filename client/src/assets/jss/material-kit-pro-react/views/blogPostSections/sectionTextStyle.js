@@ -18,7 +18,7 @@ const sectionTextStyle = {
       fontSize: "1.188rem",
       lineHeight: "1.5em",
       color: grayColor[15],
-      marginBottom: "30px"
+      // marginBottom: "30px"
     }
   },
   quoteText: {

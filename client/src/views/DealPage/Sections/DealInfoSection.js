@@ -14,6 +14,7 @@ import EventActivity from 'views/EventPage/Sections/EventPageComponents/EventAct
 // @material-ui/icons
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
+import FlareIcon from '@material-ui/icons/Flare';
 import LockIcon from '@material-ui/icons/Lock';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -237,6 +238,23 @@ export default function DealInfoSection({ dealInfo, client }) {
           <p style={{wordWrap: 'break-word', whiteSpace: "pre-line", marginBottom: 10}}>
             {dealInfo.description}
           </p>
+          {
+            dealInfo.point_1 ? 
+              <div style={{display: 'flex'}}> 
+                <FlareIcon size='small' style={{fontSize: 12, margin: 'auto 4px', color: 'gold'}}/>
+                <p >{dealInfo.point_1}</p>
+              </div>
+              : ""
+          }
+          {
+            dealInfo.point_2 ? 
+              <div style={{display: 'flex'}}> 
+                <FlareIcon size='small' style={{fontSize: 12, margin: 'auto 4px', color: 'gold'}}/>
+                <p >{dealInfo.point_2}</p>
+              </div>
+              : ""
+          }
+
           {
              dealInfo.web_url && dealInfo.web_url.length !== ""  ?
             <div style={{width: '100%'}}><a href={ dealInfo.web_url.includes("https://") || dealInfo.web_url.includes("http://") ? dealInfo.web_url : `//${dealInfo.web_url}`} target='_blank'><Button color='primary' style={{width: '100%'}}  size='sm'>Link to deal.</Button></a></div> : ""

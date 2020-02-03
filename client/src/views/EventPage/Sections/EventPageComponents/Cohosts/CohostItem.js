@@ -17,8 +17,8 @@ import {useAuth0} from 'Authorization/react-auth0-wrapper.js';
 
 
 import {
-    MUTATION_REMOVE_INVITE,
-    MUTATION_EVENT_RESPONSE
+    MUTATION_REMOVE_COHOST,
+    MUTATION_ADD_COHOST
   } from 'EventQueries/EventQueries.js'
 //import "../../styles/App.css";
 
@@ -68,7 +68,7 @@ const CohostItem = ({
 
     const removeInvite = () => {
         client.mutate({
-            mutation: MUTATION_REMOVE_INVITE,
+            mutation: MUTATION_REMOVE_COHOST,
             // refetch
             variables: {
                 userId: profileId,
@@ -80,13 +80,14 @@ const CohostItem = ({
     }
     const addInvite = () => {
         client.mutate({
-            mutation: MUTATION_EVENT_RESPONSE,
+            mutation: MUTATION_ADD_COHOST,
             // refetch
             variables: {
-                invitedId: profileId,
-                inviterId: user.sub,
-                eventId: eventId, 
-                response: 0
+                object: {
+                    cohost_id: profileId,
+                    event_id: eventId, 
+                    accepted: false
+                }
             }
         }).then(() =>{
             setResponseShown(0);
@@ -149,7 +150,7 @@ const CohostItem = ({
                         />
                     </Link>
                 <ListItemSecondaryAction>
-                    {/* {placeAccountButton()} */}
+                    {placeAccountButton()}
                 </ListItemSecondaryAction>
             </ListItem>
             {/* <Divider variant="inset" component="li" /> */}

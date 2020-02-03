@@ -43,13 +43,6 @@ import ReactGA from 'react-ga';
 
 // Queries
 import {
-  // MUTATION_EVENT_SAVE,
-  // MUTATION_EVENT_UNDO_SAVE,
-  // REFETCH_EVENT_SAVES,
-  // MUTATION_EVENT_GOING,
-  // MUTATION_EVENT_UNDO_GOING,
-  // REFETCH_EVENT_GOING,
-  // FETCH_EVENT_INFO,
   FETCH_EVENT_GOING_SAVE
 } from 'EventQueries/EventQueries.js'
 
