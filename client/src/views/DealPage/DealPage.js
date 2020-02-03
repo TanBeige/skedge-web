@@ -221,7 +221,7 @@ export default function DealPage(props) {
   }
 
   //Submit Changes
-  const handleDealChange = async (newInfo, weekday) => {
+  const handleDealChange = async (newInfo, weekday, endTimeExists) => {
     setImageUploading(true)
 
 
@@ -278,8 +278,7 @@ export default function DealPage(props) {
         startTime: moment(newInfo.start_time).format("HH:mm:ss"),
         endTime: newInfo.end_time ? moment(newInfo.end_time).format("HH:mm:ss") : null,
         isRecurring: newInfo.is_recurring,
-        weekday: weekday,
-
+        weekday: newInfo.is_recurring ? weekday : "",
 
         description: newInfo.description,
         point1: newInfo.point_1,

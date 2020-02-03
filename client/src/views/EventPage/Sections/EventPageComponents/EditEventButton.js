@@ -23,16 +23,27 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from '@material-ui/core/FormControl';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormLabel from '@material-ui/core/FormLabel';
+
+
 // @material-ui icons
 import People from '@material-ui/icons/People';
 // core components
 import TextField from '@material-ui/core/TextField';
-//import GridContainer from "components/Grid/GridContainer.js";
+import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 //import CustomInput from 'components/CustomInput/CustomInput.js';
 import { MenuItem } from '@material-ui/core';
 import { categoryList } from "utils/constants";
 import DeleteEventButton from './DeleteEventButton.js';
+
+import { createWeekdayString } from 'components/CommonFunctions.js'
 
 
 // Time/Date Selections Imports
@@ -80,25 +91,46 @@ export default function EditEventButton(props) {
         cover_url: props.oldEvent.cover_uuid,
         picFile: null,
 
-
         name: props.oldEvent.name,
         location_name: props.oldEvent.location_name,
         street: props.oldEvent.street,
         city: props.oldEvent.city,
         state: props.oldEvent.state,
         start_date: props.oldEvent.start_date,
-        end_date: props.oldEvent.end_date,
-        is_recurring: props.oldEvent.is_recurring,
+        end_date: props.oldEvent.is_recurring ? props.oldEvent.end_date : new Date(),
+        weekday: props.oldEvent.weekday,
+
         start_time: moment(props.oldEvent.start_time, "HH:mm:ss"),
         end_time: props.oldEvent.end_time ? moment(props.oldEvent.end_time, "HH:mm:ss") : null,
-        description: props.oldEvent.description,
         category: props.oldEvent.category,
-        tags: [],
-        cohosts: [],
+        description: props.oldEvent.description,
+
+        web_url: props.oldEvent.web_url ? props.oldEvent.web_url : "",
+        price: props.oldEvent.price,
+
+        //Recurring events
+        is_recurring: props.oldEvent.is_recurring,
+        monday: props.oldEvent.weekday.includes("1"),
+        tuesday: props.oldEvent.weekday.includes("2"),
+        wednesday: props.oldEvent.weekday.includes("3"),
+        thursday: props.oldEvent.weekday.includes("4"),
+        friday: props.oldEvent.weekday.includes("5"),
+        saturday: props.oldEvent.weekday.includes("6"),
+        sunday: props.oldEvent.weekday.includes("0")
     })
     // Submit Changes:
     const submitChanges = () => {
-        props.handleEventChange(eventInfo);
+        let weekdayString = createWeekdayString({
+            monday: eventInfo.monday,
+            tuesday: eventInfo.tuesday,
+            wednesday: eventInfo.wednesday,
+            thursday: eventInfo.thursday,
+            friday: eventInfo.friday,
+            saturday: eventInfo.saturday,
+            sunday: eventInfo.sunday,
+        });
+
+        props.handleEventChange(eventInfo, weekdayString, endTimeExists);
         setIsEditing(false);
     }
 
@@ -126,23 +158,23 @@ export default function EditEventButton(props) {
         setEventInfo({
           ...eventInfo,
           end_time: time
-      })
+      });
+    }
+
+    const handleCheck = name => event => {
+        setEventInfo({ ...eventInfo, [name]: event.target.checked });
+    };
+
+
+    const handleEndDateClick = (day) => {
+        setEventInfo({
+            ...eventInfo,
+            end_date: day
+        })
     }
 
     //Editing Cover Image
     const coverPic = () => {
-        // if(props.imageUploading) {
-        //     return (
-        //         <div>
-        //             <img src={vals.picture} alt="..." className={imageClasses} style={{opacity: '0.5'}}/>
-        //             <CircularProgress style={{position: 'absolute', left: '50%', marginLeft: '-20px', top: 50}}/>
-        //             {/* <LoadImage src={vals.picture} alt={vals.name} className={imageClasses} /> */}
-        //             {updateProfileButton}
-        //         </div>
-        //     )
-        // }
-        // else if(vals.editProfile) {
-
         const imageStyle = {
             opacity: '0.5', 
             objectFit: 'cover',
@@ -239,47 +271,173 @@ export default function EditEventButton(props) {
         endTimeJS = <Button onClick={() => setEndTimeExists(!endTimeExists)} style={{width: '100%'}}>End Time</Button>
     }
 
-    useEffect(() => {
-        //Reload
-        setEventInfo({
-            name: props.oldEvent.name,
-            location_name: props.oldEvent.location_name,
-            street: props.oldEvent.street,
-            city: props.oldEvent.city,
-            state: props.oldEvent.state,
-            start_date: props.oldEvent.start_date,
-            end_date: props.oldEvent.end_date,
-            is_recurring: props.oldEvent.is_recurring,
-            start_time: moment(props.oldEvent.start_time, "HH:mm:ss"),
-            end_time: props.oldEvent.end_time ? moment(props.oldEvent.end_time, "HH:mm:ss") : null,
-            description: props.oldEvent.description,
-            category: props.oldEvent.category,
-            tags: [],
-            cohosts: [],
-        })
-        setEndTimeExists(props.oldEvent.end_time ? true : false);
-        setImagePreviewUrl(props.oldEvent.cover_uuid)
-    }, [isEditing])
-
-    // Check Values
-    let continueDisabled = true;
-    if(eventInfo.name && eventInfo.location_name && eventInfo.street && eventInfo.city && eventInfo.state) {
-        if(
-            eventInfo.name.replace(/\s/g, '').length && 
-            eventInfo.name.length <= 50 && 
-            eventInfo.location_name.replace(/\s/g, '').length && 
-            eventInfo.street.replace(/\s/g, '').length && 
-            eventInfo.city.replace(/\s/g, '').length && 
-            eventInfo.state.replace(/\s/g, '').length
-        ) {
-            continueDisabled = false;
-        }
-        else {
-            continueDisabled = true;
-        }
+    // If Recurring Events
+    let repeatEvent = ""
+    if (!eventInfo.is_recurring) {
+        repeatEvent = (
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+                <GridItem xs={12}>
+                    <DatePicker
+                        variant="dialog"
+                        label="Event Date"
+                        format="dddd, MMMM Do YYYY"
+                        fullWidth
+                        value={eventInfo.start_date}
+                        onChange={handleDayClick}
+                        margin="normal"
+                    />
+                </GridItem>
+            
+                <GridItem xs={12}>
+                    <TimePicker
+                        label="Start Time"
+                        fullWidth
+                        value={eventInfo.start_time}
+                        onChange={handleTimeClick}
+                        margin="normal"
+                    />
+                </GridItem>
+                <GridItem xs={12}>
+                    {endTimeJS}
+                </GridItem>
+            </MuiPickersUtilsProvider>
+        )
     }
     else {
+    const error = [eventInfo.monday, eventInfo.tuesday, eventInfo.wednesday, eventInfo.thursday, eventInfo.friday, eventInfo.saturday, eventInfo.sunday].filter(v => v).length < 1;
+    repeatEvent = (
+        <div className='weekdayCheckboxes'>
+        <FormControl required error={error} component="fieldset" style={{marginBottom: 15, width: '100%'}}>
+            <FormLabel component="legend" style={{marginBottom: 15}}>Check at least one</FormLabel>
+            <FormGroup>
+                <GridContainer direction='row' alignContent='center'>
+                    <GridItem xs={3}>
+                        <FormControlLabel
+                        control={<Checkbox checked={eventInfo.monday} onChange={handleCheck('monday')} value="monday" color='primary'/>}
+                        label="Mon."
+                        labelPlacement="top"
+                        />
+                    </GridItem>
+                    <GridItem xs={3}>
+                        <FormControlLabel
+                        control={<Checkbox checked={eventInfo.tuesday} onChange={handleCheck('tuesday')} value="tuesday" color='primary'/>}
+                        label="Tue."
+                        labelPlacement="top"
+                        />
+                    </GridItem>
+                    <GridItem xs={3}>
+                        <FormControlLabel
+                        control={
+                            <Checkbox checked={eventInfo.wednesday} onChange={handleCheck('wednesday')} value="wednesday" color='primary'/>
+                        }
+                        label="Wed."
+                        labelPlacement="top"
+                        />
+                    </GridItem>
+                    <GridItem xs={3}>
+                        <FormControlLabel
+                        control={
+                            <Checkbox checked={eventInfo.thursday} onChange={handleCheck('thursday')} value="thursday" color='primary'/>
+                        }
+                        label="Thu."
+                        labelPlacement="top"
+                        />
+                    </GridItem>
+                    <GridItem xs={3}>
+                        <FormControlLabel
+                        control={
+                            <Checkbox checked={eventInfo.friday} onChange={handleCheck('friday')} value="friday" color='primary'/>
+                        }
+                        label="Fri."
+                        labelPlacement="top"/>
+                    </GridItem>
+                    <GridItem xs={3}>
+                        <FormControlLabel
+                        control={
+                            <Checkbox checked={eventInfo.saturday} onChange={handleCheck('saturday')} value="saturday"  color='primary'/>
+                        }
+                        label="Sat."
+                        labelPlacement="top"/>
+                    </GridItem>
+                    <GridItem xs={3}>
+                        <FormControlLabel
+                        control={
+                            <Checkbox checked={eventInfo.sunday} onChange={handleCheck('sunday')} value="sunday" color='primary'/>
+                        }
+                        label="Sun."
+                        labelPlacement="top"/>
+                    </GridItem>
+                </GridContainer>
+            </FormGroup>
+        </FormControl>
+        <MuiPickersUtilsProvider utils={MomentUtils} >
+            <GridContainer spacing={2}>
+                <GridItem xs={12}>
+                    <DatePicker
+                        variant="dialog"
+                        label="Event Starting Date"
+                        format="dddd, MMMM Do YYYY"
+                        fullWidth
+                        value={eventInfo.start_date}
+                        onChange={handleDayClick}
+                        margin="normal"
+                    />
+                </GridItem>
+                <GridItem xs={12}>
+                    <DatePicker
+                        variant="dialog"
+                        label="Event Ending Date"
+                        format="dddd, MMMM Do YYYY"
+                        fullWidth
+                        value={eventInfo.end_date}
+                        onChange={handleEndDateClick}
+                        margin="normal"
+                    />
+                </GridItem>
+                <GridItem xs={12}>
+                    <TimePicker
+                        label="Start Time"
+                        variant="outlined"
+                        fullWidth
+                        value={eventInfo.start_time}
+                        onChange={handleTimeClick}
+                    />
+                </GridItem>
+                <GridItem xs={12}>
+                    {endTimeJS}
+                </GridItem>
+            </GridContainer>
+        </MuiPickersUtilsProvider>
+        </div>
+        )
+    }
+
+
+    // Check Values
+    let continueDisabled = false;
+    if(
+        !eventInfo.name.replace(/\s/g, '').length ||
+        eventInfo.name.replace(/\s/g, '').length >= 50 ||
+        !eventInfo.location_name.replace(/\s/g, '').length || 
+        !eventInfo.street.replace(/\s/g, '').length ||
+        !eventInfo.city.replace(/\s/g, '').length ||
+        !eventInfo.state.replace(/\s/g, '').length       
+    ) {
         continueDisabled = true;
+    }
+    if(eventInfo.is_recurring) {
+        if(
+            !eventInfo.monday &&
+            !eventInfo.tuesday && 
+            !eventInfo.wednesday && 
+            !eventInfo.thursday &&
+            !eventInfo.friday &&
+            !eventInfo.saturday &&
+            !eventInfo.sunday &&
+            !eventInfo.end_date
+        ) {
+            continueDisabled = true;
+        }
     }
 
     //return
@@ -373,75 +531,20 @@ export default function EditEventButton(props) {
                         />
                     </GridItem>
 
-                    {/* City Name */}
-                    <GridItem xs={12} sm={12}>
-                        <TextField
-                            name="city"
-                            value={eventInfo.city}
-                            required
-                            fullWidth
-                            onChange={handleChange('city')}
-                            id="city"
-                            label="City"
-                            placeholder="City"
-                            margin="normal"
-
+                    <GridItem xs={12}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox 
+                                color="primary"
+                                onChange={handleCheck('is_recurring')}
+                                checked={eventInfo.is_recurring}
+                                value="is_recurring"
+                                style={{marginTop: 0, marginBottom: 0}}
+                                />
+                            }
+                            label="Repeated Weekly Event"
                         />
                     </GridItem>
-
-                    {/* State */}
-                    <GridItem xs={12} sm={12}>
-                        <TextField
-                            id="state"
-                            select
-                            label="State"
-                            required
-                            fullWidth
-                            value={eventInfo.state}
-                            onChange={handleChange('state')}
-                            SelectProps={{
-                                MenuProps: {
-                                    className: classes.menu,
-                                },
-                            }}
-                            margin="normal"
-                        >
-                            {
-                            states.map(value => 
-                                (<MenuItem key={value} value={value}>{value}</MenuItem>)
-                            )}
-                        </TextField>
-                    </GridItem>
-
-                    {/* Event Date/Time */}
-                    <MuiPickersUtilsProvider utils={MomentUtils}>
-                        <GridItem xs={12}>
-                            <DatePicker
-                                variant="dialog"
-                                label="Event Date"
-                                format="dddd, MMMM Do YYYY"
-                                fullWidth
-                                value={eventInfo.start_date}
-                                onChange={handleDayClick}
-                                margin="normal"
-
-                            />
-                        </GridItem>
-                    
-                        <GridItem xs={12}>
-                            <TimePicker
-                                label="Start Time"
-                                fullWidth
-                                value={eventInfo.start_time}
-                                onChange={handleTimeClick}
-                                margin="normal"
-
-                            />
-                        </GridItem>
-                        <GridItem xs={12}>
-                            {endTimeJS}
-                        </GridItem>
-                    </MuiPickersUtilsProvider>
 
                     {/* Category */}
                     <GridItem xs={12} sm={12}>
@@ -473,6 +576,39 @@ export default function EditEventButton(props) {
                             )}
                         </TextField>
                     </GridItem>
+
+                    {repeatEvent}
+
+                    <GridItem xs={12} >
+                        <FormControl fullWidth variant="outlined" style={{marginTop: '1em'}}>
+                            <InputLabel htmlFor="outlined-adornment-amount">Event Price</InputLabel>
+                            <OutlinedInput
+                            id="outlined-adornment-amount"
+                            value={eventInfo.price}
+                            type='number'
+                            onChange={handleChange('price')}
+                            startAdornment={<InputAdornment position="start">-$</InputAdornment>}
+                            labelWidth={110}
+                            />
+                        </FormControl>
+                    </GridItem>
+                    
+                    <GridItem xs={12}>
+                        <TextField
+                            name="web_url"
+                            variant="outlined"
+                            margin="normal"
+
+                            value={eventInfo.web_url}
+                            fullWidth
+                            onChange={handleChange('web_url')}
+                            id="web_url"
+                            label="Link to Event"
+                        />
+                    </GridItem>
+
+                    
+
 
                     {/* Event Description */}
                     <GridItem xs={12} sm={12}>

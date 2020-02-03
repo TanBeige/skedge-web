@@ -131,7 +131,7 @@ export default function EditDealButton(props) {
             sunday: dealInfo.sunday,
         });
 
-        props.handleDealChange(dealInfo, weekdayString);
+        props.handleDealChange(dealInfo, weekdayString, endTimeExists);
         setIsEditing(false);
     }
 
@@ -415,24 +415,30 @@ export default function EditDealButton(props) {
 
 
     // Check Values
-    let continueDisabled = true;
-    if(dealInfo.name && dealInfo.location_name && dealInfo.street && dealInfo.city && dealInfo.state) {
+    let continueDisabled = false;
+    if(
+        !dealInfo.name.replace(/\s/g, '').length ||
+        dealInfo.name.replace(/\s/g, '').length >= 50 ||
+        !dealInfo.location_name.replace(/\s/g, '').length || 
+        !dealInfo.street.replace(/\s/g, '').length ||
+        !dealInfo.city.replace(/\s/g, '').length ||
+        !dealInfo.state.replace(/\s/g, '').length       
+    ) {
+        continueDisabled = true;
+    }
+    if(dealInfo.is_recurring) {
         if(
-            dealInfo.name.replace(/\s/g, '').length && 
-            dealInfo.name.length <= 50 && 
-            dealInfo.location_name.replace(/\s/g, '').length && 
-            dealInfo.street.replace(/\s/g, '').length && 
-            dealInfo.city.replace(/\s/g, '').length && 
-            dealInfo.state.replace(/\s/g, '').length
+            !dealInfo.monday &&
+            !dealInfo.tuesday && 
+            !dealInfo.wednesday && 
+            !dealInfo.thursday &&
+            !dealInfo.friday &&
+            !dealInfo.saturday &&
+            !dealInfo.sunday &&
+            !dealInfo.end_date
         ) {
-            continueDisabled = false;
-        }
-        else {
             continueDisabled = true;
         }
-    }
-    else {
-        continueDisabled = true;
     }
 
     //return

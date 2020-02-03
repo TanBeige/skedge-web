@@ -38,6 +38,9 @@ import DeleteEventButton from './Sections/EventPageComponents/DeleteEventButton.
 import EditInvites from './Sections/EventPageComponents/Invites/EditInvites.js';
 import EditCohosts from './Sections/EventPageComponents/Cohosts/EditCohosts.js';
 
+import { createWeekdayString } from 'components/CommonFunctions.js'
+
+
 
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
@@ -172,6 +175,7 @@ export default function EventPage(props) {
 
           start_time: data.data.events[0].start_time,
           end_time: data.data.events[0].end_time,
+          
           category: data.data.events[0].category,
           location_name: data.data.events[0].location_name,
           city: data.data.events[0].city,
@@ -226,7 +230,7 @@ export default function EventPage(props) {
   }
 
   //Submit Changes
-  const handleEventChange = async (newInfo) => {
+  const handleEventChange = async (newInfo, weekday, endTimeExist) => {
     setImageUploading(true)
 
 
@@ -304,12 +308,17 @@ export default function EventPage(props) {
         street: newInfo.street,
         city: newInfo.city,
         state: newInfo.state,
+        coverPic: coverPicId,
+
         startDate: newInfo.start_date,
+        endDate: newInfo.is_recurring ? newInfo.end_date : newInfo.start_date,
         startTime: moment(newInfo.start_time).format("HH:mm:ss"),
-        endTime: newInfo.end_time ? moment(newInfo.end_time).format("HH:mm:ss") : null,
+        endTime: endTimeExist ? moment(newInfo.end_time).format("HH:mm:ss") : null,
+        isRecurring: newInfo.is_recurring,
+        weekday: newInfo.is_recurring ? weekday : "",
+
         description: newInfo.description,
         category: newInfo.category,
-        coverPic: coverPicId
       }
     }).then((data)=> {
       console.log("Success!")
@@ -326,15 +335,18 @@ export default function EventPage(props) {
       city: newInfo.city,
       state: newInfo.state,
       start_date: newInfo.start_date,
-      //end_date: ,
-      //is_recurring: newInfo.is_recurring,
+      end_date: newInfo.is_recurring ? newInfo.end_date : null,
+      is_recurring: newInfo.is_recurring,
       start_time: newInfo.start_time,
-      end_time: newInfo.end_time,
+      end_time: endTimeExist ? newInfo.end_time : null,
       description: newInfo.description,
       category: newInfo.category,
-      // cover_url: response.data.id
-      cover_url: cloudinary.url(response.data.id, {secure: true, height: window.innerHeight, crop: "scale", fetch_format: "auto", quality: "auto"}),
+    
+      cover_uuid: response ? response.data.id : values.cover_uuid,
+      cover_url: response ? cloudinary.url(response.data.id, {secure: true, height: window.innerHeight, crop: "scale", fetch_format: "auto", quality: "auto"}) : values.cover_url,
 
+      webUrl: newInfo.web_url,
+      savings: newInfo.savings
     })
   }
 
