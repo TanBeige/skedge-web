@@ -29,6 +29,8 @@ import ImageUpload from 'components/CustomUpload/ImageUpload.js';
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
+import { createWeekdayString } from 'components/CommonFunctions.js'
+
 import pricingStyle from "assets/jss/material-kit-pro-react/views/pricingSections/pricingStyle.js";
 
 
@@ -193,27 +195,6 @@ export default function DealInfo(props) {
         });
     };
 
-    const handleToggle = value =>{
-        
-        const currentIndex = values.categories.indexOf(value);
-        const newChecked = values.categories;
-
-        if (currentIndex === -1) {
-            if(values.categories.length >= 2) {
-                return
-            }
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-
-        setValues({
-            ...values,
-            categories: newChecked
-        })
-    };
-
     // Deal Banner Functions
     const bannerSelect = (banner) => {
         setValues({
@@ -319,63 +300,15 @@ export default function DealInfo(props) {
         }
 
         //Create Weekday string for Database:
-        let weekdayString = ""
-        if(values.monday) {
-            if(weekdayString === "") {
-                weekdayString += "1"
-            }
-            else {
-                weekdayString += " 1"
-            }
-        }
-        if(values.tuesday) {
-            if(weekdayString === "") {
-                weekdayString += "2"
-            }
-            else {
-                weekdayString += " 2"
-            }
-        }
-        if(values.wednesday) {
-            if(weekdayString === "") {
-                weekdayString += "3"
-            }
-            else {
-                weekdayString += " 3"
-            }
-        }
-        if(values.thursday) {
-            if(weekdayString === "") {
-                weekdayString += "4"
-            }
-            else {
-                weekdayString += " 4"
-            }
-        }
-        if(values.friday) {
-            if(weekdayString === "") {
-                weekdayString += "5"
-            }
-            else {
-                weekdayString += " 5"
-            }
-        }
-        if(values.saturday) {
-            if(weekdayString === "") {
-                weekdayString += "6"
-            }
-            else {
-                weekdayString += " 6"
-            }
-        }
-        if(values.sunday) {
-            if(weekdayString === "") {
-                weekdayString += "0"
-            }
-            else {
-                weekdayString += " 0"
-            }
-        }
+        let weekdayString = createWeekdayString({
+            monday: values.monday,
+            tuesday: values.tuesday,
+            wednesday: values.wednesday,
+            thursday: values.thursday,
+            friday: values.friday,
+            saturday: values.saturday,
+            sunday: values.sunday,
+        });
 
         props.client.mutate({
             mutation: MUTATION_DEAL_ADD,
@@ -392,7 +325,7 @@ export default function DealInfo(props) {
                     location_name: values.location_name, 
                     name: values.name, 
                     point_1: values.point_1, 
-                    point_2: values.point_2, 
+                    point_2: values.point_2,
                     savings: values.savings, 
                     start_date: moment(values.start_date).format('YYYY-MM-DD'), 
                     start_time: moment(values.start_time).format('HH:mm:ss'),
@@ -621,7 +554,11 @@ export default function DealInfo(props) {
         !values.location_name.replace(/\s/g, '').length || 
         !values.street.replace(/\s/g, '').length ||
         !values.city.replace(/\s/g, '').length ||
-        !values.state.replace(/\s/g, '').length
+        !values.state.replace(/\s/g, '').length || 
+        
+        values.point_1.replace(/\s/g, '').length >= 35 || 
+        !values.point_1.replace(/\s/g, '').length || 
+        values.point_2.replace(/\s/g, '').length >= 35
     ) {
         continueDisabled = true;
     }
@@ -639,7 +576,7 @@ export default function DealInfo(props) {
             continueDisabled = true;
         }
     }
-    if(values.bannerImg == null) {
+    if(values.bannerImg === null) {
         continueDisabled = true;
     }
 
@@ -789,8 +726,9 @@ export default function DealInfo(props) {
                                 </div>
                                 <Grid item xs={12} sm={12}>
                                     <TextField
-                                        error={values.name.length > 50}
+                                        error={values.point_1.length > 35}
                                         className={classes.input}
+                                        required
                                         name="point_1"
                                         variant="outlined"
                                         value={values.point_1}
@@ -798,12 +736,12 @@ export default function DealInfo(props) {
                                         onChange={handleChange('point_1')}
                                         id="point_1"
                                         label="Point 1"
-                                        placeholder="50 character max."
+                                        placeholder="35 character max."
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
                                     <TextField
-                                        error={values.name.length > 50}
+                                        error={values.point_2.length > 35}
                                         className={classes.input}
                                         name="point_2"
                                         variant="outlined"
@@ -812,7 +750,7 @@ export default function DealInfo(props) {
                                         onChange={handleChange('point_2')}
                                         id="point_2"
                                         label="Point 2"
-                                        placeholder="50 character max."
+                                        placeholder="35 character max."
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -898,6 +836,12 @@ export default function DealInfo(props) {
                             {/*
                                 values.categories.length < 1 ? `Category ` : ""  
                             */}
+                            {
+                                values.point_1.replace(/\s/g, '').length >= 35 || 
+                                !values.point_1.replace(/\s/g, '').length || 
+                                values.point_2.replace(/\s/g, '').length >= 35
+                                ? `Bullet Points ` : "" 
+                            }
                         </p> : ""
                     }
                     <Button

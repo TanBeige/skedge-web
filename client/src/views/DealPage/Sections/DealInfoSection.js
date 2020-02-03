@@ -221,7 +221,7 @@ export default function DealInfoSection({ dealInfo, client }) {
             </div> : "" */}
             <div style={{position: 'absolute', right: 24}}>
               <h4 style={{marginTop: 0, float: 'right', textAlign: 'right'}}>
-                From {moment(formattedStartTime).format("h:mm A")}
+                Starting at {moment(formattedStartTime).format("h:mm A")}
                 {
                 dealInfo.end_time ? 
                     <Fragment>
@@ -257,7 +257,7 @@ export default function DealInfoSection({ dealInfo, client }) {
 
           {
              dealInfo.web_url && dealInfo.web_url.length !== ""  ?
-            <div style={{width: '100%'}}><a href={ dealInfo.web_url.includes("https://") || dealInfo.web_url.includes("http://") ? dealInfo.web_url : `//${dealInfo.web_url}`} target='_blank'><Button color='primary' style={{width: '100%'}}  size='sm'>Link to deal.</Button></a></div> : ""
+            <div style={{width: '100%'}}><a href={ dealInfo.web_url.includes("https://") || dealInfo.web_url.includes("http://") ? dealInfo.web_url : `//${dealInfo.web_url}`} target='_blank'><Button color='primary' style={{width: '100%'}}  size='sm'>Link to deal</Button></a></div> : ""
           }
           <h4>
             <PlaceIcon style={{verticalAlign: 'top'}}/>

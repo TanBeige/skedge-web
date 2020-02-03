@@ -50,6 +50,10 @@ router.post('/update', parser.single("file"), (req, res) => {
 
     //Delete previous Image
     let param = req.query.picId;
+    cloudinary.v2.uploader.destroy(param, function(error,result) {
+        console.log("Params: ", param)
+        console.log("result: ", result, "error ", error) 
+    });
 
     //Send new ID to Front End
     image.id = req.file.public_id;

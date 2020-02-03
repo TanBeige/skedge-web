@@ -1680,7 +1680,7 @@ mutation add_moment($eventId: Int!, $sourceId: String!, $creatorId: String!){
 `
 
 // -------------- DEALS -------------
-const MUTATION_DEAL_ADD = gql `
+const MUTATION_DEAL_ADD = gql`
   mutation insert_deal($objects: [deals_insert_input!]!){
     insert_deals(objects: $objects){
       affected_rows
@@ -1691,8 +1691,50 @@ const MUTATION_DEAL_ADD = gql `
     }
   }
 `
+const MUTATION_DEAL_UPDATE = gql`
+mutation update_deal($dealId: Int!, $name: String, $locationName: String, $street: String, $city: String, $state: String, $startTime: time, $endTime: time,$startDate: date, $endDate: date, $isRecurring: Boolean, $weekday:String, $description: String, $point1: String, $point2: String, $coverPic: String, $webUrl:String, $savings: String, $lat: numeric, $long: numeric){
+  update_deals(
+    where: {id: {_eq: $dealId}}
+    _set: {
+      name: $name,
+      location_name: $locationName,
+      street: $street,
+      city: $city,
+      state: $state,
+      
+      start_time: $startTime,
+      end_time: $endTime,
+      start_date: $startDate,
+      end_date: $endDate,
+      is_recurring: $isRecurring,
+      weekday: $weekday,
+      
+      point_1: $point1,
+      point_2: $point2,
+      description: $description,
+      cover_pic: $coverPic,
+      web_url: $webUrl,
+      savings: $savings,
+      latitude: $lat,
+      longitude: $long
+    }
+  ) {
+    affected_rows
+    returning{
+      id
+    }
+  }
+}
+`
+const MUTATION_DEAL_DELETE = gql`
+  mutation delete_deal($dealId: Int) {
+    delete_events(where: { id: { _eq: $dealId } }) {
+      affected_rows
+    }
+  }
+`;
 
-const QUERY_DEAL_INFO = gql `
+const QUERY_DEAL_INFO = gql`
 query query_deal_info($dealId: Int!) {
   deals(where: {id: {_eq: $dealId}}) {
     name
@@ -1954,6 +1996,8 @@ export {
   ADD_GEOCODE_EVENT,
 
   MUTATION_DEAL_ADD,
+  MUTATION_DEAL_UPDATE,
+  MUTATION_DEAL_DELETE,
   QUERY_DEAL_INFO,
   MUTATION_DEAL_VIEW,
   ADD_GEOCODE_DEAL,

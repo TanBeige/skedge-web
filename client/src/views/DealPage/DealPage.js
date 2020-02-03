@@ -6,14 +6,18 @@ import gql from "graphql-tag";
 
 import PropTypes from "prop-types";
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from '@material-ui/styles';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import EventLoading from 'components/EventLoading.js';
+import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
 
 import DealInfoSection from 'views/DealPage/Sections/DealInfoSection.js'
 import SkedgeDisclosure from 'components/Footer/SkedgeDisclosure';
+import EditDealButton from './DealComponents/EditDealButton.js';
+
 
 
 // @material-ui/icons
@@ -39,8 +43,8 @@ import {
   QUERY_DEAL_INFO,
   QUERY_DEAL_INFO_ANONYMOUS,
   MUTATION_DEAL_VIEW,
-  MUTATION_EVENT_UPDATE,
-  MUTATION_EVENT_DELETE,
+  MUTATION_DEAL_UPDATE,
+  MUTATION_DEAL_DELETE,
 } from 'EventQueries/EventQueries.js'
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
 
@@ -55,8 +59,23 @@ cloudinary.config({
   cloud_name: "skedge"
 });
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#02C39A"
+    },
+    secondary: {
+      main: pink[600]
+    },
+    // error: {
+    //   main: "#F5DA5F"
+    // }
+  },
+});
+
 const useStyles = makeStyles(blogPostPageStyle);
 require('views/DealPage/DealPage.css');
+
 export default function DealPage(props) {
   const dealId = parseInt(props.match.params.id);
 
@@ -75,6 +94,9 @@ export default function DealPage(props) {
     start_date: "",
     end_date: "",
 
+    point_1: "",
+    point_2: "",
+
     start_time: "",
     end_time: "",
     category: "",
@@ -88,7 +110,6 @@ export default function DealPage(props) {
 
     cover_uuid: "",
     cover_url: "",
-    cover_pic: 0,
 
     user_id: 0,
     user_pic: "",
@@ -133,6 +154,7 @@ export default function DealPage(props) {
         dealId: dealId
       }
     }).then((data) => {
+      console.log(data)
       if(data.data.deals === undefined || data.data.deals.length === 0) {
         setValues({
           ...values,
@@ -166,10 +188,12 @@ export default function DealPage(props) {
           savings: data.data.deals[0].savings,
           web_url: data.data.deals[0].web_url,
           updated_at: data.data.deals[0].updated_at,
+
+          latitude: data.data.deals[0].latitude,
+          longitude: data.data.deals[0].longitude,
       
           cover_uuid: data.data.deals[0].cover_pic,
           cover_url: cloudinary.url(data.data.deals[0].cover_pic, {secure: true, height: Math.floor(window.innerHeight * 0.6), crop: "scale", fetch_format: "auto", quality: "auto"}),
-          cover_pic: data.data.deals[0].cover_pic,
 
           user_id: data.data.deals[0].user.id,
           user_pic: cloudinary.url(data.data.deals[0].user.picture, {secure: true, width: 32, height: 32, crop: "fill"}),
@@ -197,13 +221,13 @@ export default function DealPage(props) {
   }
 
   //Submit Changes
-  const handleDealChange = async (newInfo) => {
+  const handleDealChange = async (newInfo, weekday) => {
     setImageUploading(true)
 
 
     //Upload Image to Cloudinary, Delete Old picture Afterwards
     let errorOccurred = false;
-    let coverPicId = values.cover_pic;
+    let coverPicId = values.cover_uuid;
     let response = "";
 
     if(newInfo.picFile) {
@@ -213,44 +237,17 @@ export default function DealPage(props) {
 
       // Upload file to Cloudinary
       response = await axios.post(
-        `/storage/update`, 
+        `/deal/update`, 
         form_data, 
         {
         params: {
-          picId: values.cover_uuid
+          picId: coverPicId
         }}
       ).catch((error => {
         alert("Error occurred while uploading picture, try uploading a smaller image size or try again later.")
         errorOccurred = true;
         return;
-      }))
-
-
-      //After submitting image, save it in database
-      await props.client.mutate({
-        mutation: gql`
-          mutation insert_image($objects: [images_insert_input!]!){
-            insert_images(objects: $objects){
-              returning{
-                id
-              }
-            }
-          }
-        `,
-        variables: {
-          objects: {
-            image_name: newInfo.name,
-            image_uuid: response.data.id,
-            url: response.data.url
-          }
-        },
-      }).then((data) => {
-        coverPicId = data.data.insert_images.returning[0].id
-
-      }).catch(error => {
-        console.log(error);
-        errorOccurred = true;
-      })
+      }));
     }
 
     if (errorOccurred) {
@@ -260,7 +257,7 @@ export default function DealPage(props) {
 
     //Make Changes to Database
     props.client.mutate({
-      mutation: MUTATION_EVENT_UPDATE,
+      mutation: MUTATION_DEAL_UPDATE,
       refetchQueries: [{
         query: QUERY_DEAL_INFO,
         variables: {
@@ -269,18 +266,30 @@ export default function DealPage(props) {
       }],
       variables: {
         dealId: values.deal_id,
-        eventDateId: values.event_date_id,
+
         name: newInfo.name,
         locationName: newInfo.location_name,
         street: newInfo.street,
         city: newInfo.city,
         state: newInfo.state,
+
         startDate: newInfo.start_date,
+        endDate: newInfo.is_recurring ? newInfo.end_date : newInfo.start_date,
         startTime: moment(newInfo.start_time).format("HH:mm:ss"),
         endTime: newInfo.end_time ? moment(newInfo.end_time).format("HH:mm:ss") : null,
+        isRecurring: newInfo.is_recurring,
+        weekday: weekday,
+
+
         description: newInfo.description,
-        category: newInfo.category,
-        coverPic: coverPicId
+        point1: newInfo.point_1,
+        point2: newInfo.point_2,
+
+        coverPic: response ? response.data.id : coverPicId,
+        webUrl: newInfo.web_url,
+        savings: newInfo.savings,
+        lat: newInfo.street != values.street ? null : values.latitude,
+        long: newInfo.street != values.street ? null : values.longitude,
       }
     }).then((data)=> {
       console.log("Success!")
@@ -296,23 +305,29 @@ export default function DealPage(props) {
       street: newInfo.street,
       city: newInfo.city,
       state: newInfo.state,
+
       start_date: newInfo.start_date,
-      //end_date: ,
-      //is_recurring: newInfo.is_recurring,
+      end_date: newInfo.is_recurring ? newInfo.end_date : newInfo.start_date,
+      is_recurring: newInfo.is_recurring,
+      weekday: weekday,
       start_time: newInfo.start_time,
       end_time: newInfo.end_time,
-      description: newInfo.description,
-      category: newInfo.category,
-      // cover_url: response.data.id
-      cover_url: cloudinary.url(response.data.id, {secure: true, height: window.innerHeight, crop: "scale", fetch_format: "auto", quality: "auto"}),
 
+      description: newInfo.description,
+      point_1: newInfo.point_1,
+      point_2: newInfo.point_2,
+      cover_uuid: response ? response.data.id : coverPicId,
+      cover_url: response ? cloudinary.url(response.data.id, {secure: true, height: window.innerHeight, crop: "scale", fetch_format: "auto", quality: "auto"}) : values.cover_url,
+
+      webUrl: newInfo.web_url,
+      savings: newInfo.savings
     })
   }
 
   //DELETE EVENT
   const handleDeleteDeal = () => {
     props.client.mutate({
-      mutation: MUTATION_EVENT_DELETE,
+      mutation: MUTATION_DEAL_DELETE,
       variables: {
         dealId: values.deal_id
       }
@@ -365,16 +380,14 @@ export default function DealPage(props) {
         if(user.sub === values.user_auth0_id ) {
           return (
             <div>
-                {/* <Button size='sm' style={{marginTop: 20, marginBottom: 8}} color="tumblr">Edit Invites</Button> */}
-                {/* <EditEventButton 
+                <EditDealButton 
                     client={props.client}
                     userId={user.sub}
                     creatorId={values.user_auth0_id}
-                    handleEventChange={handleDealChange}
-                    oldEvent={values}
-                    handleDeleteEvent={handleDeleteDeal}
-                /> */}
-                {/* <Button disabled={!user.sub === values.user_auth0_id} size='sm' style={{marginTop: 20, marginBottom: 8}} color="pinterest">Edit Cohosts</Button> */}
+                    handleDealChange={handleDealChange}
+                    oldDeal={values}
+                    handleDeleteDeal={handleDeleteDeal}
+                />
               </div>
           )
         }
@@ -409,6 +422,8 @@ export default function DealPage(props) {
     const userLink = `/${values.user_name}`
     return(
       <div>
+        <ThemeProvider theme={theme}>
+
         <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 5,  left: 20, zIndex: 100}} color="primary">
           <ChevronLeftIcon/>
         </Button>
@@ -484,6 +499,7 @@ export default function DealPage(props) {
             </div>
           }
         />
+        </ThemeProvider>
       </div>
     )
   }
@@ -493,6 +509,8 @@ export default function DealPage(props) {
 
     return (
       <div>
+        <ThemeProvider theme={theme}>
+
         {/* <Header
           brand="Skedge"
           links={<HeaderLinks dropdownHoverColor="info" />}
@@ -576,6 +594,7 @@ export default function DealPage(props) {
             </div>
           }
         />
+        </ThemeProvider>
       </div>
     );
   } 

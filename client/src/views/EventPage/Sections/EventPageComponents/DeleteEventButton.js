@@ -22,25 +22,6 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import InputAdornment from "@material-ui/core/InputAdornment";
-// @material-ui icons
-import People from '@material-ui/icons/People';
-// core components
-import TextField from '@material-ui/core/TextField';
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import CustomInput from 'components/CustomInput/CustomInput.js';
-import { MenuItem } from '@material-ui/core';
-import { categoryList } from "utils/constants";
-
-
-// Time/Date Selections Imports
-import MomentUtils from '@date-io/moment';    //uninstall if dont need this later
-import {
-    DatePicker,
-    MuiPickersUtilsProvider,
-    TimePicker
-  } from '@material-ui/pickers';  //if i dont need this later uninstall
 
 // @material-ui/icons
 import Close from "@material-ui/icons/Close";
@@ -54,7 +35,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const useStyles = makeStyles(style);
-var moment = require("moment")
 
 
 export default function DeleteEventButton(props) {

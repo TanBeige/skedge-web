@@ -31,7 +31,9 @@ import DealInfo from 'views/CreatePage/Sections/CreateDeal/DealInfo.js';
 import { store } from 'react-notifications-component';
 
 import pricingStyle from "assets/jss/material-kit-pro-react/views/pricingStyle.js";
-import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
+import { useAuth0 } from 'Authorization/react-auth0-wrapper.js';
+import { createWeekdayString } from 'components/CommonFunctions.js';
+
 import {
   FETCH_IF_ENTITY,
   MUTATION_EVENT_ADD,
@@ -147,63 +149,15 @@ const handleLocalOrPrivate = (type) => {
 
   const handleEventInfo = (valuesInfo) => {
 
-    let weekdayString = ""
-    if(valuesInfo.monday) {
-      if(weekdayString === "") {
-        weekdayString += "1"
-      }
-      else {
-        weekdayString += " 1"
-      }
-    }
-    if(valuesInfo.tuesday) {
-      if(weekdayString === "") {
-        weekdayString += "2"
-      }
-      else {
-        weekdayString += " 2"
-      }
-    }
-    if(valuesInfo.wednesday) {
-      if(weekdayString === "") {
-        weekdayString += "3"
-      }
-      else {
-        weekdayString += " 3"
-      }
-    }
-    if(valuesInfo.thursday) {
-      if(weekdayString === "") {
-        weekdayString += "4"
-      }
-      else {
-        weekdayString += " 4"
-      }
-    }
-    if(valuesInfo.friday) {
-      if(weekdayString === "") {
-        weekdayString += "5"
-      }
-      else {
-        weekdayString += " 5"
-      }
-    }
-    if(valuesInfo.saturday) {
-      if(weekdayString === "") {
-        weekdayString += "6"
-      }
-      else {
-        weekdayString += " 6"
-      }
-    }
-    if(valuesInfo.sunday) {
-      if(weekdayString === "") {
-        weekdayString += "0"
-      }
-      else {
-        weekdayString += " 0"
-      }
-    }
+    let weekdayString = createWeekdayString({
+      monday: valuesInfo.monday,
+      tuesday: valuesInfo.tuesday,
+      wednesday: valuesInfo.wednesday,
+      thursday: valuesInfo.thursday,
+      friday: valuesInfo.friday,
+      saturday: valuesInfo.saturday,
+      sunday: valuesInfo.sunday,
+    });
     
     setValues({
       ...values, 
