@@ -12,11 +12,8 @@ require('./CreateEvent.css')
 const buttonStyle = {
     textAlign: 'center',
     display: 'block',
-    margin: 'auto',
-    width: '50%',
     fontSize: 26,
-    minWidth: '8em',
-    maxWidth: '%90',
+    width: '100%',
     //color: '#00A896',
     //fontWeight: '400'
 }
@@ -24,29 +21,19 @@ const buttonStyle = {
 const vertStyle = {
     position: 'block',
     textAlign: 'center',
-    margin: '4em 0 0 0',
-    paddingBottom: 30,
+    margin: '2em auto',
+    maxWidth: 400
 }
 
 
 const useStyles = makeStyles(popoverStyles);
 
-export default function LocalOrPrivate(props) {
+export default function EventOrDeal(props) {
 
 // Hook for popover
     const [anchorElBottom, setAnchorElBottom] = useState(null);
     const classes = useStyles();
 
-//Functions
-    const handleLocal = () => {
-        props.handleLocalOrPrivate('local')
-    }
-    const handlePrivate = () => {
-        props.handleLocalOrPrivate('private')
-    }
-    const handleDeal = () => {
-        props.handleLocalOrPrivate('deal')
-    }
 
 //Rendering
 
@@ -59,11 +46,8 @@ export default function LocalOrPrivate(props) {
     if(props.entity === true){
         localEntityButton = (
             <div>
-                <Button variant='contained' color='primary' style={buttonStyle} onClick={handleLocal}>
+                <Button variant='contained' color='primary' style={buttonStyle} onClick={() => props.handleCreateType("local")}>
                     Local
-                </Button>
-                <Button style={{marginTop: '2.5em'}} size='sm' variant='contained' color='primary' onClick={handleDeal}>
-                    Deals
                 </Button>
             </div>
         )
@@ -78,15 +62,6 @@ export default function LocalOrPrivate(props) {
                     onClick={event => setAnchorElBottom(event.currentTarget)}
                 >
                     Local
-                </Button>
-                <Button 
-                    variant='contained' 
-                    color="info" 
-                    style={{marginTop: '2.5em'}} 
-                    size='sm'
-                    onClick={event => setAnchorElBottom(event.currentTarget)}
-                >
-                    Deals
                 </Button>
                 <Popover
                     classes={{
@@ -106,7 +81,7 @@ export default function LocalOrPrivate(props) {
                 >
                 <h3 className={classes.popoverHeader}>For Entities only.</h3>
                 <div className={classes.popoverBody}>
-                    You must create an entity (business) account in order to post local events and deals. 
+                    You must create an entity (business) account in order to post deals. 
                     <br />Entity accounts will be available soon.
                     {/* To create local events, check <Link to="/subscriptions">here</Link>. */}
                 </div>
@@ -118,14 +93,12 @@ export default function LocalOrPrivate(props) {
 
     return (
         <Slide direction={dir} in >
-            <div className='localOrPrivate' style={vertStyle}>
-                <div >
-                    <Button variant='contained' color='primary' style={buttonStyle} onClick={handlePrivate}>
+            <div className='EventOrDeal' style={vertStyle}>
+                <div style={{margin: '1em'}}>
+                    <Button variant='contained' color='primary' style={buttonStyle} onClick={() => props.handleCreateType("private")}>
                         Private
                     </Button>
-                    {/* <div >
-                        <h1 className='OrText'>-Or-</h1>
-                    </div> */}
+
                     <div style={{margin: '2.5em'}}></div>
                     {localEntityButton}
                     <div style={{textAlign: 'left', marginTop: '3em'}}> 

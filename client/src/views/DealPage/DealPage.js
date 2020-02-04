@@ -154,7 +154,6 @@ export default function DealPage(props) {
         dealId: dealId
       }
     }).then((data) => {
-      console.log(data)
       if(data.data.deals === undefined || data.data.deals.length === 0) {
         setValues({
           ...values,

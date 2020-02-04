@@ -77,17 +77,28 @@ export const MakeMainRoutes = () => {
     showBottomBar: false,
     currentPage: window.location.pathname,
 
+    username: "",
+    full_name: "",
     lastTab: 0
   })
 
   let newToken = "";
+
+  const setNames = (username, full_name) => {
+    setValues({
+      ...values,
+      username: username,
+      full_name: full_name
+    })
+
+  }
 
   //Create navigation bar
   const bottomBar = () => {
     if(values.showBottomBar && !loading && isAuthenticated) {
       return (
         <ApolloProvider client={values.client}>
-          <BottomNav client={values.client} userId={user.sub}/>
+          <BottomNav client={values.client} setNames={setNames} userId={user.sub}/>
         </ApolloProvider>
       )
     }
@@ -119,7 +130,7 @@ export const MakeMainRoutes = () => {
   const provideClient = (Component, renderProps) => { 
     return (
       <ApolloProvider client={values.client}>
-        <Component {...renderProps} client={values.client} anonymous={values.userAnonymous} setLastTab={setLastTab} lastTab={values.lastTab} /> 
+        <Component {...renderProps} client={values.client} anonymous={values.userAnonymous} setLastTab={setLastTab} username={values.username} lastTab={values.lastTab} /> 
       </ApolloProvider>
     );
   };

@@ -20,6 +20,12 @@ export const authDomain = "skedge.auth0.com";
 //export const callbackUrl = `${webUrl}/callback`;
 //export const backendUrl = 'http://localhost:9000';
 //export const backendUrl = `https://secret-journey-62331.herokuapp.com`;
+export const skedgeLocations = [
+  {
+    city: "Tallahassee",
+    state: "Florida"
+  }
+]
 
 export const categoryList = [
   "Any",
@@ -37,4 +43,62 @@ export const categoryList = [
   "Seasonal",
   "Sports",
   "Miscellaneous"
+]
+
+export const states = [ 
+  "Alabama",
+  "Alaska",
+  "Arizona",
+  "Arkansas",
+  "California",
+  "Colorado",
+  "Connecticut",
+  "Delaware",
+  "District Of Columbia",
+  "Florida",
+  "Georgia",
+  "Guam",
+  "Hawaii",
+  "Idaho",
+  "Illinois",
+  "Indiana",
+  "Iowa",
+  "Kansas",
+  "Kentucky",
+  "Louisiana",
+  "Maine",
+  "Maryland",
+  "Massachusetts",
+  "Michigan",
+  "Minnesota",
+  "Mississippi",
+  "Missouri",
+  "Montana",
+  "Nebraska",
+  "Nevada",
+  "New Hampshire",
+  "New Jersey",
+  "New Mexico",
+  "New York",
+  "North Carolina",
+  "North Dakota",
+  "Ohio",
+  "Oklahoma",
+  "Oregon",
+  "Palau",
+  "Pennsylvania",
+  "Puerto Rico",
+  "Rhode Island",
+  "South Carolina",
+  "South Dakota",
+  "Tennessee",
+  "Texas",
+  "Utah",
+  "Vermont",
+  "Virgin Islands",
+  "Virginia",
+  "Washington",
+  "West Virginia",
+  "Wisconsin",
+  "Wyoming"
 ]

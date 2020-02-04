@@ -5,7 +5,9 @@ import axios from 'axios'
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from '@material-ui/styles';
+
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 
@@ -17,7 +19,8 @@ import {IconButton} from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 // sections for this page
-import LocalOrPrivate from 'views/CreatePage/Sections/LocalOrPrivate.js';
+import EventOrDeal from 'views/CreatePage/Sections/EventOrDeal.js';
+import LocalOrPrivate from "./Sections/LocalOrPrivate";
 import EventCreateInfo from 'views/CreatePage/Sections/EventCreateInfo.js';
 import TagSelect from 'views/CreatePage/Sections/TagSelect.js';
 import InviteUsers from 'views/CreatePage/Sections/InviteUsers.js';
@@ -25,7 +28,9 @@ import AddCohost from 'views/CreatePage/Sections/AddCohost/AddCohost.js';
 import AddBanner from 'views/CreatePage/Sections/AddBanner.js';
 import Header from "components/Header/Header.js";
 
-import DealInfo from 'views/CreatePage/Sections/CreateDeal/DealInfo.js';
+import CreateDeal from 'views/CreatePage/Sections/CreateDeal/CreateDeal.js';
+import CreateEvent from 'views/CreatePage/Sections/CreateEvent/CreateEvent.js';
+import PreviewEvent from 'views/CreatePage/Sections/CreateEvent/PreviewEvent.js';
 
 //Popups notifications
 import { store } from 'react-notifications-component';
@@ -46,9 +51,17 @@ import ReactGA from 'react-ga';
 
 const useStyles = makeStyles(pricingStyle);
 const primaryColor = "#02C39A"
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#02C39A"
+    },
+  },
+});
 
 export default function PricingPage(props) {
   
+  const DEAL_PAGE = 7;
   var MomentUtils = require('moment');
 
   const { user } = useAuth0();
@@ -81,6 +94,7 @@ export default function PricingPage(props) {
       start_date: new Date(),
       end_date: new Date(),
 
+      end_time_exists: false,
       start_time: new Date(),
       end_time: null,
       price: "0.00",
@@ -90,7 +104,7 @@ export default function PricingPage(props) {
       guest_invites: false,
       host_approval: false,
       web_url: "",
-      cover_pic: "",
+      image_file: null,
       is_recurring: false,
       weekday: "",
 
@@ -103,14 +117,14 @@ export default function PricingPage(props) {
 
   // Functions
   const handleGoBack = () => {
-    if (values.currentPage > 0 && values.currentPage !== 6) {
+    if (values.currentPage > 0 && values.currentPage !== DEAL_PAGE) {
         setValues({
           ...values,
           currentPage: values.currentPage - 1,
           goingBack: true
         })
     }
-    else if(values.currentPage === 6) {
+    else if(values.currentPage === DEAL_PAGE) {
       setValues({
         ...values,
         currentPage: 0,
@@ -127,12 +141,12 @@ export default function PricingPage(props) {
   }
 
 // Page 0: Loca or Private Choosing
-const handleLocalOrPrivate = (type) => {
+const handleCreateType = (type) => {
     setValues({
         ...values,
         goingBack: false,
         event_type: type,
-        currentPage: type === 'deal' ? 6 : values.currentPage + 1 // If making deal, go to page 6
+        currentPage: type === 'deal' ? DEAL_PAGE : values.currentPage + 1 // If making deal, go to page DEAL_PAGE
     });
 }
 // Page 1: Event Info Submission
@@ -148,6 +162,7 @@ const handleLocalOrPrivate = (type) => {
 }
 
   const handleEventInfo = (valuesInfo) => {
+    console.log(valuesInfo)
 
     let weekdayString = createWeekdayString({
       monday: valuesInfo.monday,
@@ -172,12 +187,17 @@ const handleLocalOrPrivate = (type) => {
       state: valuesInfo.state,
       price: valuesInfo.price,
       web_url: valuesInfo.web_url,
+
       start_date: valuesInfo.start_date,
-      end_date: valuesInfo.end_date,
+      end_date: valuesInfo.is_recurring ? valuesInfo.end_date : valuesInfo.start_date,
       start_time: valuesInfo.start_time,
       end_time: valuesInfo.endTimeExists ? valuesInfo.end_time : null,
-      is_recurring: valuesInfo.repeatCheck,
-      weekday: weekdayString
+      end_time_exists: valuesInfo.endTimeExists,
+
+      is_recurring: valuesInfo.is_recurring,
+      weekday: weekdayString,
+
+      image_file: valuesInfo.bannerImg
     });
   }
 
@@ -214,7 +234,7 @@ const handleLocalOrPrivate = (type) => {
   const eventSubmitting = () => {
     if(values.eventSubmitted) {
       return(
-        <EventLoading text={values.currentPage === 6 ? "Creating Deal" : "Creating Event"}/>
+        <EventLoading text={values.currentPage === DEAL_PAGE ? "Creating Deal" : "Creating Event"}/>
       )
     }
     else {
@@ -226,7 +246,7 @@ const handleLocalOrPrivate = (type) => {
  * This function finally submits all the information received from the user.
  * Import bannerImg so we don't have to put it in the state.
  */
-  const submitEvent = async (bannerImg) => {
+  const submitEvent = async () => {
 
     let errorOccurred = false;
 
@@ -251,10 +271,10 @@ const handleLocalOrPrivate = (type) => {
 
     let response;
 
-    if(typeof bannerImg !== "number") {
+    if(typeof values.image_file !== "number") {
       const form_data = new FormData();
 
-      form_data.append('file', bannerImg)
+      form_data.append('file', values.image_file)
 
       // Upload file to Cloudinary
       response = await axios.post(`/storage/upload`, form_data).catch((error => {
@@ -312,7 +332,7 @@ const handleLocalOrPrivate = (type) => {
 
     // Inputs all information into Hasura Postgres DB via GraphQL
     //If user submits their own image
-    if(typeof bannerImg !== "number") {
+    if(typeof values.image_file !== "number") {
       props.client.mutate({
           mutation: MUTATION_EVENT_ADD,
           // refetchQueries: [{
@@ -353,10 +373,10 @@ const handleLocalOrPrivate = (type) => {
                       },
                       image: {
                           data: {
-                              image_name: bannerImg.name,
+                              image_name: values.image_file.name,
                               image_uuid: response.data.id,
                               url: response.data.url,
-                              content_type: bannerImg.type,
+                              content_type: values.image_file.type,
                           }
                       },
                       event_tags: {
@@ -401,7 +421,7 @@ const handleLocalOrPrivate = (type) => {
     }
 
     //If user selects one of our images
-    if(typeof bannerImg === "number") {
+    if(typeof values.image_file === "number") {
       props.client.mutate({
         mutation: MUTATION_EVENT_ADD,
         // refetchQueries: [{
@@ -524,21 +544,32 @@ const handleLocalOrPrivate = (type) => {
 
   switch(currentPageNumber) {
     case 0:
-      appBarTitle = "Create An Event";
-      page = <LocalOrPrivate entity={values.isEntity} goingBack={values.goingBack} handleLocalOrPrivate={handleLocalOrPrivate}/>
+      appBarTitle = "Create";
+      page = <EventOrDeal entity={values.isEntity} goingBack={values.goingBack} handleCreateType={handleCreateType}/>
       break;
     case 1:
       appBarTitle = "Create An Event";
+      page = <LocalOrPrivate entity={values.isEntity} goingBack={values.goingBack} handleCreateType={handleCreateType}/>
+      break;
+    case 2:
+      appBarTitle = "Create An Event";
       page = (
-      <EventCreateInfo 
+      // <EventCreateInfo 
+      //   entity={values.isEntity} 
+      //   savedValues={values} 
+      //   goingBack={values.goingBack} 
+      //   handleEventInfo={handleEventInfo} 
+      // />
+      <CreateEvent 
         entity={values.isEntity} 
         savedValues={values} 
         goingBack={values.goingBack} 
         handleEventInfo={handleEventInfo} 
       />
+      
       )
       break;
-    case 2:
+    case 3:
       appBarTitle = "Category";
       page = (<TagSelect 
         goingBack={values.goingBack} 
@@ -548,7 +579,7 @@ const handleLocalOrPrivate = (type) => {
         handleTagInfo={handleTagInfo} 
       />)
       break;
-    case 3: 
+    case 4: 
         appBarTitle = "Invite Guests"
         page = <InviteUsers 
           goingBack={values.goingBack} 
@@ -564,7 +595,7 @@ const handleLocalOrPrivate = (type) => {
 
         />
         break;
-    case 4:
+    case 5:
       appBarTitle = "Add A Cohost";
       page = <AddCohost 
         goingBack={values.goingBack} 
@@ -575,17 +606,20 @@ const handleLocalOrPrivate = (type) => {
         event_type={values.event_type}
       />
       break;
-    case 5:
-      appBarTitle = "Banner";
-      page = <AddBanner 
-          goingBack={values.goingBack} 
-          submitEvent={submitEvent} 
-          client={props.client}
+    case 6:
+      appBarTitle = "Add A Cohost";
+      page = <PreviewEvent 
+        goingBack={values.goingBack} 
+        event={values}
+        client={props.client}
+        userId={user.sub}
+        username={props.username}
+        submitEvent={submitEvent}
       />
       break;
-    case 6:
-      appBarTitle = "Create a Deal";
-      page = <DealInfo 
+    case DEAL_PAGE:
+      appBarTitle = "Create A Deal";
+      page = <CreateDeal 
           goingBack={values.goingBack} 
           client={props.client}
           setLoadingPage={setLoadingPage}
@@ -598,27 +632,29 @@ const handleLocalOrPrivate = (type) => {
   //  page 2. So I have to have BOTH fontWeight: 'bolder' AND <strong> for all of them.
   //  This is probably becsue I used a material-ui theme in EventCreateInfo.js
   return (
-    <div style={{marginTop: '7vh'}}>
-      <Header
-        brand="Skedge"
-        fixed
-        color="primary"//"transparent"
-        changeColorOnScroll={{
-          height: 100,
-          color: "primary"
-        }}
-      />
-      {/* <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '70vh', marginBottom: '2em', marginTop: '8vh'}}> */}
-        <div className={classes.container}>
-          <IconButton style={{position: 'absolute', left: 0}} onClick={handleGoBack}>
-            <ChevronLeftIcon style={{fontSize: '2em'}} />
-          </IconButton>
-          <h2 style={{paddingTop: 8, textAlign: 'center', fontWeight: 'bolder'}}><strong>{appBarTitle}</strong></h2>
-          <hr />
-          {eventSubmitting()}
-          { page }
-        </div>
-      {/* </div> */}
-    </div>
+    <ThemeProvider theme={theme}>
+      <div style={{marginTop: '8vh'}}>
+        <Header
+          brand="Skedge"
+          fixed
+          color="primary"//"transparent"
+          changeColorOnScroll={{
+            height: 100,
+            color: "primary"
+          }}
+        />
+        {/* <div className={classNames(classes.main, classes.mainRaised)} style={{minHeight: '70vh', marginBottom: '2em', marginTop: '8vh'}}> */}
+          <div className={classes.container}>
+            <IconButton style={{position: 'absolute', left: 0}} onClick={handleGoBack}>
+              <ChevronLeftIcon style={{fontSize: '2em'}} />
+            </IconButton>
+            <h2 style={{paddingTop: 8, textAlign: 'center', fontWeight: 'bolder'}}><strong>{appBarTitle}</strong></h2>
+            <hr />
+            {eventSubmitting()}
+            { page }
+          </div>
+        {/* </div> */}
+      </div>
+    </ThemeProvider>
   );
 }

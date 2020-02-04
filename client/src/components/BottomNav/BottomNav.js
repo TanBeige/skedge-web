@@ -160,6 +160,7 @@ class PrimaryNav extends Component {
                   ],
                   //notifs: (data.data.users[0].followers_aggregate.aggregate.count + data.data.users[0].notifications_aggregate.aggregate.count)
               })
+              this.props.setNames(data.data.users[0].name, data.data.users[0].full_name);
 
               //Set current Page View
               if(this.state.path.includes(`/${data.data.users[0].name}`)) {

@@ -404,7 +404,6 @@ export default function EventPage(props) {
   if (window.innerWidth > 1000) {
     titleSize = '5vw'
   }
-  console.log(values)
 
   const classes = useStyles();
 

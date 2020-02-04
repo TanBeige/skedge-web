@@ -7,6 +7,7 @@ import Button from "components/CustomButtons/Button.js";
 
 import defaultImage from "assets/img/image_placeholder.jpg";
 import defaultAvatar from "assets/img/placeholder.jpg";
+import { useEffect } from "react";
 
 const previewStyle = {
   objectFit: 'cover', 
@@ -46,6 +47,17 @@ export default function ImageUpload(props) {
     setImagePreviewUrl(props.avatar ? defaultAvatar : defaultImage);
     fileInput.current.value = null;
   };
+  useEffect(() => {
+    if(props.bannerImg != null) {
+      let reader = new FileReader();
+
+      reader.onloadend = () => {
+        setImagePreviewUrl(reader.result);
+      };
+      reader.readAsDataURL(props.bannerImg);
+
+    }
+  })
   let { avatar, addButtonProps, changeButtonProps, removeButtonProps } = props;
   return (
     <div className="fileinput text-center">

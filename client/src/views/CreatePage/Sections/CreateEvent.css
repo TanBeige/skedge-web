@@ -5,15 +5,7 @@
     height: 100%;
 }*/
 
-/*
-.localOrPrivate {
-    position: absolute;
-    margin-top: 50%;
-    width: 100%;
-    top: 30%;
-    margin: auto;
-    text-align: center;
-}*/
+
 
 .OrText {
     text-align: center;
@@ -26,20 +18,7 @@
     -webkit-text-stroke: 1px #02C39A;
 }
 
-/*
 
-.localOrPrivate Button {
-    font-family: 'Montserrat';
-    font-size: 3em;
-    font-weight: 900;
-    text-shadow: black -1px 1px 0px;
-}
-
-.EventCreateInfo {
-    background-color: white;
-    border-radius: 0.5em;
-    padding: 20px;
-}*/
 
 
 .weekdayCheckboxes {

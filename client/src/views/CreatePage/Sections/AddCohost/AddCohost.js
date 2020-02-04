@@ -78,7 +78,7 @@ export default function AddCohost (props) {
                   style={{margin: 3, height: '4em', color: 'white'}}
                   onClick={() => props.handleCohost(values.cohostId)}
                   >
-                    Choose Banner ->
+                    Preview Event ->
                   </Button>
                 </div>
               </ThemeProvider>
