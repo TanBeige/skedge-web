@@ -59,6 +59,7 @@ export default function AddCohost (props) {
         <Slide direction={dir} in mountOnEnter unmountOnExit>
           <Container component="main">
             <ThemeProvider theme={theme}>
+            <h5 style={{height: '4em', textAlign: 'center'}}>Cohosts can edit an event as well as the invites.</h5>
 
                 <div className={classes.paper}>
                     <div className='AddCohost'>

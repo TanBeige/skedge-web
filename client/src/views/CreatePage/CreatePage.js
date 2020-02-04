@@ -574,7 +574,7 @@ const handleCreateType = (type) => {
       page = (<TagSelect 
         goingBack={values.goingBack} 
         savedTag={values.tags} 
-        savedCategory={values.category}
+        savedCategory={values.categories}
         eventType={values.event_type} 
         handleTagInfo={handleTagInfo} 
       />)
@@ -607,7 +607,7 @@ const handleCreateType = (type) => {
       />
       break;
     case 6:
-      appBarTitle = "Add A Cohost";
+      appBarTitle = "Preview";
       page = <PreviewEvent 
         goingBack={values.goingBack} 
         event={values}

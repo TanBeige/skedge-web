@@ -51,7 +51,7 @@ export default function TagSelect(props) {
 
     const [values, setValues] = React.useState({
         category: props.savedCategory,
-        categories: [],
+        categories: props.savedCategory,
         tags: props.savedTag
     });
     

@@ -62,7 +62,7 @@ export default function PreviewEvent(props) {
                         style={{color: 'white', marginTop: '1em', height: '4em'}}
                         onClick={props.submitEvent}
                     >
-                    Select Category ->
+                    Submit Event ->
                     </Button>
             </Container>
         </Slide>

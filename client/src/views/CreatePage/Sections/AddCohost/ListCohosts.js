@@ -43,7 +43,7 @@ export default function ListCohosts(props) {
           }
 
           return (
-            <div className="listFriends" style={{maxHeight: '50vh', overflow: 'auto'}}>
+            <div className="listFriends" style={{maxHeight: '60vh', overflow: 'auto'}}>
                   <List style={{width: '100%'}}>
                       {finalData.map((follower, index) => {
                       return (
