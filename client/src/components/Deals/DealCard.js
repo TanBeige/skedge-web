@@ -304,13 +304,6 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
                   <Link to={`/deals/${itemInfo.id}`}>
                     <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center", fontSize: '1.5em'}}>{values.name}</h3>
                   </Link>
-                  {/* <EventMomentsWrapper 
-                    eventId={itemInfo.id}
-                    cover={values.image_url}
-                    client={client}
-                    type={type}
-                    //ifGoing={values.ifGoing}
-                  /> */}
                   <hr style={{margin: 2}}/>
   
                   <div style={{fontSize: 14}}>
@@ -337,17 +330,17 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
                   <Info style={{textAlign: 'left'}}>
                     <h6 color='primary' className={classes.cardCategory}>Deal</h6>
                   </Info>
-                  {/* <div style={{position: 'absolute',right: 15}}>
+                  <div style={{position: 'absolute',right: 15}}>
                     <IconButton onClick={handleLike} aria-label="Like" style={{padding: 6}}>
                       <LoyaltyIcon /> 
                     </IconButton>
-                    <IconButton onClick={handleLike} aria-label="Like" style={{padding: 6}}>
+                    {/* <IconButton onClick={handleLike} aria-label="Like" style={{padding: 6}}>
                       <FavoriteIcon color={values.ifLiked}/>
                       <div style={{fontSize: 14}}>
                         {values.likeAmount}
                       </div> 
-                    </IconButton>
-                  </div> */}
+                    </IconButton> */}
+                  </div>
                 </CardFooter>
             </Card>
           </Grow>

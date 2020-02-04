@@ -86,6 +86,7 @@ const makeApolloClient = (token) => {
     cache: new InMemoryCache({
       addTypename: true
     }),
+    connectToDevTools: true
   });
   
 

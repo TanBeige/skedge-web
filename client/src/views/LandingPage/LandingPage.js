@@ -47,7 +47,7 @@ const useStyles = makeStyles(landingPageStyle);
 
 export default function LandingPage(props) {
 
-  const { isAuthenticated, loginWithRedirect, loginWithPopup } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, loginWithPopup, loading } = useAuth0();
   // const [showButton, setShowButton] = useState(false)
 
   // Button Showing on Scroll
@@ -158,8 +158,10 @@ export default function LandingPage(props) {
               For more deals & events, login or sign up.
             </Button>
           </AppearOnScroll>
-          
-          <SectionTeam client={props.client}/>
+          {
+            !loading ? 
+              <SectionTeam/> : ""
+          }
           {/* <SectionWork /> */}
         </div>
       {/* </div> */}

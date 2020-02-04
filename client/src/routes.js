@@ -97,9 +97,9 @@ export const MakeMainRoutes = () => {
   const bottomBar = () => {
     if(values.showBottomBar && !loading && isAuthenticated) {
       return (
-        <ApolloProvider client={values.client}>
+        // <ApolloProvider client={values.client}>
           <BottomNav client={values.client} setNames={setNames} userId={user.sub}/>
-        </ApolloProvider>
+        // </ApolloProvider>
       )
     }
     else {
@@ -129,9 +129,7 @@ export const MakeMainRoutes = () => {
 
   const provideClient = (Component, renderProps) => { 
     return (
-      <ApolloProvider client={values.client}>
-        <Component {...renderProps} client={values.client} anonymous={values.userAnonymous} setLastTab={setLastTab} username={values.username} lastTab={values.lastTab} /> 
-      </ApolloProvider>
+        <Component {...renderProps}  anonymous={values.userAnonymous} setLastTab={setLastTab} username={values.username} lastTab={values.lastTab} /> 
     );
   };
 
@@ -140,7 +138,7 @@ export const MakeMainRoutes = () => {
 
     // For Apollo Provider on Auth load
     // setIsLoading(true);
-    setupApolloClient();
+    // setupApolloClient();
     
 
     // For Bottom Navbar
@@ -153,68 +151,44 @@ export const MakeMainRoutes = () => {
   
   },[loading, isAuthenticated]);
 
-  if (isLoading) {
-    return(
-      <div>
-        <LoadingPage reason="Loading" />
-      </div>
-    )
-  }
-  // Wait for token to return and client to be made.
-  // if(!values.client) {
-  //   console.log("Getting Client")
-  //   if(!loading) {
-  //     getIdTokenClaims().then(function(result) {
-  //       if(isAuthenticated) {
-  //         newToken = result.__raw;
-  //       }
-  //       else {
-  //         newToken = "";
-  //       }
-  //       setValues({
-  //         ...values,
-  //         client: makeApolloClient(newToken)
-  //       })
-  //     });
-  //   }
-  //   else {
-  //     newToken = "";
-  //     setValues({
-  //       ...values,
-  //       client: makeApolloClient(newToken)
-  //     })
-  //   }
-
+  // if (loading) {
   //   return(
   //     <div>
-  //       <LoadingPage reason="Getting Client" />
+  //       <LoadingPage reason="Loading" />
   //     </div>
   //   )
   // }
 
 
   // Finally load Website
-  else {
+  // else {
     return(
       <Router history={hist}>
         <div style={{backgroundColor: 'white'}}>
         <Switch>
+          <Route exact path="/landing-page" render={(props) => <LandingPage {...props}/>} />
+          <Route exact path="/" render={(props) => <LandingPage {...props}/>} />
+          {/* <Route exact path="/" render={props => provideClient(LandingPage, props)}/> */}
+
+          <Route exact path="/home" render={(props) => <Home {...props} anonymous={values.userAnonymous} setLastTab={setLastTab} username={values.username} lastTab={values.lastTab}/>} />
+
+          <PrivateRoute path="/search" render={props => provideClient(SearchPage, props)} />
+
+          <PrivateRoute path="/create" render={props => provideClient(CreatePage, props)} />
+
+          <PrivateRoute path="/notifications" render={props => provideClient(NotificationsPage, props)} />
+
           <Route exact path="/about-us" render={props => provideClient(AboutUsPage, props)} />
           <PrivateRoute path="/event" render={props => provideClient(EventPage, props)} />
-          <Route exact path="/home" render={props => provideClient(Home, props)} />
-          <PrivateRoute path="/create" render={props => provideClient(CreatePage, props)} />
-          <PrivateRoute path="/search" render={props => provideClient(SearchPage, props)} />
-          {/*<Route exact path="/components" render={props => provideClient(ComponentsPage, props)} />*/}
+
           <Route exact path="/contact-us" render={props => provideClient(ContactUsPage, props)} />
           <Route exact path="/privacy" render={props => provideClient(PrivacyPolicyPage, props)} />
           <Route exact path="/terms-and-conditions" render={props => provideClient(TermsConditionsPage, props)} />
           <Route exact path="/subscriptions" render={props => provideClient(EcommercePage, props)} />
-          <Route exact path="/landing-page" render={props => provideClient(LandingPage, props)} />
           <Route exact path="/login-page" render={props => provideClient(LoginPage, props)} />
           {/* <Route exact path="/user" render={props => provideClient(ProfilePage, props)} /> */}
           <Route exact path="/product-page" render={props => provideClient(ProductPage, props)} />
           <Route exact path="/sections" render={props => provideClient(SectionsPage, props)} />
-          <PrivateRoute path="/notifications" render={props => provideClient(NotificationsPage, props)} />
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
 
           <Route path="/events/:id" render={props => provideClient(EventPage, props)} />
@@ -224,12 +198,11 @@ export const MakeMainRoutes = () => {
                 render={props => {
                   return <CallbackPage {...props} />;
                 }} />
-          <Route exact path="/" render={props => provideClient(LandingPage, props)}/>
         </Switch>
 
         {bottomBar()}
         </div>
       </Router>
     );
-  }
+  // }
 }

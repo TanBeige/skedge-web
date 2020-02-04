@@ -10,7 +10,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Card from "components/Card/Card.js";
 import EventCardList from "components/EventCards/EventCardList.js"
-import LandingList from "components/EventCards/LandingEventList/LandingList.js"
+import LandingList from "components/EventCards/LandingEventList/LandingListNew.js"
 
 import teamsStyle from "assets/jss/material-kit-pro-react/views/sectionsSections/teamsStyle.js";
 import teamStyle from "assets/jss/material-kit-pro-react/views/landingPageSections/teamStyle.js";

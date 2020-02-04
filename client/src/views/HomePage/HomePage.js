@@ -75,7 +75,7 @@ export default function HomePage(props) {
   var ScrollLink = Scroll.Link;
  
 
- 
+ console.log(props)
 
 
   // Login/Event Logic:

@@ -4,7 +4,7 @@ import React from "react";
 //Notifications throughout application
 import ReactNotification from 'react-notifications-component'
 import 'react-notifications-component/dist/theme.css'
-
+import AuthorizedApolloProvider from './AuthorizedApolloProvider.js';
 //
 import { Auth0Provider } from "./Authorization/react-auth0-wrapper";
 import { AUTH_CONFIG } from "./Authorization/auth0-variables";
@@ -32,8 +32,10 @@ ReactDOM.render(
       redirect_uri={window.location.origin}
       onRedirectCallback={onRedirectCallback}
   >
-      <ReactNotification />
-      <MakeMainRoutes />
+      <AuthorizedApolloProvider>
+        <ReactNotification />
+        <MakeMainRoutes />
+      </AuthorizedApolloProvider>
     </Auth0Provider>,
     document.getElementById("root")
   );
