@@ -298,7 +298,7 @@ export default function SectionPills(props) {
       <div className={classes.section} style={{paddingTop: 0, paddingBottom: '1em'}}>
         <Divider />        
         <div className={classes.profileTabs} style={{marginTop: 10}}>
-              {navPillsDisplay}
+              {/* {navPillsDisplay} */}
         </div>
       </div>
     </ThemeProvider>

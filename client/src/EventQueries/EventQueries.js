@@ -1618,7 +1618,7 @@ query check_following ($userId: String!, $profileId: String!) {
 `
 
 const QUERY_BOTTOM_NAV = gql`
-subscription fetch_user_nav($userId: String) {
+query fetch_user_nav($userId: String!) {
   users(
     where: {auth0_id: { _eq: $userId }}
   ) {

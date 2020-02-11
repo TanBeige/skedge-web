@@ -1,6 +1,6 @@
 // import { ApolloProvider } from '@apollo/react-hooks';
 import { setContext } from '@apollo/link-context';
-import React from 'react';
+import React, {useEffect} from 'react';
 
 //OLD IMPORTS
 import ApolloClient from "apollo-client";
@@ -16,12 +16,11 @@ import { SubscriptionClient } from "subscriptions-transport-ws";
 
 import { GRAPHQL_URL, REALTIME_GRAPHQL_URL } from "./utils/constants";
 import { useAuth0 } from './Authorization/react-auth0-wrapper.js';
-import { useEffect } from 'react';
 
 const AuthorizedApolloProvider = ({ children }) => {
-  const { getTokenSilently, loading, isAuthenticated } = useAuth0();
+  const { getTokenSilently, loading, isAuthenticated, user } = useAuth0();
   useEffect(()=>{
-
+    console.log("apollo: ", user)
   }, [loading])
   console.log("loading: " , loading)
 
@@ -30,7 +29,6 @@ const AuthorizedApolloProvider = ({ children }) => {
     let token = ""
     if(isAuthenticated) {
       token = await getTokenSilently();
-      console.log(token)
     }
   
     if (token) {

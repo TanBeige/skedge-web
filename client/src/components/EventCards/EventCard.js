@@ -31,6 +31,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { store } from 'react-notifications-component';
 
 
+
 //Event Moments
 import EventMomentsWrapper from 'components/EventMoments/EventMomentsWrapper.js';
 
@@ -47,6 +48,8 @@ import Grow from '@material-ui/core/Grow';
 
 
 //Queries
+import { useMutation } from '@apollo/react-hooks';
+
 import {
   MUTATION_EVENT_IMPRESSION,
   MUTATION_LIKE_EVENT,
@@ -98,6 +101,19 @@ export default function EventCard({event, client, userId, currentDate, listType}
     const bioMaxLength = 100;
     const nameMaxLength = 25;
     const shareInfoTextMax = 45;
+
+    const [repostEvent] = useMutation(MUTATION_REPOST_EVENT);
+    const [unrepostEvent] = useMutation(MUTATION_UNPOST_EVENT);
+
+    const [likeEvent] = useMutation(MUTATION_LIKE_EVENT);
+    const [unlikeEvent] = useMutation(MUTATION_UNLIKE_EVENT);
+
+    const [saveEvent] = useMutation(MUTATION_EVENT_SAVE);
+    const [unsaveEvent] = useMutation(MUTATION_EVENT_UNDO_SAVE);
+
+    const [addImpression] = useMutation(MUTATION_EVENT_IMPRESSION);
+
+
 
     //Styling Card
     const usernameStyle= {
@@ -193,19 +209,20 @@ export default function EventCard({event, client, userId, currentDate, listType}
       console.log('Repost!')
 
       if(values.ifReposted !== "inherit") {
-        client.mutate({
-          mutation: MUTATION_UNPOST_EVENT,
-          refetchQueries: [{
-            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
-            variables: {
-              userId: userId
-            }
-          }],
-          variables: {
-            eventId: event.id,
-            userId: userId
-          }
-        }).then((data) => {
+      //   client.mutate({
+      //     mutation: MUTATION_UNPOST_EVENT,
+      //     refetchQueries: [{
+      //       query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
+      //       variables: {
+      //         userId: userId
+      //       }
+      //     }],
+      //     variables: {
+      //       eventId: event.id,
+      //       userId: userId
+      //     }
+        unrepostEvent({variables: {eventId: event.id, userId: userId}})
+        .then((data) => {
           console.log('UnPost!: ', data)
           setValues({
             ...values,
@@ -215,15 +232,26 @@ export default function EventCard({event, client, userId, currentDate, listType}
         })
       }
       else {
-        client.mutate({
-          mutation: MUTATION_REPOST_EVENT,
-          refetchQueries: [{
-            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
-            variables: {
-              userId: userId
-            }
-          }],
-          variables: {
+        // client.mutate({
+        //   mutation: MUTATION_REPOST_EVENT,
+        //   refetchQueries: [{
+        //     query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
+        //     variables: {
+        //       userId: userId
+        //     }
+        //   }],
+        //   variables: {
+        //     eventId: event.id,
+        //     userId: userId,
+        //     objects: {
+        //       user_id: values.user_auth0,
+        //       activity_type: 1,
+        //       source_id: event.id,
+        //       other_user_id: userId
+        //     }
+        //   }
+
+          repostEvent({variables: {
             eventId: event.id,
             userId: userId,
             objects: {
@@ -231,9 +259,8 @@ export default function EventCard({event, client, userId, currentDate, listType}
               activity_type: 1,
               source_id: event.id,
               other_user_id: userId
-            }
-          }
-        }).then((data) => {
+            }}})
+          .then((data) => {
           console.log('Repost!: ', data)
           setValues({
             ...values,
@@ -259,19 +286,20 @@ export default function EventCard({event, client, userId, currentDate, listType}
 
     const handleLike = () => {
       if(values.ifLiked !== "inherit") {
-        client.mutate({
-          mutation: MUTATION_UNLIKE_EVENT,
-          refetchQueries: [{
-            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
-            variables: {
-              userId: userId
-            }
-          }],
-          variables: {
-            eventId: event.id,
-            userId: userId
-          }
-        }).then((data) => {
+        // client.mutate({
+        //   mutation: MUTATION_UNLIKE_EVENT,
+        //   refetchQueries: [{
+        //     query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
+        //     variables: {
+        //       userId: userId
+        //     }
+        //   }],
+        //   variables: {
+        //     eventId: event.id,
+        //     userId: userId
+        //   }
+        unlikeEvent({variables: {eventId: event.id, userId: userId}})
+        .then((data) => {
           console.log('UnLike!: ', data)
           setValues({
             ...values,
@@ -281,15 +309,25 @@ export default function EventCard({event, client, userId, currentDate, listType}
         })
       }
       else {
-        client.mutate({
-          mutation: MUTATION_LIKE_EVENT,
-          refetchQueries: [{
-            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
-            variables: {
-              userId: userId
-            }
-          }],
-          variables: {
+        // client.mutate({
+        //   mutation: MUTATION_LIKE_EVENT,
+        //   refetchQueries: [{
+        //     query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
+        //     variables: {
+        //       userId: userId
+        //     }
+        //   }],
+        //   variables: {
+        //     eventId: event.id,
+        //     userId: userId,
+        //     objects: {
+        //       user_id: values.user_auth0,
+        //       activity_type: 0,
+        //       source_id: event.id,
+        //       other_user_id: userId
+        //     }
+        //   }
+          likeEvent({variables: {
             eventId: event.id,
             userId: userId,
             objects: {
@@ -298,8 +336,8 @@ export default function EventCard({event, client, userId, currentDate, listType}
               source_id: event.id,
               other_user_id: userId
             }
-          }
-        }).then((data) => {
+          }})
+        .then((data) => {
           console.log('Like!: ', data)
           setValues({
             ...values,
@@ -312,19 +350,23 @@ export default function EventCard({event, client, userId, currentDate, listType}
 
     const handleSave = () => {
       if(values.ifSaved === true) {
-        client.mutate({
-          mutation: MUTATION_EVENT_UNDO_SAVE,
-          refetchQueries: [{
-            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
-            variables: {
-              userId: userId
-            }
-          }],
-          variables: {
+        // client.mutate({
+        //   mutation: MUTATION_EVENT_UNDO_SAVE,
+        //   refetchQueries: [{
+        //     query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
+        //     variables: {
+        //       userId: userId
+        //     }
+        //   }],
+        //   variables: {
+        //     eventId: event.id,
+        //     userId: userId
+        //   }
+        unsaveEvent({variables: {
             eventId: event.id,
             userId: userId
-          }
-        }).then((data) => {
+          }})
+        .then((data) => {
           console.log('Unsave!: ', data)
           setValues({
             ...values,
@@ -333,19 +375,20 @@ export default function EventCard({event, client, userId, currentDate, listType}
         })
       }
       else {
-        client.mutate({
-          mutation: MUTATION_EVENT_SAVE,
-          refetchQueries: [{
-            query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
-            variables: {
-              userId: userId
-            }
-          }],
-          variables: {
-            eventId: event.id,
-            userId: userId
-          }
-        }).then((data) => {
+        // client.mutate({
+        //   mutation: MUTATION_EVENT_SAVE,
+        //   refetchQueries: [{
+        //     query: listType === "following" ? FETCH_FOLLOWING_FEED : QUERY_FILTERED_EVENT,
+        //     variables: {
+        //       userId: userId
+        //     }
+        //   }],
+        //   variables: {
+        //     eventId: event.id,
+        //     userId: userId
+        //   }
+        saveEvent()
+        .then((data) => {
           console.log('Save!: ', data)
           setValues({
             ...values,
@@ -357,17 +400,21 @@ export default function EventCard({event, client, userId, currentDate, listType}
 
 
     // Adding Impressions
-    const addImpression = () => {
-      client.mutate({
-        mutation: MUTATION_EVENT_IMPRESSION,
-        variables: {
-          eventId: event.id
-        }
-      })
-    }
+    // const addImpression = () => {
+    //   // client.mutate({
+    //   //   mutation: MUTATION_EVENT_IMPRESSION,
+    //   //   variables: {
+    //   //     eventId: event.id
+    //   //   }
+    //   // })
+      
+    //   addTodo({ variables: { eventId: event.id } })
+    // }
 
     useEffect(() => {
-      addImpression();
+      // addImpression();
+      addImpression({ variables: { eventId: event.id } })
+
 
       //Edit Bio
       let eventBio = ""

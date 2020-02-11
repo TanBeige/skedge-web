@@ -54,7 +54,7 @@ import LoadingPage from "views/LoadingPage/LoadingPage.js";
 import SearchPage from 'views/SearchPage/SearchPage.js';
 
 import CallbackPage from "views/CallbackPage/CallbackPage.js";
-import BottomNav from "components/BottomNav/BottomNav.js";
+import BottomNavWrapper from "components/BottomNav/BottomNavWrapper.js";
 
 import hist from "./utils/history";
 
@@ -98,7 +98,7 @@ export const MakeMainRoutes = () => {
     if(values.showBottomBar && !loading && isAuthenticated) {
       return (
         // <ApolloProvider client={values.client}>
-          <BottomNav client={values.client} setNames={setNames} userId={user.sub}/>
+          <BottomNavWrapper setNames={setNames} />
         // </ApolloProvider>
       )
     }

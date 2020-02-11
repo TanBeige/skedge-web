@@ -42,11 +42,15 @@ export default function LandingListNew(props) {
           weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
         },
     });
-    if (loading) return <p>Loading ...</p>;
+    // if (loading) return <p>Loading ...</p>;
     console.log(data)
 
-    let finalEvents = data.events
-    let finalDeals = data.deals
+    let finalEvents = []
+    let finalDeals = []
+    if(!loading) {
+        finalEvents = data.events
+        finalDeals = data.deals
+    }
     return (
         <div id='scrollableDiv'>
             <div style={{width: '100%'}}>
@@ -57,6 +61,7 @@ export default function LandingListNew(props) {
             
             <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
                 {
+                    !loading ? 
                     finalDeals.map((deal, index) => {
                         return (
                         <Fragment key={deal.id}>
@@ -72,6 +77,7 @@ export default function LandingListNew(props) {
                         </Fragment>
                         )
                     })
+                    : ""
                 }
             </GridContainer>
 
@@ -83,22 +89,24 @@ export default function LandingListNew(props) {
             
             <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
                 {
+                    !loading ? 
                     finalEvents.map((event, index) => {
                         return (
                         <Fragment key={event.id}>
                             <GridItem xs={12} sm={3} md={3}>
-                            {/* <EventCard 
+                            <EventCard 
                                 event={event} 
                                 listType={"landing"}
                                 client={props.client}
                                 userId={props.userId}
                                 filter={props.filter}
                                 currentDate={props.filter.date}
-                            /> */}
+                            />
                             </GridItem>
                         </Fragment>
                         )
                     })
+                    : ""
                 }
             </GridContainer>
         </div>

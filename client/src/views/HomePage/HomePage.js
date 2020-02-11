@@ -33,7 +33,7 @@ import { useAuth0 } from "../../Authorization/react-auth0-wrapper";
 
 // Queries
 import {
-  FETCH_IF_ENTITY
+  QUERY_BOTTOM_NAV
 } from 'EventQueries/EventQueries.js';
 
 //For Google Analytics
@@ -57,7 +57,6 @@ export default function HomePage(props) {
 
   //Variables
   const [isEntity, setIsEntity] = useState(true);
-  console.log(props)
 
 
   //Scroll To Top of the page
@@ -75,37 +74,37 @@ export default function HomePage(props) {
   var ScrollLink = Scroll.Link;
  
 
- console.log(props)
+  console.log(props)
 
 
   // Login/Event Logic:
   const updateLastSeen = () => {
-    const userId = user.sub;
-    const timestamp = moment().format();
-    if (props.client) {
-      props.client.mutate({
-        mutation: gql`
-          mutation($userId: String!, $timestamp: timestamp!) {
-            update_users(
-              where: { auth0_id: { _eq: $userId } }
-              _set: { auth0_id: $userId, last_seen: $timestamp }
-            ) {
-              affected_rows
-            }
-          }
-        `,
-        variables: {
-          userId: userId,
-          timestamp: timestamp
-        }
-      })
-      .then((response) => {
-        //console.log("Blogs Response: ", response)
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    }
+    // const userId = user.sub;
+    // const timestamp = moment().format();
+    // if (props.client) {
+    //   props.client.mutate({
+    //     mutation: gql`
+    //       mutation($userId: String!, $timestamp: timestamp!) {
+    //         update_users(
+    //           where: { auth0_id: { _eq: $userId } }
+    //           _set: { auth0_id: $userId, last_seen: $timestamp }
+    //         ) {
+    //           affected_rows
+    //         }
+    //       }
+    //     `,
+    //     variables: {
+    //       userId: userId,
+    //       timestamp: timestamp
+    //     }
+    //   })
+    //   .then((response) => {
+    //     //console.log("Blogs Response: ", response)
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //   });
+    // }
   };
 
 
@@ -148,14 +147,14 @@ export default function HomePage(props) {
       );
 
       //Check if the user is an entity
-      props.client.query({
-        query: FETCH_IF_ENTITY,
-        variables: {
-          userId: user.sub
-        }
-      }).then((data) => {
-        setIsEntity(data.data.users[0].entity)
-      })
+      // props.client.query({
+      //   query: FETCH_IF_ENTITY,
+      //   variables: {
+      //     userId: user.sub
+      //   }
+      // }).then((data) => {
+      //   setIsEntity(data.data.users[0].entity)
+      // })
     }
     if(!loading) {
       console.log("ReactGA Called: ", window.location.pathname)
@@ -167,7 +166,7 @@ export default function HomePage(props) {
     //   props.history.push("/")
     // }
 
-  },[props.client]); // Empty array for param means effect will only run on first render.
+  },[]); // Empty array for param means effect will only run on first render.
 
   //Place this here before returning the actual page so we can determine 
   // what displays while loading
@@ -201,7 +200,7 @@ export default function HomePage(props) {
               loading ?
               "" :
               <SectionPills 
-                client={props.client}
+                // client={props.client}
                 // userId={user.sub}
                 lastTab={props.lastTab}
                 setLastTab={props.setLastTab}

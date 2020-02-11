@@ -18,6 +18,7 @@ import gql from 'graphql-tag';
 import './PrimaryNav.css';
 import { ThemeProvider } from '@material-ui/styles';
 
+
 import {
   QUERY_BOTTOM_NAV
 } from 'EventQueries/EventQueries.js';
@@ -132,47 +133,47 @@ class PrimaryNav extends Component {
 
 
     //let newPathMap = [];
-    if(this.props.client) {
-        this.props.client.query({
-            query: gql`
-              query fetch_user_nav_id($userId: String) {
-                users(
-                  where: {auth0_id: { _eq: $userId }}
-                ) {
-                  id
-                  name
-                }
-              }
-            `,
-            variables: {
-              userId: this.props.userId
-            }
-        }).then((data) => {
-            if(data.data.users[0]){
-              //Set State variable
-              this.setState({
-                  pathMap: [
-                      '/home',
-                      '/search',
-                      '/create',
-                      '/notifications',
-                      `/${data.data.users[0].name}`
-                  ],
-                  //notifs: (data.data.users[0].followers_aggregate.aggregate.count + data.data.users[0].notifications_aggregate.aggregate.count)
-              })
-              this.props.setNames(data.data.users[0].name, data.data.users[0].full_name);
+    // if(this.props.client) {
+    //     this.props.client.query({
+    //         query: gql`
+    //           query fetch_user_nav_id($userId: String) {
+    //             users(
+    //               where: {auth0_id: { _eq: $userId }}
+    //             ) {
+    //               id
+    //               name
+    //             }
+    //           }
+    //         `,
+    //         variables: {
+    //           userId: this.props.userId
+    //         }
+    //     }).then((data) => {
+    //         if(data.data.users[0]){
+    //           //Set State variable
+    //           this.setState({
+    //               pathMap: [
+    //                   '/home',
+    //                   '/search',
+    //                   '/create',
+    //                   '/notifications',
+    //                   `/${data.data.users[0].name}`
+    //               ],
+    //               //notifs: (data.data.users[0].followers_aggregate.aggregate.count + data.data.users[0].notifications_aggregate.aggregate.count)
+    //           })
+    //           this.props.setNames(data.data.users[0].name, data.data.users[0].full_name);
 
-              //Set current Page View
-              if(this.state.path.includes(`/${data.data.users[0].name}`)) {
-                const {pathMap} = this.state  
-                const value = pathMap.indexOf(this.state.path);
-                if (value > -1) {
-                  this.setState({value});
-                }
-              }
-            }
-        });
-    }
+    //           //Set current Page View
+    //           if(this.state.path.includes(`/${data.data.users[0].name}`)) {
+    //             const {pathMap} = this.state  
+    //             const value = pathMap.indexOf(this.state.path);
+    //             if (value > -1) {
+    //               this.setState({value});
+    //             }
+    //           }
+    //         }
+    //     });
+    // }
   }
 
   handleChange = (event, value) => {
@@ -191,23 +192,11 @@ class PrimaryNav extends Component {
 
   render() {
     const {value, pathMap, showBar} = this.state;
+    let notifNums = this.props.notifs
     if (showBar) {
       return (
         <ThemeProvider theme={theme}>
-          <Subscription subscription={QUERY_BOTTOM_NAV} variables={{userId: this.props.userId}} >
-            {({ loading, error, data }) => {
-              let notifNums = 0;
-              if (loading) {
-                notifNums = 0;
-              }
-              else if (error) {
-                notifNums = 0;
-                console.log("Navbar Error: ",error)
-              } 
-              else {
-                notifNums = (data.users[0].followers_aggregate.aggregate.count + data.users[0].notifications_aggregate.aggregate.count + data.users[0].event_invites_aggregate.aggregate.count)
-              }
-              return (
+
                 <BottomNavigation
                   value={value}
                   onChange={this.handleChange}
@@ -222,7 +211,6 @@ class PrimaryNav extends Component {
                 </BottomNavigation>
               );
             }}
-          </Subscription>
         </ThemeProvider>
       );
     }
