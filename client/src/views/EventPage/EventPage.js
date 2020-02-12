@@ -12,11 +12,14 @@ import ListItem from "@material-ui/core/ListItem";
 import Avatar from '@material-ui/core/Avatar';
 
 import EventLoading from 'components/EventLoading.js'
+import GoingSaveButtons from './Sections/EventPageComponents/GoingSaveButtons.js';
+
 
 
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import HomeIcon from '@material-ui/icons/Home';
 
 // core components
 import Header from "components/Header/Header.js";
@@ -65,6 +68,9 @@ cloudinary.config({
 });
 
 const useStyles = makeStyles(blogPostPageStyle);
+
+require('views/EventPage/EventPage.css');
+
 
 export default function EventPage(props) {
   const eventId = props.match.params.id;
@@ -118,6 +124,9 @@ export default function EventPage(props) {
 
     ifSaved: false,
     ifGoing: false,
+
+    ifLiked: false,
+    ifReposted: false,
 
     going_users: []
   })
@@ -212,6 +221,9 @@ export default function EventPage(props) {
           ifSaved: data.data.events[0].user_saved_events.some(user => user.user_id === user.sub),
           ifGoing: data.data.events[0].event_invites.some(user => user.invited_id === user.sub),
 
+          ifLiked: data.data.events[0].event_like.some(user => user.user_id === user.sub),
+          ifReposted: data.data.events[0].shared_event.some(user => user.user_id === user.sub),
+      
 
           going_users: data.data.events[0].event_invites.filter(function (invites) {return invites.response === 1}),
           invited_users: data.data.events[0].event_invites,
@@ -478,26 +490,14 @@ export default function EventPage(props) {
     const userLink = `/${values.user_name}`
     return(
       <div>
-        <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 5,  left: 20, zIndex: 100}} color="primary">
-                <ChevronLeftIcon/>
-            </Button>
+        <Button onClick={()=>{props.history.push('/')}} justIcon round style={{position: 'fixed', top: 5,  left: 20, zIndex: 100}} color="primary">
+          <HomeIcon/>
+        </Button>
         <Parallax image={values.cover_url} filter="dark">
           <div className={classes.container} >
             
             <GridContainer justify="center" >
               <GridItem  className={classes.textCenter} style={{paddingLeft: 0, paddingRight: 0}}>                
-                <h1 className={classes.title} style={{fontSize: titleSize, wordWrap: 'break-word'}}>
-                  {values.name}
-                </h1>
-                <div>
-                  <h4 className={classes.subtitle} style={{alignSelf: 'center', display: 'inline-flex'}}>
-                    {` Created by: ` } 
-                    <Link to={userLink}>
-                      <Avatar style={{float: 'left', border: '0.5px solid #02C39A', height: 24, width: 24, margin: '0px 5px'}} width={24} alt={values.username} src={values.user_pic}/>                    
-                      {values.user_name}
-                    </Link>
-                  </h4>
-                </div>  
                 {
                   !user ? 
                   <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em',paddingBottom: '12', maxWidth: '300px'}}>
@@ -562,17 +562,6 @@ export default function EventPage(props) {
 
     return (
       <div>
-        {/* <Header
-          brand="Skedge"
-          links={<HeaderLinks dropdownHoverColor="info" />}
-          fixed
-          color="transparent"
-          changeColorOnScroll={{
-            height: 300,
-            color: "primary"
-          }}
-        /> */}
-
         {
           //If user is changing events
           imageUploading ? 
@@ -583,36 +572,34 @@ export default function EventPage(props) {
           <ChevronLeftIcon/>
         </Button>
         <Parallax image={values.cover_url} filter="dark">
-          <div className={classes.container}>
-            
-            <GridContainer justify="center">
-              <GridItem md={10} className={classes.textCenter}>
-
-                <h1 className={classes.title} style={{fontSize: titleSize, wordWrap: 'break-word'}}>
-                  {values.name}
-                </h1>
-                <div>
-                  <h4 className={classes.subtitle} style={{alignSelf: 'center', display: 'inline-flex'}}>
-                    {` Created by: ` } 
-                    <Link to={userLink}>
-                      <Avatar style={{float: 'left', border: '0.5px solid #02C39A', height: 24, width: 24, margin: '0px 5px'}} width={24} alt={values.username} src={values.user_pic}/>                    
-                      {values.user_name}
-                    </Link>
-                  </h4>
-                </div>  
+          <div style={{position: 'absolute', bottom: '3px', zIndex: 2, width: '100%'}}>
 
                 {editingEvent()}
-                
-              </GridItem>
-            </GridContainer>
+
+                <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
+                  <GoingSaveButtons
+                    ifGoing={values.ifGoing}
+                    ifSaved={values.ifSaved}
+                    ifLiked={values.ifLiked}
+                    ifReposted={values.ifReposted}
+                    likeAmount={values.like_amount}
+                    repostAmount={values.share_amount}
+
+                    client={props.client}
+                    eventId={values.event_id}
+                    eventHost={values.user_auth0_id}
+                  />
+                </div>
+          
           </div>
         </Parallax>
         <div className={classes.main}>
-          <div className={classes.container}>
+          <div className={classes.container} style={{padding: 0}}>
             <SectionText 
               eventInfo={values}
               client={props.client}
             />
+            
             <SkedgeDisclosure/>
             {/* <SectionComments /> */}
           </div>

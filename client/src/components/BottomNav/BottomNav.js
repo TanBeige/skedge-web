@@ -212,7 +212,8 @@ class PrimaryNav extends Component {
                   value={value}
                   onChange={this.handleChange}
                   className="nav primary"
-                  style={{height: '50px'}}
+                  style={{height: '7vh'}}
+                  showLabels
                 >
                   <BottomNavigationAction label="Feeds" icon={<DynamicFeedIcon />} component={Link} to={pathMap[0]} />
                   <BottomNavigationAction label="Search" icon={<SearchIcon />} component={Link} to={pathMap[1]} />

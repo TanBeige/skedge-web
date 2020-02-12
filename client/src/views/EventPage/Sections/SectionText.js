@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
+
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import Avatar from '@material-ui/core/Avatar';
+import Paper from '@material-ui/core/Paper';
+import Collapse from '@material-ui/core/Collapse';
+
+
+
 import Button from "components/CustomButtons/Button.js";
-import GoingSaveButtons from './EventPageComponents/GoingSaveButtons.js';
-import EventMomentsWrapper from 'components/EventMoments/EventMomentsWrapper.js';
-import MomentPopover from 'components/EventMoments/MomentPopover.js';
-import UserModalList from  'components/UserList/UserModalList.js';
 import EventActivity from 'views/EventPage/Sections/EventPageComponents/EventActivity.js';
 
 import CategoryFragment from './CategoryFragment.js';
 
-// @material-ui/icons
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import LockIcon from '@material-ui/icons/Lock';
-import IconButton from '@material-ui/core/IconButton';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import RenewIcon from '@material-ui/icons/Autorenew'
-
 
 //import Quote from "components/Typography/Quote.js";
-//import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
+import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import TodayIcon from '@material-ui/icons/Today';
 import PlaceIcon from '@material-ui/icons/Place';
+import IconButton from '@material-ui/core/IconButton';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+
 //import LocationCityIcon from '@material-ui/icons/LocationCity';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
 //import Button from 'components/CustomButtons/Button.js'
@@ -45,6 +45,7 @@ import ReactGA from 'react-ga';
 import {
   FETCH_EVENT_GOING_SAVE
 } from 'EventQueries/EventQueries.js'
+import { Icon } from "@material-ui/core";
 
 
 const useStyles = makeStyles(sectionTextStyle);
@@ -66,7 +67,9 @@ export default function SectionText({ eventInfo, client }) {
   const [values, setValues] = useState({
     ifGoing: false,
     ifSaved: false
-  })
+  });
+
+  const [expandDetails, setExpandDetails] = useState(false)
   
   //Record if the user signs up/in
   const handleLogin = () => {
@@ -82,36 +85,10 @@ export default function SectionText({ eventInfo, client }) {
   }
 
 
-  // Getting new queries so we can refetch
-  const getUserGoingSave = () => {
-    client.query({
-      query: FETCH_EVENT_GOING_SAVE,
-      variables: {
-        eventId: eventInfo.event_id,
-        userId: user.sub
-      }
-    }).then((data) => {
-      let isGoing = false;
-      if(data.data.users[0].event_invites.length === 1) {
-        isGoing = data.data.users[0].event_invites[0].response === 1;
-      }
-      const isSaved = data.data.users[0].user_saved_events.length === 1;
-      if(_isMounted) {
-        setValues({
-          ...values,
-          ifGoing: isGoing,
-          ifSaved: isSaved
-        })
-      }
-    })
-  }
-
   useEffect(() => {
 
     _isMounted = true;
-    if(user) {
-      getUserGoingSave();
-    }
+
     return () => {
       _isMounted = false;
     }
@@ -127,55 +104,50 @@ export default function SectionText({ eventInfo, client }) {
   //style={{borderRadius: 5, backgroundColor: "#02C39A", color: 'white'}}
   let formattedEndTime = ""
   if(eventInfo.end_time) {
-    const tempEndTime = moment(eventInfo.end_time, "HH:mm:ss")
-    formattedEndTime = (
-      <h3 style={{marginTop: 0}}>
-        Until: {moment(tempEndTime).format("h:mm A")}
-      </h3>
-    )
+    formattedEndTime = moment(eventInfo.end_time, "HH:mm:ss")
   }
   let formattedDate = ""
   if(eventInfo.is_recurring) {
     // Setting Display Variables    
     let displayDate = "Every ";
     if(eventInfo.weekday.includes("1")) {
-      displayDate += "Monday";
+      displayDate += "Mon.";
     }
     if(eventInfo.weekday.includes("2")) {
       if(displayDate.length > 6) {
-        displayDate += ", "
+        displayDate += " "
       }
-      displayDate += "Tuesday";
+      displayDate += "Tues.";
     }
     if(eventInfo.weekday.includes("3")) {
       if(displayDate.length > 6) {
-        displayDate += ", "
+        displayDate += " "
       }
-      displayDate += "Wednesday";
+      displayDate += "Wed.";
     }
     if(eventInfo.weekday.includes("4")) {
       if(displayDate.length > 6) {
-        displayDate += ", "
+        displayDate += " "
       }
-      displayDate += "Thursday";
+      displayDate += "Thur.";
     }
     if(eventInfo.weekday.includes("5")) {
       if(displayDate.length > 6) {
-        displayDate += ", "
+        displayDate += " "
       }
-      displayDate += "Friday";
+      displayDate += "Fri.";
     }
     if(eventInfo.weekday.includes("6")) {
       if(displayDate.length > 6) {
-        displayDate += ", "
+        displayDate += " "
       }
-      displayDate += "Saturday";
+      displayDate += "Sat.";
     }
     if(eventInfo.weekday.includes("0")) {
       if(displayDate.length > 6) {
-        displayDate += ", "
+        displayDate += " "
       }
-      displayDate += "Sunday";
+      displayDate += "Sun.";
     }
 
     //displayDate += `until ${eventInfo.end_date}`
@@ -194,97 +166,86 @@ export default function SectionText({ eventInfo, client }) {
   //   )
   // }
 
+  const userLink = `/${eventInfo.user_name}`
+
+  const timePaper= {
+    backgroundColor: '#02C39A', 
+    color: 'white',
+    margin: '0.4em'
+  }
+
 
   return (
-    <div className={classes.section} style={{paddingTop: 15}}>
-      <GridContainer justify="center">
-        <GridItem xs={12} sm={10} md={10}>
-          <div style={{textAlign: 'center'}}>
-
-            <h2>
-              <TodayIcon fontSize='large' style={{verticalAlign: 'middle'}}/>
-              {formattedDate}
-            </h2>
-            <div>
-              <h3 style={{marginTop: 0}}>
-                Starts at: {moment(formattedStartTime).format("h:mm A")}
-              </h3>
-              {formattedEndTime}
+    <div >
+      {/* <GridContainer justify="center"> */}
+        {/* <GridItem xs={12} sm={10} md={10}> */}
+            <div className='EventTitle'>
+              <h3 className='EventName'>{eventInfo.name}</h3>
+              
+              <h4 className='EventCreator' >
+                {`By: ` } 
+                <Link to={userLink}>
+                  <Avatar style={{float: 'left', border: '0.5px solid #02C39A', height: 20, width: 20, margin: '0px 5px'}} width={24} alt={values.username} src={eventInfo.user_pic}/>                    
+                  {eventInfo.user_name}
+                </Link>
+              </h4>
+              
             </div>
-          </div>
-          <hr />
-          {
-            user ? 
-            <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
-              <div style={{margin: '0em 2em 1em 2em', maxWidth: 240, margin: 'auto', marginBottom: '1em'}}>
-                {/* <UserModalList
-                  buttonText={`${eventInfo.going_users.length} Going`}
-                  userList={eventInfo.going_users}
-                  emptyListText="No one is going currently"
-                  client={client}
-                  nestedLabel='invited'
-                  modalTitle='Going'
-                /> */}
-              </div>
-              <GoingSaveButtons
-                ifGoing={values.ifGoing}
-                ifSaved={values.ifSaved}
-                client={client}
-                eventId={eventInfo.event_id}
-                eventHost={eventInfo.user_auth0_id}
-              />
-            </div> : ""
-          }
+            <div className='EventDateTime'>
+              <Paper style={timePaper} variant="outlined" color='#02C39A' className='EventDate'>
+                <TodayIcon style={{height: '100%'}}/>
+                <h4 style={{margin: 5, fontSize: '1em', alignSelf: 'center'}}>
+                  {formattedDate}
+                </h4>
+              </Paper>
+              <Paper style={timePaper} variant="outlined" color='#02C39A' className='EventDate'>
+                <AccessAlarmIcon style={{height: '100%'}}/>
+                <h4 style={{margin: 5, fontSize: '1em', alignSelf: 'center'}}>
+                  {moment(formattedStartTime).format("h:mm A")}
+                  {eventInfo.end_time ? ` - ${moment(formattedEndTime).format("h:mm A")}` : ""}
+                </h4>
+              </Paper>
+            </div>
 
-          {/* <h4></h4> //Event Moments turned off for now
-          <MomentPopover/>
-          <EventMomentsWrapper
-            eventId={eventInfo.event_id}
-            cover={eventInfo.cover_url}
-            client={client}
-            ifGoing={values.ifGoing}
-          /> */}
-          <div style={{position: 'absolute', right: 0, marginTop: 25}}>
-            <CategoryFragment category={eventInfo.category}/>
-          </div>
-          <h3 className={classes.title}>
-            Details
-          </h3>
-
-          <p style={{wordWrap: 'break-word', whiteSpace: "pre-line", marginBottom: 10}}>
-            {eventInfo.description}
-          </p>
+            <div className='EventDescription'>
+              <Paper elevation={1} variant="outlined">
+                <Collapse in={expandDetails} collapsedHeight='6vh' timeout="auto">
+                  <div style={{margin: '0px 0.5em'}}>
+                    <IconButton style={{float: 'right'}} onClick={()=>setExpandDetails(!expandDetails)}>
+                      {expandDetails ? <ExpandLessIcon /> : <ExpandMoreIcon/>
+                      }
+                    </IconButton>
+                    <p style={{wordWrap: 'break-word', whiteSpace: "pre-line", lineHeight: '1.5em'}}>
+                      <b>Details: </b>{eventInfo.description}
+                    </p>
+                    <div style={{textAlign: 'right', margin: '0.5em'}}>
+                      <CategoryFragment category={eventInfo.category}/>
+                    </div>
+                  </div>
+                </Collapse> 
+                
+              </Paper>
+            </div>
+          
           {
             eventInfo.web_url && eventInfo.web_url !== "" ?
-            <div style={{width: '100%'}}><a href={ eventInfo.web_url.includes("https://") || eventInfo.web_url.includes("http://") ? eventInfo.web_url : `//${eventInfo.web_url}`} target='_blank'><Button color='primary' style={{width: '100%'}}  size='sm'>Link to tickets</Button></a></div> : ""
+            <div style={{width: '100%', height: '2vh'}}><a href={ eventInfo.web_url.includes("https://") || eventInfo.web_url.includes("http://") ? eventInfo.web_url : `//${eventInfo.web_url}`} target='_blank'><Button color='primary' style={{width: '100%'}}  size='sm'>Link to tickets</Button></a></div> : ""
           }
 
-          {/* <div>
-            <IconButton onClick={handleRepost} aria-label="Share" style={{float: 'left', margin: 0}}>
-              <RenewIcon color='primary'/> 
-              <div style={{fontSize: 14}}>
-                {eventInfo.shared_users.length}
-              </div>
-            </IconButton>
-            <IconButton onClick={handleLike} aria-label="Like" style={{float: 'right'}}>
-              <FavoriteIcon color='secondary'/>
-              <div style={{fontSize: 14}}>
-                {eventInfo.liked_users.length}
-              </div> 
-            </IconButton>
-          </div>
-           */}
-          <h4>
-            <PlaceIcon style={{verticalAlign: 'top'}}/>
-            {`${eventInfo.location_name}`} <br />
-            <HomeWorkIcon style={{verticalAlign: 'top'}}/>
-            { eventInfo.street ? `${eventInfo.street} ` : ""} <br />
-            <MapIcon style={{verticalAlign: 'top'}}/>
-            {`${eventInfo.city}, ${eventInfo.state}`}
-          </h4>
+          <div className='EventPlace'>
+            <div style={{width: '50%', alignSelf: 'center'}}>
+              <h4 style={{ fontSize: '1em', margin: 0}}>
+                <PlaceIcon style={{verticalAlign: 'top'}}/>
+                {`${eventInfo.location_name}`} <br />
+                <HomeWorkIcon style={{verticalAlign: 'top'}}/>
+                { eventInfo.street ? `${eventInfo.street} ` : ""} <br />
+                <MapIcon style={{verticalAlign: 'top'}}/>
+                {`${eventInfo.city}, ${eventInfo.state}`}
+              </h4>
+            </div>
           {
             user ? 
-            <div>
+            <div style={{width: '50%'}}>
               <MapsApi 
                 street={eventInfo.street}
                 city={eventInfo.city}
@@ -296,14 +257,16 @@ export default function SectionText({ eventInfo, client }) {
                 client={client}
                 pageLoaded={true}
               />
-              {
-                user.sub === eventInfo.user_auth0_id ? 
-                <EventActivity info={eventInfo}/>
-                :
-                ""
-              }
             </div> : ""
           }
+          </div>
+          {/* {
+            user && user.sub === eventInfo.user_auth0_id ? 
+            <EventActivity info={eventInfo}/>
+            :
+            ""
+          } */}
+
           {
             !user ? 
             <div style={{margin: 'auto', textAlign: 'center', marginBottom: '1em', maxWidth: '260px'}}>
@@ -315,8 +278,8 @@ export default function SectionText({ eventInfo, client }) {
               </Button>
             </div> : ""
           }
-        </GridItem>
-      </GridContainer>
+        {/* // </GridItem> */}
+      {/* // </GridContainer> */}
     </div>
   );
   

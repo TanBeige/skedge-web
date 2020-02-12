@@ -47,7 +47,7 @@ class SimpleMap extends Component {
         lat: props.latitude,
         lng: props.longitude
       },
-      zoom: 17,
+      zoom: 18,
       loading: true,
       error: false
     }
@@ -129,7 +129,7 @@ class SimpleMap extends Component {
     else {
       return (
         // Important! Always set the container height explicitly
-        <div style={{ height: '50vh', width: '100%', borderRadius: 20, overflow: 'hidden' }}>
+        <div style={{height: '100%', borderRadius: 10, overflow: 'hidden' }}>
           <GoogleMapReact
             bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_API}}
             defaultCenter={this.state.center}

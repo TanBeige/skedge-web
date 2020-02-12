@@ -90,6 +90,6 @@ export default function CategoryFragment({category}) {
     }
 
     return (
-        <Chip icon={genre} label={category} color='default'/>
+        <Chip icon={genre} size='small' label={category} color='default'/>
     )
 }

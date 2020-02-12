@@ -4,24 +4,31 @@ import Button from 'components/CustomButtons/Button.js'
 import { useAuth0 } from 'Authorization/react-auth0-wrapper';
 import { store } from 'react-notifications-component';
 
+import TurnedInNotIcon from '@material-ui/icons/TurnedInNot';
+import TurnedInIcon from '@material-ui/icons/TurnedIn';
 
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 
+import RenewIcon from '@material-ui/icons/Autorenew';
+import ReplyIcon from '@material-ui/icons/Reply';
 
 import {
     MUTATION_EVENT_SAVE,
     MUTATION_EVENT_UNDO_SAVE,
-    REFETCH_EVENT_SAVES,
-
-    MUTATION_EVENT_GOING,
-    MUTATION_EVENT_UNDO_GOING,
 
     MUTATION_EVENT_RESPONSE,
-
-    REFETCH_EVENT_GOING,
-    FETCH_EVENT_INFO,
     FETCH_EVENT_GOING_SAVE,
 
-  } from 'EventQueries/EventQueries.js'
+    
+    MUTATION_LIKE_EVENT,
+    MUTATION_UNLIKE_EVENT,
+
+    
+    MUTATION_REPOST_EVENT,
+    MUTATION_UNPOST_EVENT,
+} from 'EventQueries/EventQueries.js'
+
 
 export default function GoingSaveButtons (props) {
 
@@ -29,7 +36,12 @@ export default function GoingSaveButtons (props) {
 
     const [values, setValues] = useState({
         ifGoing: false,
-        ifSaved: false
+        ifSaved: false,
+        ifLiked: false,
+        ifReposted: false,
+
+        likeAmount: 0,
+        repostAmount: 0
     })
 
     //Handle Event Going    
@@ -38,13 +50,6 @@ export default function GoingSaveButtons (props) {
     if(values.ifGoing) {
         props.client.mutate({
             mutation: MUTATION_EVENT_RESPONSE,
-            refetchQueries: [{
-                query: FETCH_EVENT_GOING_SAVE,
-                variables: {
-                    eventId: props.eventId,
-                    userId: user.sub
-                }
-            }],
             variables: {
                 invitedId: user.sub,
                 eventId: props.eventId,
@@ -75,13 +80,6 @@ export default function GoingSaveButtons (props) {
     else {
         props.client.mutate({
             mutation: MUTATION_EVENT_RESPONSE,
-            refetchQueries: [{
-                query: FETCH_EVENT_GOING_SAVE,
-                variables: {
-                    eventId: props.eventId,
-                    userId: user.sub
-                }
-            }],
             variables: {
                 invitedId: user.sub,
                 eventId: props.eventId,
@@ -115,13 +113,6 @@ export default function GoingSaveButtons (props) {
     if(values.ifSaved) {
         props.client.mutate({
         mutation: MUTATION_EVENT_UNDO_SAVE,
-        refetchQueries: [{
-            query: FETCH_EVENT_GOING_SAVE,
-            variables: {
-                eventId: props.eventId,
-                userId: user.sub
-            }
-        }],
         variables: {
             eventId: props.eventId,
             userId: user.sub
@@ -150,13 +141,6 @@ export default function GoingSaveButtons (props) {
     // Change to Saving To Event
         props.client.mutate({
         mutation: MUTATION_EVENT_SAVE,
-        refetchQueries: [{
-            query: FETCH_EVENT_GOING_SAVE,
-            variables: {
-                eventId: props.eventId,
-                userId: user.sub
-            }
-        }],
         variables: {
             eventId: props.eventId,
             userId: user.sub
@@ -182,35 +166,157 @@ export default function GoingSaveButtons (props) {
         })
     }
     }
+    
+    // Handling event reposts
+    const handleRepost = () => {
+        console.log('Repost!')
+  
+        if(values.ifReposted) {
+          props.client.mutate({
+            mutation: MUTATION_UNPOST_EVENT,
+            variables: {
+              eventId: props.eventId,
+              userId: user.sub
+            }
+          }).then((data) => {
+            console.log('UnPost!: ', data)
+            setValues({
+              ...values,
+              ifReposted: false,
+              repostAmount: (values.repostAmount - 1)
+            });
+          })
+        }
+        else {
+          props.client.mutate({
+            mutation: MUTATION_REPOST_EVENT,
+            variables: {
+              eventId: props.eventId,
+              userId: user.sub,
+              objects: {
+                user_id: props.eventHost,
+                activity_type: 1,
+                source_id: props.eventId,
+                other_user_id: user.sub
+              }
+            }
+          }).then((data) => {
+            console.log('Repost!: ', data)
+            setValues({
+              ...values,
+              ifReposted: true,
+              repostAmount: (values.repostAmount + 1)
+            });
+            store.addNotification({
+              title: `Event shared!`,
+              message: `This event is now shared with all of your followers.`,
+              type: "info",
+              insert: "bottom",
+              container: "bottom-center",
+              animationIn: ["animated", "fadeIn"],
+              animationOut: ["animated", "fadeOut"],
+              dismiss: {
+                duration: 5000,
+                onScreen: false
+              }
+          });
+          })
+        }
+      }
+  
+      const handleLike = () => {
+        if(values.ifLiked) {
+        props.client.mutate({
+            mutation: MUTATION_UNLIKE_EVENT,
+            variables: {
+              eventId: props.eventId,
+              userId: user.sub
+            }
+          }).then((data) => {
+            console.log('UnLike!: ', data)
+            setValues({
+              ...values,
+              ifLiked: false,
+              likeAmount: (values.likeAmount - 1)
+            })
+          })
+        }
+        else {
+        props.client.mutate({
+            mutation: MUTATION_LIKE_EVENT,
+            variables: {
+              eventId: props.eventId,
+              userId: user.sub,
+              objects: {
+                user_id: props.eventHost,
+                activity_type: 0,
+                source_id: props.eventId,
+                other_user_id: user.sub
+              }
+            }
+          }).then((data) => {
+            console.log('Like!: ', data)
+            setValues({
+              ...values,
+              ifLiked: true,
+              likeAmount: (values.likeAmount + 1)
+            });
+          })
+        }
+      }
 
     useEffect(() => {
         setValues({
             ifGoing: props.ifGoing,
-            ifSaved: props.ifSaved
+            ifSaved: props.ifSaved,
+            ifLiked: props.ifLiked,
+            ifReposted: props.ifReposted,
+
+            likeAmount: props.likeAmount,
+            repostAmount: props.repostAmount
+    
         })
     }, [props.ifGoing, props.ifSaved])
 
 
-    let goingButton = "";
-    if(!values.ifGoing){ // not going to event
-      goingButton = <Button color="rose" onClick={goingToEvent} style={{margin: '0px 10px', width: '40%'}}>Status: Not Going</Button>
-    }
-    else {
-      goingButton = <Button color="info" onClick={goingToEvent} style={{margin: '0px 10px', width: '40%'}}>status: Going</Button>
-    }
-  
-    let saveButton = "";
-    if(!values.ifSaved) {
-      saveButton = <Button color="rose" onClick={saveEvent} style={{margin: '0px 10px', width: '40%'}}>Save</Button>
-    }
-    else {
-      saveButton = <Button color="info" onClick={saveEvent} style={{margin: '0px 10px', width: '40%'}}>Saved</Button>
-    }
+
+    // Buttons
+
+    const goingButton = (
+        <Button className='buttonMargin' round size='sm' color={values.ifGoing ? "primary" : "info"} onClick={goingToEvent}>
+            {values.ifGoing ? "Going" : "Not Going"}
+        </Button>
+    )
+    const saveButton = (
+        <Button className='buttonMargin' justIcon round size='sm' style={{backgroundColor: '#5F60F5'}} onClick={saveEvent}>
+            {values.ifSaved ? <TurnedInIcon fontSize='small'/> : <TurnedInNotIcon fontSize='small'/>}
+        </Button>
+    )
+    const likeButton = (
+        <Button className='buttonMargin' justIcon round size='sm' color='rose' onClick={handleLike}>
+            {values.ifLiked ? <FavoriteIcon fontSize='small'/> : <FavoriteBorderIcon fontSize='small'/>}
+        </Button>
+    )
+    const repostButton = (
+        <Button className='buttonMargin' justIcon round size='sm' color={values.ifReposted ? 'primary' : 'white'} onClick={handleRepost}>
+            <RenewIcon fontSize='small'/>
+        </Button>
+    )
+    const shareButton = (
+        <Button className='buttonMargin' justIcon round size='sm' color='github' onClick={saveEvent}>
+            <ReplyIcon fontSize='small'/>
+        </Button>
+    )
 
     return (
         <div>
+            {likeButton}
+            {repostButton}
+
             {goingButton}
+
             {saveButton}
+            {shareButton}
         </div>
     )
 }

@@ -23,6 +23,8 @@ import EditDealButton from './DealComponents/EditDealButton.js';
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import HomeIcon from '@material-ui/icons/Home';
+
 
 // core components
 import Header from "components/Header/Header.js";
@@ -422,8 +424,8 @@ export default function DealPage(props) {
       <div>
         <ThemeProvider theme={theme}>
 
-        <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 5,  left: 20, zIndex: 100}} color="primary">
-          <ChevronLeftIcon/>
+        <Button onClick={()=>{props.history.push('/')}} justIcon round style={{position: 'fixed', top: 5,  left: 20, zIndex: 100}} color="primary">
+          <HomeIcon/>
         </Button>
         <Parallax image={values.cover_url} filter="dark">
           <div className={classes.container} >

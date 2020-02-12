@@ -87,8 +87,8 @@ export default function DealInfoSection({ dealInfo, client }) {
       action: 'Login/Sign Up: Deal Page'
     });
     //Then Login/Sign up
-    // loginWithRedirect({});
-    loginWithPopup({});
+    loginWithRedirect({});
+    // loginWithPopup({});
   }
 
 

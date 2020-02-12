@@ -1,0 +1,50 @@
+button.buttonMargin {
+    margin: 5px;
+}
+
+.EventTitle {
+    max-height: 10vh;
+    overflow: hidden;
+}
+
+.EventName {
+    max-height: 7vh;
+    margin: 0px 1em;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding-top: 0.2em;
+}
+
+.EventCreator {
+    max-height: 3vh;
+    margin: 0px 1.2em;
+    font-size: 1em;
+    align-self: center; 
+    display: inline-flex;
+    padding-bottom: 3px;
+}
+
+.EventDateTime {
+    max-height: 8vh;
+    display: inline-flex;
+    width: 100%;
+    color: white;
+    margin: 0.5em 0px
+    /* text-align: center; */
+}
+.EventDate {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.EventDescription {
+    margin: 0.5em 0.5em;
+}
+
+.EventPlace {
+    height: 13vh;
+    display: inline-flex;
+    width: 100%;
+    padding: 0.5em
+}
