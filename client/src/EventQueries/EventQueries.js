@@ -1556,13 +1556,22 @@ query related_events($city: String, $state: String, $date: date, $weekday: Strin
       ]
     }
   ){
+    id
     name
+    category
+    location_name
+    start_time
     event_date{
       start_date
       is_recurring
       weekday
     }
-    views
+    image{
+      image_uuid
+    }
+    user {
+      name
+    }
   }
 }
 `

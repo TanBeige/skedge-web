@@ -48,3 +48,8 @@ button.buttonMargin {
     width: 100%;
     padding: 0.5em
 }
+
+.RelatedWrapper{
+    margin-top: 10px;
+    width: 100%;
+}

@@ -75,6 +75,7 @@ require('views/EventPage/EventPage.css');
 
 export default function EventPage(props) {
   const eventId = props.match.params.id;
+  console.log(eventId)
 
   const { loading, user, isAuthenticated, loginWithRedirect, loginWithPopup} = useAuth0();
 
@@ -410,7 +411,7 @@ export default function EventPage(props) {
     console.log("ReactGA Called: ", window.location.pathname)
     ReactGA.initialize('UA-151937222-1');
     ReactGA.pageview(window.location.pathname)
-  }, [])
+  }, [eventId])
 
   let titleSize = '10vw'
 
@@ -494,7 +495,7 @@ export default function EventPage(props) {
         <Button onClick={()=>{props.history.push('/')}} justIcon round style={{position: 'fixed', top: 5,  left: 20, zIndex: 100}} color="primary">
           <HomeIcon/>
         </Button>
-        <Parallax image={values.cover_url} filter="dark">
+        <Parallax image={values.cover_url}>
           <div className={classes.container} >
             
             <GridContainer justify="center" >
@@ -572,7 +573,7 @@ export default function EventPage(props) {
         <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 50,  left: 22, zIndex: 100}} color="primary">
           <ChevronLeftIcon/>
         </Button>
-        <Parallax image={values.cover_url} filter="dark">
+        <Parallax image={values.cover_url}>
           <div style={{position: 'absolute', bottom: '3px', zIndex: 2, width: '100%'}}>
 
                 {editingEvent()}
@@ -595,21 +596,25 @@ export default function EventPage(props) {
           </div>
         </Parallax>
         {/* <div className={classes.main}> */}
-          <div className={classes.container} style={{padding: 0}}>
+          <div className={classes.container} style={{padding: 0, marginBottom: '7vh'}}>
             <SectionText 
               eventInfo={values}
               client={props.client}
             />
 
-            <RelatedEventsWrapper 
-              client={props.client} 
-              event_date={values.start_date}
-              weekday={values.weekday}
-              is_recurring={values.is_recurring}
+            {
+              values.start_date !== "" ?
+              <RelatedEventsWrapper 
+                currentEventId={values.event_id}
+                client={props.client} 
 
-              city={values.city}
-              state={values.state}
-            />
+                start_date={values.start_date}
+                weekday={values.weekday}
+                city={values.city}
+                state={values.state}
+                is_recurring={values.is_recurring}
+              /> : ""
+            }
             {/* <SectionComments /> */}
           </div>
         {/* </div> */}

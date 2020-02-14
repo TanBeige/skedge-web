@@ -1,0 +1,26 @@
+.ListItem{
+    margin: 5px;
+    max-height: 100px;
+    transition: 0.3s;
+    height: 100%;
+    overflow: hidden;
+}
+.ListItem:hover {
+    background-color: #02C39A;
+    color: white;
+}
+
+.RelatedImage {
+    width: 50%;
+    height: 100px;
+    border-radius: 3px;    
+    overflow: hidden;
+    float: left;
+}
+
+.ItemInfo {
+    width: 50%;
+    padding-left: 10px;
+    font-weight: 400;
+    display: inline-block;
+}
