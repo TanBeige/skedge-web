@@ -117,7 +117,7 @@ export default function LandingPage(props) {
         <InformationPopover/>
       </div>
       
-      <Parallax image={paraImage} filter="dark">
+      <Parallax style={{height: '100vh'}} image={paraImage} filter="dark">
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={6} md={6}>

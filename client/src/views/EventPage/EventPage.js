@@ -33,6 +33,7 @@ import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 // sections for this page
 import SectionText from "./Sections/SectionText.js";
 import SkedgeDisclosure from "components/Footer/SkedgeDisclosure.js";
+import RelatedEventsWrapper from './Sections/RelatedEvents/RelatedEventsWrapper.js';
 import SectionComments from "./Sections/SectionComments.js";
 import SectionSimilarStories from "./Sections/SectionSimilarStories.js";
 import LoadingPage from '../LoadingPage/LoadingPage.js';
@@ -593,19 +594,27 @@ export default function EventPage(props) {
           
           </div>
         </Parallax>
-        <div className={classes.main}>
+        {/* <div className={classes.main}> */}
           <div className={classes.container} style={{padding: 0}}>
             <SectionText 
               eventInfo={values}
               client={props.client}
             />
-            
-            <SkedgeDisclosure/>
+
+            <RelatedEventsWrapper 
+              client={props.client} 
+              event_date={values.start_date}
+              weekday={values.weekday}
+              is_recurring={values.is_recurring}
+
+              city={values.city}
+              state={values.state}
+            />
             {/* <SectionComments /> */}
           </div>
-        </div>
+        {/* </div> */}
         {/*<SectionSimilarStories />*/}
-        <Footer
+        {/* <Footer
           content={
             <div>
               <div className={classes.left}>
@@ -631,7 +640,7 @@ export default function EventPage(props) {
               </div>
             </div>
           }
-        />
+        /> */}
       </div>
     );
   } 

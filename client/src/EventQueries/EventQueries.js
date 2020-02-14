@@ -478,7 +478,7 @@ const SUGGESTED_USERS = gql`
 `
 
 
-// Fetch Events
+// ---------------- EVENTS -----------------
 
 const FETCH_EVENT_GOING_SAVE = gql`
 query fetch_event_going_save($eventId: Int, $userId: String) {
@@ -1510,7 +1510,6 @@ const ADD_GEOCODE_EVENT = gql`
   }
 `
 
-
 const SUBSCRIPTION_EVENT_LOCAL_LIST = gql`
   subscription($eventId: Int) {
     events(
@@ -1525,6 +1524,48 @@ const SUBSCRIPTION_EVENT_LOCAL_LIST = gql`
     }
   }
 `;
+
+const QUERY_RELATED_EVENTS = gql`
+query related_events($city: String, $state: String, $date: date, $weekday: String) {
+  events(
+    order_by: [{event_like_aggregate: {count: desc}}, {views: desc}]    
+    limit: 50
+    where: {
+      _and: [
+        {event_type: {_eq: "local"}},
+        {city: {_ilike: $city}},
+        {state: {_ilike: $state}},
+        {event_date:{
+          _or:[
+            {
+              _and: [
+                {is_recurring: {_eq: false}},
+                {start_date: {_eq: $date}}
+           		]
+            },
+            {
+              _and: [
+                {is_recurring: {_eq: true}},
+                {start_date: {_lte: $date}},
+              	{end_date: {_gte: $date}},
+                {weekday: {_like: $weekday}}
+              ]
+            }
+          ]
+        }}
+      ]
+    }
+  ){
+    name
+    event_date{
+      start_date
+      is_recurring
+      weekday
+    }
+    views
+  }
+}
+`
 
 // Adding/Deleting Friends
 const MUTATION_FOLLOW_REQUEST = gql`
@@ -1994,6 +2035,9 @@ export {
   MUTATION_EVENT_VIEW,
   MUTATION_REPOST_EVENT,
   MUTATION_UNPOST_EVENT,
+
+  QUERY_RELATED_EVENTS,
+
   MUTATION_FOLLOW_REQUEST,
   MUTATION_FOLLOW_DELETE,
   ADD_GEOCODE_EVENT,

@@ -13,7 +13,7 @@ import Collapse from '@material-ui/core/Collapse';
 
 import Button from "components/CustomButtons/Button.js";
 import EventActivity from 'views/EventPage/Sections/EventPageComponents/EventActivity.js';
-
+import SkedgeDisclosure from "components/Footer/SkedgeDisclosure.js";
 import CategoryFragment from './CategoryFragment.js';
 
 
@@ -222,6 +222,9 @@ export default function SectionText({ eventInfo, client }) {
                       <CategoryFragment category={eventInfo.category}/>
                     </div>
                   </div>
+                  <div style={{margin: 10}}>
+                    <SkedgeDisclosure/>
+                  </div>
                 </Collapse> 
                 
               </Paper>
@@ -234,7 +237,7 @@ export default function SectionText({ eventInfo, client }) {
 
           <div className='EventPlace'>
             <div style={{width: '50%', alignSelf: 'center'}}>
-              <h4 style={{ fontSize: '1em', margin: 0}}>
+              <h4 style={{ fontSize: '14px', margin: 0}}>
                 <PlaceIcon style={{verticalAlign: 'top'}}/>
                 {`${eventInfo.location_name}`} <br />
                 <HomeWorkIcon style={{verticalAlign: 'top'}}/>
