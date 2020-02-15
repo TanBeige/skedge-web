@@ -573,9 +573,8 @@ export default function EventPage(props) {
         <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 50,  left: 22, zIndex: 100}} color="primary">
           <ChevronLeftIcon/>
         </Button>
-        <Parallax image={values.cover_url}>
-          <div style={{position: 'absolute', bottom: '3px', zIndex: 2, width: '100%'}}>
-
+        <Parallax image={values.cover_url} style={{overflow: 'visible'}}>
+          <div style={{position: 'absolute', bottom: '3px', zIndex: 2, width: '100%', marginBottom: -20}}>
                 {editingEvent()}
 
                 <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>

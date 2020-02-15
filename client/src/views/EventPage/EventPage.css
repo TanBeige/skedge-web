@@ -3,6 +3,7 @@ button.buttonMargin {
 }
 
 .EventTitle {
+    margin-top: 15px;
     max-height: 10vh;
     overflow: hidden;
 }
@@ -28,14 +29,15 @@ button.buttonMargin {
     max-height: 8vh;
     display: inline-flex;
     width: 100%;
-    color: white;
-    margin: 0.5em 0px
+    padding: 0 0.5em;
+    /* color: white; */
+    /* margin: 0.5em 0px */
     /* text-align: center; */
 }
 .EventDate {
     width: 50%;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
 }
 
 .EventDescription {

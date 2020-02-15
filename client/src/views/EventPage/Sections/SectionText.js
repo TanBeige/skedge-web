@@ -169,8 +169,8 @@ export default function SectionText({ eventInfo, client }) {
   const userLink = `/${eventInfo.user_name}`
 
   const timePaper= {
-    backgroundColor: '#02C39A', 
-    color: 'white',
+    // backgroundColor: '#02C39A', 
+    // color: 'white',
     margin: '0.4em'
   }
 
@@ -185,20 +185,20 @@ export default function SectionText({ eventInfo, client }) {
               <h4 className='EventCreator' >
                 {`By: ` } 
                 <Link to={userLink}>
-                  <Avatar style={{float: 'left', border: '0.5px solid #02C39A', height: 20, width: 20, margin: '0px 5px'}} width={24} alt={values.username} src={eventInfo.user_pic}/>                    
+                  {/* <Avatar style={{float: 'left', border: '0.5px solid #02C39A', height: 20, width: 20, margin: '0px 5px'}} width={24} alt={values.username} src={eventInfo.user_pic}/>                     */}
                   {eventInfo.user_name}
                 </Link>
               </h4>
               
             </div>
             <div className='EventDateTime'>
-              <Paper style={timePaper} variant="outlined" color='#02C39A' className='EventDate'>
+              <Paper style={timePaper} elevation={0} className='EventDate'>
                 <TodayIcon style={{height: '100%'}}/>
                 <h4 style={{margin: 5, fontSize: '1em', alignSelf: 'center'}}>
                   {formattedDate}
                 </h4>
               </Paper>
-              <Paper style={timePaper} variant="outlined" color='#02C39A' className='EventDate'>
+              <Paper style={timePaper} elevation={0} className='EventDate'>
                 <AccessAlarmIcon style={{height: '100%'}}/>
                 <h4 style={{margin: 5, fontSize: '1em', alignSelf: 'center'}}>
                   {moment(formattedStartTime).format("h:mm A")}
@@ -206,10 +206,9 @@ export default function SectionText({ eventInfo, client }) {
                 </h4>
               </Paper>
             </div>
-
             <div className='EventDescription'>
-              <Paper elevation={1} variant="outlined">
-                <Collapse in={expandDetails} collapsedHeight='6vh' timeout="auto">
+              <Paper style={{border: '0.2px solid grey', borderRadius: '2px'}} elevation={0} square>
+                <Collapse in={expandDetails} collapsedHeight='3em' timeout="auto">
                   <div style={{margin: '0px 0.5em'}}>
                     <IconButton style={{float: 'right'}} onClick={()=>setExpandDetails(!expandDetails)}>
                       {expandDetails ? <ExpandLessIcon /> : <ExpandMoreIcon/>
@@ -218,31 +217,34 @@ export default function SectionText({ eventInfo, client }) {
                     <p style={{wordWrap: 'break-word', whiteSpace: "pre-line", lineHeight: '1.5em'}}>
                       <b>Details: </b>{eventInfo.description}
                     </p>
-                    <div style={{textAlign: 'right', margin: '0.5em'}}>
-                      <CategoryFragment category={eventInfo.category}/>
+                    <div style={{display:'inline-flex', width: '100%'}}>
+                      {
+                        eventInfo.web_url && eventInfo.web_url !== "" ?
+                        <div><a href={ eventInfo.web_url.includes("https://") || eventInfo.web_url.includes("http://") ? eventInfo.web_url : `//${eventInfo.web_url}`} target='_blank'><Button color='primary'  size='sm'>Link to tickets</Button></a></div> : ""
+                      }
+                      <div style={{margin: '0.5em', width: '100%', textAlign: 'right'}}>
+                        <CategoryFragment category={eventInfo.category}/>
+                      </div>
                     </div>
+                    
+                    
                   </div>
-                  <div style={{margin: 10}}>
+                  <div style={{margin: '0px 10px 0px 10px'}}>
                     <SkedgeDisclosure/>
                   </div>
                 </Collapse> 
                 
               </Paper>
             </div>
-          
-          {
-            eventInfo.web_url && eventInfo.web_url !== "" ?
-            <div style={{width: '100%', height: '2vh'}}><a href={ eventInfo.web_url.includes("https://") || eventInfo.web_url.includes("http://") ? eventInfo.web_url : `//${eventInfo.web_url}`} target='_blank'><Button color='primary' style={{width: '100%'}}  size='sm'>Link to tickets</Button></a></div> : ""
-          }
 
           <div className='EventPlace'>
-            <div style={{width: '50%', alignSelf: 'center'}}>
+            <div style={{width: '50%', display: 'flex'}}>
+              <PlaceIcon style={{height: '100%', paddingBottom: '12px', marginRight: 5}}/>
               <h4 style={{ fontSize: '14px', margin: 0}}>
-                <PlaceIcon style={{verticalAlign: 'top'}}/>
                 {`${eventInfo.location_name}`} <br />
-                <HomeWorkIcon style={{verticalAlign: 'top'}}/>
+                {/* <HomeWorkIcon style={{verticalAlign: 'top'}}/> */}
                 { eventInfo.street ? `${eventInfo.street} ` : ""} <br />
-                <MapIcon style={{verticalAlign: 'top'}}/>
+                {/* <MapIcon style={{verticalAlign: 'top'}}/> */}
                 {`${eventInfo.city}, ${eventInfo.state}`}
               </h4>
             </div>
@@ -283,6 +285,8 @@ export default function SectionText({ eventInfo, client }) {
           }
         {/* // </GridItem> */}
       {/* // </GridContainer> */}
+      <hr />
+
     </div>
   );
   
