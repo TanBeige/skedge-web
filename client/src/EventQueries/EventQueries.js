@@ -32,6 +32,7 @@ fragment EventFragment on events {
   city
   state
   image {
+    id
     image_uuid
   }
   user {
@@ -317,6 +318,7 @@ query fetch_notifications($userId: String!, $limit: Int, $offset: Int) {
       name
       id
       image {
+        id
         image_uuid
       }
       event_like_aggregate{
@@ -388,6 +390,7 @@ subscription follow_requests($userId: String!) {
           weekday
         }
         image {
+          id
           image_uuid
         }
       }
@@ -1031,6 +1034,7 @@ const REFETCH_EVENT_REPOSTS = gql`
 const FETCH_EVENT_INFO = gql`
   query fetch_event_info($eventId: Int!) {
     events(where: {id: {_eq: $eventId}}) {
+      id
       name
       description
       location_name
@@ -1064,6 +1068,7 @@ const FETCH_EVENT_INFO = gql`
 
       cover_pic
       image {
+        id
         image_uuid
       }
       user {
@@ -1336,6 +1341,7 @@ mutation insert_events($objects: [events_insert_input!]!) {
         cohost_id
       }
       image {
+        id
         image_name
         image_uuid
         url
@@ -1526,12 +1532,13 @@ const SUBSCRIPTION_EVENT_LOCAL_LIST = gql`
 `;
 
 const QUERY_RELATED_EVENTS = gql`
-query related_events($city: String, $state: String, $date: date, $weekday: String) {
+query related_events($eventId: Int, $city: String, $state: String, $date: date, $weekday: String) {
   events(
     order_by: [{event_like_aggregate: {count: desc}}, {views: desc}]    
     limit: 50
     where: {
       _and: [
+        {id: {_neq: $eventId}}
         {event_type: {_eq: "local"}},
         {city: {_ilike: $city}},
         {state: {_ilike: $state}},
@@ -1567,9 +1574,11 @@ query related_events($city: String, $state: String, $date: date, $weekday: Strin
       weekday
     }
     image{
+      id
       image_uuid
     }
     user {
+      id
       name
     }
   }

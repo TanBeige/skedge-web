@@ -8,12 +8,27 @@ import {
     QUERY_RELATED_EVENTS
 } from 'EventQueries/EventQueries.js'
 
+// Formatting Date Filter
+Date.prototype.formatDate = function() {
+    var d = new Date(this.valueOf()),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+  
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+  
+    return [year, month, day].join('-');
+}
+
 export default function RelatedEventsWrapper(props) {
     let isMounted = true;
     const [events, setEvents] = useState([])
     
     useEffect(()=>{
-        console.log("date sent", props.is_recurring ? new Date() : props.start_date);
+        console.log("date sent", props.is_recurring ? new Date().formatDate() : props.start_date);
 
         // if recurring get day of the week for that week
         // Got this from: https://stackoverflow.com/questions/25492523/javascript-get-date-of-next-tuesday-or-friday-closest
@@ -30,9 +45,10 @@ export default function RelatedEventsWrapper(props) {
         props.client.query({
             query: QUERY_RELATED_EVENTS,
             variables: {
+                eventId: props.event_id,
                 city: props.city,
                 state: props.state,
-                date: props.is_recurring ? new Date() : props.start_date,
+                date: props.is_recurring ? new Date().formatDate() : props.start_date,
                 weekday: `%${props.weekday}%`
             }
         }).then((data)=>{
@@ -46,14 +62,13 @@ export default function RelatedEventsWrapper(props) {
                 setEvents(tempEvents);
             }
         }).catch((error)=>{
-            console.log(error)
+            console.error(error);
         })
         
     }, [])
 
     return(
         <div className="RelatedWrapper">
-            <h4>More Events for {props.is_recurring ? new Date().getDate().toString() : props.start_date}</h4>
             <GridContainer>
                 {
                     events.map(event => {
@@ -65,7 +80,6 @@ export default function RelatedEventsWrapper(props) {
                     })
                 }
             </GridContainer>
-            <h5>Check events on another day!</h5>
         </div>
     )
 }

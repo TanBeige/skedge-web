@@ -171,7 +171,7 @@ export default function SectionText({ eventInfo, client }) {
   const timePaper= {
     // backgroundColor: '#02C39A', 
     // color: 'white',
-    margin: '0.4em'
+    margin: '0 0.4em'
   }
 
 
@@ -182,11 +182,11 @@ export default function SectionText({ eventInfo, client }) {
             <div className='EventTitle'>
               <h3 className='EventName'>{eventInfo.name}</h3>
               
-              <h4 className='EventCreator' >
-                {`By: ` } 
+              <h4 className='EventCreator'>
+                By: 
                 <Link to={userLink}>
                   {/* <Avatar style={{float: 'left', border: '0.5px solid #02C39A', height: 20, width: 20, margin: '0px 5px'}} width={24} alt={values.username} src={eventInfo.user_pic}/>                     */}
-                  {eventInfo.user_name}
+                  {` ${eventInfo.user_name}`}
                 </Link>
               </h4>
               
@@ -194,27 +194,27 @@ export default function SectionText({ eventInfo, client }) {
             <div className='EventDateTime'>
               <Paper style={timePaper} elevation={0} className='EventDate'>
                 <TodayIcon style={{height: '100%'}}/>
-                <h4 style={{margin: 5, fontSize: '1em', alignSelf: 'center'}}>
+                <h4 style={{margin: '0 5px', fontSize: '1em', alignSelf: 'center', fontWeight: '400'}}>
                   {formattedDate}
                 </h4>
               </Paper>
               <Paper style={timePaper} elevation={0} className='EventDate'>
                 <AccessAlarmIcon style={{height: '100%'}}/>
-                <h4 style={{margin: 5, fontSize: '1em', alignSelf: 'center'}}>
-                  {moment(formattedStartTime).format("h:mm A")}
-                  {eventInfo.end_time ? ` - ${moment(formattedEndTime).format("h:mm A")}` : ""}
+                <h4 style={{margin: 5, fontSize: '1em', alignSelf: 'center', fontWeight: '400'}}>
+                  {moment(formattedStartTime).format("h:mmA")}
+                  {eventInfo.end_time ? ` - ${moment(formattedEndTime).format("h:mmA")}` : ""}
                 </h4>
               </Paper>
             </div>
             <div className='EventDescription'>
               <Paper style={{border: '0.2px solid grey', borderRadius: '2px'}} elevation={0} square>
-                <Collapse in={expandDetails} collapsedHeight='3em' timeout="auto">
+                <Collapse in={expandDetails} collapsedHeight='10vh' timeout="auto">
                   <div style={{margin: '0px 0.5em'}}>
                     <IconButton style={{float: 'right'}} onClick={()=>setExpandDetails(!expandDetails)}>
                       {expandDetails ? <ExpandLessIcon /> : <ExpandMoreIcon/>
                       }
                     </IconButton>
-                    <p style={{wordWrap: 'break-word', whiteSpace: "pre-line", lineHeight: '1.5em'}}>
+                    <p className={expandDetails ?  "NotFadingOut": "FadingOut"} style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
                       <b>Details: </b>{eventInfo.description}
                     </p>
                     <div style={{display:'inline-flex', width: '100%'}}>

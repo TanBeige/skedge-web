@@ -570,11 +570,11 @@ export default function EventPage(props) {
           <EventLoading text="Saving Changes" /> : ""
         }
 
-        <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 50,  left: 22, zIndex: 100}} color="primary">
-          <ChevronLeftIcon/>
+        <Button onClick={goBack} size='sm' justIcon round style={{position: 'fixed', top: 20,  left: 20, zIndex: 5}} color="primary">
+          <ChevronLeftIcon />
         </Button>
         <Parallax image={values.cover_url} style={{overflow: 'visible'}}>
-          <div style={{position: 'absolute', bottom: '3px', zIndex: 2, width: '100%', marginBottom: -20}}>
+          <div style={{position: 'absolute', bottom: '3px', zIndex: 2, width: '100%', marginBottom: '-20px'}}>
                 {editingEvent()}
 
                 <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
@@ -607,6 +607,7 @@ export default function EventPage(props) {
                 currentEventId={values.event_id}
                 client={props.client} 
 
+                event_id={values.event_id}
                 start_date={values.start_date}
                 weekday={values.weekday}
                 city={values.city}
