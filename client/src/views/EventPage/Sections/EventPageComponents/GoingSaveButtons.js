@@ -290,7 +290,7 @@ export default function GoingSaveButtons (props) {
     // Buttons
 
     const goingButton = (
-        <Button className='buttonMargin' round size={values.ifGoing ? 'sm' : ''}color={values.ifGoing ? "info" : "primary"} onClick={goingToEvent}>
+        <Button className='buttonMargin' round size={values.ifGoing ? 'sm' : null}color={values.ifGoing ? "info" : "primary"} onClick={goingToEvent}>
             {values.ifGoing ? `${values.goingAmount} Going` : "Go"}
         </Button>
 
@@ -321,7 +321,7 @@ export default function GoingSaveButtons (props) {
     )
 
     return (
-        <div>
+        <div style={{height: '4em', display: 'inline-block', marginBottom: '-50%'}}>
             {/* {likeButton} */}
             {repostButton}
 

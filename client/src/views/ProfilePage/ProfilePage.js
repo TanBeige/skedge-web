@@ -146,11 +146,11 @@ export default function ProfilePage(props, { ...rest }) {
         params: {
           picId: values.picture
         }}
-      ).catch((error => {
+      ).catch(error => {
         alert("Error occurred while uploading picture, try uploading a smaller image size or try again later.")
         errorOccurred = true;
         return;
-      }))
+      })
     }
     if (errorOccurred) {
       return

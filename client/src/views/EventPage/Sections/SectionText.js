@@ -231,7 +231,7 @@ export default function SectionText({ eventInfo, client }) {
                   </div>
                 </Collapse> 
                 <div style={{width: '100%', textAlign: 'center'}}>
-                  <IconButton onClick={()=>setExpandDetails(!expandDetails)}>
+                  <IconButton style={{width: '100%', borderRadius: 4}} disableRipple onClick={()=>setExpandDetails(!expandDetails)}>
                     {expandDetails ? <ExpandLessIcon /> : <ExpandMoreIcon/>}
                   </IconButton>
                 </div>

@@ -1575,6 +1575,7 @@ query related_events($eventId: Int, $city: String, $state: String, $date: date, 
     category
     location_name
     start_time
+    price
     event_date{
       start_date
       is_recurring

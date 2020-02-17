@@ -29,8 +29,8 @@ export default function RelatedItem({item, type}) {
                     />
                 </div>
                 <div className='ItemInfo'>
-                    <p style={{fontSize: 16}}>{item.name}</p>
-                    <p>{item.location_name} | {formattedStartTime}</p>
+                    <p style={{fontSize: 16, marginBottom: '0.5em'}}>{item.name}</p>
+                    <p style={{color: 'grey'}}>{item.location_name} | {formattedStartTime} | {type === "event" ? item.price : item.savings}</p>
                     {/* <Link to={`/${item.user.name}`}>
                         <p>{item.user.name}</p>
                     </Link> */}

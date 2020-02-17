@@ -75,7 +75,6 @@ require('views/EventPage/EventPage.css');
 
 export default function EventPage(props) {
   const eventId = props.match.params.id;
-  console.log(eventId)
 
   const { loading, user, isAuthenticated, loginWithRedirect, loginWithPopup} = useAuth0();
 
@@ -467,13 +466,10 @@ export default function EventPage(props) {
     }
   }
 
-  if(values.event_exists === false) {
-    return <ErrorPage />
-    //return <div>hello</div>
-  }
+  
 
   //If Event info is loadng
-  else if(isLoading) {
+  if(isLoading) {
     return (
       <div>
         <Header
@@ -489,6 +485,10 @@ export default function EventPage(props) {
         <LoadingPage reason="Loading Events"/>
       </div>
     )
+  }
+  else if(values.event_exists === false) {
+    return <ErrorPage />
+    //return <div>hello</div>
   }
   //If user is not logged in
   else if(!user) {
@@ -577,10 +577,10 @@ export default function EventPage(props) {
           <ChevronLeftIcon />
         </Button>
         <Parallax image={values.cover_url} style={{overflow: 'visible'}}>
-          <div style={{position: 'absolute', bottom: '3px', zIndex: 2, width: '100%', marginBottom: '-20px'}}>
+          <div style={{position: 'absolute', bottom: '0px', zIndex: 2, width: '100%', marginBottom: '-10px', textAlign: 'center'}}>
                 {editingEvent()}
 
-                <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}>
+                {/* <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}> */}
                   <GoingSaveButtons
                     ifGoing={values.ifGoing}
                     ifSaved={values.ifSaved}
@@ -594,7 +594,7 @@ export default function EventPage(props) {
                     eventId={values.event_id}
                     eventHost={values.user_auth0_id}
                   />
-                </div>
+                {/* </div> */}
           
           </div>
         </Parallax>
@@ -608,10 +608,9 @@ export default function EventPage(props) {
             {
               values.start_date !== "" ?
               <RelatedEventsWrapper 
-                currentEventId={values.event_id}
+                currentEventId={eventId}
                 client={props.client} 
 
-                event_id={values.event_id}
                 start_date={values.start_date}
                 weekday={values.weekday}
                 city={values.city}
