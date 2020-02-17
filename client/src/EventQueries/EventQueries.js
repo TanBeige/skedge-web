@@ -1095,6 +1095,13 @@ const FETCH_EVENT_INFO = gql`
         }
       }
 
+      event_invites_aggregate(where: {response: {_eq: 1}}) {
+        aggregate{
+          count
+        }
+      }
+
+
       user_saved_events {
         user_id
       }

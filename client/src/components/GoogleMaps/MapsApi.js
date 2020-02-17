@@ -129,7 +129,7 @@ class SimpleMap extends Component {
     else {
       return (
         // Important! Always set the container height explicitly
-        <div style={{height: '100%', borderRadius: 10, overflow: 'hidden' }}>
+        <div style={{height: '100%', borderRadius: 5, overflow: 'hidden' }}>
           <GoogleMapReact
             bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_API}}
             defaultCenter={this.state.center}

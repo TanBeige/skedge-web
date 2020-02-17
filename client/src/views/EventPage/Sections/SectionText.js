@@ -207,13 +207,10 @@ export default function SectionText({ eventInfo, client }) {
               </Paper>
             </div>
             <div className='EventDescription'>
-              <Paper style={{border: '0.2px solid grey', borderRadius: '2px'}} elevation={0} square>
-                <Collapse in={expandDetails} collapsedHeight='10vh' timeout="auto">
+              <Paper  elevation={0} square>
+                <Collapse in={expandDetails} collapsedHeight='14vh' timeout="auto">
                   <div style={{margin: '0px 0.5em'}}>
-                    <IconButton style={{float: 'right'}} onClick={()=>setExpandDetails(!expandDetails)}>
-                      {expandDetails ? <ExpandLessIcon /> : <ExpandMoreIcon/>
-                      }
-                    </IconButton>
+                    
                     <p className={expandDetails ?  "NotFadingOut": "FadingOut"} style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
                       <b>Details: </b>{eventInfo.description}
                     </p>
@@ -233,7 +230,11 @@ export default function SectionText({ eventInfo, client }) {
                     <SkedgeDisclosure/>
                   </div>
                 </Collapse> 
-                
+                <div style={{width: '100%', textAlign: 'center'}}>
+                  <IconButton onClick={()=>setExpandDetails(!expandDetails)}>
+                    {expandDetails ? <ExpandLessIcon /> : <ExpandMoreIcon/>}
+                  </IconButton>
+                </div>
               </Paper>
             </div>
 

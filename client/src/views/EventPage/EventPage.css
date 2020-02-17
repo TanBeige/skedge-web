@@ -42,22 +42,17 @@ button.buttonMargin {
 
 .EventDescription {
     margin: 0 0.5em;
-    
 }
 
 .FadingOut {
-
-    background: -webkit-linear-gradient(#333 8vh, #eee 10vh);
+    background: -webkit-linear-gradient(black 12vh, #eee 14vh);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    transition: background-color 0.5s ease;
 }
 .NotFadingOut {
-    background: -webkit-linear-gradient(#333, #333);
+    background: -webkit-linear-gradient(black, black);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    transition: background-color 0.5s ease;
-
 }
 
 .EventPlace {

@@ -126,6 +126,7 @@ export default function EventPage(props) {
 
     ifSaved: false,
     ifGoing: false,
+    going_count: 0,
 
     ifLiked: false,
     ifReposted: false,
@@ -226,6 +227,8 @@ export default function EventPage(props) {
           ifLiked: data.data.events[0].event_like.some(user => user.user_id === user.sub),
           ifReposted: data.data.events[0].shared_event.some(user => user.user_id === user.sub),
       
+          going_count: data.data.events[0].event_invites_aggregate.aggregate.count,
+
 
           going_users: data.data.events[0].event_invites.filter(function (invites) {return invites.response === 1}),
           invited_users: data.data.events[0].event_invites,
@@ -233,7 +236,7 @@ export default function EventPage(props) {
           like_amount: data.data.events[0].event_like_aggregate.aggregate.count,
 
           shared_users: data.data.events[0].shared_event,
-          share_amount: data.data.events[0]. shared_event_aggregate.aggregate.count
+          share_amount: data.data.events[0].shared_event_aggregate.aggregate.count
         })
         //Say that we're not loading the event anymore.
         setIsLoading(false);
@@ -585,6 +588,7 @@ export default function EventPage(props) {
                     ifReposted={values.ifReposted}
                     likeAmount={values.like_amount}
                     repostAmount={values.share_amount}
+                    goingAmount={values.going_count}
 
                     client={props.client}
                     eventId={values.event_id}

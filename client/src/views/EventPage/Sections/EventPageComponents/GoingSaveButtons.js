@@ -9,6 +9,8 @@ import TurnedInIcon from '@material-ui/icons/TurnedIn';
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import Tooltip from '@material-ui/core/Tooltip';
+
 
 import RenewIcon from '@material-ui/icons/Autorenew';
 import ReplyIcon from '@material-ui/icons/Reply';
@@ -41,7 +43,9 @@ export default function GoingSaveButtons (props) {
         ifReposted: false,
 
         likeAmount: 0,
-        repostAmount: 0
+        repostAmount: 0,
+        goingAmount: 0
+
     })
 
     //Handle Event Going    
@@ -60,6 +64,7 @@ export default function GoingSaveButtons (props) {
             setValues({
                 ...values,
                 ifGoing: false,
+                goingAmount: values.goingAmount - 1
             })
             store.addNotification({
                 title: `Not Going`,
@@ -89,7 +94,8 @@ export default function GoingSaveButtons (props) {
         }).then(() => {
             setValues({
                 ...values,
-                ifGoing: true
+                ifGoing: true,
+                goingAmount: values.goingAmount + 1
             });
             store.addNotification({
                 title: `Now Going!`,
@@ -273,7 +279,8 @@ export default function GoingSaveButtons (props) {
             ifReposted: props.ifReposted,
 
             likeAmount: props.likeAmount,
-            repostAmount: props.repostAmount
+            repostAmount: props.repostAmount,
+            goingAmount: props.goingAmount
     
         })
     }, [props.ifGoing, props.ifSaved])
@@ -283,14 +290,17 @@ export default function GoingSaveButtons (props) {
     // Buttons
 
     const goingButton = (
-        <Button className='buttonMargin' round size='sm' color={values.ifGoing ? "primary" : "info"} onClick={goingToEvent}>
-            {values.ifGoing ? "Going" : "Not Going"}
+        <Button className='buttonMargin' round size={values.ifGoing ? 'sm' : ''}color={values.ifGoing ? "info" : "primary"} onClick={goingToEvent}>
+            {values.ifGoing ? `${values.goingAmount} Going` : "Go"}
         </Button>
+
     )
     const saveButton = (
+      <Tooltip title="Save event for later"  placement="top">
         <Button className='buttonMargin' justIcon round size='sm' style={{backgroundColor: '#5F60F5'}} onClick={saveEvent}>
             {values.ifSaved ? <TurnedInIcon fontSize='small'/> : <TurnedInNotIcon fontSize='small'/>}
         </Button>
+      </Tooltip> 
     )
     const likeButton = (
         <Button className='buttonMargin' justIcon round size='sm' color='rose' onClick={handleLike}>
@@ -298,9 +308,11 @@ export default function GoingSaveButtons (props) {
         </Button>
     )
     const repostButton = (
+      <Tooltip title="Share to your followers"  placement="top">
         <Button className='buttonMargin' justIcon round size='sm' color={values.ifReposted ? 'primary' : 'white'} onClick={handleRepost}>
             <RenewIcon fontSize='small'/>
         </Button>
+      </Tooltip>
     )
     const shareButton = (
         <Button className='buttonMargin' justIcon round size='sm' color='github' onClick={saveEvent}>
@@ -310,13 +322,13 @@ export default function GoingSaveButtons (props) {
 
     return (
         <div>
-            {likeButton}
+            {/* {likeButton} */}
             {repostButton}
 
             {goingButton}
 
             {saveButton}
-            {shareButton}
+            {/* {shareButton} */}
         </div>
     )
 }
