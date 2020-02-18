@@ -1902,6 +1902,57 @@ const QUERY_DEAL_FEED = gql`
   ${DEAL_FRAGMENT}
 `
 
+const QUERY_RELATED_DEALS = gql`
+query related_deals($dealId: Int, $city: String, $state: String, $date: date, $weekday: String) {
+  deals(
+    order_by: {views: desc}
+    limit: 50
+    where: {
+      _and: [
+        {id: {_neq: $dealId}}
+        {city: {_ilike: $city}},
+        {state: {_ilike: $state}},
+        {
+          _or:[
+            {
+              _and: [
+                {is_recurring: {_eq: false}},
+                {start_date: {_eq: $date}}
+           		]
+            },
+            {
+              _and: [
+                {is_recurring: {_eq: true}},
+                {start_date: {_lte: $date}},
+              	{end_date: {_gte: $date}},
+                {weekday: {_like: $weekday}}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ){
+    id
+    name
+    location_name
+    start_time
+    savings
+
+    start_date
+    is_recurring
+    weekday
+    
+    cover_pic
+
+    user {
+      id
+      name
+    }
+  }
+}
+`
+
 const MUTATION_DEAL_VIEW = gql`
   mutation update_deals_mutation($dealId: Int!) {
     update_deals(
@@ -2076,6 +2127,7 @@ export {
   MUTATION_DEAL_VIEW,
   ADD_GEOCODE_DEAL,
   QUERY_DEAL_FEED,
+  QUERY_RELATED_DEALS,
   
   SUBSCRIPTION_EVENT_LOCAL_LIST,
   QUERY_ACCEPTED_FRIENDS,

@@ -4,6 +4,7 @@ class SectionTitle extends Component {
     //This component renders the title "Skedge" as well as the blinking dot.
     constructor(props) {
         super(props);
+        let isMounted = true;
 
         this.state = {
             showBlink: true,
@@ -13,11 +14,16 @@ class SectionTitle extends Component {
 
     blinkDot = () => {
         let blink = !(this.state.showBlink);
-        this.setState({showBlink: blink});
+        if(this.isMounted){
+            this.setState({showBlink: blink});
+        }
     }
 
     componentDidMount() {
         setInterval(this.blinkDot, 1500)
+    }
+    componentWillUnmount() {
+        this.isMounted = false;
     }
 
     render() { 

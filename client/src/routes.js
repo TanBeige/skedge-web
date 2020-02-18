@@ -31,7 +31,7 @@ import makeApolloClient from "./apollo";
 // pages for this product
 import LandingPage from "views/LandingPage/LandingPage.js";
 import EventPage from "views/EventPage/EventPage.js";
-import DealPage from "views/DealPage/DealPage.js";
+import DealPage from "views/DealPage/NewDealPage.js";
 import Home from "views/HomePage/HomePage.js";
 import CreatePage from "views/CreatePage/CreatePage.js";  //Create Event
 

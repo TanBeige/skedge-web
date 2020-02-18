@@ -1,0 +1,68 @@
+button.buttonMargin {
+    margin: 5px;
+}
+
+.EventTitle {
+    margin-top: 15px;
+    max-height: 10vh;
+    overflow: hidden;
+}
+
+.EventName {
+    max-height: 7vh;
+    margin: 0px 1em;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding-top: 0.2em;
+}
+
+.EventCreator {
+    max-height: 3vh;
+    margin: 0px 1.2em;
+    font-size: 1em;
+    align-self: center; 
+    display: inline-flex;
+    padding-bottom: 3px;
+}
+
+.EventDateTime {
+    max-height: 8vh;
+    display: inline-flex;
+    width: 100%;
+    padding: 0 0.5em;
+    /* color: white; */
+    /* margin: 0.5em 0px */
+    /* text-align: center; */
+}
+.EventDate {
+    width: 50%;
+    display: flex;
+    /* justify-content: center; */
+}
+
+.EventDescription {
+    margin: 0 0.5em;
+}
+
+.FadingOut {
+    background: -webkit-linear-gradient(black 12vh, #eee 14vh);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.NotFadingOut {
+    background: -webkit-linear-gradient(black, black);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.EventPlace {
+    height: 13vh;
+    display: inline-flex;
+    width: 100%;
+    padding: 0.5em
+}
+
+.RelatedWrapper{
+    margin-top: 10px;
+    width: 100%;
+}

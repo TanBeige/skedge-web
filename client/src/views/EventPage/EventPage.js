@@ -535,7 +535,7 @@ export default function EventPage(props) {
             <ChevronLeftIcon /> : <HomeIcon />
           }
         </Button>
-        <Parallax image={values.cover_url} style={{overflow: 'visible'}}>
+        <Parallax image={values.cover_url}>
           {editingEvent()}
           {
             !user ? 
