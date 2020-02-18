@@ -10,16 +10,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Avatar from '@material-ui/core/Avatar';
+import Popover from '@material-ui/core/Popover';
 
 import EventLoading from 'components/EventLoading.js'
 import GoingSaveButtons from './Sections/EventPageComponents/GoingSaveButtons.js';
-
-
 
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HomeIcon from '@material-ui/icons/Home';
+import SettingsIcon from '@material-ui/icons/Settings';
+
 
 // core components
 import Header from "components/Header/Header.js";
@@ -75,6 +76,7 @@ require('views/EventPage/EventPage.css');
 
 export default function EventPage(props) {
   const eventId = props.match.params.id;
+  let isMounted = true;
 
   const { loading, user, isAuthenticated, loginWithRedirect, loginWithPopup} = useAuth0();
 
@@ -134,7 +136,12 @@ export default function EventPage(props) {
   })
 
   const goBack = () => {
-    props.history.goBack()
+    if(!user) {
+      props.history.push("/")
+    }
+    else{
+      props.history.goBack()
+    }
   }
   const handleLogin = () => {
     //Google Analytics Record when someone Clicks this
@@ -159,86 +166,87 @@ export default function EventPage(props) {
         eventId: eventId
       }
     }).then((data) => {
-      if(data.data.events === undefined || data.data.events.length === 0) {
-        setValues({
-          ...values,
-          event_exists: false
-        })
-      }
-      else {
-        setValues({
-          ...values,
+      if(isMounted) {
+        if(data.data.events === undefined || data.data.events.length === 0) {
+          setValues({
+            ...values,
+            event_exists: false
+          })
+        }
+        else {
+          setValues({
+            ...values,
 
-          event_exists: true,
-          event_date_id: data.data.events[0].event_date_id,
+            event_exists: true,
+            event_date_id: data.data.events[0].event_date_id,
 
-          invite_only: data.data.events[0].invite_only,
+            invite_only: data.data.events[0].invite_only,
 
-          name: data.data.events[0].name,
-          description: data.data.events[0].description,
-          event_type: data.data.events[0].event_type,
+            name: data.data.events[0].name,
+            description: data.data.events[0].description,
+            event_type: data.data.events[0].event_type,
 
-          start_date: data.data.events[0].event_date.start_date,
-          end_date: data.data.events[0].event_date.end_date,
+            start_date: data.data.events[0].event_date.start_date,
+            end_date: data.data.events[0].event_date.end_date,
 
-          is_recurring: data.data.events[0].event_date.is_recurring,
-          weekday: data.data.events[0].event_date.weekday,
+            is_recurring: data.data.events[0].event_date.is_recurring,
+            weekday: data.data.events[0].event_date.weekday,
 
-          start_time: data.data.events[0].start_time,
-          end_time: data.data.events[0].end_time,
-          
-          category: data.data.events[0].category,
-          location_name: data.data.events[0].location_name,
-          city: data.data.events[0].city,
-          state: data.data.events[0].state,
-          street: data.data.events[0].street,
-          price: data.data.events[0].price,
-          web_url: data.data.events[0].web_url,
-          allow_invites: data.data.events[0].allow_invites,
-          host_approval: data.data.events[0].host_approval,
-          updated_at: data.data.events[0].updated_at,
-          latitude: data.data.events[0].latitude,
-          longitude: data.data.events[0].longitude,
-      
-          cover_uuid: data.data.events[0].image.image_uuid,
-          cover_url: cloudinary.url(data.data.events[0].image.image_uuid, {secure: true, height: Math.floor(window.innerHeight * 0.6), crop: "scale", fetch_format: "auto", quality: "auto"}),
-          cover_pic: data.data.events[0].cover_pic,
+            start_time: data.data.events[0].start_time,
+            end_time: data.data.events[0].end_time,
+            
+            category: data.data.events[0].category,
+            location_name: data.data.events[0].location_name,
+            city: data.data.events[0].city,
+            state: data.data.events[0].state,
+            street: data.data.events[0].street,
+            price: data.data.events[0].price,
+            web_url: data.data.events[0].web_url,
+            allow_invites: data.data.events[0].allow_invites,
+            host_approval: data.data.events[0].host_approval,
+            updated_at: data.data.events[0].updated_at,
+            latitude: data.data.events[0].latitude,
+            longitude: data.data.events[0].longitude,
+        
+            cover_uuid: data.data.events[0].image.image_uuid,
+            cover_url: cloudinary.url(data.data.events[0].image.image_uuid, {secure: true, height: Math.floor(window.innerHeight * 0.6), crop: "scale", fetch_format: "auto", quality: "auto"}),
+            cover_pic: data.data.events[0].cover_pic,
 
-          user_id: data.data.events[0].user.id,
-          user_pic: cloudinary.url(data.data.events[0].user.picture, {secure: true, width: 32, height: 32, crop: "fill"}),
-          
-          user_name: data.data.events[0].user.name,
-          user_full_name: data.data.events[0].user.full_name,
-          user_biography: data.data.events[0].user.biography,
+            user_id: data.data.events[0].user.id,
+            user_pic: cloudinary.url(data.data.events[0].user.picture, {secure: true, width: 32, height: 32, crop: "fill"}),
+            
+            user_name: data.data.events[0].user.name,
+            user_full_name: data.data.events[0].user.full_name,
+            user_biography: data.data.events[0].user.biography,
 
-          // Creator of event:
-          user_auth0_id: data.data.events[0].user.auth0_id,
+            // Creator of event:
+            user_auth0_id: data.data.events[0].user.auth0_id,
 
-          views: data.data.events[0].views,
-          impressions: data.data.events[0].impressions,
-          
-          event_cohosts: data.data.events[0].event_cohosts,
-          event_tags: data.data.events[0].event_tags,
+            views: data.data.events[0].views,
+            impressions: data.data.events[0].impressions,
+            
+            event_cohosts: data.data.events[0].event_cohosts,
+            event_tags: data.data.events[0].event_tags,
 
-          ifSaved: data.data.events[0].user_saved_events.some(user => user.user_id === user.sub),
-          ifGoing: data.data.events[0].event_invites.some(user => user.invited_id === user.sub),
+            ifSaved: user ? data.data.events[0].user_saved_events.some(users => users.user_id === user.sub) : false,
+            ifGoing: user ? data.data.events[0].event_invites.some(users => users.invited_id === user.sub) : false,
 
-          ifLiked: data.data.events[0].event_like.some(user => user.user_id === user.sub),
-          ifReposted: data.data.events[0].shared_event.some(user => user.user_id === user.sub),
-      
-          going_count: data.data.events[0].event_invites_aggregate.aggregate.count,
+            ifLiked: user ? data.data.events[0].event_like.some(users => users.user_id === user.sub) : false,
+            ifReposted: user ? data.data.events[0].shared_event.some(users => users.user_id === user.sub) : false,
+        
+            going_count: data.data.events[0].event_invites_aggregate.aggregate.count,
 
+            going_users: data.data.events[0].event_invites.filter(function (invites) {return invites.response === 1}),
+            invited_users: data.data.events[0].event_invites,
+            liked_users: data.data.events[0].event_like,
+            like_amount: data.data.events[0].event_like_aggregate.aggregate.count,
 
-          going_users: data.data.events[0].event_invites.filter(function (invites) {return invites.response === 1}),
-          invited_users: data.data.events[0].event_invites,
-          liked_users: data.data.events[0].event_like,
-          like_amount: data.data.events[0].event_like_aggregate.aggregate.count,
-
-          shared_users: data.data.events[0].shared_event,
-          share_amount: data.data.events[0].shared_event_aggregate.aggregate.count
-        })
-        //Say that we're not loading the event anymore.
-        setIsLoading(false);
+            shared_users: data.data.events[0].shared_event,
+            share_amount: data.data.events[0].shared_event_aggregate.aggregate.count
+          })
+          //Say that we're not loading the event anymore.
+          setIsLoading(false);
+        }
       }
     }).catch(error => {
       console.log(error)
@@ -342,28 +350,29 @@ export default function EventPage(props) {
     }).catch(error => {
       console.error(error);
     });
+    if(isMounted) {
+      setValues({
+        ...values,
+        name: newInfo.name,
+        location_name: newInfo.location_name,
+        street: newInfo.street,
+        city: newInfo.city,
+        state: newInfo.state,
+        start_date: newInfo.start_date,
+        end_date: newInfo.is_recurring ? newInfo.end_date : null,
+        is_recurring: newInfo.is_recurring,
+        start_time: newInfo.start_time,
+        end_time: endTimeExist ? newInfo.end_time : null,
+        description: newInfo.description,
+        category: newInfo.category,
+      
+        cover_uuid: response ? response.data.id : values.cover_uuid,
+        cover_url: response ? cloudinary.url(response.data.id, {secure: true, height: window.innerHeight, crop: "scale", fetch_format: "auto", quality: "auto"}) : values.cover_url,
 
-    setValues({
-      ...values,
-      name: newInfo.name,
-      location_name: newInfo.location_name,
-      street: newInfo.street,
-      city: newInfo.city,
-      state: newInfo.state,
-      start_date: newInfo.start_date,
-      end_date: newInfo.is_recurring ? newInfo.end_date : null,
-      is_recurring: newInfo.is_recurring,
-      start_time: newInfo.start_time,
-      end_time: endTimeExist ? newInfo.end_time : null,
-      description: newInfo.description,
-      category: newInfo.category,
-    
-      cover_uuid: response ? response.data.id : values.cover_uuid,
-      cover_url: response ? cloudinary.url(response.data.id, {secure: true, height: window.innerHeight, crop: "scale", fetch_format: "auto", quality: "auto"}) : values.cover_url,
-
-      webUrl: newInfo.web_url,
-      savings: newInfo.savings
-    })
+        webUrl: newInfo.web_url,
+        savings: newInfo.savings
+      })
+    }
   }
 
   //DELETE EVENT
@@ -405,6 +414,8 @@ export default function EventPage(props) {
 
 
   useEffect(() => {
+    isMounted = true;
+
     localStorage.setItem('originPath', window.location.pathname);
     getEvent();
     addView();
@@ -413,6 +424,10 @@ export default function EventPage(props) {
     console.log("ReactGA Called: ", window.location.pathname)
     ReactGA.initialize('UA-151937222-1');
     ReactGA.pageview(window.location.pathname)
+
+    return () => {
+      isMounted = false;
+    }
   }, [eventId])
 
   let titleSize = '10vw'
@@ -423,50 +438,65 @@ export default function EventPage(props) {
 
   const classes = useStyles();
 
+  //For popover
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+
   const editingEvent = () => {
       if(isAuthenticated) {
         if(user.sub === values.user_auth0_id || values.event_cohosts.some(u => (u.cohost.auth0_id === user.sub && u.accepted === true))) {
           return (
             <div>
-                <EditInvites
-                  userList={values.invited_users}
-                  client={props.client}
-                  eventId={values.event_id}
-                />
-                <EditEventButton 
-                    client={props.client}
-                    userId={user.sub}
-                    creatorId={values.user_auth0_id}
-                    handleEventChange={handleEventChange}
-                    oldEvent={values}
-                    handleDeleteEvent={handleDeleteEvent}
-                />
-                
-                <EditCohosts
-                  userList={values.event_cohosts}
-                  client={props.client}
-                  userId={user.sub}
-                  disabled={!(user.sub === values.user_auth0_id)}
-                  eventId={values.event_id}
-                />
-                </div>
+              <Button size='sm' style={{position: 'absolute', top: 20, right: 20}} round justIcon onClick={handleClick}>
+                <SettingsIcon />
+              </Button>
+              <Popover
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+              >
+                <div style={{display: 'grid'}}>
+                    <EditInvites
+                      userList={values.invited_users}
+                      client={props.client}
+                      eventId={values.event_id}
+                    />
+                    <EditCohosts
+                      userList={values.event_cohosts}
+                      client={props.client}
+                      userId={user.sub}
+                      disabled={!(user.sub === values.user_auth0_id)}
+                      eventId={values.event_id}
+                    />
+                    <EditEventButton 
+                        client={props.client}
+                        userId={user.sub}
+                        creatorId={values.user_auth0_id}
+                        handleEventChange={handleEventChange}
+                        oldEvent={values}
+                        handleDeleteEvent={handleDeleteEvent}
+                    />
+                  </div>
+                </Popover>
+              </div>
           )
         }
       }
   }
-  const deleteButton = () => {
-    if(isAuthenticated) {
-      return (
-        <DeleteEventButton 
-          userId={user.sub}
-          creatorId={values.user_auth0_id}
-          handleDeleteEvent={handleDeleteEvent}
-        />
-      )
-    }
-  }
-
-  
 
   //If Event info is loadng
   if(isLoading) {
@@ -488,83 +518,9 @@ export default function EventPage(props) {
   }
   else if(values.event_exists === false) {
     return <ErrorPage />
-    //return <div>hello</div>
   }
-  //If user is not logged in
-  else if(!user) {
-    const userLink = `/${values.user_name}`
-    return(
-      <div>
-        <Button onClick={()=>{props.history.push('/')}} justIcon round style={{position: 'fixed', top: 5,  left: 20, zIndex: 100}} color="primary">
-          <HomeIcon/>
-        </Button>
-        <Parallax image={values.cover_url}>
-          <div className={classes.container} >
-            
-            <GridContainer justify="center" >
-              <GridItem  className={classes.textCenter} style={{paddingLeft: 0, paddingRight: 0}}>                
-                {
-                  !user ? 
-                  <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em',paddingBottom: '12', maxWidth: '300px'}}>
-                    <h3 style={{color:'white'}}>Sign up to see more events like this happening soon.</h3>
-                    <Button
-                      color="white"
-                      style={{color: 'black'}}
-                      onClick={handleLogin}
-                    >
-                      Login or Sign Up
-                    </Button>
-                  </div> : ""
-                }         
-              </GridItem>
-            </GridContainer>
-          </div>
-        </Parallax>
-        <div className={classes.main}>
-          <div className={classes.container}>
-            <SectionText 
-              eventInfo={values}
-              client={props.client}
-            />
-            <SkedgeDisclosure />
-            {/* <SectionComments /> */}
-          </div>
-        </div>
-        {/*<SectionSimilarStories />*/}
-        <Footer
-          content={
-            <div>
-              <div className={classes.left}>
-                <List className={classes.list}>
-                  <ListItem className={classes.inlineBlock}>
-                    <a
-                      href="/home"
-                      className={classes.block}
-                    >
-                      Skedge
-                    </a>
-                  </ListItem>
-                  <ListItem className={classes.inlineBlock}>
-                    <a
-                      href="/about-us"
-                      target="_blank"
-                      className={classes.block}
-                    >
-                      About us
-                    </a>
-                  </ListItem>
-                </List>
-              </div>
-            </div>
-          }
-        />
-      </div>
-    )
-  }
-  //If user is signed in
-  else {
-    const userLink = `/${values.user_name}`
 
+  else {
     return (
       <div>
         {
@@ -574,31 +530,45 @@ export default function EventPage(props) {
         }
 
         <Button onClick={goBack} size='sm' justIcon round style={{position: 'fixed', top: 20,  left: 20, zIndex: 5}} color="primary">
-          <ChevronLeftIcon />
+          {
+            user ?
+            <ChevronLeftIcon /> : <HomeIcon />
+          }
         </Button>
         <Parallax image={values.cover_url} style={{overflow: 'visible'}}>
-          <div style={{position: 'absolute', bottom: '0px', zIndex: 2, width: '100%', marginBottom: '-10px', textAlign: 'center'}}>
-                {editingEvent()}
+          {editingEvent()}
+          {
+            !user ? 
+            <div style={{margin: 'auto', textAlign: 'center', marginBottom: '1em',paddingBottom: '12', maxWidth: '300px'}}>
+              <h4 style={{color:'white'}}>Sign up to see more events like this happening soon.</h4>
+              <Button
+                color="white"
+                style={{color: 'black'}}
+                onClick={handleLogin}
+              >
+                Login or Sign Up
+              </Button>
+            </div> : ""
+          }     
+          {
+            user ?
+            <div style={{position: 'absolute', bottom: '0px', zIndex: 2, width: '100%', marginBottom: '-10px', textAlign: 'center'}}>
+              <GoingSaveButtons
+                ifGoing={values.ifGoing}
+                ifSaved={values.ifSaved}
+                ifLiked={values.ifLiked}
+                ifReposted={values.ifReposted}
+                likeAmount={values.like_amount}
+                repostAmount={values.share_amount}
+                goingAmount={values.going_count}
 
-                {/* <div style={{display: 'inline-block', width: "100%", textAlign: 'center'}}> */}
-                  <GoingSaveButtons
-                    ifGoing={values.ifGoing}
-                    ifSaved={values.ifSaved}
-                    ifLiked={values.ifLiked}
-                    ifReposted={values.ifReposted}
-                    likeAmount={values.like_amount}
-                    repostAmount={values.share_amount}
-                    goingAmount={values.going_count}
-
-                    client={props.client}
-                    eventId={values.event_id}
-                    eventHost={values.user_auth0_id}
-                  />
-                {/* </div> */}
-          
-          </div>
+                client={props.client}
+                eventId={values.event_id}
+                eventHost={values.user_auth0_id}
+              />
+            </div> : ""
+          }
         </Parallax>
-        {/* <div className={classes.main}> */}
           <div className={classes.container} style={{padding: 0, marginBottom: '7vh'}}>
             <SectionText 
               eventInfo={values}
@@ -618,37 +588,7 @@ export default function EventPage(props) {
                 is_recurring={values.is_recurring}
               /> : ""
             }
-            {/* <SectionComments /> */}
           </div>
-        {/* </div> */}
-        {/*<SectionSimilarStories />*/}
-        {/* <Footer
-          content={
-            <div>
-              <div className={classes.left}>
-                <List className={classes.list}>
-                  <ListItem className={classes.inlineBlock}>
-                    <a
-                      href="/home"
-                      className={classes.block}
-                    >
-                      Skedge
-                    </a>
-                  </ListItem>
-                  <ListItem className={classes.inlineBlock}>
-                    <a
-                      href="/about-us"
-                      target="_blank"
-                      className={classes.block}
-                    >
-                      About us
-                    </a>
-                  </ListItem>
-                </List>
-              </div>
-            </div>
-          }
-        /> */}
       </div>
     );
   } 

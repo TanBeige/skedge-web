@@ -9,13 +9,10 @@ import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Collapse from '@material-ui/core/Collapse';
 
-
-
 import Button from "components/CustomButtons/Button.js";
 import EventActivity from 'views/EventPage/Sections/EventPageComponents/EventActivity.js';
 import SkedgeDisclosure from "components/Footer/SkedgeDisclosure.js";
 import CategoryFragment from './CategoryFragment.js';
-
 
 //import Quote from "components/Typography/Quote.js";
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
@@ -25,28 +22,14 @@ import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
-//import LocationCityIcon from '@material-ui/icons/LocationCity';
-import HomeWorkIcon from '@material-ui/icons/HomeWork';
-//import Button from 'components/CustomButtons/Button.js'
-import MapIcon from '@material-ui/icons/Map';
 // style components
 import sectionTextStyle from "assets/jss/material-kit-pro-react/views/blogPostSections/sectionTextStyle.js";
-
 // Google Maps API
 import MapsApi from 'components/GoogleMaps/MapsApi.js';
-
 //Auth0 Wrapper
 import { useAuth0 } from 'Authorization/react-auth0-wrapper';
-
 //Google Analytics
 import ReactGA from 'react-ga';
-
-// Queries
-import {
-  FETCH_EVENT_GOING_SAVE
-} from 'EventQueries/EventQueries.js'
-import { Icon } from "@material-ui/core";
-
 
 const useStyles = makeStyles(sectionTextStyle);
 
@@ -158,19 +141,9 @@ export default function SectionText({ eventInfo, client }) {
     formattedDate = moment(eventInfo.start_date, "YYYY-MM-DD").format("MMMM Do, YYYY")
   }
 
-  // if(eventInfo.invite_only) {
-  //   return(
-  //     <div>
-  //       <LockIcon />
-  //     </div>
-  //   )
-  // }
-
   const userLink = `/${eventInfo.user_name}`
 
   const timePaper= {
-    // backgroundColor: '#02C39A', 
-    // color: 'white',
     margin: '0 0.4em'
   }
 
@@ -249,8 +222,6 @@ export default function SectionText({ eventInfo, client }) {
                 {`${eventInfo.city}, ${eventInfo.state}`}
               </h4>
             </div>
-          {
-            user ? 
             <div style={{width: '50%'}}>
               <MapsApi 
                 street={eventInfo.street}
@@ -263,8 +234,7 @@ export default function SectionText({ eventInfo, client }) {
                 client={client}
                 pageLoaded={true}
               />
-            </div> : ""
-          }
+            </div>
           </div>
           {/* {
             user && user.sub === eventInfo.user_auth0_id ? 
@@ -272,40 +242,8 @@ export default function SectionText({ eventInfo, client }) {
             :
             ""
           } */}
-
-          {
-            !user ? 
-            <div style={{margin: 'auto', textAlign: 'center', marginBottom: '1em', maxWidth: '260px'}}>
-              <Button
-                color="primary"
-                onClick={handleLogin}
-              >
-                Login or Sign Up
-              </Button>
-            </div> : ""
-          }
-        {/* // </GridItem> */}
-      {/* // </GridContainer> */}
       <hr />
 
     </div>
   );
-  
-  // else {
-  //   return (
-  //     <div className={classes.section} style={{padding: '0px 15px 15px 15px', textAlign: 'center'}}>
-  //       <GridContainer justify="center">
-  //         <GridItem xs={12} sm={12} md={12}>
-  //           <h3>To view more events, sign up on Skedge!</h3>
-  //           <Button
-  //             color="primary"
-  //             onClick={handleLogin}
-  //           >
-  //             Login or Sign Up
-  //           </Button>
-  //         </GridItem>
-  //       </GridContainer>
-  //     </div>
-  //   );
-  // }
 }

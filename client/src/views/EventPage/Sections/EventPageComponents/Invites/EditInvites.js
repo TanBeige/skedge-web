@@ -109,7 +109,7 @@ export default function EditInvites({userList, client, eventId}) {
     let editButton = "";
     // if(props.userId === props.creatorId) {
         editButton = (
-            <Button size='sm' style={{marginTop: 20, marginBottom: 8}} color="tumblr" onClick={() => setIsEditing(!isEditing)}>Edit Invites</Button>
+            <Button size='sm' color="tumblr" onClick={() => setIsEditing(!isEditing)}>Edit Invites</Button>
         )
     // }
 

@@ -168,9 +168,9 @@ const container = {
   "@media (min-width: 992px)": {
     maxWidth: "960px"
   },
-  "@media (min-width: 1200px)": {
-    maxWidth: "1140px"
-  }
+  // "@media (min-width: 1200px)": {
+  //   maxWidth: "1140px"
+  // }
 };
 
 const card = {

@@ -106,7 +106,7 @@ export default function EditCohosts({userList, client, eventId, disabled}) {
 
     let editButton = 
         (
-            <Button disabled={disabled} size='sm' onClick={() => setIsEditing(!isEditing)} style={{marginTop: 20, marginBottom: 8}} color="pinterest">Edit Cohosts</Button>
+            <Button disabled={disabled} size='sm' onClick={() => setIsEditing(!isEditing)} color="pinterest">Edit Cohosts</Button>
         )
 
     //return

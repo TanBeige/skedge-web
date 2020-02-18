@@ -4,6 +4,7 @@
     transition: 0.3s;
     height: 100%;
     overflow: hidden;
+    color: rgb(73,73,73)
 }
 .ListItem:hover {
     background-color: #02C39A;
@@ -24,5 +25,5 @@
     padding-left: 10px;
     font-weight: 400;
     display: inline-block;
-    color: rgb(73, 73, 73);
+    /* color: rgb(73, 73, 73); */
 }

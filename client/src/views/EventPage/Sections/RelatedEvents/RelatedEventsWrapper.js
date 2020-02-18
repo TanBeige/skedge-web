@@ -28,6 +28,8 @@ Date.prototype.formatDate = function() {
 export default function RelatedEventsWrapper(props) {
     let isMounted = true;
     const [events, setEvents] = useState([]);
+    var dateString = props.start_date.match(/^(\d{4})\-(\d{2})\-(\d{2})$/);
+    var eventDate = new Date( dateString[1], dateString[2]-1, dateString[3] );
 
     
     const goHome = () => {
@@ -35,7 +37,6 @@ export default function RelatedEventsWrapper(props) {
     }
     
     useEffect(()=>{
-
         // if recurring get day of the week for that week
         // Got this from: https://stackoverflow.com/questions/25492523/javascript-get-date-of-next-tuesday-or-friday-closest
         let varDate = getNextDate(props.weekday);
@@ -47,7 +48,7 @@ export default function RelatedEventsWrapper(props) {
                 city: props.city,
                 state: props.state,
                 date: props.is_recurring ? varDate : props.start_date,
-                weekday: `%${new Date(varDate).getDay()}%`
+                weekday: props.is_recurring ? `%${new Date(varDate).getDay()}%` : `%${eventDate.getDay()}%`
             }
         }).then((data)=>{
             let tempEvents = data.data.events;
@@ -62,13 +63,14 @@ export default function RelatedEventsWrapper(props) {
     }, [])
 
     // Formatting the top date
-    const moment = require('moment')
-    let formatDate = moment(getNextDate(props.weekday));
+    const moment = require('moment');
+    let formatDate = props.is_recurring ? moment(getNextDate(props.weekday)) : moment(eventDate);
+    console.log(props.start_date)
     formatDate = formatDate.format("dddd")
 
     return(
         <div className="RelatedWrapper">
-            <h4 style={{textAlign: 'center'}}>More events for this {formatDate}</h4>
+            <h4 style={{textAlign: 'center'}}>Events for this {formatDate}</h4>
             <GridContainer>
                 {
                     events.map(event => {
@@ -89,6 +91,10 @@ export default function RelatedEventsWrapper(props) {
 
 function getNextDate(weekday) {
     // Set Variables
+    console.log(weekday);
+    if(weekday == ""){
+        return new Date()
+    }
     var numbers = weekday.match(/\d+/g).map(Number);    //Get numbers from string
     var today = new Date(), tuesday, friday, day, closest;
 

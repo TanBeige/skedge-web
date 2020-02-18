@@ -1133,6 +1133,7 @@ const FETCH_EVENT_INFO = gql`
       }
 
       shared_event {
+        user_id
         user {
           id
           name

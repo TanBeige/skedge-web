@@ -319,6 +319,7 @@ export default function GoingSaveButtons (props) {
             <ReplyIcon fontSize='small'/>
         </Button>
     )
+    console.log(values.ifReposted)
 
     return (
         <div style={{height: '4em', display: 'inline-block', marginBottom: '-50%'}}>

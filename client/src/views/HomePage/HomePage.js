@@ -191,7 +191,7 @@ export default function HomePage(props) {
           }}
         />
         {/* <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '5vh', marginTop: '8vh'}}> */}
-          <Button style={{position: 'fixed', bottom: 55, right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
+          <Button style={{position: 'fixed', bottom: '8vh', right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
                 <ArrowUpwardIcon style={{color: "white"}} />
           </Button>
           <div className={classes.container} style={{ marginTop: '7vh'}} >
