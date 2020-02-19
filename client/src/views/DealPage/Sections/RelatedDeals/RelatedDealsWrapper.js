@@ -45,8 +45,6 @@ export default function RelatedDealsWrapper(props) {
         let varDay = varDate.getDay();
         varDate = moment(varDate).format("YYYY-MM-DD");
 
-        console.log("vardate: ",varDate)
-        console.log("varday: ",varDay)
         
         props.client.query({
             query: QUERY_RELATED_DEALS,
@@ -59,7 +57,6 @@ export default function RelatedDealsWrapper(props) {
             }
         }).then((data)=>{
             let tempDeals = data.data.deals;
-            console.log(tempDeals)
             if(isMounted){
                 setDeals(tempDeals);
             }
@@ -116,7 +113,6 @@ function getNextDate(weekday) {
     }
     // Below code runs if above isn't returned
     day = today.getDay();
-    console.log(day);
 
     // let dayDistance = day < numbers[0] ? numbers[0] - day : ((7 - day) + numbers[0]);
     let closestDay = new Date();

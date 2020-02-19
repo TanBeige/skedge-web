@@ -40,6 +40,8 @@ export default function RelatedEventsWrapper(props) {
         // if recurring get day of the week for that week
         // Got this from: https://stackoverflow.com/questions/25492523/javascript-get-date-of-next-tuesday-or-friday-closest
         let varDate = getNextDate(props.weekday);
+        let varDay = varDate.getDay();
+        varDate = moment(varDate).format("YYYY-MM-DD");
         
         props.client.query({
             query: QUERY_RELATED_EVENTS,
@@ -48,11 +50,10 @@ export default function RelatedEventsWrapper(props) {
                 city: props.city,
                 state: props.state,
                 date: props.is_recurring ? varDate : props.start_date,
-                weekday: props.is_recurring ? `%${new Date(varDate).getDay()}%` : `%${eventDate.getDay()}%`
+                weekday: props.is_recurring ? `%${varDay}%` : `%${eventDate.getDay()}%`
             }
         }).then((data)=>{
             let tempEvents = data.data.events;
-            console.log(tempEvents)
             if(isMounted){
                 setEvents(tempEvents);
             }
@@ -65,7 +66,6 @@ export default function RelatedEventsWrapper(props) {
     // Formatting the top date
     const moment = require('moment');
     let formatDate = props.is_recurring ? moment(getNextDate(props.weekday)) : moment(eventDate);
-    console.log(props.start_date)
     formatDate = formatDate.format("dddd")
 
     return(
@@ -104,7 +104,7 @@ function getNextDate(weekday) {
         if(today.getDay() == numbers[i]){
             // if(today.getHours() < 23){
                 // console.log(today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate())
-                return today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+                return today;
             // }
         }
     }
