@@ -10,6 +10,8 @@ import { Auth0Provider } from "./Authorization/react-auth0-wrapper";
 import { AUTH_CONFIG } from "./Authorization/auth0-variables";
 import { MakeMainRoutes } from "./routes";
 import history from "./utils/history";
+import { Helmet } from 'react-helmet';
+
 
 
 require('dotenv').config();
@@ -32,6 +34,11 @@ ReactDOM.render(
       redirect_uri={window.location.origin}
       onRedirectCallback={onRedirectCallback}
   >
+      <Helmet>
+        <title>Skedge</title>
+        <meta name="description" content="Where you go to find, share, and create your favorite things to do." />
+        <meta name="theme-color" content="#02C39A" />
+      </Helmet>
       <ReactNotification />
       <MakeMainRoutes />
     </Auth0Provider>,

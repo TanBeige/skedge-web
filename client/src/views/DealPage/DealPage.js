@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 // nodejs library to set properties for components
 import gql from "graphql-tag";
+import { Helmet } from 'react-helmet';
+
 
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -421,6 +423,16 @@ export default function DealPage(props) {
   else {
     return (
       <div>
+        <Helmet>
+          <title>{values.name} | Skedge</title>
+          <meta name="description" content={values.description ? values.description : values.point_1} />
+          <meta name="theme-color" content="#02C39A" />
+
+          <meta name="geo.region" content="US-FL" />
+          <meta name="geo.placename" content={values.city} />
+          <meta name="geo.position" content={`${values.latitude};${values.longitude}`}/>
+          <meta name="ICBM" content={`${values.latitude},${values.longitude}`}/>
+        </Helmet>
         <ThemeProvider theme={theme}>
         {
           //If user is changing deals

@@ -1,5 +1,6 @@
 /*eslint-disable*/
 import React from "react";
+import { Helmet } from 'react-helmet'
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -34,6 +35,13 @@ export default function AboutUsPage(props) {
   const classes = useStyles();
   return (
     <div>
+      <Helmet>
+          <title>About Us | Skedge</title>
+          <meta name="description" 
+            content="Skedge is a social event website with one simple goal: so that you all are able to find, share, and create your favorite events all in one place."
+          />
+          <meta name="theme-color" content="#02C39A" />
+        </Helmet>
       <img onClick={() => {props.history.push("/")}} style={{position: 'fixed', zIndex: 10, top: 15, left: 15}} height={40} width={40} src={require('assets/img/logoheader.png')} />
       <Parallax image={require("assets/img/bg9.jpg")} filter="dark" small>
         <div className={classes.container}>

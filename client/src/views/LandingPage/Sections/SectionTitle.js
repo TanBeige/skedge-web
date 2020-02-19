@@ -4,7 +4,6 @@ class SectionTitle extends Component {
     //This component renders the title "Skedge" as well as the blinking dot.
     constructor(props) {
         super(props);
-        let isMounted = true;
 
         this.state = {
             showBlink: true,
@@ -20,11 +19,11 @@ class SectionTitle extends Component {
     }
 
     componentDidMount() {
-        setInterval(this.blinkDot, 1500)
+        this.intervalID = setInterval(this.blinkDot, 1500)
     }
-    // componentWillUnmount() {
-    //     this.isMounted = false;
-    // }
+    componentWillUnmount() {
+        clearInterval(this.intervalID);
+    }
 
     render() { 
         return <h1 style={{fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif"}}>Skedge{(this.state.showBlink)?this.state.dot:''}</h1>
