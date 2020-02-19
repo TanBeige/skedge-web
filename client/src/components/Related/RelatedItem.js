@@ -28,7 +28,7 @@ export default function RelatedItem({item, type}) {
     //Format Description
     let formattedDescription;
     if(type === 'event') {
-        formattedDescription = `${item.location_name} | ${formattedStartTime} ${item.price ? `| ${item.price}` : ""}`
+        formattedDescription = `${item.location_name} | ${formattedStartTime} ${item.price != "$0.00" ? `| ${item.price}` : "| Free"}`
     }
     else {
         formattedDescription = `${item.location_name} | ${formattedStartTime} ${item.savings != 0 ? `| ${item.price}` : ""}`

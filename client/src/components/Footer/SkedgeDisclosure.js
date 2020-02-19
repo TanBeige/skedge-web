@@ -25,7 +25,7 @@ export default function SectionBlogInfo() {
       <GridContainer justify="center" style={{paddingBottom: 10}}>
         <GridItem xs={12} sm={10} md={8}>
             <hr />
-            <p style={{fontSize: 12}}>*Skedge is not responsible for the authenticity regarding this event as well as any sudden changes/cancelations.</p>
+            <p style={{fontSize: 12}}>*Skedge is not responsible for the authenticity regarding this event or deal as well as any sudden changes/cancelations.</p>
         </GridItem>
       </GridContainer>
     </div>

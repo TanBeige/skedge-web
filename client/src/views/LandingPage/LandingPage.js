@@ -117,7 +117,7 @@ export default function LandingPage(props) {
         <InformationPopover/>
       </div>
       
-      <Parallax style={{height: '100vh'}} image={paraImage} filter="dark">
+      <Parallax style={{height: '60vh'}} image={paraImage} filter="dark">
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={6} md={6}>
@@ -155,7 +155,7 @@ export default function LandingPage(props) {
               onClick={handleLogin}
               style={{margin: 'auto', width: '100%',height: '6vh'}}
             >
-              For more deals & events, login or sign up.
+              For more deals & events, sign up.
             </Button>
           </AppearOnScroll>
           

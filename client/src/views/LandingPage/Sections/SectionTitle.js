@@ -14,17 +14,17 @@ class SectionTitle extends Component {
 
     blinkDot = () => {
         let blink = !(this.state.showBlink);
-        if(this.isMounted){
+        // if(this.isMounted){
             this.setState({showBlink: blink});
-        }
+        // }
     }
 
     componentDidMount() {
         setInterval(this.blinkDot, 1500)
     }
-    componentWillUnmount() {
-        this.isMounted = false;
-    }
+    // componentWillUnmount() {
+    //     this.isMounted = false;
+    // }
 
     render() { 
         return <h1 style={{fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif"}}>Skedge{(this.state.showBlink)?this.state.dot:''}</h1>

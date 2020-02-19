@@ -132,7 +132,12 @@ export default function DealPage(props) {
   })
 
   const goBack = () => {
-    props.history.goBack()
+    if(!user) {
+      props.history.push("/")
+    }
+    else{
+      props.history.goBack()
+    }
   }
   const handleLogin = () => {
     //Google Analytics Record when someone Clicks this
@@ -366,7 +371,7 @@ export default function DealPage(props) {
     console.log("ReactGA Called: ", window.location.pathname)
     ReactGA.initialize('UA-151937222-1');
     ReactGA.pageview(window.location.pathname)
-  }, [])
+  }, [dealId])
 
   const classes = useStyles();
 
@@ -423,7 +428,7 @@ export default function DealPage(props) {
           <EventLoading text="Saving Changes" /> : ""
         }
         
-        <Button onClick={goBack} size='sm' justIcon round style={{position: 'fixed', top: 20,  left: 20, zIndex: 5}} color="primary">
+        <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 20,  left: 20, zIndex: 5}} color="primary">
           {
             user ?
             <ChevronLeftIcon /> : <HomeIcon />
@@ -434,7 +439,7 @@ export default function DealPage(props) {
           {
             !user ? 
             <div style={{margin: 'auto', textAlign: 'center', marginBottom: '1em',paddingBottom: '12', maxWidth: '300px'}}>
-              <h4 style={{color:'white'}}>Sign up to see more events like this happening soon.</h4>
+              {/* <h4 style={{color:'white'}}>Sign up to see more events like this happening soon.</h4> */}
               <Button
                 color="white"
                 style={{color: 'black'}}

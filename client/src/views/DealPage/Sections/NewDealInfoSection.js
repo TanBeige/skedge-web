@@ -178,6 +178,9 @@ export default function DealInfoSection({ dealInfo, client }) {
                 </h4>
               </Paper>
             </div>
+            {/* <div>
+                    HOW MUCH TIME IS LEFT UNTIL THE DEAL ENDS/ CURRENT ONGOING DEALS
+            </div> */}
             <div className='EventDescription'>
               <Paper  elevation={0} square>
                 <Collapse in={expandDetails} collapsedHeight='14vh' timeout="auto">
@@ -189,7 +192,7 @@ export default function DealInfoSection({ dealInfo, client }) {
                     <div style={{display:'inline-flex', width: '100%'}}>
                       {
                         dealInfo.web_url && dealInfo.web_url !== "" ?
-                        <div><a href={ dealInfo.web_url.includes("https://") || dealInfo.web_url.includes("http://") ? dealInfo.web_url : `//${dealInfo.web_url}`} target='_blank'><Button color='primary'  size='sm'>Link to tickets</Button></a></div> : ""
+                        <div><a href={ dealInfo.web_url.includes("https://") || dealInfo.web_url.includes("http://") ? dealInfo.web_url : `//${dealInfo.web_url}`} target='_blank'><Button color='primary'  size='sm'>Link to deal</Button></a></div> : ""
                       }
                     </div>
                     
