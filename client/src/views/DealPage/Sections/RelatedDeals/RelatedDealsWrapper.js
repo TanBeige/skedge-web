@@ -26,6 +26,8 @@ Date.prototype.formatDate = function() {
 }
 
 export default function RelatedDealsWrapper(props) {
+    const moment = require('moment');
+
     let isMounted = true;
     const [deals, setDeals] = useState([]);
     var dateString = props.start_date.match(/^(\d{4})\-(\d{2})\-(\d{2})$/);
@@ -40,6 +42,11 @@ export default function RelatedDealsWrapper(props) {
         // if recurring get day of the week for that week
         // Got this from: https://stackoverflow.com/questions/25492523/javascript-get-date-of-next-tuesday-or-friday-closest
         let varDate = getNextDate(props.weekday);
+        let varDay = varDate.getDay();
+        varDate = moment(varDate).format("YYYY-MM-DD");
+
+        console.log("vardate: ",varDate)
+        console.log("varday: ",varDay)
         
         props.client.query({
             query: QUERY_RELATED_DEALS,
@@ -48,7 +55,7 @@ export default function RelatedDealsWrapper(props) {
                 city: props.city,
                 state: props.state,
                 date: props.is_recurring ? varDate : props.start_date,
-                weekday: props.is_recurring ? `%${new Date(varDate).getDay()}%` : `%${dealDate.getDay()}%`
+                weekday: props.is_recurring ? `%${varDay}%` : `%${dealDate.getDay()}%`
             }
         }).then((data)=>{
             let tempDeals = data.data.deals;
@@ -63,7 +70,6 @@ export default function RelatedDealsWrapper(props) {
     }, [])
 
     // Formatting the top date
-    const moment = require('moment');
     let formatDate = props.is_recurring ? moment(getNextDate(props.weekday)) : moment(dealDate);
     console.log(props.start_date)
     formatDate = formatDate.format("dddd")
@@ -96,7 +102,7 @@ function getNextDate(weekday) {
         return new Date()
     }
     var numbers = weekday.match(/\d+/g).map(Number);    //Get numbers from string
-    var today = new Date(), tuesday, friday, day, closest;
+    var today = new Date(), day;
 
     // Check if today is any of the recurring days
     let i;
@@ -104,7 +110,7 @@ function getNextDate(weekday) {
         if(today.getDay() == numbers[i]){
             // if(today.getHours() < 23){
                 // console.log(today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate())
-                return today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+                return today;
             // }
         }
     }
