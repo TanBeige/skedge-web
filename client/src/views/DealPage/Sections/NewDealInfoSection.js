@@ -45,7 +45,7 @@ export default function DealInfoSection({ dealInfo, client }) {
     classes.imgFluid
   );
 
-  // Mutate Events Buttons
+  // Mutate Deals Buttons
   const [values, setValues] = useState({
     ifGoing: false,
     ifSaved: false
@@ -59,7 +59,7 @@ export default function DealInfoSection({ dealInfo, client }) {
     ReactGA.initialize('UA-151937222-1');
     ReactGA.event({
       category: 'User',
-      action: 'Login/Sign Up: Event Page'
+      action: 'Login/Sign Up: Deal Page'
     });
     //Then Login/Sign up
     // loginWithRedirect({});
@@ -151,26 +151,28 @@ export default function DealInfoSection({ dealInfo, client }) {
     <div >
       {/* <GridContainer justify="center"> */}
         {/* <GridItem xs={12} sm={10} md={10}> */}
-            <div className='EventTitle'>
-              <h3 className='EventName'>{dealInfo.name}</h3>
+            <div className='DealTitle'>
+              <h3 className='DealName'>{dealInfo.name}</h3>
               
-              <h4 className='EventCreator'>
+              <h4 className='DealCreator'>
                 By: 
+              </h4>
+
+                {' '}
                 <Link to={userLink}>
                   {/* <Avatar style={{float: 'left', border: '0.5px solid #02C39A', height: 20, width: 20, margin: '0px 5px'}} width={24} alt={values.username} src={dealInfo.user_pic}/>                     */}
                   {` ${dealInfo.user_name}`}
                 </Link>
-              </h4>
               
             </div>
-            <div className='EventDateTime'>
-              <Paper style={timePaper} elevation={0} className='EventDate'>
+            <div className='DealDateTime'>
+              <Paper style={timePaper} elevation={0} className='DealDate'>
                 <TodayIcon style={{height: '100%'}}/>
                 <h4 style={{margin: '0 5px', fontSize: '1em', alignSelf: 'center', fontWeight: '400'}}>
                   {formattedDate}
                 </h4>
               </Paper>
-              <Paper style={timePaper} elevation={0} className='EventDate'>
+              <Paper style={timePaper} elevation={0} className='DealDate'>
                 <AccessAlarmIcon style={{height: '100%'}}/>
                 <h4 style={{margin: 5, fontSize: '1em', alignSelf: 'center', fontWeight: '400'}}>
                   {moment(formattedStartTime).format("h:mmA")}
@@ -181,7 +183,7 @@ export default function DealInfoSection({ dealInfo, client }) {
             {/* <div>
                     HOW MUCH TIME IS LEFT UNTIL THE DEAL ENDS/ CURRENT ONGOING DEALS
             </div> */}
-            <div className='EventDescription'>
+            <div className='DealDescription'>
               <Paper  elevation={0} square>
                 <Collapse in={expandDetails} collapsedHeight='14vh' timeout="auto">
                   <div style={{margin: '0px 0.5em'}}>
@@ -210,7 +212,7 @@ export default function DealInfoSection({ dealInfo, client }) {
               </Paper>
             </div>
 
-          <div className='EventPlace'>
+          <div className='DealPlace'>
             <div style={{width: '50%', display: 'flex'}}>
               <PlaceIcon style={{height: '100%', paddingBottom: '12px', marginRight: 5}}/>
               <h4 style={{ fontSize: '14px', margin: 0}}>
@@ -229,7 +231,7 @@ export default function DealInfoSection({ dealInfo, client }) {
                 longitude={dealInfo.longitude}
                 latitude={dealInfo.latitude}
                 itemId={dealInfo.deal_id}
-                page='events'
+                page='deals'
                 client={client}
                 pageLoaded={true}
               />

@@ -157,12 +157,13 @@ export default function SectionText({ eventInfo, client }) {
               
               <h4 className='EventCreator'>
                 By: 
-                <Link to={userLink}>
-                  {/* <Avatar style={{float: 'left', border: '0.5px solid #02C39A', height: 20, width: 20, margin: '0px 5px'}} width={24} alt={values.username} src={eventInfo.user_pic}/>                     */}
-                  {` ${eventInfo.user_name}`}
-                </Link>
               </h4>
-              
+
+              <Link to={userLink}>
+                {/* <Avatar style={{float: 'left', border: '0.5px solid #02C39A', height: 20, width: 20, margin: '0px 5px'}} width={24} alt={values.username} src={eventInfo.user_pic}/>                     */}
+                {` ${eventInfo.user_name}`}
+              </Link>
+            
             </div>
             <div className='EventDateTime'>
               <Paper style={timePaper} elevation={0} className='EventDate'>

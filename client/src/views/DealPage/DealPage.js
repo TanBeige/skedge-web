@@ -14,9 +14,10 @@ import EventLoading from 'components/EventLoading.js';
 import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
 
-import DealInfoSection from 'views/DealPage/Sections/DealInfoSection.js'
+import DealInfoSection from 'views/DealPage/Sections/NewDealInfoSection.js'
 import SkedgeDisclosure from 'components/Footer/SkedgeDisclosure';
 import EditDealButton from './DealComponents/EditDealButton.js';
+import RelatedDealsWrapper from './Sections/RelatedDeals/RelatedDealsWrapper.js';
 
 
 
@@ -76,7 +77,7 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles(blogPostPageStyle);
-require('views/DealPage/DealPage.css');
+require('views/DealPage/NewDealPage.css');
 
 export default function DealPage(props) {
   const dealId = parseInt(props.match.params.id);
@@ -131,7 +132,12 @@ export default function DealPage(props) {
   })
 
   const goBack = () => {
-    props.history.goBack()
+    if(!user) {
+      props.history.push("/")
+    }
+    else{
+      props.history.goBack()
+    }
   }
   const handleLogin = () => {
     //Google Analytics Record when someone Clicks this
@@ -365,13 +371,7 @@ export default function DealPage(props) {
     console.log("ReactGA Called: ", window.location.pathname)
     ReactGA.initialize('UA-151937222-1');
     ReactGA.pageview(window.location.pathname)
-  }, [])
-
-  let titleSize = '10vw'
-
-  if (window.innerWidth > 1000) {
-    titleSize = '5vw'
-  }
+  }, [dealId])
 
   const classes = useStyles();
 
@@ -417,183 +417,59 @@ export default function DealPage(props) {
       </div>
     )
   }
-  //If user is not logged in
-  else if(!user) {
-    const userLink = `/${values.user_name}`
-    return(
-      <div>
-        <ThemeProvider theme={theme}>
-
-        <Button onClick={()=>{props.history.push('/')}} justIcon round style={{position: 'fixed', top: 5,  left: 20, zIndex: 100}} color="primary">
-          <HomeIcon/>
-        </Button>
-        <Parallax image={values.cover_url} filter="dark">
-          <div className={classes.container} >
-            
-            <GridContainer justify="center" >
-              <GridItem  className={classes.textCenter} style={{paddingLeft: 0, paddingRight: 0}}>                
-                <h1 className={classes.title} style={{fontSize: titleSize, wordWrap: 'break-word'}}>
-                  {values.name}
-                </h1>
-                <div>
-                  <h4 className={classes.subtitle} style={{alignSelf: 'center', display: 'inline-flex'}}>
-                    {` Created by: ` } 
-                    <Link to={userLink}>
-                      <Avatar style={{float: 'left', border: '0.5px solid #02C39A', height: 24, width: 24, margin: '0px 5px'}} width={24} alt={values.username} src={values.user_pic}/>                    
-                      {values.user_name}
-                    </Link>
-                  </h4>
-                </div>  
-                {
-                  !user ? 
-                  <div style={{margin: 'auto', textAlign: 'center', marginBottom: '2em',paddingBottom: '12', maxWidth: '300px'}}>
-                    <h3 style={{color:'white'}}>Sign up to see more deals like this happening soon.</h3>
-                    <Button
-                      color="white"
-                      style={{color: 'black'}}
-                      onClick={handleLogin}
-                    >
-                      Login or Sign Up
-                    </Button>
-                  </div> : ""
-                }         
-              </GridItem>
-            </GridContainer>
-          </div>
-        </Parallax>
-        <div className={classes.main}>
-          <div className={classes.container}>
-            <DealInfoSection 
-              dealInfo={values}
-              client={props.client}
-            />
-            <SkedgeDisclosure/>
-            {/* <SectionComments /> */}
-          </div>
-        </div>
-        {/*<SectionSimilarStories />*/}
-        <Footer
-          content={
-            <div>
-              <div className={classes.left}>
-                <List className={classes.list}>
-                  <ListItem className={classes.inlineBlock}>
-                    <a
-                      href="/home"
-                      className={classes.block}
-                    >
-                      Skedge
-                    </a>
-                  </ListItem>
-                  <ListItem className={classes.inlineBlock}>
-                    <a
-                      href="/about-us"
-                      target="_blank"
-                      className={classes.block}
-                    >
-                      About us
-                    </a>
-                  </ListItem>
-                </List>
-              </div>
-            </div>
-          }
-        />
-        </ThemeProvider>
-      </div>
-    )
-  }
   //If user is signed in
   else {
-    const userLink = `/${values.user_name}`
-
     return (
       <div>
         <ThemeProvider theme={theme}>
-
-        {/* <Header
-          brand="Skedge"
-          links={<HeaderLinks dropdownHoverColor="info" />}
-          fixed
-          color="transparent"
-          changeColorOnScroll={{
-            height: 300,
-            color: "primary"
-          }}
-        /> */}
-
         {
           //If user is changing deals
           imageUploading ? 
           <EventLoading text="Saving Changes" /> : ""
         }
-
-        <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 50,  left: 22, zIndex: 100}} color="primary">
-          <ChevronLeftIcon/>
-        </Button>
-        <Parallax image={values.cover_url} filter="dark">
-          <div className={classes.container}>
-            
-            <GridContainer justify="center">
-              <GridItem md={10} className={classes.textCenter}>
-
-                <h1 className={classes.title} style={{fontSize: titleSize, wordWrap: 'break-word'}}>
-                  {values.name}
-                </h1>
-                <div>
-                  <h4 className={classes.subtitle} style={{alignSelf: 'center', display: 'inline-flex'}}>
-                    {` Created by: ` } 
-                    <Link to={userLink}>
-                      <Avatar style={{float: 'left', border: '0.5px solid #02C39A', height: 24, width: 24, margin: '0px 5px'}} width={24} alt={values.username} src={values.user_pic}/>                    
-                      {values.user_name}
-                    </Link>
-                  </h4>
-                </div>  
-
-                {editingDeal()}
-                
-              </GridItem>
-            </GridContainer>
-          </div>
-        </Parallax>
-        <div className={classes.main}>
-          <div className={classes.container}>
-            <DealInfoSection 
-              dealInfo={values}
-              client={props.client}
-            />
-            <SkedgeDisclosure />
-            {/* <SectionComments /> */}
-          </div>
-        </div>
-        {/*<SectionSimilarStories />*/}
-        <Footer
-          content={
-            <div>
-              <div className={classes.left}>
-                <List className={classes.list}>
-                  <ListItem className={classes.inlineBlock}>
-                    <a
-                      href="/home"
-                      className={classes.block}
-                    >
-                      Skedge
-                    </a>
-                  </ListItem>
-                  <ListItem className={classes.inlineBlock}>
-                    <a
-                      href="/about-us"
-                      target="_blank"
-                      className={classes.block}
-                    >
-                      About us
-                    </a>
-                  </ListItem>
-                </List>
-              </div>
-            </div>
+        
+        <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 20,  left: 20, zIndex: 5}} color="primary">
+          {
+            user ?
+            <ChevronLeftIcon /> : <HomeIcon />
           }
-        />
+        </Button>
+        <Parallax image={values.cover_url}>
+          {/* {editingEvent()} */}
+          {
+            !user ? 
+            <div style={{margin: 'auto', textAlign: 'center', marginBottom: '1em',paddingBottom: '12', maxWidth: '300px'}}>
+              {/* <h4 style={{color:'white'}}>Sign up to see more events like this happening soon.</h4> */}
+              <Button
+                color="white"
+                style={{color: 'black'}}
+                onClick={handleLogin}
+              >
+                Login or Sign Up
+              </Button>
+            </div> : ""
+          }     
+        </Parallax>
+            <div className={classes.container} style={{padding: 0, marginBottom: '7vh'}}>
+                <DealInfoSection 
+                    dealInfo={values}
+                    client={props.client}
+                />
+
+                {
+                    values.start_date !== "" ?
+                    <RelatedDealsWrapper 
+                        currentDealId={dealId}
+                        client={props.client} 
+
+                        start_date={values.start_date}
+                        weekday={values.weekday}
+                        city={values.city}
+                        state={values.state}
+                        is_recurring={values.is_recurring}
+                    /> : ""
+                }
+            </div>
         </ThemeProvider>
       </div>
     );
