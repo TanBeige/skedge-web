@@ -14,7 +14,6 @@
     "@material-ui/pickers": "^3.2.9",
     "animate.css": "3.7.2",
     "apollo-cache-inmemory": "^1.6.5",
-    "apollo-cache-persist": "^0.1.1",
     "apollo-client": "^2.6.8",
     "apollo-link-context": "^1.0.9",
     "apollo-link-http": "^1.5.5",
@@ -35,7 +34,6 @@
     "prop-types": "15.7.2",
     "raf": "^3.4.1",
     "react": "16.9.0",
-    "react-animate-on-scroll": "2.1.5",
     "react-apollo": "^2.1.11",
     "react-content-loader": "^4.3.4",
     "react-datetime": "2.16.3",
@@ -46,9 +44,7 @@
     "react-helmet": "^5.2.1",
     "react-image-gallery": "0.8.18",
     "react-infinite-scroll-component": "^4.5.3",
-    "react-inline-script": "^1.2.0",
     "react-insta-stories": "^2.0.2",
-    "react-lazy-load": "^3.0.13",
     "react-number-format": "^4.3.1",
     "react-router-dom": "5.0.1",
     "react-scripts": "3.1.0",
@@ -56,8 +52,7 @@
     "react-slick": "0.25.2",
     "react-swipeable-views": "0.13.3",
     "react-tagsinput": "3.19.0",
-    "subscriptions-transport-ws": "^0.9.15",
-    "uuid": "^3.4.0"
+    "subscriptions-transport-ws": "^0.9.15"
   },
   "scripts": {
     "start": "react-scripts start",

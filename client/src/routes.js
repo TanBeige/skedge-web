@@ -42,11 +42,8 @@ import AboutUsPage from "views/AboutUsPage/AboutUsPage.js";
 import ContactUsPage from "views/ContactUsPage/ContactUsPage.js";
 import PrivacyPolicyPage from "views/PrivacyPolicyPage/PrivacyPolicyPage.js";
 import TermsConditionsPage from "views/TermsConditionsPage/TermsConditionsPage.js";
-import EcommercePage from "views/EcommercePage/EcommercePage.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
-import ProductPage from "views/ProductPage/ProductPage.js";
-import SectionsPage from "views/SectionsPage/SectionsPage.js";
 import NotificationsPage from "views/NotificationsPage/NotificationsPage.js";
 import SignupPage from "views/SignupPage/SignupPage.js";
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
@@ -208,12 +205,9 @@ export const MakeMainRoutes = () => {
           <Route exact path="/contact-us" render={props => provideClient(ContactUsPage, props)} />
           <Route exact path="/privacy" render={props => provideClient(PrivacyPolicyPage, props)} />
           <Route exact path="/terms-and-conditions" render={props => provideClient(TermsConditionsPage, props)} />
-          <Route exact path="/subscriptions" render={props => provideClient(EcommercePage, props)} />
           <Route exact path="/landing-page" render={props => provideClient(LandingPage, props)} />
           <Route exact path="/login-page" render={props => provideClient(LoginPage, props)} />
           {/* <Route exact path="/user" render={props => provideClient(ProfilePage, props)} /> */}
-          <Route exact path="/product-page" render={props => provideClient(ProductPage, props)} />
-          <Route exact path="/sections" render={props => provideClient(SectionsPage, props)} />
           <PrivateRoute path="/notifications" render={props => provideClient(NotificationsPage, props)} />
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
 

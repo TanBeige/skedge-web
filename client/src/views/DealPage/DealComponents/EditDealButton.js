@@ -244,7 +244,7 @@ export default function EditDealButton(props) {
     let editButton = "";
     // if(props.userId === props.creatorId) {
         editButton = (
-            <Button style={{marginTop: 20, marginBottom: 8}} size='sm' color="info" onClick={() => setIsEditing(!isEditing)}>
+            <Button size='sm' color="info" onClick={() => setIsEditing(!isEditing)}>
                 Edit Deal
             </Button>
         )

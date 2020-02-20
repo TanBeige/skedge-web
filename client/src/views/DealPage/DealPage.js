@@ -15,6 +15,8 @@ import ListItem from "@material-ui/core/ListItem";
 import EventLoading from 'components/EventLoading.js';
 import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
+import Popover from '@material-ui/core/Popover';
+
 
 import DealInfoSection from 'views/DealPage/Sections/NewDealInfoSection.js'
 import SkedgeDisclosure from 'components/Footer/SkedgeDisclosure';
@@ -27,6 +29,7 @@ import RelatedDealsWrapper from './Sections/RelatedDeals/RelatedDealsWrapper.js'
 import Favorite from "@material-ui/icons/Favorite";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HomeIcon from '@material-ui/icons/Home';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 
 // core components
@@ -377,20 +380,49 @@ export default function DealPage(props) {
 
   const classes = useStyles();
 
+  //For popover
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+
   const editingDeal = () => {
       if(isAuthenticated) {
         if(user.sub === values.user_auth0_id ) {
           return (
             <div>
-                <EditDealButton 
-                    client={props.client}
-                    userId={user.sub}
-                    creatorId={values.user_auth0_id}
-                    handleDealChange={handleDealChange}
-                    oldDeal={values}
-                    handleDeleteDeal={handleDeleteDeal}
-                />
-              </div>
+              <Button size='sm' style={{position: 'absolute', top: 20, right: 20}} round justIcon onClick={handleClick}>
+                <SettingsIcon />
+              </Button>
+              <Popover
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+              >
+                <div>
+                  <EditDealButton 
+                      client={props.client}
+                      userId={user.sub}
+                      creatorId={values.user_auth0_id}
+                      handleDealChange={handleDealChange}
+                      oldDeal={values}
+                      handleDeleteDeal={handleDeleteDeal}
+                  />
+                </div>
+              </Popover>
+            </div>
           )
         }
       }
@@ -425,7 +457,7 @@ export default function DealPage(props) {
       <div>
         <Helmet>
           <title>{values.name} | Skedge</title>
-          <meta name="description" content={values.description ? values.description : values.point_1} />
+          <meta name="description" content={`${values.description} - ${values.point_1}`} />
           <meta name="theme-color" content="#02C39A" />
 
           <meta name="geo.region" content="US-FL" />
@@ -447,7 +479,7 @@ export default function DealPage(props) {
           }
         </Button>
         <Parallax image={values.cover_url}>
-          {/* {editingEvent()} */}
+          {editingDeal()}
           {
             !user ? 
             <div style={{margin: 'auto', textAlign: 'center', marginBottom: '1em',paddingBottom: '12', maxWidth: '300px'}}>
