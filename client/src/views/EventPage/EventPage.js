@@ -451,7 +451,7 @@ export default function EventPage(props) {
   const open = Boolean(anchorEl);
 
   const editingEvent = () => {
-      if(isAuthenticated) {
+      if(isAuthenticated && user) {
         if(user.sub === values.user_auth0_id || values.event_cohosts.some(u => (u.cohost.auth0_id === user.sub && u.accepted === true))) {
           return (
             <div>
@@ -501,27 +501,16 @@ export default function EventPage(props) {
   }
 
   //If Event info is loadng
-  if(isLoading) {
-    return (
-      <div>
-        <Header
-          brand="Skedge"
-          links={<HeaderLinks dropdownHoverColor="info" />}
-          fixed
-          color="transparent"
-          changeColorOnScroll={{
-            height: 300,
-            color: "primary"
-          }}
-        />
-        <LoadingPage reason="Loading Events"/>
-      </div>
-    )
-  }
-  else if(values.event_exists === false) {
+  // if(isLoading || loading) {
+  //   return (
+  //     <div>
+  //       <LoadingPage reason="Loading Events"/>
+  //     </div>
+  //   )
+  // }
+  if(values.event_exists === false) {
     return <ErrorPage />
   }
-
   else {
     return (
       <div>
@@ -582,11 +571,12 @@ export default function EventPage(props) {
           }
         </Parallax>
           <div className={classes.container} style={{padding: 0, marginBottom: '7vh'}}>
+            
             <SectionText 
               eventInfo={values}
               client={props.client}
             />
-
+            
             {
               values.start_date !== "" ?
               <RelatedEventsWrapper 

@@ -14,6 +14,8 @@ import HeaderLinks from "components/Header/HeaderLinks.js";
 import NavPills from "components/NavPills/NavPills.js";
 import LockIcon from '@material-ui/icons/Lock';
 import Button from "components/CustomButtons/Button.js";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 
 //Popup Notification
@@ -75,7 +77,7 @@ export default function ProfilePage(props, { ...rest }) {
 
   //// Grab Current User ID and user info
   const userName = props.match.params.id;
-  const { isAuthenticated, user, loginWithPopup, loginWithRedirect } = useAuth0();
+  const { isAuthenticated, user, loginWithPopup, loginWithRedirect, loading } = useAuth0();
 
   // Page is Loading variable
   const [isLoading, setIsLoading] = useState(false);
@@ -407,7 +409,14 @@ export default function ProfilePage(props, { ...rest }) {
   else {
     let profileContent = ""
     // If user are friends
-    if(isAuthenticated && (values.followingStatus === 1 || values.currentUserProfile || values.isEntity)) {
+    if(loading) {
+      profileContent = (
+        <div style={{margin: 'auto', textAlign: 'center', margin: '2em', maxWidth: '260px'}}>
+          <CircularProgress  />
+        </div>
+      )
+    }
+    else if(isAuthenticated && (values.followingStatus === 1 || values.currentUserProfile || values.isEntity)) {
       profileContent = (
         <FriendProfile 
           client={props.client}

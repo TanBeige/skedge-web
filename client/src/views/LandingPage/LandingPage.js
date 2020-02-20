@@ -47,7 +47,7 @@ const useStyles = makeStyles(landingPageStyle);
 
 export default function LandingPage(props) {
 
-  const { isAuthenticated, loginWithRedirect, loginWithPopup } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, loginWithPopup, loading } = useAuth0();
   // const [showButton, setShowButton] = useState(false)
 
   // Button Showing on Scroll
@@ -61,28 +61,29 @@ export default function LandingPage(props) {
     document.body.scrollTop = 0;
   });
 
-  // React.useEffect(() => {
-  //   window.addEventListener('scroll', handleShowButton);
+  React.useEffect(() => {
+    console.log("Are We Auth?: ", isAuthenticated);
 
-  //   return () => {
-  //     window.removeEventListener('scroll', handleShowButton);
-  //   }
-  // });
+    // if (isAuthenticated) {
+    //   //Redirect to path they left off at
+    //   const redirectPagePath = localStorage.getItem('originPath') || '/home'
+  
+    //   props.history.push(redirectPagePath);
+    //   window.location.reload();
+    // }
+    // else {
+    //   //If user is not signed in, and they sign in through the homepage,
+    //   //  After logged in redirect to home
+    //   if(!loading) {
+
+    //     localStorage.setItem('originPath', '/home');
+    //   }
+    // }
+  }, [isAuthenticated]);
 
   const classes = useStyles();
 
-  if (isAuthenticated) {
-    //Redirect to path they left off at
-    const redirectPagePath = localStorage.getItem('originPath') || '/home'
-
-    props.history.push(redirectPagePath);
-    window.location.reload();
-  }
-  else {
-    //If user is not signed in, and they sign in through the homepage,
-    //  After logged in redirect to home
-    localStorage.setItem('originPath', '/home');
-  }
+  
 
   //Scroll To Top of the page
   const scrollToTop = () => {

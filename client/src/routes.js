@@ -69,7 +69,7 @@ export const MakeMainRoutes = () => {
   const {loading, getIdTokenClaims, isAuthenticated, user } = useAuth0();
   const [isLoading, setIsLoading] = useState(true);
   const [values, setValues] = useState({
-    client: null,
+    client: makeApolloClient(""),
     userAnonymous: true,
     showBottomBar: false,
     currentPage: window.location.pathname,
@@ -122,6 +122,14 @@ export const MakeMainRoutes = () => {
         setIsLoading(false);
       });
     }
+    // else {
+    //   setValues({
+    //     ...values,
+    //     client: makeApolloClient(""),
+    //     userAnonymous: isAuthenticated ? false : true
+    //   })
+    //   setIsLoading(false);
+    // }
   }
 
   const provideClient = (Component, renderProps) => { 
@@ -138,25 +146,31 @@ export const MakeMainRoutes = () => {
     // For Apollo Provider on Auth load
     // setIsLoading(true);
     setupApolloClient();
-    
 
     // For Bottom Navbar
-    if(window.location.pathname !== "/" && window.location.pathname !== "/shopping-cart-page") {
+    if(window.location.pathname !== "/") {
       setValues({
         ...values,
         showBottomBar: true
       })
     }
+
+    if(isAuthenticated && window.location.pathname === "/") {
+      const redirectPagePath = localStorage.getItem('originPath') || '/home'
+  
+      hist.push(redirectPagePath);
+      window.location.reload();
+    }
   
   },[loading, isAuthenticated]);
 
-  if (isLoading) {
-    return(
-      <div>
-        <LoadingPage reason="Loading" />
-      </div>
-    )
-  }
+  // if (isLoading) {
+  //   return(
+  //     <div>
+  //       <LoadingPage reason="Loading" />
+  //     </div>
+  //   )
+  // }
   // Wait for token to return and client to be made.
   // if(!values.client) {
   //   console.log("Getting Client")
@@ -191,7 +205,7 @@ export const MakeMainRoutes = () => {
 
 
   // Finally load Website
-  else {
+  // else {
     return(
       <Router history={hist}>
         <div style={{backgroundColor: 'white'}}>
@@ -225,5 +239,5 @@ export const MakeMainRoutes = () => {
         </div>
       </Router>
     );
-  }
+  // }
 }

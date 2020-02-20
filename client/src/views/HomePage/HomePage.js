@@ -162,55 +162,41 @@ export default function HomePage(props) {
       ReactGA.initialize('UA-151937222-1');
       ReactGA.pageview(window.location.pathname)
     }
-
-    // if(!isAuthenticated){
-    //   props.history.push("/")
-    // }
-
   },[props.client]); // Empty array for param means effect will only run on first render.
 
-  //Place this here before returning the actual page so we can determine 
-  // what displays while loading
-  // if (!user) {
-  //   return (
-  //     <NotSignedIn />
-  //   )
-  // }
-  // else {
-    return (
-      // <div style={{backgroundColor: "#52D3B6"}}>
-      <div style={{paddingTop: '1px', paddingBottom: '5vh', minHeight: '140vh'}}>
-        <Header
-          brand="Skedge"
-          //links={<HeaderLinks dropdownHoverColor="info"/>}
-          fixed
-          color="primary"//"transparent"
-          changeColorOnScroll={{
-            height: 100,
-            color: "primary"
-          }}
-        />
-        {/* <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '5vh', marginTop: '8vh'}}> */}
-          <Button style={{position: 'fixed', bottom: '8vh', right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
-                <ArrowUpwardIcon style={{color: "white"}} />
-          </Button>
-          <div className={classes.container} style={{ marginTop: '7vh'}} >
+  return (
+    // <div style={{backgroundColor: "#52D3B6"}}>
+    <div style={{paddingTop: '1px', paddingBottom: '5vh', minHeight: '140vh'}}>
+      <Header
+        brand="Skedge"
+        //links={<HeaderLinks dropdownHoverColor="info"/>}
+        fixed
+        color="primary"//"transparent"
+        changeColorOnScroll={{
+          height: 100,
+          color: "primary"
+        }}
+      />
+      {/* <div className={classes.main} style={{backgroundColor: "white", minHeight: '80vh', marginBottom: '5vh', marginTop: '8vh'}}> */}
+        <Button style={{position: 'fixed', bottom: '8vh', right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
+              <ArrowUpwardIcon style={{color: "white"}} />
+        </Button>
+        <div className={classes.container} style={{ marginTop: '7vh'}} >
 
-            {/* <h1 className='homeTitle'>Skedge</h1> */}
-            {
-              loading ?
-              "" :
-              <SectionPills 
-                client={props.client}
-                // userId={user.sub}
-                lastTab={props.lastTab}
-                setLastTab={props.setLastTab}
-                isEntity={isEntity}
-              />
-            }
-          </div>
-        {/* </div> */}
-      </div>
-    );
-  // }
+          {/* <h1 className='homeTitle'>Skedge</h1> */}
+          {
+            loading ?
+            "" :
+            <SectionPills 
+              client={props.client}
+              // userId={user.sub}
+              lastTab={props.lastTab}
+              setLastTab={props.setLastTab}
+              isEntity={isEntity}
+            />
+          }
+        </div>
+      {/* </div> */}
+    </div>
+  );
 }

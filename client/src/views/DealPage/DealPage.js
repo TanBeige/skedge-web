@@ -391,7 +391,7 @@ export default function DealPage(props) {
   const open = Boolean(anchorEl);
 
   const editingDeal = () => {
-      if(isAuthenticated) {
+      if(isAuthenticated && user) {
         if(user.sub === values.user_auth0_id ) {
           return (
             <div>
@@ -428,28 +428,27 @@ export default function DealPage(props) {
       }
   }
 
+  
+  //If Deal info is loadng
+  // if(isLoading || loading) {
+  //   return (
+  //     <div>
+  //       <Header
+  //         brand="Skedge"
+  //         links={<HeaderLinks dropdownHoverColor="info" />}
+  //         fixed
+  //         color="transparent"
+  //         changeColorOnScroll={{
+  //           height: 300,
+  //           color: "primary"
+  //         }}
+  //       />
+  //       <LoadingPage reason="Loading deal"/>
+  //     </div>
+  //   )
+  // }
   if(values.deal_exists === false) {
     return <ErrorPage />
-    //return <div>hello</div>
-  }
-
-  //If Deal info is loadng
-  else if(isLoading) {
-    return (
-      <div>
-        <Header
-          brand="Skedge"
-          links={<HeaderLinks dropdownHoverColor="info" />}
-          fixed
-          color="transparent"
-          changeColorOnScroll={{
-            height: 300,
-            color: "primary"
-          }}
-        />
-        <LoadingPage reason="Loading deal"/>
-      </div>
-    )
   }
   //If user is signed in
   else {
