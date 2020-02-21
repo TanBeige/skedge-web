@@ -16,6 +16,7 @@ import Popover from '@material-ui/core/Popover';
 
 import EventLoading from 'components/EventLoading.js'
 import GoingSaveButtons from './Sections/EventPageComponents/GoingSaveButtons.js';
+import TeaserButtons from './Sections/EventPageComponents/TeaserButtons.js';
 
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
@@ -539,36 +540,39 @@ export default function EventPage(props) {
         <Parallax image={values.cover_url}>
           {editingEvent()}
           {
-            !user ? 
-            <div style={{margin: 'auto', textAlign: 'center', marginBottom: '1em',paddingBottom: '12', maxWidth: '300px'}}>
-              {/* <h4 style={{color:'white'}}>Sign up to see more events like this happening soon.</h4> */}
-              <Button
-                color="white"
-                style={{color: 'black'}}
-                onClick={handleLogin}
-              >
-                Login or Sign Up
-              </Button>
-            </div> : ""
-          }     
-          {
-            user ?
-            <div style={{position: 'absolute', bottom: '0px', zIndex: 2, width: '100%', marginBottom: '-10px', textAlign: 'center'}}>
-              <GoingSaveButtons
-                ifGoing={values.ifGoing}
-                ifSaved={values.ifSaved}
-                ifLiked={values.ifLiked}
-                ifReposted={values.ifReposted}
-                likeAmount={values.like_amount}
-                repostAmount={values.share_amount}
-                goingAmount={values.going_count}
-
-                client={props.client}
-                eventId={values.event_id}
-                eventHost={values.user_auth0_id}
-              />
-            </div> : ""
+            // !user ? 
+            // <div style={{margin: 'auto', textAlign: 'center', marginBottom: '1em',paddingBottom: '12', maxWidth: '300px'}}>
+            //   {/* <h4 style={{color:'white'}}>Sign up to see more events like this happening soon.</h4> */}
+            //   <Button
+            //     color="white"
+            //     style={{color: 'black'}}
+            //     onClick={handleLogin}
+            //   >
+            //     Login or Sign Up
+            //   </Button>
+            // </div> : ""
           }
+
+            <div style={{position: 'absolute', bottom: '0px', zIndex: 2, width: '100%', marginBottom: '-10px', textAlign: 'center'}}>
+              {user ?
+                <GoingSaveButtons
+                  ifGoing={values.ifGoing}
+                  ifSaved={values.ifSaved}
+                  ifLiked={values.ifLiked}
+                  ifReposted={values.ifReposted}
+                  likeAmount={values.like_amount}
+                  repostAmount={values.share_amount}
+                  goingAmount={values.going_count}
+
+                  client={props.client}
+                  eventId={values.event_id}
+                  eventHost={values.user_auth0_id}
+                /> 
+                :
+                <TeaserButtons/>
+              }
+            </div> 
+          
         </Parallax>
           <div className={classes.container} style={{padding: 0, marginBottom: '7vh'}}>
             
