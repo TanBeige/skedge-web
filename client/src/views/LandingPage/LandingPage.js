@@ -64,21 +64,21 @@ export default function LandingPage(props) {
   React.useEffect(() => {
     console.log("Are We Auth?: ", isAuthenticated);
 
-    // if (isAuthenticated) {
-    //   //Redirect to path they left off at
-    //   const redirectPagePath = localStorage.getItem('originPath') || '/home'
+    if (isAuthenticated) {
+      //Redirect to path they left off at
+      // const redirectPagePath = localStorage.getItem('originPath') || '/home'
   
-    //   props.history.push(redirectPagePath);
-    //   window.location.reload();
-    // }
-    // else {
-    //   //If user is not signed in, and they sign in through the homepage,
-    //   //  After logged in redirect to home
-    //   if(!loading) {
+      props.history.push("/home");
+      // window.location.reload();
+    }
+    else {
+      //If user is not signed in, and they sign in through the homepage,
+      //  After logged in redirect to home
+      if(!loading) {
 
-    //     localStorage.setItem('originPath', '/home');
-    //   }
-    // }
+        localStorage.setItem('originPath', '/home');
+      }
+    }
   }, [isAuthenticated]);
 
   const classes = useStyles();

@@ -18,7 +18,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Popover from '@material-ui/core/Popover';
 
 
-import DealInfoSection from 'views/DealPage/Sections/NewDealInfoSection.js'
+import DealInfoSection from 'views/DealPage/Sections/DealInfoSection.js'
 import SkedgeDisclosure from 'components/Footer/SkedgeDisclosure';
 import EditDealButton from './DealComponents/EditDealButton.js';
 import RelatedDealsWrapper from './Sections/RelatedDeals/RelatedDealsWrapper.js';
@@ -82,7 +82,6 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles(blogPostPageStyle);
-require('views/DealPage/NewDealPage.css');
 
 export default function DealPage(props) {
   const dealId = parseInt(props.match.params.id);
@@ -430,24 +429,14 @@ export default function DealPage(props) {
 
   
   //If Deal info is loadng
-  // if(isLoading || loading) {
-  //   return (
-  //     <div>
-  //       <Header
-  //         brand="Skedge"
-  //         links={<HeaderLinks dropdownHoverColor="info" />}
-  //         fixed
-  //         color="transparent"
-  //         changeColorOnScroll={{
-  //           height: 300,
-  //           color: "primary"
-  //         }}
-  //       />
-  //       <LoadingPage reason="Loading deal"/>
-  //     </div>
-  //   )
-  // }
-  if(values.deal_exists === false) {
+  if(isLoading || loading) {
+    return (
+      <div>
+        <LoadingPage reason="Loading Events"/>
+      </div>
+    )
+  }
+  else if(values.deal_exists === false) {
     return <ErrorPage />
   }
   //If user is signed in

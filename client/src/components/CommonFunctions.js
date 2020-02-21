@@ -61,7 +61,57 @@ const createWeekdayString = (days) => {
 }
 
 
+const extractDays = (weekday) => {
+
+    // Setting Display Variables    
+    let displayDate = "Every ";
+    if(weekday.includes("1")) {
+        displayDate += "Mon.";
+    }
+    if(weekday.includes("2")) {
+        if(displayDate.length > 6) {
+            displayDate += " "
+        }
+        displayDate += "Tues.";
+    }
+    if(weekday.includes("3")) {
+        if(displayDate.length > 6) {
+            displayDate += " "
+        }
+        displayDate += "Wed.";
+    }
+    if(weekday.includes("4")) {
+        if(displayDate.length > 6) {
+            displayDate += " "
+        }
+    displayDate += "Thur.";
+    }
+    if(weekday.includes("5")) {
+        if(displayDate.length > 6) {
+            displayDate += " "
+        }
+        displayDate += "Fri.";
+    }
+    if(weekday.includes("6")) {
+        if(displayDate.length > 6) {
+            displayDate += " "
+        }
+        displayDate += "Sat.";
+    }
+    if(weekday.includes("0")) {
+        if(displayDate.length > 6) {
+            displayDate += " "
+        }
+        displayDate += "Sun.";
+    }
+
+    return displayDate;
+}
 
 
 
-export {createWeekdayString};
+
+export {
+    createWeekdayString,
+    extractDays
+};

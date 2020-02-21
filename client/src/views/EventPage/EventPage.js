@@ -501,14 +501,14 @@ export default function EventPage(props) {
   }
 
   //If Event info is loadng
-  // if(isLoading || loading) {
-  //   return (
-  //     <div>
-  //       <LoadingPage reason="Loading Events"/>
-  //     </div>
-  //   )
-  // }
-  if(values.event_exists === false) {
+  if(isLoading || loading) {
+    return (
+      <div>
+        <LoadingPage reason="Loading Events"/>
+      </div>
+    )
+  }
+  else if(values.event_exists === false) {
     return <ErrorPage />
   }
   else {

@@ -65,7 +65,7 @@ class SimpleMap extends Component {
   }
 
   getGeocode() {
-    this.setState({loading: true})
+    console.log(_isMounted);
 
     if(this.props.latitude && this.props.longitude) {
       if(_isMounted) {
@@ -75,44 +75,49 @@ class SimpleMap extends Component {
             lng: this.props.longitude
           },
           loading: false
-        })
+        });
+        console.log("set loading: ", this.state.loading)
       }
-      return
-    }
-    // if(!this.props.latitude || !this.props.longitude) {
-      Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
-      Geocode.enableDebug();
+      return;
+    };
 
-      const fullAddy = `${this.props.street} ${this.props.city}, ${this.props.state}`
 
-      Geocode.fromAddress(fullAddy).then(
-        response => {
-          const { lat, lng } = response.results[0].geometry.location;
-          this.geocodeToDatabase(lat, lng, this.props.itemId, this.props.page === 'events' ? ADD_GEOCODE_EVENT : ADD_GEOCODE_DEAL );
+    Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
+    Geocode.enableDebug();
 
-          if(_isMounted) {
-            this.setState({
-              center: {
-                lat: lat,
-                lng: lng
-              },
-              loading: false
-            })
-          }
-        },
-        error => {
-          console.error(error);
+    const fullAddy = `${this.props.street} ${this.props.city}, ${this.props.state}`
+
+    Geocode.fromAddress(fullAddy).then(
+      response => {
+        const { lat, lng } = response.results[0].geometry.location;
+        this.geocodeToDatabase(lat, lng, this.props.itemId, this.props.page === 'events' ? ADD_GEOCODE_EVENT : ADD_GEOCODE_DEAL );
+
+        if(_isMounted) {
+          this.setState({
+            center: {
+              lat: lat,
+              lng: lng
+            },
+            loading: false
+          })
+          console.log("set loading: ", this.state.loading)
         }
-      );
-    // }
+      },
+      error => {
+        console.error(error);
+      }
+    );
+    // this.setState({loading: true});
   }
   
   componentDidMount() {
+
     _isMounted = true;
     // if(this.props.pageLoaded)
     if(this.props.state !== "") {
       this.getGeocode();
     }
+    console.log(this.props.state)
   }
 
   componentWillUnmount(){

@@ -85,7 +85,7 @@ export default function HomePage(props) {
     if (props.client) {
       props.client.mutate({
         mutation: gql`
-          mutation($userId: String!, $timestamp: timestamp!) {
+          mutation update_last_seen($userId: String!, $timestamp: timestamp!) {
             update_users(
               where: { auth0_id: { _eq: $userId } }
               _set: { auth0_id: $userId, last_seen: $timestamp }

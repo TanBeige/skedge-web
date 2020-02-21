@@ -2,13 +2,13 @@ button.buttonMargin {
     margin: 5px;
 }
 
-.DealTitle {
+.EventTitle {
     margin-top: 15px;
     max-height: 10vh;
     overflow: hidden;
 }
 
-.DealName {
+.EventName {
     max-height: 7vh;
     margin: 0px 1em;
     font-size: 1.2em;
@@ -16,7 +16,7 @@ button.buttonMargin {
     padding-top: 0.2em;
 }
 
-.DealCreator {
+.EventCreator {
     max-height: 3vh;
     margin: 0px 0px 0px 1.2em;
     font-size: 1em;
@@ -25,7 +25,7 @@ button.buttonMargin {
     padding-bottom: 3px;
 }
 
-.DealDateTime {
+.EventDateTime {
     max-height: 8vh;
     display: inline-flex;
     width: 100%;
@@ -34,13 +34,13 @@ button.buttonMargin {
     /* margin: 0.5em 0px */
     /* text-align: center; */
 }
-.DealDate {
+.EventDate {
     width: 50%;
     display: flex;
     /* justify-content: center; */
 }
 
-.DealDescription {
+.EventDescription {
     margin: 0 0.5em;
 }
 
@@ -55,7 +55,7 @@ button.buttonMargin {
     -webkit-text-fill-color: transparent;
 }
 
-.DealPlace {
+.EventPlace {
     height: 13vh;
     display: inline-flex;
     width: 100%;
