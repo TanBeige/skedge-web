@@ -5,9 +5,11 @@ import PlaceIcon from '@material-ui/icons/Place';
 // Google Maps API
 import MapsApi from 'components/GoogleMaps/MapsApi.js';
 
+require('./InfoItems.css');
+
 export default function PageLocation({location_name, street, city, state, longitude, latitude, event_id, client, pageType}) {
     return (
-        <div className='EventPlace'>
+        <div className='ItemPlace'>
             <div style={{width: '50%', display: 'flex'}}>
                 <PlaceIcon style={{height: '100%', paddingBottom: '12px', marginRight: 5}}/>
                 <h4 style={{ fontSize: '14px', margin: 0}}>

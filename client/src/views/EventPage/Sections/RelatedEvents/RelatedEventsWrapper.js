@@ -70,7 +70,8 @@ export default function RelatedEventsWrapper(props) {
 
     return(
         <div className="RelatedWrapper">
-            <h4 style={{textAlign: 'center'}}>Events for this {formatDate}</h4>
+            <hr />
+            <h4 style={{margin: '5px'}}>Events for this {formatDate}</h4>
             <GridContainer>
                 {
                     events.map(event => {

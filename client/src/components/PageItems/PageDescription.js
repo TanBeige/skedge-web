@@ -13,14 +13,15 @@ import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
+require('./InfoItems.css');
 
 export default function PageDescription({description, web_url, category, point_1, point_2, pageType}) {
     const [expandDetails, setExpandDetails] = useState(false)
 
     return(
-        <div className='EventDescription'>
+        <div className='ItemDescription'>
             <Paper  elevation={0} square>
-                <Collapse in={expandDetails} collapsedHeight='14vh' timeout="auto">
+                <Collapse in={expandDetails} collapsedHeight='3em' timeout="auto">
                 <div style={{margin: '0px 0.5em'}}>
                     
                     <p className={expandDetails ?  "NotFadingOut": "FadingOut"} style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
@@ -50,7 +51,7 @@ export default function PageDescription({description, web_url, category, point_1
                 </div>
                 </Collapse> 
                 <div style={{width: '100%', textAlign: 'center'}}>
-                <IconButton style={{width: '100%', borderRadius: 4}} disableRipple onClick={()=>setExpandDetails(!expandDetails)}>
+                <IconButton style={{width: '100%', borderRadius: 4, padding: 0}} disableRipple onClick={()=>setExpandDetails(!expandDetails)}>
                     {expandDetails ? <ExpandLessIcon /> : <ExpandMoreIcon/>}
                 </IconButton>
                 </div>

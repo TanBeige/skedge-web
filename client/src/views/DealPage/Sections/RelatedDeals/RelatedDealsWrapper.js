@@ -73,7 +73,8 @@ export default function RelatedDealsWrapper(props) {
 
     return(
         <div className="RelatedWrapper">
-            <h4 style={{textAlign: 'center'}}>Deals for this {formatDate}</h4>
+            <hr />
+            <h4 style={{margin: '5px'}}>Deals for this {formatDate}</h4>
             <GridContainer>
                 {
                     deals.map(deal => {

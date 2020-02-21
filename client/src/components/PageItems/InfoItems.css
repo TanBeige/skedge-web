@@ -2,22 +2,22 @@ button.buttonMargin {
     margin: 5px;
 }
 
-.EventTitle {
+.ItemTitle {
     margin-top: 15px;
-    max-height: 10vh;
-    overflow: hidden;
+    /* max-height: 10vh; */
+    /* overflow: hidden; */
 }
 
-.EventName {
-    max-height: 7vh;
+.ItemName {
+    /* max-height: 7vh; */
     margin: 0px 1em;
     font-size: 1.2em;
     font-weight: bold;
     padding-top: 0.2em;
 }
 
-.EventCreator {
-    max-height: 3vh;
+.ItemCreator {
+    /* max-height: 3vh; */
     margin: 0px 0px 0px 1.2em;
     font-size: 1em;
     align-self: center; 
@@ -25,23 +25,23 @@ button.buttonMargin {
     padding-bottom: 3px;
 }
 
-.EventDateTime {
+.ItemDateTime {
     max-height: 8vh;
     display: inline-flex;
     width: 100%;
-    padding: 0 0.5em;
+    padding: 0 1em;
     /* color: white; */
     /* margin: 0.5em 0px */
     /* text-align: center; */
 }
-.EventDate {
+.ItemDate {
     width: 50%;
     display: flex;
     /* justify-content: center; */
 }
 
-.EventDescription {
-    margin: 0 0.5em;
+.ItemDescription {
+    margin: 0 1em;
 }
 
 .FadingOut {
@@ -55,7 +55,7 @@ button.buttonMargin {
     -webkit-text-fill-color: transparent;
 }
 
-.EventPlace {
+.ItemPlace {
     height: 13vh;
     display: inline-flex;
     width: 100%;
