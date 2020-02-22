@@ -65,10 +65,10 @@ export default function LandingPage(props) {
     console.log("Are We Auth?: ", isAuthenticated);
 
     if (isAuthenticated) {
-      //Redirect to path they left off at
-      // const redirectPagePath = localStorage.getItem('originPath') || '/home'
+      // Redirect to path they left off at
+      const redirectPagePath = localStorage.getItem('originPath') || '/home'
   
-      props.history.push("/home");
+      props.history.push(redirectPagePath);
       // window.location.reload();
     }
     else {

@@ -81,7 +81,7 @@ export default function NotificationList(props) {
       return () => {
         _isMounted = false;
       }
-    }, [])
+    }, [props.client])
 
     const loadMore = () => {
       props.client.query({

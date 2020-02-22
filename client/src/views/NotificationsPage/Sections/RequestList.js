@@ -32,7 +32,7 @@ export default function RequestList(props) {
         return () => {
             isMounted = false;
         }
-    }, [props.searchText])
+    }, [props.searchText, props.client])
 
     //Change notification badge number in Tab
     const handleNumberChange = (num) => {

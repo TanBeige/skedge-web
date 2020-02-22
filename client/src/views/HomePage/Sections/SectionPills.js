@@ -83,6 +83,7 @@ export default function SectionPills(props) {
     date: new Date(),
     weekday: new Date().getDay()
   })
+  console.log("Values submitted: " ,values);
 
   //Search filters for list
   const [localFilter, setLocalFilter] = useState({

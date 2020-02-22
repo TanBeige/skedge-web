@@ -58,7 +58,7 @@ export default function GoingSaveButtons (props) {
                 }}
             >
                 <div className={classes.typography}>
-                    <Typography >Sign up to perform this action!</Typography>
+                    <Typography >Sign up to perform this action.</Typography>
                     <Button color='primary' round>Sign Up/Login</Button>
                 </div>
             </Popover>

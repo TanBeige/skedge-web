@@ -375,7 +375,7 @@ export default function DealPage(props) {
     console.log("ReactGA Called: ", window.location.pathname)
     ReactGA.initialize('UA-151937222-1');
     ReactGA.pageview(window.location.pathname)
-  }, [dealId])
+  }, [dealId, props.client])
 
   const classes = useStyles();
 
@@ -470,14 +470,16 @@ export default function DealPage(props) {
           {editingDeal()}
           {
             !user ? 
-            <div style={{margin: 'auto', textAlign: 'center', marginBottom: '1em',paddingBottom: '12', maxWidth: '300px'}}>
+            <div style={{margin: 'auto', textAlign: 'center', marginBottom: '-1em',paddingBottom: '12', maxWidth: '300px'}}>
               {/* <h4 style={{color:'white'}}>Sign up to see more events like this happening soon.</h4> */}
               <Button
-                color="white"
-                style={{color: 'black'}}
+                color="primary"
+                round
+                size='sm'
+                // style={{color: 'white'}}
                 onClick={handleLogin}
               >
-                Login or Sign Up
+                Sign in 
               </Button>
             </div> : ""
           }     

@@ -142,10 +142,10 @@ export default function HomePage(props) {
   useEffect(() => {
     if (isAuthenticated && user) {
       // eslint-disable-next-line
-      const lastSeenMutation = setInterval(
-        updateLastSeen,
-        10000
-      );
+      // const lastSeenMutation = setInterval(
+      //   updateLastSeen,
+      //   10000
+      // );
 
       //Check if the user is an entity
       props.client.query({

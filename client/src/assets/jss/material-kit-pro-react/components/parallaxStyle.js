@@ -11,7 +11,7 @@ import {
 
 const parallaxStyle = {
   parallax: {
-    height: "20vh",
+    height: "30vh",
     maxHeight: "1600px",
     // overflow: "hidden",
     position: "relative",

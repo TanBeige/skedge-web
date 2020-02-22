@@ -324,7 +324,7 @@ const getVariables = (listType, userId, eventsLength, filter) => {
   const limitValue = 10;
   let usedVariables = {};
 
-  console.log("listtype: ", listType)
+  // console.log("listtype: ", listType)
   if(listType === 'local') {
     let cat = filter.category === "Any" ? "" : filter.category;
 

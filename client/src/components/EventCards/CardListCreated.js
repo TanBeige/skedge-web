@@ -121,7 +121,7 @@ export default function CardListCreated(props) {
 
     useEffect(() => {
       //Restart the get events
-      console.log("Created Events")
+      // console.log("Created Events")
       setValues({
         type: props.type,
         loadedAllEvents: false,

@@ -35,7 +35,7 @@ export default function EventInviteList(props) {
         return () => {
             isMounted = false;
         }
-    }, [props.searchText])
+    }, [props.searchText, props.client])
 
     //Change notification badge number in Tab
     const handleNumberChange = (num) => {
@@ -43,8 +43,8 @@ export default function EventInviteList(props) {
     }
 
 
-        return (
-<div>
+    return (
+        <div>
             <Subscription subscription={FETCH_EVENT_INVITES} variables={{userId: user.sub}} >
                 {({ loading, error, data }) => {
                     if (loading) {

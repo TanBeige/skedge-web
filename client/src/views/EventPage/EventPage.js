@@ -431,7 +431,7 @@ export default function EventPage(props) {
     return () => {
       isMounted = false;
     }
-  }, [eventId])
+  }, [eventId, props.client])
 
   let titleSize = '10vw'
 

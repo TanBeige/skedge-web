@@ -82,9 +82,9 @@ export default function Header(props) {
             >
               <div style={{textAlign: 'center'}}>
                 <div className={classes.popoverBody} style={{display: 'grid'}}>
-                  <CustomButton size='sm' round color="info" onClick={() => {goToPage("about-us")}}>
+                  {/* <CustomButton size='sm' round color="info" onClick={() => {goToPage("about-us")}}>
                     About Us
-                  </CustomButton>
+                  </CustomButton> */}
                   <CustomButton round color="danger" onClick={logout}>
                     Logout
                   </CustomButton>
