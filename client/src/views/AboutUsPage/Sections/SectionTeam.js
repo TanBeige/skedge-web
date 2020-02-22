@@ -7,17 +7,10 @@ import GridItem from "components/Grid/GridItem.js";
 import Card from "components/Card/Card.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
-import CardFooter from "components/Card/CardFooter.js";
-import Button from "components/CustomButtons/Button.js";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
 import teamStyle from "assets/jss/material-kit-pro-react/views/aboutUsSections/teamStyle.js";
-
-import FaceMarc from "assets/img/faces/marc.jpg";
-import FaceChristian from "assets/img/faces/christian.jpg";
-import FaceKendall from "assets/img/faces/kendall.jpg";
-import FaceAvatar from "assets/img/faces/avatar.jpg";
 
 const useStyles = makeStyles(teamStyle);
 

@@ -61,7 +61,7 @@ export default function RelatedEventsWrapper(props) {
             console.error(error);
         })
         
-    }, [])
+    }, [props.currentEventId])
 
     // Formatting the top date
     const moment = require('moment');
@@ -97,7 +97,7 @@ function getNextDate(weekday) {
         return new Date()
     }
     var numbers = weekday.match(/\d+/g).map(Number);    //Get numbers from string
-    var today = new Date(), tuesday, friday, day, closest;
+    var today = new Date(), day;
 
     // Check if today is any of the recurring days
     let i;

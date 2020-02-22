@@ -37,7 +37,7 @@ export default function CustomTabs(props) {
   });
   return (
     <Card plain={plainTabs}>
-      <CardHeader style={{padding: 5}} color={headerColor} plain={plainTabs}>
+      <CardHeader style={{padding: 5}}  plain={plainTabs}>
         {title !== undefined ? (
           <div className={cardTitle}>{"title"}</div>
         ) : null}
@@ -50,7 +50,7 @@ export default function CustomTabs(props) {
           }}
           value={value}
           onChange={handleChange}
-          textColor="inherit"
+          textColor="primary"
         >
           {tabs.map((prop, key) => {
             var icon = {};

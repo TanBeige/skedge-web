@@ -15,7 +15,7 @@ import Popover from '@material-ui/core/Popover';
 
 const useStyles = makeStyles(theme => ({
     typography: {
-      padding: theme.spacing(1),
+      padding: theme.spacing(2),
       textAlign: 'center'
     },
   }));

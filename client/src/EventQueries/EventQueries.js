@@ -119,15 +119,6 @@ const USER_SEARCH_FRAGMENT = gql`
   }
 `
 
-
-const FRIEND_FRAGMENT = gql`
-fragment FriendFragment on users {
-  auth0_id
-  name
-  picture
-}
-`;
-
 const DEAL_FRAGMENT = gql`
   fragment DealFragment on deals {
       id
@@ -908,9 +899,10 @@ query fetch_filtered_events($eventLimit: Int, $eventOffset: Int, $search: String
   ${EVENT_FRAGMENT}
 `
 const QUERY_LANDING_FEED = gql`
-query landing_feed($limit: Int, $city: String, $state: String, $date: date, $weekday:String) {
+query landing_feed($limit: Int, $offset: Int, $city: String, $state: String, $date: date, $weekday:String) {
   events(
     limit: $limit
+    offset: $offset
     order_by: {id: desc}
     where: {_and: [
       {city: {_eq: $city}},
@@ -949,6 +941,8 @@ query landing_feed($limit: Int, $city: String, $state: String, $date: date, $wee
   }
   deals(
     limit: $limit
+    offset: $offset
+    order_by: {id: desc}
     where: {_and: [
       {city: {_eq: $city}},
       {state: {_eq: $state}},

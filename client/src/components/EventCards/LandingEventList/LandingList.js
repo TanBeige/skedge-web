@@ -24,11 +24,13 @@ import DateRangeIcon from '@material-ui/icons/DateRange';
 // core components
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
 
+import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 //const MyInstagramLoader = () => <Instagram />
 
 import {
   QUERY_LANDING_FEED
 } from "EventQueries/EventQueries";
+import { Button } from '@material-ui/core';
 
 const dateHeaderStyle = {
   textAlign: 'center',
@@ -75,6 +77,8 @@ export default function EventCardListLand(props) {
 
   const classes = useStyles();
 
+  const { loginWithRedirect } = useAuth0();
+
 
   const [values, setValues] = useState({
       type: props.type,
@@ -84,6 +88,7 @@ export default function EventCardListLand(props) {
       eventsLength: 0,
       limit: props.filter.limit,
       events: [],
+      offset: props.filter.limit,
 
       deals: [],
       dealsLength: 0
@@ -98,6 +103,7 @@ export default function EventCardListLand(props) {
         showOlder: true,
         eventsLength: 0,
         limit: props.filter.limit,
+        offset: props.filter.limit,
         events: [],
       });
 
@@ -153,6 +159,12 @@ export default function EventCardListLand(props) {
       }
     }, [props.filter])
 
+    useEffect(() => {
+      console.log(values.deals)
+    }, [values.events, values.deals])
+
+
+
     
     const insertAd = (index) => {
       if((index % 6) === 5) {
@@ -185,6 +197,44 @@ export default function EventCardListLand(props) {
     //     console.log(error)
     //   }
     // }
+
+    const loadMore = () => {
+      const { client } = props;
+      const { filter } = props;
+      console.log("offfset:", values.offset)
+
+      client
+        .query({
+          query: QUERY_LANDING_FEED,
+          variables: {
+            limit: values.limit,
+            offset: values.offset,
+            city: `${filter.city}`,
+            state: `${filter.state}`,
+            date: filter.date !== null ? filter.date.formatDate() : null,
+            weekday: filter.date !== null ? `%${filter.date.getDay()}%` : null
+          }
+        })
+        .then(data => {
+          let mergedEvents = values.events.concat(data.data.events);
+          let mergedDeals = values.deals.concat(data.data.deals);
+
+            if(isMounted) {
+              setValues({
+                ...values,
+                events: mergedEvents,
+                eventsLength: mergedEvents.length,
+
+                deals: mergedDeals,
+                dealsLength: mergedDeals.length,
+
+                offset: values.offset + values.limit
+              });
+            }
+        }).catch(error => {
+          console.log(error)
+        });
+    }
     
 
     // Start Filtering Responses here. Since it's so fucking hard in GraphQL
@@ -232,72 +282,10 @@ export default function EventCardListLand(props) {
         </div>
       )
     }
-
-
-    // return (
-    //   <div id='scrollableDiv' key={currentKey}>
-    //       <div style={{width: '100%'}}>
-    //         <h3 style={{margin: 'auto', maxWidth: 350, backgroundColor: 'white', borderRadius: 2, marginTop: '2em',zIndex: 0, fontWeight: '300', fontFamily: `'Helvetica', 'Arial'`,fontSize: '1.5em'}}  >Deals in Tallahassee, FL.</h3>
-    //       </div>
-    //       <hr />
-    //       <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
-    //         {
-    //           finalDeals.map((deal, index) => {
-    //             return (
-    //               <Fragment key={deal.id}>
-    //                 <GridItem xs={12} sm={3} md={3}>
-    //                   <DealCard 
-    //                     itemInfo={deal} 
-    //                     listType={"landing"}
-    //                     client={props.client}
-    //                     userId={props.userId}
-    //                     currentDate={props.filter.date}
-    //                   />
-    //                 </GridItem>
-    //                 {
-    //                   // insertAd(index)   //Add later when Skedge.com can get ads
-    //                 }
-    //               </Fragment>
-    //             )
-    //           })
-    //         }
-    //       </GridContainer>
-
-    //       <div style={{width: '100%'}}>
-    //           <h3 style={{margin: 'auto', maxWidth: 350, backgroundColor: 'white', borderRadius: 2, marginTop: '2em',zIndex: 0, fontWeight: '300', fontFamily: `'Helvetica', 'Arial'`,fontSize: '1.5em'}}  >Events in Tallahassee, FL.</h3>
-    //       </div>
-    //       <hr />
-    //       <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
-    //         {
-    //           finalEvents.map((event, index) => {
-    //             return (
-    //               <Fragment key={event.id}>
-    //                 <GridItem xs={12} sm={3} md={3}>
-    //                   <EventCard 
-    //                     event={event} 
-    //                     listType={"landing"}
-    //                     client={props.client}
-    //                     userId={props.userId}
-    //                     filter={props.filter}
-    //                     currentDate={props.filter.date}
-    //                   />
-    //                 </GridItem>
-    //                 {
-    //                   // insertAd(index)   //Add later when Skedge.com can get ads
-    //                 }
-    //               </Fragment>
-    //             )
-    //           })
-    //         }
-    //       </GridContainer>
-
-            
-    //     {/* {
-    //         values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
-    //     }
-    //     {futureEvents} */}
-    //   </div>
-    // )
+    
+    // if(isSearch) {
+    //   return <div>Loading...</div>
+    // }
 
     return(
       <div>
@@ -309,9 +297,16 @@ export default function EventCardListLand(props) {
               tabName: "Deals",
               tabIcon: LocalAtmIcon,
               tabContent: (
+                <InfiniteScroll
+                  dataLength={values.events.length} //This is important field to render the next data
+                  next={loadMore}
+                  hasMore={true}
+                  style={{overflow: 'visible'}}
+                  // loader={<h4>Loading...</h4>}
+                >
                 <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
                   {
-                    finalDeals.map((deal, index) => {
+                    values.deals.map((deal, index) => {
                       return (
                         <Fragment key={deal.id}>
                           <GridItem xs={12} sm={4} md={4}>
@@ -331,12 +326,22 @@ export default function EventCardListLand(props) {
                     })
                   }
                 </GridContainer>
+                <Button color="primary" variant='outlined' onClick={() =>loginWithRedirect({})}>Sign in to view more</Button>
+                </InfiniteScroll>
               )
             },
             {
               tabName: "Events",
               tabIcon: DateRangeIcon,
               tabContent: (
+                <InfiniteScroll
+                  dataLength={values.events.length} //This is important field to render the next data
+                  next={loadMore}
+                  hasMore={true}
+                  style={{overflow: 'visible'}}
+
+                  // loader={<h4>Loading...</h4>}
+                >
                 <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
                   {
                     finalEvents.map((event, index) => {
@@ -360,6 +365,9 @@ export default function EventCardListLand(props) {
                     })
                   }
                 </GridContainer>
+                <Button color="primary" variant='outlined' onClick={() =>loginWithRedirect({})}>Sign in to view more</Button>
+
+                </InfiniteScroll>
               )
             }
           ]}

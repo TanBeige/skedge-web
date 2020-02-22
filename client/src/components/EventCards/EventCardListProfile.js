@@ -8,13 +8,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import ProfileListFuture from './ProfileListFuture.js';
-import FutureContainer from './HomeEventList/FutureContainer.js';
 
 import * as Scroll from 'react-scroll';
 
 
 import {
-    QUERY_FILTERED_EVENT,
     QUERY_PROFILE_EVENTS
 } from "../../EventQueries/EventQueries";
 

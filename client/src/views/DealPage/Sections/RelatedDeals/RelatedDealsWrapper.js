@@ -64,7 +64,7 @@ export default function RelatedDealsWrapper(props) {
             console.error(error);
         })
         
-    }, [])
+    }, [props.currentDealId])
 
     // Formatting the top date
     let formatDate = props.is_recurring ? moment(getNextDate(props.weekday)) : moment(dealDate);

@@ -7,7 +7,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
-import SearchIcon from '@material-ui/icons/Search';
+// import SearchIcon from '@material-ui/icons/Search';
 import {
     USER_SEARCH
 } from 'EventQueries/EventQueries.js';

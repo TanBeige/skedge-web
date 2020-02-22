@@ -494,7 +494,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
     // Rendering Card
     return(
       <ThemeProvider theme={theme}>
-        <Grow in={true}>
+        {/* <Grow in={true}> */}
           <Card style={{border: "2px solid darkgrey", marginTop: 5}} raised>  
             {/* <CardHeader image style={{marginBottom: -30}}> */}
             <div style={{margin: 'auto'}}>
@@ -597,7 +597,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
                 </div>
               </CardFooter>
           </Card>
-        </Grow>
+        {/* </Grow> */}
       </ThemeProvider>
     )
 }

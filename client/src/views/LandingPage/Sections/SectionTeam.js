@@ -36,7 +36,7 @@ export default function SectionTeam({client}) {
     category: "",
     city: "Tallahassee",
     state: "Florida",
-    limit: 50,
+    limit: 10,
     date: new Date(),
     weekday: new Date().getDay()
   }
@@ -45,7 +45,7 @@ export default function SectionTeam({client}) {
     <div className={classes.section} style={{padding: '10px 10px 0px 10px'}}>
       {/* <img style={{margin: 5}} height={64} width={64} src={require('assets/img/logoheader.jpg')} /> */}
       {/* <h2 style={{margin:  0, padding: 0, color: "#02C39A"}}><PlayForWorkIcon fontSize='large' style={{fontSize: 50}}/></h2>       */}
-      <GridContainer style={{padding: 0, margin: '-45px 0 0 0'}}>
+      {/* <GridContainer style={{padding: 0, margin: '-45px 0 0 0'}}> */}
         {/* <GridItem xs={12} sm={12} md={12} style={{paddingLeft: 0, paddingRight: 0}} > */}
           {/* <Card profile plain className={classes.card3} style={{marginBottom: 0}}> */}
             <LandingList
@@ -56,7 +56,7 @@ export default function SectionTeam({client}) {
             />
           {/* </Card> */}
         {/* </GridItem> */}
-      </GridContainer>
+      {/* </GridContainer> */}
     </div>
   );
 }

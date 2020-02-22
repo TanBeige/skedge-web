@@ -5,7 +5,10 @@ import { Redirect } from 'react-router-dom'
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from '@material-ui/styles';
+
+
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 // core components
@@ -43,6 +46,13 @@ import ReactGA from 'react-ga';
 
 const useStyles = makeStyles(landingPageStyle);
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#02C39A"
+    }
+  },
+});
 
 
 export default function LandingPage(props) {
@@ -112,6 +122,7 @@ export default function LandingPage(props) {
   }
 
   return (
+    <ThemeProvider theme={theme}>
     <div>
       <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={50} width={50} src={require('assets/img/logoheader.png')} />
       <div style={{position: 'absolute', zIndex: 10, top: 15, right: 25}} >
@@ -193,5 +204,6 @@ export default function LandingPage(props) {
         }
       />
     </div>
+    </ThemeProvider>
   );
 }
