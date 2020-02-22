@@ -71,7 +71,7 @@ export default function RelatedEventsWrapper(props) {
     return(
         <div className="RelatedWrapper">
             <hr style={{margin: '0 5px'}}/>
-            <h4 style={{margin: '10px 5px 5px 5px'}}>More deals this {formatDate}</h4>
+            <h4 style={{margin: '10px 5px 5px 5px'}}>More events this {formatDate}</h4>
             <GridContainer>
                 {
                     events.map(event => {
