@@ -24,7 +24,7 @@ export default function PageDescription({description, web_url, category, point_1
                 <Collapse in={expandDetails} collapsedHeight='3em' timeout="auto">
                 <div style={{margin: '0px 0.5em'}}>
                     
-                    <p className={expandDetails ?  "NotFadingOut": "FadingOut"} style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
+                    <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
                     <b>Details: </b>
                         {description}
                     </p>

@@ -37,11 +37,12 @@ export default function CustomTabs(props) {
   });
   return (
     <Card plain={plainTabs}>
-      <CardHeader color={headerColor} plain={plainTabs}>
+      <CardHeader style={{padding: 5}} color={headerColor} plain={plainTabs}>
         {title !== undefined ? (
           <div className={cardTitle}>{"title"}</div>
         ) : null}
         <Tabs
+          centered
           classes={{
             root: classes.customTabsRoot,
             flexContainer: tabsContainer,
@@ -76,19 +77,7 @@ export default function CustomTabs(props) {
           })}
         </Tabs>
       </CardHeader>
-      {/* <CardHeader
-          classes={{
-            root: cardHeader,
-            title: cardTitle,
-            content: classes.cardHeaderContent,
-            action: classes.cardHeaderAction
-          }}
-          title={title}
-          action={
-
-          }
-        /> */}
-      <CardBody>
+      <CardBody style={{padding: 0}}>
         {tabs.map((prop, key) => {
           if (key === value) {
             return <div key={key}>{prop.tabContent}</div>;

@@ -18,7 +18,6 @@ const email = require('./routes/Email');
 
 var app = express();
 var env = process.env.NODE_ENV || 'development';
-console.log(env)
 
 
 //Redirect to https://

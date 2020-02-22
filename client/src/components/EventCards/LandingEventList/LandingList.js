@@ -10,14 +10,19 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import LandingFutureContainer from './LandingFutureContainer.js';
 import { Instagram } from 'react-content-loader'
-
 import LoadCardList from '../LoadCardList.js';
-
 import * as Scroll from 'react-scroll';
-
-
 import { throttle } from 'lodash';
 
+// @material-ui/core components
+import { makeStyles } from "@material-ui/core/styles";
+// @material-ui/icons
+import Face from "@material-ui/icons/Face";
+import Chat from "@material-ui/icons/Chat";
+import LocalAtmIcon from '@material-ui/icons/LocalAtm';
+import DateRangeIcon from '@material-ui/icons/DateRange';
+// core components
+import CustomTabs from "components/CustomTabs/CustomTabs.js";
 
 //const MyInstagramLoader = () => <Instagram />
 
@@ -33,6 +38,14 @@ const dateHeaderStyle = {
   borderTopLeftRadius: 8,
   borderTopRightRadius: 8,
 }
+
+const styles = {
+  textCenter: {
+    textAlign: "center"
+  }
+};
+
+const useStyles = makeStyles(styles);
 
 // Formatting Date Filter
 Date.prototype.formatDate = function() {
@@ -59,6 +72,8 @@ export default function EventCardListLand(props) {
 
   let ScrollLink = Scroll.Link;
   let Element = Scroll.Element;
+
+  const classes = useStyles();
 
 
   const [values, setValues] = useState({
@@ -219,71 +234,136 @@ export default function EventCardListLand(props) {
     }
 
 
-    return (
-      <div id='scrollableDiv' key={currentKey}>
+    // return (
+    //   <div id='scrollableDiv' key={currentKey}>
+    //       <div style={{width: '100%'}}>
+    //         <h3 style={{margin: 'auto', maxWidth: 350, backgroundColor: 'white', borderRadius: 2, marginTop: '2em',zIndex: 0, fontWeight: '300', fontFamily: `'Helvetica', 'Arial'`,fontSize: '1.5em'}}  >Deals in Tallahassee, FL.</h3>
+    //       </div>
+    //       <hr />
+    //       <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
+    //         {
+    //           finalDeals.map((deal, index) => {
+    //             return (
+    //               <Fragment key={deal.id}>
+    //                 <GridItem xs={12} sm={3} md={3}>
+    //                   <DealCard 
+    //                     itemInfo={deal} 
+    //                     listType={"landing"}
+    //                     client={props.client}
+    //                     userId={props.userId}
+    //                     currentDate={props.filter.date}
+    //                   />
+    //                 </GridItem>
+    //                 {
+    //                   // insertAd(index)   //Add later when Skedge.com can get ads
+    //                 }
+    //               </Fragment>
+    //             )
+    //           })
+    //         }
+    //       </GridContainer>
 
-          <div style={{width: '100%'}}>
-                <h3 style={{margin: 'auto', maxWidth: 350, backgroundColor: 'white', borderRadius: 2, marginTop: '2em',zIndex: 0, fontWeight: '300', fontFamily: `'Helvetica', 'Arial'`,fontSize: '1.5em'}}  >Deals in Tallahassee, FL.</h3>
-            </div>
-            <hr />
-            <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
-                
-                {
-                    finalDeals.map((deal, index) => {
-                        return (
-                        <Fragment key={deal.id}>
-                            <GridItem xs={12} sm={3} md={3}>
-                            <DealCard 
-                                itemInfo={deal} 
-                                listType={"landing"}
-                                client={props.client}
-                                userId={props.userId}
-                                currentDate={props.filter.date}
-                            />
-                            </GridItem>
-                            {
-                            // insertAd(index)   //Add later when Skedge.com can get ads
-                            }
-                        </Fragment>
-                        )
-                    })
-                }
-            </GridContainer>
-
-            <div style={{width: '100%'}}>
-                <h3 style={{margin: 'auto', maxWidth: 350, backgroundColor: 'white', borderRadius: 2, marginTop: '2em',zIndex: 0, fontWeight: '300', fontFamily: `'Helvetica', 'Arial'`,fontSize: '1.5em'}}  >Events in Tallahassee, FL.</h3>
-            </div>
-            <hr />
-            <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
-                
-                {
-                    finalEvents.map((event, index) => {
-                        return (
-                        <Fragment key={event.id}>
-                            <GridItem xs={12} sm={3} md={3}>
-                            <EventCard 
-                                event={event} 
-                                listType={"landing"}
-                                client={props.client}
-                                userId={props.userId}
-                                filter={props.filter}
-                                currentDate={props.filter.date}
-                            />
-                            </GridItem>
-                            {
-                            // insertAd(index)   //Add later when Skedge.com can get ads
-                            }
-                        </Fragment>
-                        )
-                    })
-                }
-            </GridContainer>
+    //       <div style={{width: '100%'}}>
+    //           <h3 style={{margin: 'auto', maxWidth: 350, backgroundColor: 'white', borderRadius: 2, marginTop: '2em',zIndex: 0, fontWeight: '300', fontFamily: `'Helvetica', 'Arial'`,fontSize: '1.5em'}}  >Events in Tallahassee, FL.</h3>
+    //       </div>
+    //       <hr />
+    //       <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
+    //         {
+    //           finalEvents.map((event, index) => {
+    //             return (
+    //               <Fragment key={event.id}>
+    //                 <GridItem xs={12} sm={3} md={3}>
+    //                   <EventCard 
+    //                     event={event} 
+    //                     listType={"landing"}
+    //                     client={props.client}
+    //                     userId={props.userId}
+    //                     filter={props.filter}
+    //                     currentDate={props.filter.date}
+    //                   />
+    //                 </GridItem>
+    //                 {
+    //                   // insertAd(index)   //Add later when Skedge.com can get ads
+    //                 }
+    //               </Fragment>
+    //             )
+    //           })
+    //         }
+    //       </GridContainer>
 
             
-        {/* {
-            values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
-        }
-        {futureEvents} */}
+    //     {/* {
+    //         values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
+    //     }
+    //     {futureEvents} */}
+    //   </div>
+    // )
+
+    return(
+      <div>
+        <CustomTabs
+          headerColor="primary"
+          plainTabs={true}
+          tabs={[
+            {
+              tabName: "Deals",
+              tabIcon: LocalAtmIcon,
+              tabContent: (
+                <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
+                  {
+                    finalDeals.map((deal, index) => {
+                      return (
+                        <Fragment key={deal.id}>
+                          <GridItem xs={12} sm={4} md={4}>
+                            <DealCard 
+                              itemInfo={deal} 
+                              listType={"landing"}
+                              client={props.client}
+                              userId={props.userId}
+                              currentDate={props.filter.date}
+                            />
+                          </GridItem>
+                          {
+                            // insertAd(index)   //Add later when Skedge.com can get ads
+                          }
+                        </Fragment>
+                      )
+                    })
+                  }
+                </GridContainer>
+              )
+            },
+            {
+              tabName: "Events",
+              tabIcon: DateRangeIcon,
+              tabContent: (
+                <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
+                  {
+                    finalEvents.map((event, index) => {
+                      return (
+                        <Fragment key={event.id}>
+                          <GridItem xs={12} sm={4} md={4}>
+                            <EventCard 
+                              event={event} 
+                              listType={"landing"}
+                              client={props.client}
+                              userId={props.userId}
+                              filter={props.filter}
+                              currentDate={props.filter.date}
+                            />
+                          </GridItem>
+                          {
+                            // insertAd(index)   //Add later when Skedge.com can get ads
+                          }
+                        </Fragment>
+                      )
+                    })
+                  }
+                </GridContainer>
+              )
+            }
+          ]}
+        />
       </div>
     )
 }

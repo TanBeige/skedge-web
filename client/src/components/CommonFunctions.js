@@ -66,43 +66,43 @@ const extractDays = (weekday) => {
     // Setting Display Variables    
     let displayDate = "Every ";
     if(weekday.includes("1")) {
-        displayDate += "Mon.";
+        displayDate += "M";
     }
     if(weekday.includes("2")) {
         if(displayDate.length > 6) {
-            displayDate += " "
+            displayDate += "-"
         }
-        displayDate += "Tues.";
+        displayDate += "T";
     }
     if(weekday.includes("3")) {
         if(displayDate.length > 6) {
-            displayDate += " "
+            displayDate += "-"
         }
-        displayDate += "Wed.";
+        displayDate += "W";
     }
     if(weekday.includes("4")) {
         if(displayDate.length > 6) {
-            displayDate += " "
+            displayDate += "-"
         }
-    displayDate += "Thur.";
+    displayDate += "TH";
     }
     if(weekday.includes("5")) {
         if(displayDate.length > 6) {
-            displayDate += " "
+            displayDate += "-"
         }
-        displayDate += "Fri.";
+        displayDate += "F";
     }
     if(weekday.includes("6")) {
         if(displayDate.length > 6) {
-            displayDate += " "
+            displayDate += "-"
         }
-        displayDate += "Sat.";
+        displayDate += "SAT";
     }
     if(weekday.includes("0")) {
         if(displayDate.length > 6) {
-            displayDate += " "
+            displayDate += "-"
         }
-        displayDate += "Sun.";
+        displayDate += "SUN";
     }
 
     return displayDate;

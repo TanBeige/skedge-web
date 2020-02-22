@@ -6,10 +6,10 @@
     overflow: hidden;
     color: rgb(73,73,73)
 }
-.ListItem:hover {
+/* .ListItem:hover {
     background-color: #02C39A;
     color: white;
-}
+} */
 
 .RelatedImage {
     width: 50%;

@@ -34,7 +34,7 @@ export default function PageDateTime({start_date, start_time, end_time, is_recur
         formattedDate = extractDays(weekday);
     }
     else {
-        formattedDate = moment(start_date, "YYYY-MM-DD").format("MMMM Do, YYYY")
+        formattedDate = moment(start_date, "YYYY-MM-DD").format("MMM D, YYYY")
     }
 
     

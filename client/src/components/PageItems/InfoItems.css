@@ -44,7 +44,7 @@ button.buttonMargin {
     margin: 0 1em;
 }
 
-.FadingOut {
+/* .FadingOut {
     background: -webkit-linear-gradient(black 12vh, #eee 14vh);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -53,7 +53,7 @@ button.buttonMargin {
     background: -webkit-linear-gradient(black, black);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
+} */
 
 .ItemPlace {
     height: 13vh;

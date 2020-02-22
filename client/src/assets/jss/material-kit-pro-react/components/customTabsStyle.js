@@ -42,12 +42,12 @@ const customTabsStyle = {
     borderRadius: "3px",
     opacity: "1",
     height: "auto",
-    padding: "10px 15px",
+    // padding: "10px 15px",
     display: "block",
     minHeight: "unset",
     fontWeight: "500",
     fontSize: "12px",
-    lineHeight: "24px"
+    // lineHeight: "24px"
   },
   customTabWrapper: {
     display: "inline-block",
