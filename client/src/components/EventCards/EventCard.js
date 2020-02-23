@@ -491,6 +491,8 @@ export default function EventCard({event, client, userId, currentDate, listType}
       border: '1px solid lightgray'
     }
 
+    const eventUrl = `/events/${event.id}-${event.name.replace(/\s/g, '-')}`;
+    
     // Rendering Card
     return(
       <ThemeProvider theme={theme}>
@@ -502,7 +504,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
             </div>
 
             <div style={coverImgStyle}>
-              <Link to={`/events/${event.id}`}>
+              <Link to={eventUrl}>
                 <LoadImage className={classes.imgCardTop} color='white' src={values.image_url} aspectRatio={2/1}/>
               </Link>
 
@@ -540,7 +542,7 @@ export default function EventCard({event, client, userId, currentDate, listType}
               
                 {/* {followFeedInfo} */}
 
-                <Link to={`/events/${event.id}`}>
+                <Link to={eventUrl}>
                   <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center", fontSize: '1.5em'}}>{values.name}</h3>
                 </Link>
                 {/* <EventMomentsWrapper 

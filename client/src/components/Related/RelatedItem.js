@@ -9,6 +9,11 @@ cloudinary.config({
 });
 require("./Related.css")
 export default function RelatedItem({item, type}) {
+
+    const eventUrl = `/events/${item.id}-${item.name.replace(/\s/g, '-')}`;
+    const dealUrl = `/deals/${item.id}-${item.name.replace(/\s/g, '-')}`;
+
+
     //Get Cloudinary Image
     let imageUrl;
     if(type==="event"){
@@ -34,8 +39,9 @@ export default function RelatedItem({item, type}) {
         formattedDescription = `${item.location_name} | ${formattedStartTime} ${item.savings != 0 ? `| ${item.price}` : ""}`
 
     }
+    
     return (
-        <Link to={type === "event" ? `/events/${item.id}` : `/deals/${item.id}`}>
+        <Link to={type === "event" ? eventUrl : dealUrl}>
             <div className='ListItem'>
                 <div className='RelatedImage' >
                     <LoadImage 

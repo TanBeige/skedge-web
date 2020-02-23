@@ -257,11 +257,9 @@ export default function EventCard({event, client, userId, currentDate, listType,
             {/* </CardHeader> */}
 
               <CardBody style={{padding: '0px 15px'}}>
-              
-
-                <Link to={`/events/${event.id}`}>
+                {/* <Link to={`/events/${event.id}`}> */}
                   <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center", fontSize: '1.5em'}}>{values.name}</h3>
-                </Link>
+                {/* </Link> */}
                 {/* <EventMomentsWrapper 
                   eventId={event.id}
                   cover={values.image_url}

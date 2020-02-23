@@ -159,9 +159,6 @@ export default function EventCardListLand(props) {
       }
     }, [props.filter])
 
-    useEffect(() => {
-      console.log(values.deals)
-    }, [values.events, values.deals])
 
 
 
@@ -201,7 +198,6 @@ export default function EventCardListLand(props) {
     const loadMore = () => {
       const { client } = props;
       const { filter } = props;
-      console.log("offfset:", values.offset)
 
       client
         .query({
@@ -366,7 +362,6 @@ export default function EventCardListLand(props) {
                   }
                 </GridContainer>
                 <Button color="primary" variant='outlined' onClick={() =>loginWithRedirect({})}>Sign in to view more</Button>
-
                 </InfiniteScroll>
               )
             }

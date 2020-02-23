@@ -165,6 +165,8 @@ export default function EventInviteItem(props) {
 
     const inviterPicture = cloudinary.url(props.eventItem.inviter.picture, {secure: true, height: 32, width: 32, crop: "fill" ,fetch_format: "auto", quality: "auto"})
 
+    const eventUrl = `/events/${props.eventItem.event.id}-${props.eventItem.event.name.replace(/\s/g, '-')}`;
+
     if(!props.eventItem.event) {
         return "";
     }
@@ -178,7 +180,7 @@ export default function EventInviteItem(props) {
                 }}
                 >
                     <CardBody background style={{paddingTop: '10px', paddingBottom: '10px', minHeight: '100px'}}>
-                        <Link to={`/events/${props.eventItem.event.id}`}>
+                        <Link to={eventUrl}>
                             <h3 className={classes.cardTitleWhite}>
                                 {props.eventItem.event.name}
                             </h3>

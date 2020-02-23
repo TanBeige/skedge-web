@@ -68,13 +68,12 @@ export default function RelatedDealsWrapper(props) {
 
     // Formatting the top date
     let formatDate = props.is_recurring ? moment(getNextDate(props.weekday)) : moment(dealDate);
-    console.log(props.start_date)
-    formatDate = formatDate.format("dddd")
+    formatDate = props.is_recurring ? formatDate.format("dddd") : formatDate.format("MMMM Do") 
 
     return(
         <div className="RelatedWrapper">
             <hr style={{margin: '0 5px'}}/>
-            <h4 style={{margin: '10px 5px 5px 5px'}}>More deals this {formatDate}</h4>
+            <h4 style={{margin: '10px 5px 5px 5px'}}>More deals {props.is_recurring ? `this ${formatDate}` : `on ${formatDate}`}.</h4>
             <GridContainer>
                 {
                     deals.map(deal => {

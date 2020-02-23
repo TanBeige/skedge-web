@@ -262,6 +262,8 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
   }
 
 
+  const dealUrl = `/deals/${itemInfo.id}-${itemInfo.name.replace(/\s/g, '-')}`;
+
   return(
         <ThemeProvider theme={theme}>
           {/* <Grow in={true}> */}
@@ -269,7 +271,7 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
               {/* <CardHeader image style={{marginBottom: -30}}> */}
   
               <div style={coverImgStyle}>
-                <Link to={`/deals/${itemInfo.id}`}>
+                <Link to={dealUrl}>
                   <LoadImage className={classes.imgCardTop} color='white' src={values.image_url} aspectRatio={2/1}/>
                 </Link>
   
@@ -301,7 +303,7 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
                 
                   {/* {followFeedInfo} */}
   
-                  <Link to={`/deals/${itemInfo.id}`}>
+                  <Link to={dealUrl}>
                     <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center", fontSize: '1.5em'}}>{values.name}</h3>
                   </Link>
                   {/* <EventMomentsWrapper 

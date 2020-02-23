@@ -353,7 +353,9 @@ export default function DealInfo(props) {
                   onScreen: false
                 }
             });
-            let path = `/deals/${data.data.insert_deals.returning[0].id}`;
+
+            const dealUrl = `/deals/${data.data.insert_deals.returning[0].id}-${data.data.insert_deals.returning[0].name.replace(/\s/g, '-')}`;
+            let path = dealUrl;
             history.push(path);
         }).catch(error => {
             props.setLoadingPage(false);

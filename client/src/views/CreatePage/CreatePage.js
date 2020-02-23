@@ -407,7 +407,8 @@ const handleCreateType = (type) => {
             onScreen: false
           }
         });
-        let path = `/events/${data.data.insert_events.returning[0].id}`;
+        const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${data.data.insert_events.returning[0].name.replace(/\s/g, '-')}`;
+        let path = eventUrl;
         props.history.push(path);
       }).catch(error => {
         console.log(error);
@@ -491,7 +492,8 @@ const handleCreateType = (type) => {
           onScreen: false
         }
       });
-      let path = `/events/${data.data.insert_events.returning[0].id}`;
+      const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${data.data.insert_events.returning[0].name.replace(/\s/g, '-')}`;
+      let path = eventUrl;
       props.history.push(path);
     }).catch(error => {
       console.log(error)

@@ -84,7 +84,10 @@ const theme = createMuiTheme({
 const useStyles = makeStyles(blogPostPageStyle);
 
 export default function DealPage(props) {
-  const dealId = parseInt(props.match.params.id);
+  const dealName = props.match.params.name;
+  const dealId = dealName.split("-")[0];
+  console.log(dealName);
+
 
   const { loading, user, isAuthenticated, loginWithRedirect, loginWithPopup} = useAuth0();
 

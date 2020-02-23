@@ -76,10 +76,14 @@ export default function NotificationListItem(props) {
         })
     })
 
+
+
     const likeNotif = () => {
+        const eventUrl = `/events/${notification.source_id}-${notification.source.name.replace(/\s/g, '-')}`;
+
         return (
             <Fragment key={notification.id}>
-                <Link to={`/events/${notification.source.id}`} className='ListLink'>
+                <Link to={eventUrl} className='ListLink'>
                     <ListItem style={notifStyle}>
                         <FavoriteIcon color='secondary' style={{position: "absolute", left: 0, top: 5, zIndex: 10}} />
                         <ListItemAvatar onClick={redirectFunction}>
@@ -115,9 +119,11 @@ export default function NotificationListItem(props) {
     }
 
     const repostNotif = () => {
+        const eventUrl = `/events/${notification.source_id}-${notification.source.name.replace(/\s/g, '-')}`;
+
         return (
             <Fragment key={notification.id}>
-                <Link to={`/events/${notification.source.id}`} className='ListLink'>
+                <Link to={eventUrl} className='ListLink'>
                     <ListItem style={notifStyle}>
                         <RenewIcon color='primary' style={{position: "absolute", left: 0, top: 5, zIndex: 10}} />
                         <ListItemAvatar onClick={redirectFunction}>

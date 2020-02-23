@@ -66,12 +66,12 @@ export default function RelatedEventsWrapper(props) {
     // Formatting the top date
     const moment = require('moment');
     let formatDate = props.is_recurring ? moment(getNextDate(props.weekday)) : moment(eventDate);
-    formatDate = formatDate.format("dddd")
+    formatDate = props.is_recurring ? formatDate.format("dddd") : formatDate.format("MMMM Do") 
 
     return(
         <div className="RelatedWrapper">
             <hr style={{margin: '0 5px'}}/>
-            <h4 style={{margin: '10px 5px 5px 5px'}}>More events this {formatDate}</h4>
+            <h4 style={{margin: '10px 5px 5px 5px'}}>More events {props.is_recurring ? `this ${formatDate}` : `on ${formatDate}`}.</h4>
             <GridContainer>
                 {
                     events.map(event => {
