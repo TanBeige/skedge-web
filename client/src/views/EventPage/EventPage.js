@@ -79,7 +79,7 @@ require('views/EventPage/EventPage.css');
 
 export default function EventPage(props) {
   const eventName = props.match.params.name;
-  const eventId = eventName.split("-")[0];
+  const eventId = parseInt(eventName.split("-")[0]);
   let isMounted = true;
 
   const { loading, user, isAuthenticated, loginWithRedirect, loginWithPopup} = useAuth0();

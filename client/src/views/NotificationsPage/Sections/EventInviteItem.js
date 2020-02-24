@@ -166,7 +166,7 @@ export default function EventInviteItem(props) {
     const inviterPicture = cloudinary.url(props.eventItem.inviter.picture, {secure: true, height: 32, width: 32, crop: "fill" ,fetch_format: "auto", quality: "auto"})
     
     const spacesRemoved = props.eventItem.event.name.replace(/\s/g, '-');
-    const eventUrl = `/events/${props.eventItem.event.id}-${encodeURI(spacesRemoved)}`;
+    const eventUrl = `/events/${props.eventItem.event.id}-${encodeURIComponent(spacesRemoved)}`;
 
     if(!props.eventItem.event) {
         return "";

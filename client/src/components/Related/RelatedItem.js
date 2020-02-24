@@ -11,8 +11,8 @@ require("./Related.css")
 export default function RelatedItem({item, type}) {
 
     const spacesRemoved = item.name.replace(/\s/g, '-');
-    const eventUrl = `/events/${item.id}-${encodeURI(spacesRemoved)}`;
-    const dealUrl = `/deals/${item.id}-${encodeURI(spacesRemoved)}`;
+    const eventUrl = `/events/${item.id}-${encodeURIComponent(spacesRemoved)}`;
+    const dealUrl = `/deals/${item.id}-${encodeURIComponent(spacesRemoved)}`;
 
 
     //Get Cloudinary Image

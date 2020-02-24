@@ -37,7 +37,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const useStyles = makeStyles(style);
 
 
-export default function DeleteEventButton(props) {
+export default function DeleteDealButton(props) {
     const classes = useStyles();
     const [isEditing, setIsEditing] = React.useState(false);
 
@@ -94,7 +94,7 @@ export default function DeleteEventButton(props) {
 
                 <div style={{textAlign: 'center'}}>
                     <h3>Are you sure you want to delete this deal?</h3>
-                    <Button color='danger' onClick={props.handleDeleteEvent}>
+                    <Button color='danger' onClick={props.handleDeleteDeal}>
                         Yes.
                     </Button>
                 </div>

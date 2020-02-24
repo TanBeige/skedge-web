@@ -85,7 +85,7 @@ const useStyles = makeStyles(blogPostPageStyle);
 
 export default function DealPage(props) {
   const dealName = props.match.params.name;
-  const dealId = dealName.split("-")[0];
+  const dealId = parseInt(dealName.split("-")[0], 10);
   console.log(dealName);
 
 

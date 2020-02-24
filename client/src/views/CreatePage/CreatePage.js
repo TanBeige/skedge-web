@@ -408,7 +408,7 @@ const handleCreateType = (type) => {
         });
 
         const spacesRemoved = data.data.insert_events.returning[0].name.replace(/\s/g, '-');
-        const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${encodeURI(spacesRemoved)}`;
+        const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${encodeURIComponent(spacesRemoved)}`;
         let path = eventUrl;
         props.history.push(path);
       }).catch(error => {
@@ -494,7 +494,7 @@ const handleCreateType = (type) => {
       });
 
       const spacesRemoved = data.data.insert_events.returning[0].name.replace(/\s/g, '-');
-      const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${encodeURI(spacesRemoved)}`;
+      const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${encodeURIComponent(spacesRemoved)}`;
       let path = eventUrl;
       props.history.push(path);
     }).catch(error => {

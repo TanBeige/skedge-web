@@ -127,7 +127,7 @@ export default function DealInfoSection({ dealInfo, client }) {
         state={dealInfo.state} 
         longitude={dealInfo.longitude} 
         latitude={dealInfo.latitude}
-        event_id={dealInfo.event_id} 
+        event_id={dealInfo.deal_id} 
         client={client} 
         pageType="deals"
       />
