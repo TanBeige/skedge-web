@@ -42,13 +42,14 @@ export default function RelatedEventsWrapper(props) {
         let varDate = getNextDate(props.weekday);
         let varDay = varDate.getDay();
         varDate = moment(varDate).format("YYYY-MM-DD");
+        console.log(varDate, varDay)
         
         props.client.query({
             query: QUERY_RELATED_EVENTS,
             variables: {
                 eventId: props.currentEventId,
-                city: props.city,
-                state: props.state,
+                // city: props.city,
+                // state: props.state,
                 date: props.is_recurring ? varDate : props.start_date,
                 weekday: props.is_recurring ? `%${varDay}%` : `%${eventDate.getDay()}%`
             }
@@ -92,7 +93,6 @@ export default function RelatedEventsWrapper(props) {
 
 function getNextDate(weekday) {
     // Set Variables
-    console.log(weekday);
     if(weekday == ""){
         return new Date()
     }
@@ -111,7 +111,6 @@ function getNextDate(weekday) {
     }
     // Below code runs if above isn't returned
     day = today.getDay();
-    console.log(day);
 
     // let dayDistance = day < numbers[0] ? numbers[0] - day : ((7 - day) + numbers[0]);
     let closestDay = new Date();

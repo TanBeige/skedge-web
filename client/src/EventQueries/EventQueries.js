@@ -1364,7 +1364,7 @@ mutation insert_events($objects: [events_insert_input!]!) {
 `;
 
 const MUTATION_EVENT_UPDATE = gql`
-mutation update_event($eventId: Int!, $eventDateId: Int, $name: String, $locationName: String, $street: String, $city: String, $state: String, $startDate: date, $endDate: date, $isRecurring: Boolean, $weekday: String, $startTime: time, $endTime: time, $description: String, $category: String, $coverPic: Int){
+mutation update_event($eventId: Int!, $eventDateId: Int, $name: String, $locationName: String, $street: String, $city: String, $state: String, $startDate: date, $endDate: date, $isRecurring: Boolean, $weekday: String, $startTime: time, $endTime: time, $description: String, $category: String, $coverPic: Int, $webUrl: String, $price: money){
   update_events(
     where: {id: {_eq: $eventId}}
     _set: {
@@ -1377,7 +1377,10 @@ mutation update_event($eventId: Int!, $eventDateId: Int, $name: String, $locatio
       end_time: $endTime,
       description: $description,
       category: $category,
-      cover_pic: $coverPic
+      cover_pic: $coverPic,
+
+      web_url: $webUrl,
+      price: $price
     }
   ) {
     affected_rows

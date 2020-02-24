@@ -142,9 +142,11 @@ export default function EditDealButton(props) {
     };
 
     const handleDayClick = (day) => {
+        let tempDay = moment(day).format("YYYY-MM-DD")
+
         setDealInfo({
             ...dealInfo,
-            start_date: day
+            start_date: tempDay
         })
     }
   
@@ -168,9 +170,11 @@ export default function EditDealButton(props) {
 
 
     const handleEndDateClick = (day) => {
+        let tempDay = moment(day).format("YYYY-MM-DD")
+
         setDealInfo({
             ...dealInfo,
-            end_date: day
+            end_date: tempDay
         })
     }
 

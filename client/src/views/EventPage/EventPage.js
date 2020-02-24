@@ -347,6 +347,9 @@ export default function EventPage(props) {
 
         description: newInfo.description,
         category: newInfo.category,
+        
+        webUrl: newInfo.web_url,
+        price: newInfo.price
       }
     }).then((data)=> {
       console.log("Success!")
@@ -374,7 +377,7 @@ export default function EventPage(props) {
         cover_url: response ? cloudinary.url(response.data.id, {secure: true, height: window.innerHeight, crop: "scale", fetch_format: "auto", quality: "auto"}) : values.cover_url,
 
         webUrl: newInfo.web_url,
-        savings: newInfo.savings
+        price: newInfo.price
       })
     }
   }

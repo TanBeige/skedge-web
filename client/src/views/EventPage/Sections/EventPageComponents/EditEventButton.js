@@ -141,9 +141,10 @@ export default function EditEventButton(props) {
     };
 
     const handleDayClick = (day) => {
+        let tempDay = moment(day).format("YYYY-MM-DD")
         setEventInfo({
             ...eventInfo,
-            start_date: day
+            start_date: tempDay
         })
     }
   
@@ -167,9 +168,11 @@ export default function EditEventButton(props) {
 
 
     const handleEndDateClick = (day) => {
+        let tempDay = moment(day).format("YYYY-MM-DD")
+
         setEventInfo({
             ...eventInfo,
-            end_date: day
+            end_date: tempDay
         })
     }
 

@@ -50,8 +50,8 @@ export default function RelatedDealsWrapper(props) {
             query: QUERY_RELATED_DEALS,
             variables: {
                 dealId: props.currentDealId,
-                city: props.city,
-                state: props.state,
+                // city: props.city,
+                // state: props.state,
                 date: props.is_recurring ? varDate : props.start_date,
                 weekday: props.is_recurring ? `%${varDay}%` : `%${dealDate.getDay()}%`
             }
