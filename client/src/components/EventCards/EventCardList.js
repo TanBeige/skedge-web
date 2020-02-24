@@ -57,13 +57,14 @@ export default function EventCardList(props) {
       return (
         <div style={{textAlign: 'center', marginTop: '3em'}}>
           <h3>
-            Log in to view feeds.
+            Sign in to view feeds.
+            <br />
             <Button
                 color="primary"
                 // style={{color: 'black'}}
                 onClick={handleLogin}
             >
-                Login or Sign Up
+                Sign in
             </Button>
           </h3>
         </div>

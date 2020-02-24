@@ -21,10 +21,12 @@ import styles from "assets/jss/material-kit-pro-react/components/customTabsStyle
 const useStyles = makeStyles(styles);
 
 export default function CustomTabs(props) {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(props.lastTab);
   const handleChange = (event, value) => {
     setValue(value);
+    props.setLastTab(value);
   };
+  console.log("landing value: ", value);
   const { headerColor, title, tabs, rtlActive, plainTabs } = props;
   const classes = useStyles();
   const cardTitle = classNames({

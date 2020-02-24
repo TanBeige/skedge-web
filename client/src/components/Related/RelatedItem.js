@@ -10,8 +10,9 @@ cloudinary.config({
 require("./Related.css")
 export default function RelatedItem({item, type}) {
 
-    const eventUrl = `/events/${item.id}-${encodeURI(item.name)}`;
-    const dealUrl = `/deals/${item.id}-${encodeURI(item.name)}`;
+    const spacesRemoved = item.name.replace(/\s/g, '-');
+    const eventUrl = `/events/${item.id}-${encodeURI(spacesRemoved)}`;
+    const dealUrl = `/deals/${item.id}-${encodeURI(spacesRemoved)}`;
 
 
     //Get Cloudinary Image

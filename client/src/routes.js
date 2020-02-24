@@ -15,13 +15,9 @@
 
 */
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
-import ErrorBoundary from  './components/Debug/ErrorBoundary'
 import { useAuth0 } from './Authorization/react-auth0-wrapper';
-import gql from 'graphql-tag';
 
 import "assets/scss/material-kit-pro-react.scss?v=1.8.0";
 
@@ -45,19 +41,13 @@ import TermsConditionsPage from "views/TermsConditionsPage/TermsConditionsPage.j
 import LoginPage from "views/LoginPage/LoginPage.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import NotificationsPage from "views/NotificationsPage/NotificationsPage.js";
-import SignupPage from "views/SignupPage/SignupPage.js";
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
-import LoadingPage from "views/LoadingPage/LoadingPage.js";
 import SearchPage from 'views/SearchPage/SearchPage.js';
 
 import CallbackPage from "views/CallbackPage/CallbackPage.js";
 import BottomNav from "components/BottomNav/BottomNav.js";
 
 import hist from "./utils/history";
-
-
-//For Google Analytics
-import ReactGA from 'react-ga';
 
 require('./SkedgeStyle.css')
 // var hist = createBrowserHistory();

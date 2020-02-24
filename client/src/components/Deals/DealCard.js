@@ -262,7 +262,8 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
   }
 
 
-  const dealUrl = `/deals/${itemInfo.id}-${encodeURI(itemInfo.name)}`;
+  const spacesRemoved = itemInfo.name.replace(/\s/g, '-');
+  const dealUrl = `/deals/${itemInfo.id}-${encodeURI(spacesRemoved)}`;
 
   return(
         <ThemeProvider theme={theme}>

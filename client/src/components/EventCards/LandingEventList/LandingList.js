@@ -288,7 +288,48 @@ export default function EventCardListLand(props) {
         <CustomTabs
           headerColor="primary"
           plainTabs={true}
+          setLastTab={props.setLastTab}
+          lastTab={props.lastTab}
           tabs={[
+            {
+              tabName: "Events",
+              tabIcon: DateRangeIcon,
+              tabContent: (
+                <InfiniteScroll
+                  dataLength={values.events.length} //This is important field to render the next data
+                  next={loadMore}
+                  hasMore={true}
+                  style={{overflow: 'visible'}}
+
+                  // loader={<h4>Loading...</h4>}
+                >
+                <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
+                  {
+                    values.events.map((event, index) => {
+                      return (
+                        <Fragment key={event.id}>
+                          <GridItem xs={12} sm={4} md={4}>
+                            <EventCard 
+                              event={event} 
+                              listType={"landing"}
+                              client={props.client}
+                              userId={props.userId}
+                              filter={props.filter}
+                              currentDate={props.filter.date}
+                            />
+                          </GridItem>
+                          {
+                            // insertAd(index)   //Add later when Skedge.com can get ads
+                          }
+                        </Fragment>
+                      )
+                    })
+                  }
+                </GridContainer>
+                <Button color="primary" variant='outlined' onClick={() =>loginWithRedirect({})}>Sign in to view more</Button>
+                </InfiniteScroll>
+              )
+            },
             {
               tabName: "Deals",
               tabIcon: LocalAtmIcon,
@@ -326,45 +367,6 @@ export default function EventCardListLand(props) {
                 </InfiniteScroll>
               )
             },
-            {
-              tabName: "Events",
-              tabIcon: DateRangeIcon,
-              tabContent: (
-                <InfiniteScroll
-                  dataLength={values.events.length} //This is important field to render the next data
-                  next={loadMore}
-                  hasMore={true}
-                  style={{overflow: 'visible'}}
-
-                  // loader={<h4>Loading...</h4>}
-                >
-                <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
-                  {
-                    finalEvents.map((event, index) => {
-                      return (
-                        <Fragment key={event.id}>
-                          <GridItem xs={12} sm={4} md={4}>
-                            <EventCard 
-                              event={event} 
-                              listType={"landing"}
-                              client={props.client}
-                              userId={props.userId}
-                              filter={props.filter}
-                              currentDate={props.filter.date}
-                            />
-                          </GridItem>
-                          {
-                            // insertAd(index)   //Add later when Skedge.com can get ads
-                          }
-                        </Fragment>
-                      )
-                    })
-                  }
-                </GridContainer>
-                <Button color="primary" variant='outlined' onClick={() =>loginWithRedirect({})}>Sign in to view more</Button>
-                </InfiniteScroll>
-              )
-            }
           ]}
         />
       </div>

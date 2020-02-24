@@ -171,7 +171,7 @@ export default function LandingPage(props) {
             </Button>
           </AppearOnScroll>
           
-          <SectionTeam client={props.client}/>
+          <SectionTeam client={props.client} setLastTab={props.setLastTab} lastTab={props.lastTab}/>
           {/* <SectionWork /> */}
         </div>
       {/* </div> */}

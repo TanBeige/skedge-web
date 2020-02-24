@@ -406,7 +406,9 @@ const handleCreateType = (type) => {
             onScreen: false
           }
         });
-        const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${encodeURI(data.data.insert_events.returning[0].name)}`;
+
+        const spacesRemoved = data.data.insert_events.returning[0].name.replace(/\s/g, '-');
+        const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${encodeURI(spacesRemoved)}`;
         let path = eventUrl;
         props.history.push(path);
       }).catch(error => {
@@ -490,7 +492,9 @@ const handleCreateType = (type) => {
           onScreen: false
         }
       });
-      const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${encodeURI(data.data.insert_events.returning[0].name)}`;
+
+      const spacesRemoved = data.data.insert_events.returning[0].name.replace(/\s/g, '-');
+      const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${encodeURI(spacesRemoved)}`;
       let path = eventUrl;
       props.history.push(path);
     }).catch(error => {

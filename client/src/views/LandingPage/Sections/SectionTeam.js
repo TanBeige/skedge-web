@@ -25,7 +25,7 @@ const style = {
 
 const useStyles = makeStyles(style);
 
-export default function SectionTeam({client}) {
+export default function SectionTeam({client, setLastTab, lastTab}) {
   const classes = useStyles();
   const [futureEvents, setFutureEvents] = useState(false)
 
@@ -52,6 +52,8 @@ export default function SectionTeam({client}) {
               client={client}
               filter={filter}
               listType="landing"
+              setLastTab={setLastTab}
+              lastTab={lastTab}
               //futureEvents={setFutureEvents}
             />
           {/* </Card> */}

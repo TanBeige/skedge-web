@@ -353,7 +353,8 @@ export default function DealInfo(props) {
                 }
             });
 
-            const dealUrl = `/deals/${data.data.insert_deals.returning[0].id}-${encodeURI(data.data.insert_deals.returning[0].name)}`;
+            const spacesRemoved = data.data.insert_deals.returning[0].name.replace(/\s/g, '-');
+            const dealUrl = `/deals/${data.data.insert_deals.returning[0].id}-${encodeURI(spacesRemoved)}`;
             let path = dealUrl;
             history.push(path);
         }).catch(error => {

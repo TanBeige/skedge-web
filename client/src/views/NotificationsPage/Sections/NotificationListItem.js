@@ -79,7 +79,8 @@ export default function NotificationListItem(props) {
 
 
     const likeNotif = () => {
-        const eventUrl = `/events/${notification.source_id}-${encodeURI(notification.source.name)}`;
+        const spacesRemoved = notification.source.name.replace(/\s/g, '-');
+        const eventUrl = `/events/${notification.source_id}-${encodeURI(spacesRemoved)}`;
 
         return (
             <Fragment key={notification.id}>
@@ -119,7 +120,8 @@ export default function NotificationListItem(props) {
     }
 
     const repostNotif = () => {
-        const eventUrl = `/events/${notification.source_id}-${encodeURI(notification.source.name)}`;
+        const spacesRemoved = notification.source.name.replace(/\s/g, '-');
+        const eventUrl = `/events/${notification.source_id}-${encodeURI(spacesRemoved)}`;
 
         return (
             <Fragment key={notification.id}>

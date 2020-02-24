@@ -491,7 +491,8 @@ export default function EventCard({event, client, userId, currentDate, listType}
       border: '1px solid lightgray'
     }
 
-    const eventUrl = `/events/${event.id}-${encodeURI(event.name)}`;
+    const spacesRemoved = event.name.replace(/\s/g, '-');
+    const eventUrl = `/events/${event.id}-${encodeURI(spacesRemoved)}`;
     console.log(eventUrl)
     
     // Rendering Card
