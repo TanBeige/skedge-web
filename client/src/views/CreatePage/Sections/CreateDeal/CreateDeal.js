@@ -342,7 +342,6 @@ export default function DealInfo(props) {
             store.addNotification({
                 title: `You created the deal ${values.name}`,
                 message: `Viewing your deal right now!`,
-                //content: <div style={{backgroundColor: primaryColor}}><a href={`/events/${data.data.insert_events.returning[0].id}`}>Click here to go to event</a></div>,
                 type: "info",
                 insert: "bottom",
                 container: "bottom-center",
@@ -354,7 +353,7 @@ export default function DealInfo(props) {
                 }
             });
 
-            const dealUrl = `/deals/${data.data.insert_deals.returning[0].id}-${data.data.insert_deals.returning[0].name.replace(/\s/g, '-')}`;
+            const dealUrl = `/deals/${data.data.insert_deals.returning[0].id}-${encodeURI(data.data.insert_deals.returning[0].name)}`;
             let path = dealUrl;
             history.push(path);
         }).catch(error => {

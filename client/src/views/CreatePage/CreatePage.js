@@ -396,7 +396,6 @@ const handleCreateType = (type) => {
         store.addNotification({
           title: `You created the event ${values.name}`,
           message: `Viewing your event right now!`,
-          //content: <div style={{backgroundColor: primaryColor}}><a href={`/events/${data.data.insert_events.returning[0].id}`}>Click here to go to event</a></div>,
           type: "info",
           insert: "bottom",
           container: "bottom-center",
@@ -407,7 +406,7 @@ const handleCreateType = (type) => {
             onScreen: false
           }
         });
-        const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${data.data.insert_events.returning[0].name.replace(/\s/g, '-')}`;
+        const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${encodeURI(data.data.insert_events.returning[0].name)}`;
         let path = eventUrl;
         props.history.push(path);
       }).catch(error => {
@@ -481,7 +480,6 @@ const handleCreateType = (type) => {
       store.addNotification({
         title: `You created the event ${values.name}`,
         message: `Viewing your event right now!`,
-        //content: <div style={{backgroundColor: primaryColor}}><a href={`/events/${data.data.insert_events.returning[0].id}`}>Click here to go to event</a></div>,
         type: "info",
         insert: "bottom",
         container: "bottom-center",
@@ -492,7 +490,7 @@ const handleCreateType = (type) => {
           onScreen: false
         }
       });
-      const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${data.data.insert_events.returning[0].name.replace(/\s/g, '-')}`;
+      const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${encodeURI(data.data.insert_events.returning[0].name)}`;
       let path = eventUrl;
       props.history.push(path);
     }).catch(error => {

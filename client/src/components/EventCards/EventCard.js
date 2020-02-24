@@ -491,7 +491,8 @@ export default function EventCard({event, client, userId, currentDate, listType}
       border: '1px solid lightgray'
     }
 
-    const eventUrl = `/events/${event.id}-${event.name.replace(/\s/g, '-')}`;
+    const eventUrl = `/events/${event.id}-${encodeURI(event.name)}`;
+    console.log(eventUrl)
     
     // Rendering Card
     return(
