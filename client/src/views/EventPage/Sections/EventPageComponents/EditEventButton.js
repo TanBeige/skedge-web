@@ -136,6 +136,7 @@ export default function EditEventButton(props) {
 
     //Editing Functions
 
+
     const handleChange = name => event => {
         setEventInfo({ ...eventInfo, [name]: event.target.value });
     };

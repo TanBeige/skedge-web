@@ -1036,6 +1036,7 @@ const FETCH_EVENT_INFO = gql`
 
       event_date {
         start_date
+        end_date
         is_recurring
         weekday
       }
