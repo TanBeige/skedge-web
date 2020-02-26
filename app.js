@@ -4,7 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
-var compression = require('compression')
+var compression = require('compression');
+const prerender = require('prerender-node');
+
 
 
 var indexRouter = require('./routes/index');
@@ -18,6 +20,7 @@ const email = require('./routes/Email');
 
 var app = express();
 var env = process.env.NODE_ENV || 'development';
+const prerenderToken = process.env.PRERENDER_TOKEN;
 
 
 //Redirect to https://
@@ -54,6 +57,9 @@ app.get('*', (req, res) => {
 
 //compression
 app.use(compression())
+
+// prerender setup
+app.use(prerender.set('prerenderToken', prerenderToken));
 
 
 app.use('/', indexRouter);
