@@ -105,6 +105,7 @@ export default function EventCardListHome(props) {
           }
         })
         .then(data => {
+          console.log("feed data: ", data);
           if (data.data.events.length) {
             let mergedEvents = values.events.concat(data.data.events);
 
@@ -117,7 +118,7 @@ export default function EventCardListHome(props) {
                 ...values,
                 events: mergedEvents,
                 showNew: true,
-                eventsLength: values.events.length + data.data.events.length
+                eventsLength: values.eventsLength + data.data.events.length
               });
               setIsSearch(false)
             }
@@ -306,14 +307,13 @@ export default function EventCardListHome(props) {
           <Element name="listTop"></Element>
           <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no local events today. Try your Following Feed.</h5>
             <hr />
-            {
+            {/* {
                 values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
-            }
+            } */}
           {futureEvents}
         </div>
       )
     }
-
 
     return (
       <div id='scrollableDiv' key={currentKey}>
@@ -351,9 +351,9 @@ export default function EventCardListHome(props) {
           </GridContainer>
         </InfiniteScroll>
         <hr />
-        {
+        {/* {
             values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
-        }
+        } */}
         {futureEvents}
       </div>
     )

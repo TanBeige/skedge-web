@@ -81,7 +81,7 @@ export default function EventCardList(props) {
       return (
         <FollowingFeedList
           userId={user.sub}
-          type='following'
+          // type='following'
           {...props}  
         />)
     }
@@ -123,6 +123,7 @@ export default function EventCardList(props) {
           userId={user.sub}
           query={QUERY_DEAL_FEED}
           filter={props.filter}
+          tryTomorrow={props.tryTomorrow}
         />
       )
     }

@@ -94,7 +94,6 @@ export default function RelatedDealsWrapper(props) {
 
 function getNextDate(weekday) {
     // Set Variables
-    console.log(weekday);
     if(weekday == ""){
         return new Date()
     }

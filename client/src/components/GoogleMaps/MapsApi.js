@@ -65,7 +65,6 @@ class SimpleMap extends Component {
   }
 
   getGeocode() {
-    console.log(_isMounted);
 
     if(this.props.latitude && this.props.longitude) {
       if(_isMounted) {
@@ -76,7 +75,6 @@ class SimpleMap extends Component {
           },
           loading: false
         });
-        console.log("set loading: ", this.state.loading)
       }
       return;
     };
@@ -100,7 +98,6 @@ class SimpleMap extends Component {
             },
             loading: false
           })
-          console.log("set loading: ", this.state.loading)
         }
       },
       error => {
@@ -117,7 +114,6 @@ class SimpleMap extends Component {
     if(this.props.state !== "") {
       this.getGeocode();
     }
-    console.log(this.props.state)
   }
 
   componentWillUnmount(){

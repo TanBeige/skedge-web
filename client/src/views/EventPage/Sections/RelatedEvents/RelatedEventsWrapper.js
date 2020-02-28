@@ -42,7 +42,6 @@ export default function RelatedEventsWrapper(props) {
         let varDate = getNextDate(props.weekday);
         let varDay = varDate.getDay();
         varDate = moment(varDate).format("YYYY-MM-DD");
-        console.log(varDate, varDay)
         
         props.client.query({
             query: QUERY_RELATED_EVENTS,

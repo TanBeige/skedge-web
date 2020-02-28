@@ -162,8 +162,6 @@ const handleCreateType = (type) => {
 }
 
   const handleEventInfo = (valuesInfo) => {
-    console.log(valuesInfo)
-
     let weekdayString = createWeekdayString({
       monday: valuesInfo.monday,
       tuesday: valuesInfo.tuesday,
@@ -409,6 +407,18 @@ const handleCreateType = (type) => {
 
         const spacesRemoved = data.data.insert_events.returning[0].name.replace(/\s/g, '-');
         const eventUrl = `/events/${data.data.insert_events.returning[0].id}-${encodeURIComponent(spacesRemoved)}`;
+        //Prerender page for bots
+        // axios.get('https://api.prerender.io/recache', {
+        //   params: {
+        //     prerenderToken: process.env.PRERENDER_TOKEN,
+        //     url: `https://www.theskedge.com/${eventUrl}`
+        //   }
+        // })
+        // .then(response => {
+        //   console.log("PRERENDER: ", response)
+        // })
+        // .catch(error => console.log(error));
+
         let path = eventUrl;
         props.history.push(path);
       }).catch(error => {
@@ -519,7 +529,6 @@ const handleCreateType = (type) => {
     const userId = user.sub;
 
     //Record page view on Google analytics
-    console.log("ReactGA Called: ", window.location.pathname)
     ReactGA.initialize('UA-151937222-1');
     ReactGA.pageview(window.location.pathname)
 

@@ -57,7 +57,6 @@ export default function HomePage(props) {
 
   //Variables
   const [isEntity, setIsEntity] = useState(true);
-  console.log(props)
 
 
   //Scroll To Top of the page
@@ -158,7 +157,6 @@ export default function HomePage(props) {
       })
     }
     if(!loading) {
-      console.log("ReactGA Called: ", window.location.pathname)
       ReactGA.initialize('UA-151937222-1');
       ReactGA.pageview(window.location.pathname)
     }

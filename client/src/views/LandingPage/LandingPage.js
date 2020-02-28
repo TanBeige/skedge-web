@@ -72,7 +72,6 @@ export default function LandingPage(props) {
   });
 
   React.useEffect(() => {
-    console.log("Are We Auth?: ", isAuthenticated);
 
     if (isAuthenticated) {
       // Redirect to path they left off at

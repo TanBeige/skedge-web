@@ -190,8 +190,6 @@ export default function EventCard({event, client, userId, currentDate, listType}
     
     // Handling event likes + reposts + saves
     const handleRepost = () => {
-      console.log('Repost!')
-
       if(values.ifReposted !== "inherit") {
         client.mutate({
           mutation: MUTATION_UNPOST_EVENT,
@@ -206,7 +204,6 @@ export default function EventCard({event, client, userId, currentDate, listType}
             userId: userId
           }
         }).then((data) => {
-          console.log('UnPost!: ', data)
           setValues({
             ...values,
             ifReposted: "inherit",
@@ -234,7 +231,6 @@ export default function EventCard({event, client, userId, currentDate, listType}
             }
           }
         }).then((data) => {
-          console.log('Repost!: ', data)
           setValues({
             ...values,
             ifReposted: "primary",
@@ -272,7 +268,6 @@ export default function EventCard({event, client, userId, currentDate, listType}
             userId: userId
           }
         }).then((data) => {
-          console.log('UnLike!: ', data)
           setValues({
             ...values,
             ifLiked: "inherit",
@@ -300,7 +295,6 @@ export default function EventCard({event, client, userId, currentDate, listType}
             }
           }
         }).then((data) => {
-          console.log('Like!: ', data)
           setValues({
             ...values,
             ifLiked: "secondary",
@@ -325,7 +319,6 @@ export default function EventCard({event, client, userId, currentDate, listType}
             userId: userId
           }
         }).then((data) => {
-          console.log('Unsave!: ', data)
           setValues({
             ...values,
             ifSaved: false,
@@ -346,7 +339,6 @@ export default function EventCard({event, client, userId, currentDate, listType}
             userId: userId
           }
         }).then((data) => {
-          console.log('Save!: ', data)
           setValues({
             ...values,
             ifSaved: true,

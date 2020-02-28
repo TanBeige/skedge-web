@@ -58,7 +58,7 @@ export default function FollowingFeedList(props) {
   let futureEvents = "";
 
   const [values, setValues] = useState({
-      type: props.type,
+      // type: props.type,
       filter: props.filter,
       loadedAllEvents: false,
       showOlder: true,
@@ -150,7 +150,7 @@ export default function FollowingFeedList(props) {
     useEffect(() => {
       //Restart the get events
       setValues({
-        type: props.type,
+        // type: props.type,
         filter: props.filter,
         loadedAllEvents: false,
         showOlder: true,
@@ -292,11 +292,11 @@ export default function FollowingFeedList(props) {
     {
       return(
         <div id='scrollableDiv' key={currentKey} >
-          <h5 style={{marginTop: 20, textAlign: 'center'}}>Follow friends & businesses near you to see what they’re up to here.</h5>
+          <h5 style={{margin: '20px 1em 0 1em', textAlign: 'center'}}>Follow friends & businesses near you to see what they’re up to here.</h5>
             <hr />
-            {
+            {/* {
                 values.loadedAllEvents ? <h3 style={{textAlign: 'center'}}>Future Events</h3> : ""
-            }
+            } */}
           {futureEvents}
         </div>
       )
@@ -339,9 +339,9 @@ export default function FollowingFeedList(props) {
           </GridContainer>
         </InfiniteScroll>
         <hr />
-        {
+        {/* {
             values.loadedAllEvents ? <h3 style={{textAlign: 'center'}}>Future Events</h3> : ""
-        }
+        } */}
         {futureEvents}
       </div>
     )

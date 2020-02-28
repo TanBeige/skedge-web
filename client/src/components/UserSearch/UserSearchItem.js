@@ -59,7 +59,6 @@ export default function UserSearchList(props) {
 
       //// Handling Friend Invites
   const handleFollowInvite = () => {
-    console.log("Follow Request")
     
     props.client.mutate({
       mutation: MUTATION_FOLLOW_REQUEST,
@@ -86,7 +85,6 @@ export default function UserSearchList(props) {
 
   // If already friends, remove friend
   const handleFollowRemove = () => {
-    console.log("Removing Friend")
     
     props.client.mutate({
       mutation: MUTATION_FOLLOW_DELETE,

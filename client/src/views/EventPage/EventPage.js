@@ -140,7 +140,7 @@ export default function EventPage(props) {
   })
 
   const goBack = () => {
-    if(!user) {
+    if(!user || !props.history) {
       props.history.push("/")
     }
     else{

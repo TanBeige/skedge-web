@@ -65,7 +65,6 @@ export default function UserSearchList(props) {
     }
 
     const loadMoreUsers = () => {
-        console.log("loading more users")
         const text = `%${props.searchText}%`;
         setIsSearch(true);
         props.client.query({

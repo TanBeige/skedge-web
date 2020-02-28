@@ -393,7 +393,6 @@ export default function ProfilePage(props, { ...rest }) {
   useEffect(()=>{
     if(window.location.pathname !== "/:id") {
       //For Google Analytics 
-      console.log("ReactGA Called: ", window.location.pathname)
       // console.log(userName)
       localStorage.setItem('originPath', window.location.pathname);
 

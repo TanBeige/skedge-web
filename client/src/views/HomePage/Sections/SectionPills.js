@@ -83,7 +83,6 @@ export default function SectionPills(props) {
     date: new Date(),
     weekday: new Date().getDay()
   })
-  console.log("Values submitted: " ,values);
 
   //Search filters for list
   const [localFilter, setLocalFilter] = useState({
@@ -100,18 +99,18 @@ export default function SectionPills(props) {
   })
 
 
-  const [privateFilter, setPrivateFilter] = useState({
-    searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
-    type: "private",
-    category: values.category,
-    city: values.city,
-    state: values.state,
-    lowerPrice: values.lowerPrice,
-    upperPrice: values.upperPrice,
-    limit: values.limit,
-    date: values.date,
-    weekday: values.weekday
-  })
+  // const [privateFilter, setPrivateFilter] = useState({
+  //   searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
+  //   // type: "private",
+  //   category: values.category,
+  //   city: values.city,
+  //   state: values.state,
+  //   lowerPrice: values.lowerPrice,
+  //   upperPrice: values.upperPrice,
+  //   limit: values.limit,
+  //   date: values.date,
+  //   weekday: values.weekday
+  // })
 
   const [expanded, setExpanded] = useState(false)
 
@@ -140,11 +139,11 @@ export default function SectionPills(props) {
       date: date.toDate(),
       weekday: day
     });
-    setPrivateFilter({
-      ...privateFilter,
-      date: date.toDate(),
-      weekday: day
-    });
+    // setPrivateFilter({
+    //   ...privateFilter,
+    //   date: date.toDate(),
+    //   weekday: day
+    // });
   }
 
   const handleDayBack = () => {
@@ -161,11 +160,11 @@ export default function SectionPills(props) {
       date: newDate,
       weekday: day
     });
-    setPrivateFilter({
-      ...privateFilter,
-      date: newDate,
-      weekday: day
-    });
+    // setPrivateFilter({
+    //   ...privateFilter,
+    //   date: newDate,
+    //   weekday: day
+    // });
   }
 
   const handleDayForward = () => {
@@ -182,12 +181,31 @@ export default function SectionPills(props) {
       date: newDate,
       weekday: day
     });
-    setPrivateFilter({
-      ...privateFilter,
+    // setPrivateFilter({
+    //   ...privateFilter,
+    //   date: newDate,
+    //   weekday: day
+    // });
+  }
+  const tryTomorrow = () => {
+    const newDate = values.date.addDays(1)
+    const day = newDate.getDay();
+
+    setValues({
+      ...values,
       date: newDate,
       weekday: day
     });
+    setLocalFilter({
+      ...localFilter,
+      date: newDate,
+      weekday: day
+    });
+
+    window.scrollTo(0, 0);
   }
+
+
 
   
 
@@ -205,19 +223,19 @@ export default function SectionPills(props) {
       date: values.date,
       weekday: values.weekday
     });
-    setPrivateFilter({
-      ...privateFilter,
-      searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
-      type: "private",
-      category: values.category,
-      city: values.city,
-      state: values.state,
-      limit: values.limit,
-      lowerPrice: values.lowerPrice === "" ? null : values.lowerPrice,
-      upperPrice: values.upperPrice === "" ? null : values.upperPrice,
-      date: values.date,
-      weekday: values.weekday
-    });
+    // setPrivateFilter({
+    //   ...privateFilter,
+    //   searchText: values.searchText, //Search Text can look for Event Names, Tags, or Event Creators!
+    //   type: "private",
+    //   category: values.category,
+    //   city: values.city,
+    //   state: values.state,
+    //   limit: values.limit,
+    //   lowerPrice: values.lowerPrice === "" ? null : values.lowerPrice,
+    //   upperPrice: values.upperPrice === "" ? null : values.upperPrice,
+    //   date: values.date,
+    //   weekday: values.weekday
+    // });
   }
 
 
@@ -264,14 +282,15 @@ export default function SectionPills(props) {
           )
         },
         {
-          tabButton: "Deals",
+          tabButton: "Happy Hours/Deals",
           tabIcon: LocalAtmIcon,
           tabContent: (
             <div>
               <EventCardList 
                   client={props.client}
-                  filter={privateFilter}
+                  filter={localFilter}
                   listType='deals'
+                  tryTomorrow={tryTomorrow}
               />
             </div>
           )
@@ -284,7 +303,7 @@ export default function SectionPills(props) {
               <EventCardList 
                   client={props.client}
                   // userId={props.userId}
-                  filter={privateFilter}
+                  filter={localFilter}
                   listType='following'
               />
             </div>

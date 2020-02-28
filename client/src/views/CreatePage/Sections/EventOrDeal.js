@@ -47,7 +47,7 @@ export default function EventOrDeal(props) {
         localEntityButton = (
             <div>
                 <Button variant='contained' color='primary' style={buttonStyle} onClick={() => props.handleCreateType("deal")}>
-                    A Deal
+                    Deal
                 </Button>
             </div>
         )
@@ -61,7 +61,7 @@ export default function EventOrDeal(props) {
                     style={buttonStyle} 
                     onClick={event => setAnchorElBottom(event.currentTarget)}
                 >
-                    A Deal
+                    Deal
                 </Button>
                 <Popover
                     classes={{
@@ -96,7 +96,7 @@ export default function EventOrDeal(props) {
             <div className='EventOrDeal' style={vertStyle}>
                 <div style={{margin: '1em'}}>
                     <Button variant='contained' color='primary' style={buttonStyle} onClick={() => props.handleCreateType("event")}>
-                        An Event
+                        Event
                     </Button>
 
                     <div style={{margin: '2.5em'}}></div>

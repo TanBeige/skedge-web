@@ -86,7 +86,6 @@ const useStyles = makeStyles(blogPostPageStyle);
 export default function DealPage(props) {
   const dealName = props.match.params.name;
   const dealId = parseInt(dealName.split("-")[0], 10);
-  console.log(dealName);
 
 
   const { loading, user, isAuthenticated, loginWithRedirect, loginWithPopup} = useAuth0();
@@ -139,7 +138,7 @@ export default function DealPage(props) {
   })
 
   const goBack = () => {
-    if(!user) {
+    if(!user || !props.history) {
       props.history.push("/")
     }
     else{
@@ -305,7 +304,6 @@ export default function DealPage(props) {
         long: newInfo.street != values.street ? null : values.longitude,
       }
     }).then((data)=> {
-      console.log("Success!")
       setImageUploading(false)
     }).catch(error => {
       console.error(error);
@@ -345,7 +343,6 @@ export default function DealPage(props) {
         dealId: values.deal_id
       }
     }).then(()=> {
-      console.log("Success!");
       props.history.push("/home")
     }).catch(error => {
       console.error(error);
@@ -375,7 +372,6 @@ export default function DealPage(props) {
     addView();
     
     //For Google Analytics 
-    console.log("ReactGA Called: ", window.location.pathname)
     ReactGA.initialize('UA-151937222-1');
     ReactGA.pageview(window.location.pathname)
   }, [dealId, props.client])

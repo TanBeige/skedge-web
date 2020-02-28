@@ -12,6 +12,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import LoadCardList from '../LoadCardList.js';
 import * as Scroll from 'react-scroll';
 import { throttle } from 'lodash';
+import Button from 'components/CustomButtons/Button.js';
 
 const dateHeaderStyle = {
   textAlign: 'center',
@@ -43,7 +44,7 @@ Date.prototype.formatDate = function() {
 }
 
 // Functional Component
-export default function EventList({ listType, filter, client, CardComponent, userId, query}) {
+export default function EventList({ listType, filter, client, CardComponent, userId, query, tryTomorrow}) {
   // Checks if we are still grabbing events
   const [isSearch, setIsSearch] = useState(false);
   let isMounted = true;
@@ -311,7 +312,12 @@ export default function EventList({ listType, filter, client, CardComponent, use
         </InfiniteScroll>
         <hr />
         {
-          values.loadedAllEvents ? <h4 style={{textAlign: 'center'}}>That's all for today.<br/>Try tomorrow! -></h4> : ""
+          values.loadedAllEvents ? 
+          <div style={{textAlign: 'center'}}>
+            <h4 >That's all for today.<br/></h4> 
+            <Button round size='sm' variant='contained' color='primary' onClick={tryTomorrow}>Try tomorrow!</Button>
+          </div>
+          : ""
         }
         {/* {futureEvents} */}
       </div>

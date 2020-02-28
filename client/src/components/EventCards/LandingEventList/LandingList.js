@@ -30,7 +30,7 @@ import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 import {
   QUERY_LANDING_FEED
 } from "EventQueries/EventQueries";
-import { Button } from '@material-ui/core';
+import Button from 'components/CustomButtons/Button.js';
 
 const dateHeaderStyle = {
   textAlign: 'center',
@@ -326,12 +326,12 @@ export default function EventCardListLand(props) {
                     })
                   }
                 </GridContainer>
-                <Button color="primary" variant='outlined' onClick={() =>loginWithRedirect({})}>Sign in to view more</Button>
+                <Button color="primary" variant='outlined' round onClick={() =>loginWithRedirect({})}>Sign in to view more</Button>
                 </InfiniteScroll>
               )
             },
             {
-              tabName: "Deals",
+              tabName: "Happy Hours/Deals",
               tabIcon: LocalAtmIcon,
               tabContent: (
                 <InfiniteScroll
@@ -363,7 +363,7 @@ export default function EventCardListLand(props) {
                     })
                   }
                 </GridContainer>
-                <Button color="primary" variant='outlined' onClick={() =>loginWithRedirect({})}>Sign in to view more</Button>
+                <Button color="primary" variant='outlined' round onClick={() =>loginWithRedirect({})}>Sign in to view more</Button>
                 </InfiniteScroll>
               )
             },

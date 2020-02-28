@@ -175,7 +175,6 @@ export default function GoingSaveButtons (props) {
     
     // Handling event reposts
     const handleRepost = () => {
-        console.log('Repost!')
   
         if(values.ifReposted) {
           props.client.mutate({
@@ -185,7 +184,6 @@ export default function GoingSaveButtons (props) {
               userId: user.sub
             }
           }).then((data) => {
-            console.log('UnPost!: ', data)
             setValues({
               ...values,
               ifReposted: false,
@@ -207,7 +205,6 @@ export default function GoingSaveButtons (props) {
               }
             }
           }).then((data) => {
-            console.log('Repost!: ', data)
             setValues({
               ...values,
               ifReposted: true,
@@ -239,7 +236,6 @@ export default function GoingSaveButtons (props) {
               userId: user.sub
             }
           }).then((data) => {
-            console.log('UnLike!: ', data)
             setValues({
               ...values,
               ifLiked: false,
@@ -261,7 +257,6 @@ export default function GoingSaveButtons (props) {
               }
             }
           }).then((data) => {
-            console.log('Like!: ', data)
             setValues({
               ...values,
               ifLiked: true,
@@ -319,7 +314,6 @@ export default function GoingSaveButtons (props) {
             <ReplyIcon fontSize='small'/>
         </Button>
     )
-    console.log(values.ifReposted)
 
     return (
         <div style={{height: '4em', display: 'inline-block', marginBottom: '-50%'}}>

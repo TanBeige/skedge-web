@@ -26,7 +26,6 @@ export default function CustomTabs(props) {
     setValue(value);
     props.setLastTab(value);
   };
-  console.log("landing value: ", value);
   const { headerColor, title, tabs, rtlActive, plainTabs } = props;
   const classes = useStyles();
   const cardTitle = classNames({

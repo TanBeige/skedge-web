@@ -242,7 +242,7 @@ export default function ProfileFuture(props) {
   if(isSearch) {
     return (
     <div style={{textAlign: 'center', position: 'absolute', bottom: 0, left: '50%', width: '200px', marginLeft: '-100px', marginBottom: '-30px'}}>
-      <p>Checking {values.filter.date.formatDate()}</p>
+      <p>Checking {moment(values.filter.date).format("dddd, MMM D")}</p>
       {/* <br /> */}
       <CircularProgress size={20} color='primary'/>
     </div>

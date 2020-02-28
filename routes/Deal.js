@@ -35,7 +35,6 @@ const storage = cloudinaryStorage({
 const parser = multer({ storage: storage });
 
 router.post('/upload', parser.single("file"), (req, res) => {
-    console.log(req.file) // to see what is returned to you
     const image = {};
     //Editing URL to store jpeg version
     let tempImageUrl = req.file.secure_url.replace(".png",".jpg");

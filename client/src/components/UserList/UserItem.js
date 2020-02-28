@@ -69,7 +69,6 @@ const UserItem = ({
     //Handling Account Removing/Adding
     const handleAccount = () => {
         //If user is Already Following, unfollow
-        console.log("unfollowing")
         if(accountButton === 1 || accountButton === 0) {
             client.mutate({
                 mutation: MUTATION_FOLLOW_DELETE,

@@ -304,9 +304,9 @@ export default function EventCardListLand(props) {
           <Element name="listTop"></Element>
           <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no events this day.</h5>
             <hr />
-            {
+            {/* {
                 values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
-            }
+            } */}
           {futureEvents}
         </div>
       )
@@ -349,9 +349,9 @@ export default function EventCardListLand(props) {
           </GridContainer>
         </InfiniteScroll>
         <hr />
-        {
+        {/* {
             values.loadedAllEvents ? <h2 style={{textAlign: 'center'}}>Future Events</h2> : ""
-        }
+        } */}
         {futureEvents}
       </div>
     )
