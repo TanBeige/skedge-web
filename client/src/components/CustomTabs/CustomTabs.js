@@ -65,6 +65,7 @@ export default function CustomTabs(props) {
             return (
               <Tab
                 key={key}
+                style={{textTransform: "none", fontSize: '1em'}}
                 classes={{
                   root: classes.customTabRoot,
                   selected: classes.customTabSelected,

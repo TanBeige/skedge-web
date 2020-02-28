@@ -69,7 +69,7 @@ export default function LandingPage(props) {
   React.useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
-  });
+  }, []);
 
   React.useEffect(() => {
 
@@ -158,15 +158,15 @@ export default function LandingPage(props) {
         <Button style={{position: 'fixed', bottom: 55, right: 10, zIndex: 5}} round justIcon color="primary" onClick={scrollToTop}>
               <ArrowUpwardIcon style={{color: "white"}} />
         </Button>
-        <div style={{paddingBottom: 0}}>
+        <div style={{paddingBottom: 0, minHeight: '200vh'}}>
           
           <AppearOnScroll scrollInHeight={500}>
             <Button
               color="primary"
               onClick={handleLogin}
-              style={{margin: 'auto', width: '100%',height: '6vh'}}
+              style={{margin: 'auto', width: '100%',height: '6vh', textTransform: 'none', fontSize: '14px'}}
             >
-              For more deals & events, sign up.
+              Sign up for more events and happy hours
             </Button>
           </AppearOnScroll>
           

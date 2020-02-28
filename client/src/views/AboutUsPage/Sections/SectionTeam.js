@@ -89,7 +89,7 @@ export default function SectionTeam() {
           <Card profile plain>
             <CardAvatar profile plain>
               <a href="#pablo">
-                <img src={require('assets/img/kylepic.jpg')} alt="profile-pic" className={classes.img} />
+                <img src={require('assets/img/kylepic.jpg')} alt="picture of Kyle" className={classes.img} />
               </a>
             </CardAvatar>
             <CardBody plain>
@@ -104,7 +104,7 @@ export default function SectionTeam() {
               <a href="#pablo">
                 <img
                   src={require('assets/img/tanpic.jpg')}
-                  alt="profile-pic"
+                  alt="picture of tan :)"
                   className={classes.img}
                 />
               </a>
@@ -115,6 +115,19 @@ export default function SectionTeam() {
               <p className={classes.cardDescription}>
                 (I'm the third wheel)
               </p>
+            </CardBody>
+          </Card>
+        </GridItem>
+        <GridItem md={3} sm={3}>
+          <Card profile plain>
+            <CardAvatar profile plain>
+              <a href="#pablo">
+                <img src={require('assets/img/stefpic.jpg')} alt="picture of Estefania" className={classes.img} />
+              </a>
+            </CardAvatar>
+            <CardBody plain>
+              <h4 className={classes.cardTitle}>Estefania Rios</h4>
+              <h6 className={classes.textMuted}>Co-Founder</h6>
             </CardBody>
           </Card>
         </GridItem>

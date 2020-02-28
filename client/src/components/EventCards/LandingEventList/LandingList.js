@@ -157,7 +157,7 @@ export default function EventCardListLand(props) {
       return () => {
         isMounted = false;
       }
-    }, [props.filter])
+    }, [])
 
 
 
@@ -237,11 +237,11 @@ export default function EventCardListLand(props) {
     let finalEvents = values.events
     let finalDeals = values.deals
     
-    if(isSearch) {
-      return (
-        <LoadCardList />
-      )
-    }
+    // if(isSearch) {
+    //   return (
+    //     <LoadCardList />
+    //   )
+    // }
 
     // // Components to Render
     // const futureEvents = () => {
@@ -293,8 +293,10 @@ export default function EventCardListLand(props) {
           tabs={[
             {
               tabName: "Events",
-              tabIcon: DateRangeIcon,
+              // tabIcon: DateRangeIcon,
               tabContent: (
+
+                !isSearch ?
                 <InfiniteScroll
                   dataLength={values.events.length} //This is important field to render the next data
                   next={loadMore}
@@ -327,13 +329,16 @@ export default function EventCardListLand(props) {
                   }
                 </GridContainer>
                 <Button color="primary" variant='outlined' round onClick={() =>loginWithRedirect({})}>Sign in to view more</Button>
-                </InfiniteScroll>
+                </InfiniteScroll> 
+                :
+                <LoadCardList />
               )
             },
             {
               tabName: "Happy Hours/Deals",
-              tabIcon: LocalAtmIcon,
+              // tabIcon: LocalAtmIcon,
               tabContent: (
+                !isSearch ?
                 <InfiniteScroll
                   dataLength={values.events.length} //This is important field to render the next data
                   next={loadMore}
@@ -343,7 +348,7 @@ export default function EventCardListLand(props) {
                 >
                 <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
                   {
-                    values.deals.map((deal, index) => {
+                    values.deals.map((deal) => {
                       return (
                         <Fragment key={deal.id}>
                           <GridItem xs={12} sm={4} md={4}>
@@ -365,6 +370,8 @@ export default function EventCardListLand(props) {
                 </GridContainer>
                 <Button color="primary" variant='outlined' round onClick={() =>loginWithRedirect({})}>Sign in to view more</Button>
                 </InfiniteScroll>
+                :
+                <LoadCardList />
               )
             },
           ]}

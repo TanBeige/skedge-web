@@ -111,10 +111,10 @@ export default function HomePage(props) {
 
   //Replaces ComponentDidMount() from React Components in Function Components
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
-  })
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  //   document.body.scrollTop = 0;
+  // })
 
   // useEffect(() => {
     // props.client.query({

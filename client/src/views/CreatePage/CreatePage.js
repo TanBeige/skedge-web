@@ -66,10 +66,10 @@ export default function PricingPage(props) {
 
   const { user } = useAuth0();
 
-  React.useEffect(() => {
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
-  });
+  // React.useEffect(() => {
+  //   window.scrollTo(0, 0);
+  //   document.body.scrollTop = 0;
+  // });
   const classes = useStyles();
 
   const [values, setValues] = useState({
