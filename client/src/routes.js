@@ -43,6 +43,7 @@ import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import NotificationsPage from "views/NotificationsPage/NotificationsPage.js";
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
 import SearchPage from 'views/SearchPage/SearchPage.js';
+import AnnouncementsPage from "views/AnnouncementsPage/AnnouncementsPage.js";
 
 import CallbackPage from "views/CallbackPage/CallbackPage.js";
 import BottomNav from "components/BottomNav/BottomNav.js";
@@ -217,6 +218,7 @@ export const MakeMainRoutes = () => {
 
           <Route path="/events/:name" render={props => provideClient(EventPage, props)} />
           <Route path="/deals/:name" render={props => provideClient(DealPage, props)} />
+          <Route path="/news/:name" render={props => provideClient(AnnouncementsPage, props)} />
           <Route path="/:id" render={props => provideClient(ProfilePage, props)} />
           <Route path="/callback" 
                 render={props => {

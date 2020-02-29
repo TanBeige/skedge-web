@@ -2057,6 +2057,36 @@ query query_deal_info($dealId: Int!) {
 }
 `
 
+const GET_ANNOUNCEMENT = gql`
+query get_announcement($announcementId: Int) {
+  announcements(where: {id: {_eq: $announcementId}}) {
+    name
+    description
+    date
+    timestamp
+    picture_id
+    city
+    state
+    
+    announcement_deals{
+      description
+      deal{
+        name
+        cover_pic
+      }
+    }
+    announcement_events{
+      description
+      event{
+        name
+        cover_pic
+      }
+    }
+    
+  }
+}
+`
+
 export {
   QUERY_FILTERED_EVENT,
   FETCH_FOLLOWING_FEED,
@@ -2136,7 +2166,9 @@ export {
   MUTATION_ADD_MOMENT,
 
   QUERY_USER_PROFILE_ANONYMOUS,
-  QUERY_DEAL_INFO_ANONYMOUS
+  QUERY_DEAL_INFO_ANONYMOUS,
+
+  GET_ANNOUNCEMENT
 };
 
 
