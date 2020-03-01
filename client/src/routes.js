@@ -218,7 +218,7 @@ export const MakeMainRoutes = () => {
 
           <Route path="/events/:name" render={props => provideClient(EventPage, props)} />
           <Route path="/deals/:name" render={props => provideClient(DealPage, props)} />
-          <Route path="/news/:name" render={props => provideClient(AnnouncementsPage, props)} />
+          <Route path="/blog/:name" render={props => provideClient(AnnouncementsPage, props)} />
           <Route path="/:id" render={props => provideClient(ProfilePage, props)} />
           <Route path="/callback" 
                 render={props => {

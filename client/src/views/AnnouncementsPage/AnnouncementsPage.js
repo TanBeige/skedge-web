@@ -5,15 +5,19 @@ import { Link } from 'react-router-dom';
 import gql from "graphql-tag";
 import { Helmet } from 'react-helmet';
 
+import Footer from "components/Footer/Footer.js";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
-import EventLoading from 'components/EventLoading.js'
+import LoadingPage from '../LoadingPage/LoadingPage.js';
 
 // @material-ui/icons
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HomeIcon from '@material-ui/icons/Home';
+
 
 
 // core components
@@ -59,6 +63,7 @@ export default function AnnouncementsPage(props) {
 
     name: "",
     description: "",
+    date: "",
     city: "",
     state: "",
     picture_id: "",
@@ -116,6 +121,7 @@ export default function AnnouncementsPage(props) {
             ...values,
             announcement_exists: true,
             name: data.data.announcements[0].name,
+            date: data.data.announcements[0].date,
             description: data.data.announcements[0].description,
             city: data.data.announcements[0].city,
             state: data.data.announcements[0].state,
@@ -162,14 +168,14 @@ export default function AnnouncementsPage(props) {
 
   const classes = useStyles();
 
-  // //If Event info is loadng
-  // if(isLoading || loading) {
-  //   return (
-  //     <div>
-  //       <LoadingPage reason="Loading Events"/>
-  //     </div>
-  //   )
-  // }
+  //If Event info is loadng
+  if(isLoading) {
+    return (
+      <div>
+        <LoadingPage reason="Loading Events"/>
+      </div>
+    )
+  }
   if(values.announcement_exists === false) {
     return <ErrorPage />
   }
@@ -188,18 +194,39 @@ export default function AnnouncementsPage(props) {
           <meta name="ICBM" content={`${values.latitude},${values.longitude}`}/>
         </Helmet>
 
-        <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 20,  left: 20, zIndex: 5}} color="primary">
-          {
-            user ?
-            <ChevronLeftIcon /> : <HomeIcon />
-          }
-        </Button>
         <Parallax image={values.picture_url}> </Parallax>
         <div className={classes.container} style={{padding: 0, marginBottom: '7vh'}}>
           <SectionText 
             announcementInfo={values}
             client={props.client}
           />
+          <Footer
+        content={
+          <div>
+            <div className={classes.left}>
+              <List className={classes.list}>
+                <ListItem className={classes.inlineBlock}>
+                  <a
+                    href="/"
+                    target="_blank"
+                    className={classes.block}
+                  >
+                    Skedge
+                  </a>
+                </ListItem>
+                <ListItem className={classes.inlineBlock}>
+                  <a
+                    href="About Us"
+                    target="_blank"
+                    className={classes.block}
+                  >
+                    About us
+                  </a>
+                </ListItem>
+              </List>
+            </div>
+          </div>
+        } />
           {/* <h1>{values.name}</h1> */}
         </div>
       </div>

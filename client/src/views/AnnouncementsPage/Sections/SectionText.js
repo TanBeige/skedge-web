@@ -1,25 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 
-import PageTitle from 'components/PageItems/PageTitle.js';
-import PageDateTime from 'components/PageItems/PageDateTime.js';
-import PageDescription from 'components/PageItems/PageDescription.js';
-import PageLocation from 'components/PageItems/PageLocation.js';
-
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-
-
 // style components
 import sectionTextStyle from "assets/jss/material-kit-pro-react/views/blogPostSections/sectionTextStyle.js";
-// Google Maps API
-import MapsApi from 'components/GoogleMaps/MapsApi.js';
 //Auth0 Wrapper
 import { useAuth0 } from 'Authorization/react-auth0-wrapper';
+
+import ItemCard from './ItemCard.js';
 //Google Analytics
 import ReactGA from 'react-ga';
+import DealCard from "components/Deals/DealCard.js";
 
 const useStyles = makeStyles(sectionTextStyle);
 
@@ -53,25 +47,57 @@ export default function SectionText({ announcementInfo, client }) {
     }
   },[announcementInfo])
 
+  var moment = require('moment');
+
+
   return(
-    <div>
+    <div style={{maxWidth: 600, margin: 'auto'}}>
       <div className='AnnouncementTitle'>
           <h2 className='AnnouncementName'>{announcementInfo.name}</h2>
       </div>
       <div className='AnnouncementDescription'>
-        <h4 style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
+        <h4 style={{fontSize: '0.9em', margin: 0}}>
+          By Skedge <span style={{float: 'right', color: 'gray'}}> {moment(announcementInfo.date, "YYYY-MM-DD").format("MMMM Do, YYYY")} </span>
+        </h4>
+        <h4 style={{wordWrap: 'break-word', whiteSpace: "pre-line", margin: '1em 0 2em 0'}}>
           {announcementInfo.description}
         </h4>
       </div>
-      <div>
+      <div style={{margin: 'auto', maxWidth: 500}}>
+        {
+          announcementInfo.attached_events.map(event => {
+            return (
+              <div >
+                <ItemCard
+                  itemType="event"
+                  itemId={event.event.id}
+                  name={event.event.name}
+                  picId={event.event.cover_pic}
+                />
+                <p style={{margin: '0 0.5em'}}>{event.description}</p>
+              </div>
+            )
+          })
+        }
         {
           announcementInfo.attached_deals.map(deal => {
             return (
-              <h2>{deal.deal.name}</h2>
+              <div style={{margin: '0 2em 2em 2em'}}>
+                  <ItemCard
+                    itemType="deal"
+                    itemId={deal.deal.id}
+                    name={deal.deal.name}
+                    picId={deal.deal.cover_pic}
+                  />
+                  <p style={{margin: '0 0.5em'}}>{deal.description}</p>
+              </div>
             )
           })
         }
       </div>
+      {
+        announcementInfo.attached_events === "deal"
+      }
     </div>
   );
 }

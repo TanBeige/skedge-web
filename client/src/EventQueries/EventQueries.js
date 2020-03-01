@@ -2060,6 +2060,7 @@ query query_deal_info($dealId: Int!) {
 const GET_ANNOUNCEMENT = gql`
 query get_announcement($announcementId: Int) {
   announcements(where: {id: {_eq: $announcementId}}) {
+    id
     name
     description
     date
@@ -2071,6 +2072,7 @@ query get_announcement($announcementId: Int) {
     announcement_deals{
       description
       deal{
+        id
         name
         cover_pic
       }
@@ -2078,6 +2080,7 @@ query get_announcement($announcementId: Int) {
     announcement_events{
       description
       event{
+        id
         name
         cover_pic
       }
