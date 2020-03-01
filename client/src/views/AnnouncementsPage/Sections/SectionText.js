@@ -67,7 +67,7 @@ export default function SectionText({ announcementInfo, client }) {
         {
           announcementInfo.attached_events.map(event => {
             return (
-              <div >
+              <div style={{margin: '0 2em 2em 2em'}}>
                 <ItemCard
                   itemType="event"
                   itemId={event.event.id}
