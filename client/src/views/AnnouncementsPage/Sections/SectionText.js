@@ -72,7 +72,7 @@ export default function SectionText({ announcementInfo, client }) {
                   itemType="event"
                   itemId={event.event.id}
                   name={event.event.name}
-                  picId={event.event.cover_pic}
+                  picId={event.event.image.image_uuid}
                 />
                 <p style={{margin: '0 0.5em'}}>{event.description}</p>
               </div>

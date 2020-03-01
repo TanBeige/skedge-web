@@ -61,7 +61,6 @@ app.use(compression())
 // prerender setup
 app.use(prerender.set('prerenderToken', prerenderToken));
 
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/storage', storage);
@@ -84,6 +83,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
+  
   res.render('error');
 });
 

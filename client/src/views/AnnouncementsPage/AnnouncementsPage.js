@@ -113,7 +113,7 @@ export default function AnnouncementsPage(props) {
           })
         }
         else {
-          let cover_id = data.data.announcements[0].announcement_events.length != 0 ? data.data.announcements[0].announcement_events[0].event.cover_pic : data.data.announcements[0].announcement_deals[0].deal.cover_pic;
+          let cover_id = data.data.announcements[0].announcement_events.length != 0 ? data.data.announcements[0].announcement_events[0].event.image.image_uuid : data.data.announcements[0].announcement_deals[0].deal.cover_pic;
           if(data.data.announcements[0].picture_id) {
             cover_id = data.data.announcements[0].picture_id;
           }
@@ -190,8 +190,6 @@ export default function AnnouncementsPage(props) {
 
           <meta name="geo.region" content="US-FL" />
           <meta name="geo.placename" content={values.city} />
-          <meta name="geo.position" content={`${values.latitude};${values.longitude}`}/>
-          <meta name="ICBM" content={`${values.latitude},${values.longitude}`}/>
         </Helmet>
 
         <Parallax image={values.picture_url}> </Parallax>

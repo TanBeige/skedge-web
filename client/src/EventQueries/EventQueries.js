@@ -2082,7 +2082,9 @@ query get_announcement($announcementId: Int) {
       event{
         id
         name
-        cover_pic
+        image{
+          image_uuid
+        }
       }
     }
     
