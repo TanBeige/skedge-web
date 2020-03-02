@@ -202,7 +202,7 @@ export default function AnnouncementsPage(props) {
               onClick={handleGoHomepage}
               style={{margin: 'auto', width: '100%',height: '6vh', textTransform: 'none', fontSize: '14px'}}
             >
-              {values.attached_events.length ? "For events near you, click here." : "For happy hours/deals near you, click here."}
+              {values.attached_events.length ? "For happy hours/deals near you, click here." : "For events near you, click here."}
             </Button>
         </AppearOnScroll>
 
