@@ -498,7 +498,7 @@ export default function DealPage(props) {
                 onClick={handleGoHomepage}
                 style={{margin: 'auto', width: '100%',height: '6vh', textTransform: 'none', fontSize: '14px'}}
               >
-                For happy hours/deals near you, click here.
+                For events near you, click here.
               </Button>
             </AppearOnScroll>
           }
