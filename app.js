@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
 var compression = require('compression');
-const prerender = require('prerender-node');
 
 
 
@@ -59,7 +58,8 @@ app.get('*', (req, res) => {
 app.use(compression())
 
 // prerender setup
-app.use(prerender.set('prerenderToken', prerenderToken));
+app.use(require('prerender-node').set('prerenderToken', prerenderToken));
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -80,7 +80,8 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+  console.log("Req Params 2", req.params);
+  
   // render the error page
   res.status(err.status || 500);
   
