@@ -58,6 +58,8 @@ export default function SectionText({ announcementInfo, client }) {
       <div className='AnnouncementDescription'>
         <h4 style={{fontSize: '0.9em', margin: 0}}>
           By Skedge <span style={{float: 'right', color: 'gray'}}> {moment(announcementInfo.date, "YYYY-MM-DD").format("MMMM Do, YYYY")} </span>
+          <br />
+          {announcementInfo.city}, {announcementInfo.state}
         </h4>
         <h4 style={{wordWrap: 'break-word', whiteSpace: "pre-line", margin: '1em 0 2em 0'}}>
           {announcementInfo.description}
