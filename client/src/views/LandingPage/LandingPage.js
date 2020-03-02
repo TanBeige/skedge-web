@@ -123,7 +123,7 @@ export default function LandingPage(props) {
   return (
     <ThemeProvider theme={theme}>
     <div>
-      <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={50} width={50} src={require('assets/img/logoheader.png')} />
+      <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={40} width={40} src={require('assets/img/logoheader.png')} />
       <div style={{position: 'absolute', zIndex: 10, top: 15, right: 25}} >
         <InformationPopover/>
       </div>

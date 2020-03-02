@@ -69,7 +69,7 @@ export default function SectionText({ announcementInfo, client }) {
         {
           announcementInfo.attached_events.map(event => {
             return (
-              <div style={{margin: '0 2em 2em 2em'}}>
+              <div key={event.event.id} style={{margin: '0 2em 2em 2em'}}>
                 <ItemCard
                   itemType="event"
                   itemId={event.event.id}
@@ -84,7 +84,7 @@ export default function SectionText({ announcementInfo, client }) {
         {
           announcementInfo.attached_deals.map(deal => {
             return (
-              <div style={{margin: '0 2em 2em 2em'}}>
+              <div key={deal.deal.id} style={{margin: '0 2em 2em 2em'}}>
                   <ItemCard
                     itemType="deal"
                     itemId={deal.deal.id}

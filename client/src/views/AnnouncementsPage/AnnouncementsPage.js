@@ -8,16 +8,9 @@ import { Helmet } from 'react-helmet';
 import Footer from "components/Footer/Footer.js";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-
+import AppearOnScroll from 'components/AppearOnScroll.js'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-
-import LoadingPage from '../LoadingPage/LoadingPage.js';
-
-// @material-ui/icons
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import HomeIcon from '@material-ui/icons/Home';
-
 
 
 // core components
@@ -26,6 +19,9 @@ import Button from "components/CustomButtons/Button.js";
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 // sections for this page
 import SectionText from "./Sections/SectionText.js";
+import LoadingPage from '../LoadingPage/LoadingPage.js';
+import RelatedEventsWrapper from 'views/EventPage/Sections/RelatedEvents/RelatedEventsWrapper.js';
+import RelatedDealsWrapper from 'views/DealPage/Sections/RelatedDeals/RelatedDealsWrapper.js';
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 import {
@@ -143,6 +139,10 @@ export default function AnnouncementsPage(props) {
     })
   }
 
+  const handleGoHomepage = () => {
+    props.history.push("/")
+  }
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -181,6 +181,7 @@ export default function AnnouncementsPage(props) {
   }
 
   else {
+    const today = new Date();
     return (
       <div>
         <Helmet>
@@ -192,12 +193,48 @@ export default function AnnouncementsPage(props) {
           <meta name="geo.placename" content={values.city} />
         </Helmet>
 
+        <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={40} width={40} src={require('assets/img/logoheader.png')} onClick={handleGoHomepage}/>
         <Parallax image={values.picture_url}> </Parallax>
+
+        <AppearOnScroll scrollInHeight={50}>
+            <Button
+              color="primary"
+              onClick={handleGoHomepage}
+              style={{margin: 'auto', width: '100%',height: '6vh', textTransform: 'none', fontSize: '14px'}}
+            >
+              Sign up for more events and happy hours
+            </Button>
+        </AppearOnScroll>
+
         <div className={classes.container} style={{padding: 0, marginBottom: '7vh'}}>
           <SectionText 
             announcementInfo={values}
             client={props.client}
           />
+          {
+            values.attached_events.length ? 
+            <RelatedEventsWrapper 
+              currentDealId={0}
+              client={props.client} 
+
+              start_date={today.formatDate()}
+              weekday={today.getDay().toString()}
+              city={values.city}
+              state={values.state}
+              is_recurring={false}
+            />
+            :
+            <RelatedDealsWrapper 
+              currentDealId={0}
+              client={props.client} 
+
+              start_date={today.formatDate()}
+              weekday={today.getDay().toString()}
+              city={values.city}
+              state={values.state}
+              is_recurring={false}
+            />
+          }
           <Footer
         content={
           <div>
@@ -230,4 +267,19 @@ export default function AnnouncementsPage(props) {
       </div>
     );
   } 
+}
+
+
+Date.prototype.formatDate = function() {
+  var d = new Date(this.valueOf()),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+  if (month.length < 2) 
+      month = '0' + month;
+  if (day.length < 2) 
+      day = '0' + day;
+
+  return [year, month, day].join('-');
 }

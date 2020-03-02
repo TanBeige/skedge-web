@@ -30,6 +30,7 @@ import EventPage from "views/EventPage/EventPage.js";
 import DealPage from "views/DealPage/DealPage.js";
 import Home from "views/HomePage/HomePage.js";
 import CreatePage from "views/CreatePage/CreatePage.js";  //Create Event
+import CreateBlog from "views/CreatePage/CreateBlog.js";  //Create Event
 
 import AboutUsPage from "views/AboutUsPage/AboutUsPage.js";
 
@@ -205,6 +206,7 @@ export const MakeMainRoutes = () => {
           <PrivateRoute path="/event" render={props => provideClient(EventPage, props)} />
           <Route exact path="/home" render={props => provideClient(Home, props)} />
           <PrivateRoute path="/create" render={props => provideClient(CreatePage, props)} />
+          <PrivateRoute path="/create-blog" render={props => provideClient(CreateBlog, props)} />
           <PrivateRoute path="/search" render={props => provideClient(SearchPage, props)} />
           {/*<Route exact path="/components" render={props => provideClient(ComponentsPage, props)} />*/}
           <Route exact path="/contact-us" render={props => provideClient(ContactUsPage, props)} />
