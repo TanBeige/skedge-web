@@ -449,6 +449,9 @@ export default function DealPage(props) {
           <meta name="description" content={`${values.description} - ${values.point_1}`} />
           <meta name="theme-color" content="#02C39A" />
 
+          <meta property="og:title" content={`${values.name} | Skedge`} />
+          <meta property="og:image" content={values.cover_url} />
+
           <meta name="geo.region" content="US-FL" />
           <meta name="geo.placename" content={values.city} />
           <meta name="geo.position" content={`${values.latitude};${values.longitude}`}/>

@@ -38,6 +38,7 @@ ReactDOM.render(
         <title>Skedge</title>
         <meta name="description" content="Where you go to find, share, and create your favorite things to do." />
         <meta name="theme-color" content="#02C39A" />
+        <meta property="og:title" content={`Skedge`} />
       </Helmet>
       <ReactNotification />
       <MakeMainRoutes />

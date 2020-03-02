@@ -539,8 +539,11 @@ export default function EventPage(props) {
         <Helmet>
           <title>{values.name} | Skedge</title>
           <meta name="description" content={values.description} />
-          <meta name="theme-color" content="#02C39A" />
 
+          <meta property="og:title" content={`${values.name} | Skedge`} />
+          <meta property="og:image" content={values.cover_url} />
+
+          <meta name="theme-color" content="#02C39A" />
           <meta name="geo.region" content="US-FL" />
           <meta name="geo.placename" content={values.city} />
           <meta name="geo.position" content={`${values.latitude};${values.longitude}`}/>
