@@ -47,15 +47,19 @@ app.disable('x-powered-by')
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+//compression
+app.use(compression())
 // prerender setup
 app.use(require('prerender-node').set('prerenderToken', prerenderToken));
 
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, 'client/build')))
+// Anything that doesn't match the above, send back index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'))
+})
 
-
-//compression
-app.use(compression())
 
 
 
@@ -85,11 +89,5 @@ app.use(function(err, req, res, next) {
   
   res.render('error');
 });
-
-// Anything that doesn't match the above, send back index.html
-app.get('*', (req, res) => {
-  console.log("IDK")
-  res.sendFile(path.join(__dirname + '/client/build/index.html'))
-})
 
 module.exports = app;
