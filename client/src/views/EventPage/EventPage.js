@@ -80,7 +80,6 @@ export default function EventPage(props) {
   const eventName = props.match.params.name;
   const eventId = parseInt(eventName.split("-")[0]);
   let isMounted = true;
-  console.log("token: ", process.env.REACT_APP_PRERENDER_TOKEN)
 
   const { loading, user, isAuthenticated, loginWithRedirect, loginWithPopup} = useAuth0();
 
@@ -438,16 +437,16 @@ export default function EventPage(props) {
 
     //Prerender page for bots
     console.log("event name: ", eventName)
-        axios.get('https://api.prerender.io/recache', {
-          params: {
-            prerenderToken: 'pmuPLF4Zx6fQrpUwH4ME',
-            url: `https://www.theskedge.com/${eventName}`
-          }
-        })
-        .then(response => {
-          console.log("PRERENDER: ", response)
-        })
-        .catch(error => console.log(error));
+    // axios.get('https://api.prerender.io/recache', {
+    //   params: {
+    //     prerenderToken: 'pmuPLF4Zx6fQrpUwH4ME',
+    //     url: `https://www.theskedge.com/${eventName}`
+    //   }
+    // })
+    // .then(response => {
+    //   console.log("PRERENDER: ", response)
+    // })
+    // .catch(error => console.log(error));
 
     return () => {
       isMounted = false;
