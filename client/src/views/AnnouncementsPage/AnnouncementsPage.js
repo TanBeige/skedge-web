@@ -196,13 +196,13 @@ export default function AnnouncementsPage(props) {
         <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={40} width={40} src={require('assets/img/logoheader.png')} onClick={handleGoHomepage}/>
         <Parallax image={values.picture_url}> </Parallax>
 
-        <AppearOnScroll scrollInHeight={50}>
+        <AppearOnScroll scrollInHeight={10}>
             <Button
               color="primary"
               onClick={handleGoHomepage}
               style={{margin: 'auto', width: '100%',height: '6vh', textTransform: 'none', fontSize: '14px'}}
             >
-              Sign up for more events and happy hours
+              {values.attached_events.length ? "For events near you, click here." : "For happy hours/deals near you, click here."}
             </Button>
         </AppearOnScroll>
 

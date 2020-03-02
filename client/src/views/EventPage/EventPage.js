@@ -9,14 +9,13 @@ import { Helmet } from 'react-helmet';
 import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Avatar from '@material-ui/core/Avatar';
 import Popover from '@material-ui/core/Popover';
+
 
 import EventLoading from 'components/EventLoading.js'
 import GoingSaveButtons from './Sections/EventPageComponents/GoingSaveButtons.js';
 import TeaserButtons from './Sections/EventPageComponents/TeaserButtons.js';
+import AppearOnScroll from 'components/AppearOnScroll.js'
 
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
@@ -158,6 +157,10 @@ export default function EventPage(props) {
     //Then Login/Sign up
     loginWithRedirect({});
     // loginWithPopup({});
+  }
+
+  const handleGoHomepage = () => {
+    props.history.push("/")
   }
 
   const getEvent = () => {
@@ -548,29 +551,15 @@ export default function EventPage(props) {
           imageUploading ? 
           <EventLoading text="Saving Changes" /> : ""
         }
+        {
+          user &&
 
-        <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 20,  left: 20, zIndex: 5}} color="primary">
-          {
-            user ?
-            <ChevronLeftIcon /> : <HomeIcon />
-          }
-        </Button>
+          <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 20,  left: 20, zIndex: 5}} color="primary">
+              <ChevronLeftIcon />
+          </Button>
+        }
         <Parallax image={values.cover_url}>
           {editingEvent()}
-          {
-            // !user ? 
-            // <div style={{margin: 'auto', textAlign: 'center', marginBottom: '1em',paddingBottom: '12', maxWidth: '300px'}}>
-            //   {/* <h4 style={{color:'white'}}>Sign up to see more events like this happening soon.</h4> */}
-            //   <Button
-            //     color="white"
-            //     style={{color: 'black'}}
-            //     onClick={handleLogin}
-            //   >
-            //     Login or Sign Up
-            //   </Button>
-            // </div> : ""
-          }
-
             <div style={{position: 'absolute', bottom: '0px', zIndex: 2, width: '100%', marginBottom: '-10px', textAlign: 'center'}}>
               {user ?
                 <GoingSaveButtons
@@ -590,10 +579,22 @@ export default function EventPage(props) {
                 <TeaserButtons/>
               }
             </div> 
-          
         </Parallax>
+        {
+          !user &&  
+          <AppearOnScroll scrollInHeight={10}>
+            <Button
+              color="primary"
+              onClick={handleGoHomepage}
+              style={{margin: 'auto', width: '100%',height: '6vh', textTransform: 'none', fontSize: '14px'}}
+            >
+              For events near you, click here.
+            </Button>
+          </AppearOnScroll>
+        }
+       
+
           <div className={classes.container} style={{padding: 0, marginBottom: '7vh'}}>
-            
             <SectionText 
               eventInfo={values}
               client={props.client}

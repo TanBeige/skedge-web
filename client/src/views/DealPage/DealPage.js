@@ -17,13 +17,11 @@ import pink from '@material-ui/core/colors/pink';
 import Avatar from '@material-ui/core/Avatar';
 import Popover from '@material-ui/core/Popover';
 
-
 import DealInfoSection from 'views/DealPage/Sections/DealInfoSection.js'
 import SkedgeDisclosure from 'components/Footer/SkedgeDisclosure';
 import EditDealButton from './DealComponents/EditDealButton.js';
 import RelatedDealsWrapper from './Sections/RelatedDeals/RelatedDealsWrapper.js';
-
-
+import AppearOnScroll from 'components/AppearOnScroll.js'
 
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
@@ -155,6 +153,10 @@ export default function DealPage(props) {
     //Then Login/Sign up
     loginWithRedirect({});
     // loginWithPopup({});
+  }
+
+  const handleGoHomepage = () => {
+    props.history.push("/")
   }
 
   const getDeal = () => {
@@ -452,57 +454,71 @@ export default function DealPage(props) {
           <meta name="geo.position" content={`${values.latitude};${values.longitude}`}/>
           <meta name="ICBM" content={`${values.latitude},${values.longitude}`}/>
         </Helmet>
+
         <ThemeProvider theme={theme}>
-        {
-          //If user is changing deals
-          imageUploading ? 
-          <EventLoading text="Saving Changes" /> : ""
-        }
-        
-        <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 20,  left: 20, zIndex: 5}} color="primary">
           {
-            user ?
-            <ChevronLeftIcon /> : <HomeIcon />
+            //If user is changing deals
+            imageUploading ? 
+            <EventLoading text="Saving Changes" /> : ""
           }
-        </Button>
-        <Parallax image={values.cover_url}>
-          {editingDeal()}
+          
           {
-            !user ? 
-            <div style={{margin: 'auto', textAlign: 'center', marginBottom: '-1em',paddingBottom: '12', maxWidth: '300px'}}>
-              {/* <h4 style={{color:'white'}}>Sign up to see more events like this happening soon.</h4> */}
+            user &&
+            
+            <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 20,  left: 20, zIndex: 5}} color="primary">
+                <ChevronLeftIcon />
+            </Button>
+          }
+          <Parallax image={values.cover_url}>
+            {editingDeal()}
+            {
+              !user ? 
+              <div style={{margin: 'auto', textAlign: 'center', marginBottom: '-1em',paddingBottom: '12', maxWidth: '300px'}}>
+                {/* <h4 style={{color:'white'}}>Sign up to see more events like this happening soon.</h4> */}
+                <Button
+                  color="primary"
+                  round
+                  size='sm'
+                  // style={{color: 'white'}}
+                  onClick={handleLogin}
+                >
+                  Sign in 
+                </Button>
+              </div> : ""
+            }     
+          </Parallax>
+          {
+            !user &&  
+            <AppearOnScroll scrollInHeight={10}>
               <Button
                 color="primary"
-                round
-                size='sm'
-                // style={{color: 'white'}}
-                onClick={handleLogin}
+                onClick={handleGoHomepage}
+                style={{margin: 'auto', width: '100%',height: '6vh', textTransform: 'none', fontSize: '14px'}}
               >
-                Sign in 
+                For happy hours/deals near you, click here.
               </Button>
-            </div> : ""
-          }     
-        </Parallax>
-            <div className={classes.container} style={{padding: 0, marginBottom: '7vh'}}>
-                <DealInfoSection 
-                    dealInfo={values}
-                    client={props.client}
-                />
+            </AppearOnScroll>
+          }
+          <div className={classes.container} style={{padding: 0, marginBottom: '7vh'}}>
+            <DealInfoSection 
+                dealInfo={values}
+                client={props.client}
+            />
 
-                {
-                    values.start_date !== "" ?
-                    <RelatedDealsWrapper 
-                        currentDealId={dealId}
-                        client={props.client} 
+            {
+                values.start_date !== "" ?
+                <RelatedDealsWrapper 
+                    currentDealId={dealId}
+                    client={props.client} 
 
-                        start_date={values.start_date}
-                        weekday={values.weekday}
-                        city={values.city}
-                        state={values.state}
-                        is_recurring={values.is_recurring}
-                    /> : ""
-                }
-            </div>
+                    start_date={values.start_date}
+                    weekday={values.weekday}
+                    city={values.city}
+                    state={values.state}
+                    is_recurring={values.is_recurring}
+                /> : ""
+            }
+          </div>
         </ThemeProvider>
       </div>
     );

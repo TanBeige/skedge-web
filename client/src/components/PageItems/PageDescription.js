@@ -28,8 +28,8 @@ export default function PageDescription({description, web_url, category, point_1
                     <b>Details: </b>
                         {description}
                     </p>
-                    {point_1 ? <p>- {point_1}</p> : ""}
-                    {point_2 ? <p>- {point_2}</p> : ""}
+                    {/* {point_1 ? <p>- {point_1}</p> : ""}
+                    {point_2 ? <p>- {point_2}</p> : ""} */}
 
                     {
                         category || web_url ?

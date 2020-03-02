@@ -20,7 +20,10 @@ export default class AppearOnScroll extends Component {
       top: 0,
       left: 0,
       right: 0,
-      zIndex: 5
+      zIndex: 5,
+      width: '300px',
+      left: '50%',
+      marginLeft: '-150px'
   };
 
   hiddenStyle = {
