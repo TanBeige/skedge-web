@@ -212,8 +212,9 @@ export default function EventPage(props) {
             allow_invites: data.data.events[0].allow_invites,
             host_approval: data.data.events[0].host_approval,
             updated_at: data.data.events[0].updated_at,
-            latitude: data.data.events[0].latitude,
-            longitude: data.data.events[0].longitude,
+            latitude: data.data.events[0].location_geo ? data.data.events[0].location_geo.coordinates[1] : null,
+            longitude: data.data.events[0].location_geo ? data.data.events[0].location_geo.coordinates[0] : null,
+            location_geo: data.data.events[0].location_geo || null,
         
             cover_uuid: data.data.events[0].image.image_uuid,
             cover_url: cloudinary.url(data.data.events[0].image.image_uuid, {secure: true, height: Math.floor(window.innerHeight * 0.6), crop: "scale", fetch_format: "auto", quality: "auto"}),

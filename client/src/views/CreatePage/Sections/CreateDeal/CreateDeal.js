@@ -15,6 +15,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import NumberFormat from 'react-number-format';
+import Geocode from "react-geocode";
 
 
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -56,8 +57,7 @@ import history from "utils/history";
 
 // Lodash import
 import _ from 'lodash'
-
-
+require('dotenv');
 
 // query bannerPics {
 //     images(where: {image_uuid: {_ilike: "%default_images%"}}) {
@@ -272,6 +272,30 @@ export default function DealInfo(props) {
     //     getBannerPics();
     // }, [])
 
+    const getGeolocation = async (street, city, state) => {
+        Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
+        Geocode.enableDebug();
+    
+        const fullAddy = `${street} ${city}, ${state}`
+        console.log(fullAddy);
+    
+        let location = null;
+    
+        await Geocode.fromAddress(fullAddy).then(
+            response => {
+                const { lat, lng } = response.results[0].geometry.location;
+                location = {
+                    latitude: lat,
+                    longitude: lng
+                }
+            },
+            error => {
+                console.error(error);
+            }
+        );
+    
+        return location;
+      }
 
     // Actually Submitting the Deal
     const submitDealInfo = async () => {
@@ -286,7 +310,7 @@ export default function DealInfo(props) {
         let response = "";
 
         const form_data = new FormData();
-        form_data.append('file', values.bannerImg)
+        form_data.append('file', values.bannerImg);
 
         response = await axios.post(`/deal/upload`, form_data).catch((error => {
             alert("Error occurred while uploading picture, try uploading a smaller image size or try again later.")
@@ -298,6 +322,10 @@ export default function DealInfo(props) {
             props.setLoadingPage(false);
             return
         }
+
+        const location = await getGeolocation(values.street, values.city, values.state);
+        console.log("location: ", location);
+        
 
         //Create Weekday string for Database:
         let weekdayString = createWeekdayString({
@@ -323,6 +351,10 @@ export default function DealInfo(props) {
                     end_time: values.endTimeExists ? moment(values.end_time).format('HH:mm:ss') : null, 
                     is_recurring: values.repeatCheck, 
                     location_name: values.location_name, 
+                    location_geo: {
+                        type: "Point",
+                        coordinates: [location.longitude, location.latitude]
+                    },
                     name: values.name, 
                     point_1: values.point_1, 
                     point_2: values.point_2,

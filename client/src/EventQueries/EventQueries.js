@@ -1057,7 +1057,7 @@ const FETCH_EVENT_INFO = gql`
 
       latitude
       longitude
-
+      location_geo
       views
       impressions
 
@@ -1515,8 +1515,8 @@ mutation unpost_event($eventId: Int, $userId: String) {
 `
 
 const ADD_GEOCODE_EVENT = gql`
-  mutation update_event_geolocation($itemId: Int!, $latitude: numeric, $longitude: numeric) {
-    update_events(where: {id: {_eq: $itemId}}, _set: {latitude: $latitude longitude: $longitude}) {
+  mutation update_event_geolocation($itemId: Int!, $geo: geography) {
+    update_events(where: {id: {_eq: $itemId}}, _set: {location_geo: $geo}) {
       affected_rows
     }
   }
@@ -1963,8 +1963,8 @@ const MUTATION_DEAL_VIEW = gql`
 `
 
 const ADD_GEOCODE_DEAL = gql`
-  mutation update_deal_geolocation($itemId: Int!, $latitude: numeric, $longitude: numeric) {
-    update_deals(where: {id: {_eq: $itemId}}, _set: {latitude: $latitude longitude: $longitude}) {
+  mutation update_deal_geolocation($itemId: Int!, $geo: geography) {
+    update_deals(where: {id: {_eq: $itemId}}, _set: {location_geo: $geo}) {
       affected_rows
     }
   }

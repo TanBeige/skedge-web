@@ -58,13 +58,16 @@ class SimpleMap extends Component {
       mutation: mutation,
       variables: {
         itemId: itemId,
-        latitude: lat,
-        longitude: long
+        geo: {
+          type: "Point",
+          coordinates: [long, lat]
+        }
       }
     })
   }
 
   getGeocode() {
+    console.log(this.props)
 
     if(this.props.latitude && this.props.longitude) {
       if(_isMounted) {

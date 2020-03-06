@@ -48,6 +48,9 @@ import {
 
 //For Google Analytics
 import ReactGA from 'react-ga';
+import Geocode from "react-geocode";
+
+require('dotenv');
 
 const useStyles = makeStyles(pricingStyle);
 const primaryColor = "#02C39A"
@@ -64,7 +67,7 @@ export default function PricingPage(props) {
   const DEAL_PAGE = 7;
   var MomentUtils = require('moment');
 
-  const { user } = useAuth0();
+  const { user, loading } = useAuth0();
 
   // React.useEffect(() => {
   //   window.scrollTo(0, 0);
@@ -240,6 +243,31 @@ const handleCreateType = (type) => {
     }
   }
 
+  const getGeolocation = async (street, city, state) => {
+    Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
+    Geocode.enableDebug();
+
+    const fullAddy = `${street} ${city}, ${state}`
+    console.log(fullAddy);
+
+    let location = null;
+
+    await Geocode.fromAddress(fullAddy).then(
+        response => {
+            const { lat, lng } = response.results[0].geometry.location;
+            location = {
+                latitude: lat,
+                longitude: lng
+            }
+        },
+        error => {
+            console.error(error);
+        }
+    );
+
+    return location;
+  }
+
 /**
  * This function finally submits all the information received from the user.
  * Import bannerImg so we don't have to put it in the state.
@@ -327,7 +355,9 @@ const handleCreateType = (type) => {
         });
     }
 
+    const location = await getGeolocation(values.street, values.city, values.state);
 
+    console.log("Event location", location);
     // Inputs all information into Hasura Postgres DB via GraphQL
     //If user submits their own image
     if(typeof values.image_file !== "number") {
@@ -360,6 +390,11 @@ const handleCreateType = (type) => {
                       city: values.city,
                       state: values.state,
                       location_name: values.location_name,
+                      
+                      location_geo: {
+                        type: "Point",
+                        coordinates: [location.longitude, location.latitude]
+                      },
 
                       event_date: {
                         data: {
@@ -466,6 +501,11 @@ const handleCreateType = (type) => {
                     state: values.state,
                     location_name: values.location_name,
 
+                    location: {
+                      type: "Point",
+                      coordinates: [location.longitude, location.latitude]
+                    },
+
                     event_date: {
                       data: {
                         start_date: MomentUtils(values.start_date).format('YYYY-MM-DD'),
@@ -526,28 +566,30 @@ const handleCreateType = (type) => {
   }
 
   useEffect(() => {
-    const userId = user.sub;
+    if(user){
+      const userId = user.sub;
 
-    //Record page view on Google analytics
-    ReactGA.initialize('UA-151937222-1');
-    ReactGA.pageview(window.location.pathname)
+      //Record page view on Google analytics
+      ReactGA.initialize('UA-151937222-1');
+      ReactGA.pageview(window.location.pathname)
 
-    //Check if user is an entity
-    if (props.client) {
-      props.client.query({
-          query: FETCH_IF_ENTITY,
-          variables: {
-            userId: userId,
-          }
-        })
-        .then(data => {
-          setValues({ 
-            ...values, 
-            isEntity: data.data.users[0].entity
+      //Check if user is an entity
+      if (props.client) {
+        props.client.query({
+            query: FETCH_IF_ENTITY,
+            variables: {
+              userId: userId,
+            }
+          })
+          .then(data => {
+            setValues({ 
+              ...values, 
+              isEntity: data.data.users[0].entity
+            });
           });
-        });
+      }
     }
-  }, [])
+  }, [loading])
 
   //---------------------- Page Numbers -------------------------
   // Handling What page displays here:
@@ -638,6 +680,10 @@ const handleCreateType = (type) => {
           setLoadingPage={setLoadingPage}
       />
       break;
+  }
+
+  if(loading || !user) {
+    return <h4>Loading...</h4>
   }
 
   // For the appBarTitle, for some reason page 2 is not bold when using the <strong> tag
