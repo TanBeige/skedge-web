@@ -436,19 +436,6 @@ export default function EventPage(props) {
     ReactGA.initialize('UA-151937222-1');
     ReactGA.pageview(window.location.pathname)
 
-    //Prerender page for bots
-    console.log("event name: ", eventName)
-    // axios.get('https://api.prerender.io/recache', {
-    //   params: {
-    //     prerenderToken: 'pmuPLF4Zx6fQrpUwH4ME',
-    //     url: `https://www.theskedge.com/${eventName}`
-    //   }
-    // })
-    // .then(response => {
-    //   console.log("PRERENDER: ", response)
-    // })
-    // .catch(error => console.log(error));
-
     return () => {
       isMounted = false;
     }

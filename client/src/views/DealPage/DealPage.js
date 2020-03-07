@@ -204,8 +204,13 @@ export default function DealPage(props) {
           web_url: data.data.deals[0].web_url,
           updated_at: data.data.deals[0].updated_at,
 
-          latitude: data.data.deals[0].latitude,
-          longitude: data.data.deals[0].longitude,
+          // latitude: data.data.deals[0].latitude,
+          // longitude: data.data.deals[0].longitude,
+
+          latitude: data.data.deals[0].location_geo ? data.data.deals[0].location_geo.coordinates[1] : null,
+          longitude: data.data.deals[0].location_geo ? data.data.deals[0].location_geo.coordinates[0] : null,
+          location_geo: data.data.deals[0].location_geo || null,
+
       
           cover_uuid: data.data.deals[0].cover_pic,
           cover_url: cloudinary.url(data.data.deals[0].cover_pic, {secure: true, height: Math.floor(window.innerHeight * 0.6), crop: "scale", fetch_format: "auto", quality: "auto"}),

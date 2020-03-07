@@ -277,7 +277,6 @@ export default function DealInfo(props) {
         Geocode.enableDebug();
     
         const fullAddy = `${street} ${city}, ${state}`
-        console.log(fullAddy);
     
         let location = null;
     
@@ -323,9 +322,7 @@ export default function DealInfo(props) {
             return
         }
 
-        const location = await getGeolocation(values.street, values.city, values.state);
-        console.log("location: ", location);
-        
+        const location = await getGeolocation(values.street, values.city, values.state);        
 
         //Create Weekday string for Database:
         let weekdayString = createWeekdayString({

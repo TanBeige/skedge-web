@@ -67,9 +67,12 @@ class SimpleMap extends Component {
   }
 
   getGeocode() {
-    console.log(this.props)
+    console.log(this.state)
 
-    if(this.props.latitude && this.props.longitude) {
+    if(this.state.center.lat && this.state.center.lng) {
+      return
+    }
+    else if(this.props.latitude && this.props.longitude) {
       if(_isMounted) {
         this.setState({
           center: {

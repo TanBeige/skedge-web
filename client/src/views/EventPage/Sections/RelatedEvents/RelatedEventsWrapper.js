@@ -60,6 +60,10 @@ export default function RelatedEventsWrapper(props) {
         }).catch((error)=>{
             console.error(error);
         })
+
+        return () => {
+            isMounted = false;
+        }
         
     }, [props.currentEventId])
 

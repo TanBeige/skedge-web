@@ -63,6 +63,10 @@ export default function RelatedDealsWrapper(props) {
         }).catch((error)=>{
             console.error(error);
         })
+
+        return () => {
+            isMounted = false;
+        }
         
     }, [props.currentDealId])
 

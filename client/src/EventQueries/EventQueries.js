@@ -1831,6 +1831,7 @@ query query_deal_info($dealId: Int!) {
 
     latitude
     longitude
+    location_geo
 
     views
     impressions
@@ -2037,6 +2038,7 @@ query query_deal_info($dealId: Int!) {
 
     latitude
     longitude
+    location_geo
 
 
     cover_pic
