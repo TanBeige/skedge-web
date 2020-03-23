@@ -347,10 +347,11 @@ export default function DealPage(props) {
     props.client.mutate({
       mutation: MUTATION_DEAL_DELETE,
       variables: {
-        dealId: values.deal_id
+        dealId: dealId
       }
-    }).then(()=> {
+    }).then((data)=> {
       props.history.push("/home")
+      console.log(data)
     }).catch(error => {
       console.error(error);
       alert("Error Deleted Deal Occurred")

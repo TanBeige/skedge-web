@@ -1797,7 +1797,7 @@ mutation update_deal($dealId: Int!, $name: String, $locationName: String, $stree
 `
 const MUTATION_DEAL_DELETE = gql`
   mutation delete_deal($dealId: Int) {
-    delete_events(where: { id: { _eq: $dealId } }) {
+    delete_deals(where: { id: { _eq: $dealId } }) {
       affected_rows
     }
   }
