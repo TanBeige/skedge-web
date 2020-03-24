@@ -15,7 +15,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 require('./InfoItems.css');
 
-export default function PageDescription({description, web_url, category, point_1, point_2, pageType}) {
+export default function PageDescription({description, web_url, category, point_1, point_2, pageType, phone_number}) {
     const [expandDetails, setExpandDetails] = useState(false)
 
     return(
@@ -30,6 +30,9 @@ export default function PageDescription({description, web_url, category, point_1
                     </p>
                     {/* {point_1 ? <p>- {point_1}</p> : ""}
                     {point_2 ? <p>- {point_2}</p> : ""} */}
+                    {
+                        phone_number ? <div><a style={{color: 'black'}} href={`tel:${phone_number}`}>Call at {phone_number}</a></div> : ""
+                    }
 
                     {
                         category || web_url ?

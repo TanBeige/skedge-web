@@ -683,7 +683,7 @@ const handleCreateType = (type) => {
   }
 
   if(loading || !user) {
-    return <h4>Loading...</h4>
+    return <h4 style={{textAlign: 'center', margin: '4em'}}>Loading...</h4>
   }
 
   // For the appBarTitle, for some reason page 2 is not bold when using the <strong> tag

@@ -1809,6 +1809,7 @@ query query_deal_info($dealId: Int!) {
     name
     point_1
     point_2
+    phone_number
     description
     location_name
 
@@ -2018,6 +2019,7 @@ query query_deal_info($dealId: Int!) {
     point_1
     point_2
     description
+    phone_number
     location_name
 
     start_date

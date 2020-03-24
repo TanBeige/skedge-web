@@ -103,6 +103,7 @@ export default function DealPage(props) {
 
     point_1: "",
     point_2: "",
+    phone_number: "",
 
     start_time: "",
     end_time: "",
@@ -186,6 +187,7 @@ export default function DealPage(props) {
           point_1: data.data.deals[0].point_1 ? data.data.deals[0].point_1 : "",
           point_2: data.data.deals[0].point_2 ? data.data.deals[0].point_2 : "",
           description: data.data.deals[0].description,
+          phone_number: data.data.deals[0].phone_number,
 
           start_date: data.data.deals[0].start_date,
           end_date: data.data.deals[0].end_date,

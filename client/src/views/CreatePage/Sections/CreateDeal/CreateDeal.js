@@ -89,7 +89,13 @@ const theme = createMuiTheme({
 export default function DealInfo(props) {
     const classes = useStyles();
     const { user } = useAuth0();
-    
+
+    // const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+    // const phoneRegex = /^\(?([0-9]{0,3})\)?[-. ]?([0-9]{0,3})[-. ]?([0-9]{0,4})$/
+    const re = /^[0-9\b]+$/;
+    const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+
+
 
     const [uploading, setUploading] = React.useState(false);
 
@@ -114,6 +120,7 @@ export default function DealInfo(props) {
         description: "",
         point_1: "",
         point_2: "",
+        phone_number: "",
 
         //Recurring Deals
         repeatCheck: false,
@@ -142,6 +149,16 @@ export default function DealInfo(props) {
     };
     const handleCheck = name => event => {
         setValues({ ...values, [name]: event.target.checked });
+    };
+    const handlePhone = (event) => {
+        // value.replace(phoneRegex, '($1) $2-$3')
+
+        if (event.target.value === '' || re.test(event.target.value)) {
+            setValues({
+                ...values,
+                phone_number: event.target.value.replace(phoneRegex, '($1) $2-$3')
+            })
+        }
     };
 
     const handleEntityLocation = event => {
@@ -361,7 +378,8 @@ export default function DealInfo(props) {
                     state: values.state, 
                     street: values.street, 
                     web_url: values.web_url, 
-                    weekday: weekdayString
+                    weekday: weekdayString,
+                    phone_number: values.phone_number
                 }
             }
         }).then((data)=> {
@@ -575,7 +593,6 @@ export default function DealInfo(props) {
       </div>
     )
   }
-
     // Disable Button if form is filled incorrectly
     let continueDisabled = false;
     //Checking the Deal Info
@@ -608,6 +625,12 @@ export default function DealInfo(props) {
         }
     }
     if(values.bannerImg === null) {
+        continueDisabled = true;
+    }
+    if(values.start_date === null) {
+        continueDisabled = true;
+    }
+    if(values.start_time === null) {
         continueDisabled = true;
     }
 
@@ -784,6 +807,20 @@ export default function DealInfo(props) {
                                         placeholder="35 character max."
                                     />
                                 </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <TextField
+                                        error={values.phone_number.length > 14}
+                                        className={classes.input}
+                                        name="phone_number"
+                                        variant="outlined"
+                                        value={values.phone_number}
+                                        fullWidth
+                                        onChange={handlePhone}
+                                        id="phone_number"
+                                        label="Phone Number"
+                                        placeholder="1234567890"
+                                    />
+                                </Grid>
                                 <Grid item xs={12}>
                                     <TextField 
                                         id="description"
@@ -847,6 +884,12 @@ export default function DealInfo(props) {
                             }
                             {
                                 values.state.replace(/\s/g, '').length ? "" : `State `
+                            }
+                            {
+                                values.start_date ? "" : `Start Date `
+                            }
+                            {
+                                values.start_time ? "" : `Start Time `
                             }
                             {
                                 values.repeatCheck &&
