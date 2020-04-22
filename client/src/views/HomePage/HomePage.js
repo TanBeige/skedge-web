@@ -153,7 +153,7 @@ export default function HomePage(props) {
           userId: user.sub
         }
       }).then((data) => {
-        setIsEntity(data.data.users[0].entity)
+        setIsEntity(data.data.users[0].entity);
       })
     }
     if(!loading) {

@@ -10,6 +10,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Popover from '@material-ui/core/Popover';
+import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 
 
 
@@ -24,6 +25,7 @@ export default function GoingSaveButtons (props) {
 
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const { loading, user, isAuthenticated, loginWithRedirect, loginWithPopup} = useAuth0();
 
     const handleClick = event => {
         setAnchorEl(event.currentTarget);
@@ -59,7 +61,7 @@ export default function GoingSaveButtons (props) {
             >
                 <div className={classes.typography}>
                     <Typography >Sign up to perform this action.</Typography>
-                    <Button color='primary' round>Sign Up/Login</Button>
+                    <Button color='primary' round onClick={loginWithRedirect}>Sign Up/Login</Button>
                 </div>
             </Popover>
         </Fragment>

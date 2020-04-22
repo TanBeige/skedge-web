@@ -48,8 +48,11 @@ export default function ErrorPage({ ...rest }) {
             <GridItem md={12}>
               <h1 style={{fontWeight: 'bolder'}}>404</h1>
               <h2 className={classes.subTitle}>Page not found</h2>
+              <h3 className={classes.description}>
+                Our website is under construction during COVID-19.
+              </h3>
               <h4 className={classes.description}>
-                Oops! Looks like you got lost.
+                Either this page does not exist, or it'll be here soon!
               </h4>
             </GridItem>
           </GridContainer>
