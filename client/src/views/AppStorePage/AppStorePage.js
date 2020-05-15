@@ -46,7 +46,7 @@ export default function EventPage(props) {
 
 
     return (
-        <div>
+        <div style={{minHeight: '90vh'}}>
         <Helmet>
             <title>App Store | Skedge</title>
             <meta name="description" content="Skedge on the App Store." />
@@ -75,30 +75,40 @@ export default function EventPage(props) {
             <GridContainer justify='center' style={{marginTop: 60, marginBottom: 20}}>
                 <GridItem xs={12}  style={{textAlign: 'center'}}>
                     <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1">
-                        <img width={100} height={100} style={{margin: 10}} src={require('assets/img/logoheader.png')} />
+                    <div style={{margin: '10px 20px 0px 20px'}} >
+
+                        <img width={'100%'}  src={require('assets/img/dealsbanner.png')} />
+                        </div>
                     </a>
                 </GridItem>
                 <GridItem xs={12}  style={{textAlign: 'center'}}>
-                    <a href="https://apps.apple.com/us/app/skedge/id1506618749?mt=8" className="AppBanner" >
+                    {/* <h1 style={{margin: 8, fontSize: 42}}>The Best Deals in Tallahassee.</h1> */}
+                    <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1">
+                        <img height={80} style={{margin: 10}} src={require('assets/img/DownloadAppStore.png')} />
+                    </a>
+                </GridItem>
+                {/* <GridItem xs={12}  style={{textAlign: 'center'}}>
+                    <a href="https://apps.apple.com/us/app/skedge/id1506618749?mt=8" style={{width: 200, height: 400}} className="AppBanner" >
 
                     </a>
-                </GridItem>
-                <GridItem xs={12} style={{textAlign: 'center'}}>
+                </GridItem> */}
+                {/* <GridItem xs={12} style={{textAlign: 'center'}}>
                     <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1">
-                        <h2 style={{margin: 10, color: 'black'}}>Find us on the App Store</h2>
+                        <h2 style={{margin: 10, color: 'black'}}>Hey Tallahassee, <br />Find Skedge on the </h2>
+                        <img width='100%' src="https://developer.apple.com/news/images/og/app-store-og.png" />
                     </a>
-                </GridItem>
+                </GridItem> */}
                 <GridContainer style={{margin: 18}}>
-                    <GridItem style={{textAlign: 'center'}} xs={6} md={6}>
-                        <img style={{maxWidth: 300}} width='100%' src={require("assets/img/app_image_1.png")} />
+                    <GridItem style={{textAlign: 'center', padding: 0}} xs={6} md={6}>
+                        <img style={{maxWidth: 300}} width='100%' src={require("assets/img/app_advert_2.png")} />
                     </GridItem>
-                    <GridItem style={{textAlign: 'center'}} xs={6} md={6}>
+                    <GridItem style={{textAlign: 'center', padding: 0}} xs={6} md={6}>
                         {/* <h3 style={{margin: 18}}>Favorite events to view them later</h3> */}
-                        <img style={{maxWidth: 300}}  width='100%' src={require("assets/img/app_image_2.png")} />
+                        <img style={{maxWidth: 300}}  width='100%' src={require("assets/img/app_advert_3.png")} />
                     </GridItem>
                 </GridContainer>
-                <GridItem  xs={12} md={12} style={{margin: 12, maxWidth: 600}} >
-                    <h3 style={{marginTop: 0}}>Features:</h3>
+                {/* <GridItem  xs={12} md={12} style={{margin: 12, maxWidth: 600}} >
+                    <h4 style={{marginTop: 0}}>With Skedge you can:</h4>
                     <ul style={{ margin: 'auto'}} >
                         <li>Find FREE & deeply discounted meals near you instantly. The price you want.</li>
                         <li>Takeout & Delivery included.</li>
@@ -107,9 +117,9 @@ export default function EventPage(props) {
                         <li>Great for singles, couples, & parents in Tallahassee! (screenshots above)</li>
                         <li>Avoid grocery stores that are packed with people.</li>
                     </ul>
-                </GridItem>
+                </GridItem> */}
             </GridContainer>
-            
+            <div style={{position: 'absolute', width: '100%', bottom: 0}}>
             <Footer
                 content={
                 <div>
@@ -146,6 +156,7 @@ export default function EventPage(props) {
                     </div>
                 </div>
             } />
+            </div>
         </div>
     );
   
