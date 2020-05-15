@@ -46,10 +46,10 @@ export default function PrivacyPolicyPage() {
         color="dark"
       />
 
-      <div className={classNames(classes.main, classes.mainRaised)} style={{marginBottom: '1em'}}>
+      <div className={classNames(classes.main)} style={{marginBottom: '1em', marginTop: '2em'}}>
         <div className={classes.contactContent} style={{textAlign: 'center'}}>
           <div className={classes.container}>
-            <GridContainer style={{margin: '0em 2em'}}>
+            <GridContainer style={{margin: '0em 1em'}}>
               <GridItem md={12} sm={12}>
                 <h2>Skedge Privacy Policy</h2>
                 <div className="policy-wrap">
