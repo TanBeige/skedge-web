@@ -76,14 +76,23 @@ export default function PrivacyPolicyPage() {
                   </a>
                 </ListItem>
                 <ListItem className={classes.inlineBlock}>
-                  <a
-                    href="About Us"
-                    target="_blank"
-                    className={classes.block}
-                  >
-                    About us
-                  </a>
-                </ListItem>
+                        <a
+                            href="/about-us"
+                            target="_blank"
+                            className={classes.block}
+                        >
+                            About us
+                        </a>
+                        </ListItem>
+                        <ListItem className={classes.inlineBlock}>
+                        <a
+                            href="/contact-us"
+                            target="_blank"
+                            className={classes.block}
+                        >
+                            Contact us
+                        </a>
+                        </ListItem>
               </List>
             </div>
           </div>

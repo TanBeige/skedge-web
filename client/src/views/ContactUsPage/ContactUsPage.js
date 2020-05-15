@@ -174,8 +174,8 @@ export default function ContactUsPage() {
           mapElement={<div style={{ height: `100%` }} />}
         />
       </div> */}
-      <div className={classNames(classes.main, classes.mainRaised)}>
-        <div className={classes.contactContent} style={{textAlign: 'center'}}>
+      <div className={classNames(classes.main)}>
+        <div className={classes.contactContent} style={{textAlign: 'center', marginTop: 30}}>
           <div className={classes.container}>
             <h2 className={classes.title}>Send us a message</h2>
             <GridContainer>
@@ -286,14 +286,23 @@ export default function ContactUsPage() {
                   </a>
                 </ListItem>
                 <ListItem className={classes.inlineBlock}>
-                  <a
-                    href="About Us"
-                    target="_blank"
-                    className={classes.block}
-                  >
-                    About us
-                  </a>
-                </ListItem>
+                        <a
+                            href="/about-us"
+                            target="_blank"
+                            className={classes.block}
+                        >
+                            About us
+                        </a>
+                        </ListItem>
+                        <ListItem className={classes.inlineBlock}>
+                        <a
+                            href="/contact-us"
+                            target="_blank"
+                            className={classes.block}
+                        >
+                            Contact us
+                        </a>
+                        </ListItem>
               </List>
             </div>
           </div>

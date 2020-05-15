@@ -45,6 +45,7 @@ import NotificationsPage from "views/NotificationsPage/NotificationsPage.js";
 import ErrorPage from "views/ErrorPage/ErrorPage.js";
 import SearchPage from 'views/SearchPage/SearchPage.js';
 import AnnouncementsPage from "views/AnnouncementsPage/AnnouncementsPage.js";
+import AppStorePage from "views/AppStorePage/AppStorePage.js";
 
 import CallbackPage from "views/CallbackPage/CallbackPage.js";
 import BottomNav from "components/BottomNav/BottomNav.js";
@@ -217,6 +218,7 @@ export const MakeMainRoutes = () => {
           {/* <Route exact path="/user" render={props => provideClient(ProfilePage, props)} /> */}
           <PrivateRoute path="/notifications" render={props => provideClient(NotificationsPage, props)} />
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
+          <Route exact path="/app" render={props => provideClient(AppStorePage, props)} />
 
           <Route path="/events/:name" render={props => provideClient(EventPage, props)} />
           <Route path="/deals/:name" render={props => provideClient(DealPage, props)} />
