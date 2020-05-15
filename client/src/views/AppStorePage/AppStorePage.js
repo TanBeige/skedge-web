@@ -15,12 +15,12 @@ import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+//Google Analytics
+import ReactGA from 'react-ga';
 
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 
-//Google analytics import
-import ReactGA from 'react-ga';
 require('dotenv');
 var moment = require("moment")
 
@@ -38,11 +38,19 @@ require('./AppStore.css');
 export default function EventPage(props) {
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
-  });
+    ReactGA.initialize('UA-151937222-1');
+    
+  }, []);
 
   const classes = useStyles();
+
+  const clickedDownload = () => {
+
+    ReactGA.event({
+        category: 'User',
+        action: 'CLICKED_DOWNLOAD_APP'
+    });
+  }
 
 
     return (
@@ -74,16 +82,16 @@ export default function EventPage(props) {
         />        
             <GridContainer justify='center' style={{marginTop: 60, marginBottom: 20}}>
                 <GridItem xs={12}  style={{textAlign: 'center'}}>
-                    <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1">
+                    <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => {clickedDownload()}}>
                     <div style={{margin: '10px 20px 0px 20px'}} >
 
-                        <img width={'100%'}  src={require('assets/img/dealsbanner.png')} />
+                        <img width={'100%'} style={{maxWidth: 600}}  src={require('assets/img/dealsbanner.png')} />
                         </div>
                     </a>
                 </GridItem>
                 <GridItem xs={12}  style={{textAlign: 'center'}}>
                     {/* <h1 style={{margin: 8, fontSize: 42}}>The Best Deals in Tallahassee.</h1> */}
-                    <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1">
+                    <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
                         <img height={80} style={{margin: 10}} src={require('assets/img/DownloadAppStore.png')} />
                     </a>
                 </GridItem>
@@ -99,12 +107,16 @@ export default function EventPage(props) {
                     </a>
                 </GridItem> */}
                 <GridContainer style={{margin: 18}}>
-                    <GridItem style={{textAlign: 'center', padding: 0}} xs={6} md={6}>
-                        <img style={{maxWidth: 300}} width='100%' src={require("assets/img/app_advert_2.png")} />
+                    <GridItem style={{textAlign: 'center', padding: 0}} xs={6} md={6} >
+                        <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
+                            <img style={{maxWidth: 300}} width='100%' src={require("assets/img/app_advert_2.png")} />
+                        </a>
                     </GridItem>
                     <GridItem style={{textAlign: 'center', padding: 0}} xs={6} md={6}>
                         {/* <h3 style={{margin: 18}}>Favorite events to view them later</h3> */}
-                        <img style={{maxWidth: 300}}  width='100%' src={require("assets/img/app_advert_3.png")} />
+                        <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
+                            <img style={{maxWidth: 300}}  width='100%' src={require("assets/img/app_advert_3.png")} />
+                        </a>
                     </GridItem>
                 </GridContainer>
                 {/* <GridItem  xs={12} md={12} style={{margin: 12, maxWidth: 600}} >
@@ -119,7 +131,6 @@ export default function EventPage(props) {
                     </ul>
                 </GridItem> */}
             </GridContainer>
-            <div style={{position: 'absolute', width: '100%', bottom: 0}}>
             <Footer
                 content={
                 <div>
@@ -157,7 +168,6 @@ export default function EventPage(props) {
                 </div>
             } />
             </div>
-        </div>
     );
   
 }

@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@slynova/flydrive": "^0.3.1",
+    "amplitude-js": "^6.2.0",
     "boom": "^7.3.0",
     "cloudinary": "^1.15.0",
     "cloudinary-react": "^1.2.1",
