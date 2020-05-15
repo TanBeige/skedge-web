@@ -32,7 +32,7 @@ cloudinary.config({
 
 const useStyles = makeStyles(blogPostPageStyle);
 
-require('views/EventPage/EventPage.css');
+require('./AppStore.css');
 
 
 export default function EventPage(props) {
@@ -72,34 +72,42 @@ export default function EventPage(props) {
             color: "primary"
             }}
         />        
-            <GridContainer justify='center' style={{marginTop: 60}}>
+            <GridContainer justify='center' style={{marginTop: 60, marginBottom: 20}}>
                 <GridItem xs={12}  style={{textAlign: 'center'}}>
                     <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1">
                         <img width={100} height={100} style={{margin: 10}} src={require('assets/img/logoheader.png')} />
                     </a>
                 </GridItem>
-                <GridItem xs={12} style={{textAlign: 'center'}}>
-                    <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1">
-                        <h2 style={{margin: 10}}>We're on the App Store!</h2>
+                <GridItem xs={12}  style={{textAlign: 'center'}}>
+                    <a href="https://apps.apple.com/us/app/skedge/id1506618749?mt=8" className="AppBanner" >
+
                     </a>
                 </GridItem>
-                <GridItem  xs={12} md={12} >
-                    <ul style={{maxWidth: 600, margin: 'auto'}}>
-                        <li>Find FREE & deeply discounted meals near you instantly. The price you want.</li>
-                        <li>Avoid grocery stores that are packed with people that risk your health and safety.</li>
-                        <li>Great for singles, couples, & parents in Tallahassee! (screenshots above)</li>
-                        <li>Takeout & Delivery included.</li>
-                        <li>Save deals to find them faster.</li>
-                    </ul>
+                <GridItem xs={12} style={{textAlign: 'center'}}>
+                    <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1">
+                        <h2 style={{margin: 10, color: 'black'}}>Find us on the App Store</h2>
+                    </a>
                 </GridItem>
-                <GridContainer style={{marginTop: 18}}>
-                    <GridItem style={{textAlign: 'center'}} xs={12} md={6}>
+                <GridContainer style={{margin: 18}}>
+                    <GridItem style={{textAlign: 'center'}} xs={6} md={6}>
                         <img style={{maxWidth: 300}} width='100%' src={require("assets/img/app_image_1.png")} />
                     </GridItem>
-                    <GridItem style={{textAlign: 'center'}} xs={12} md={6}>
+                    <GridItem style={{textAlign: 'center'}} xs={6} md={6}>
+                        {/* <h3 style={{margin: 18}}>Favorite events to view them later</h3> */}
                         <img style={{maxWidth: 300}}  width='100%' src={require("assets/img/app_image_2.png")} />
                     </GridItem>
                 </GridContainer>
+                <GridItem  xs={12} md={12} style={{margin: 12, maxWidth: 600}} >
+                    <h3 style={{marginTop: 0}}>Features:</h3>
+                    <ul style={{ margin: 'auto'}} >
+                        <li>Find FREE & deeply discounted meals near you instantly. The price you want.</li>
+                        <li>Takeout & Delivery included.</li>
+                        <li>Save deals to find them faster.</li>
+                        <li>Post reviews on your deal experiences!</li>
+                        <li>Great for singles, couples, & parents in Tallahassee! (screenshots above)</li>
+                        <li>Avoid grocery stores that are packed with people.</li>
+                    </ul>
+                </GridItem>
             </GridContainer>
             
             <Footer

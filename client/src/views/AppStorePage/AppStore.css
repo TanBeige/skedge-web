@@ -1,0 +1,7 @@
+.AppBanner {
+    display:inline-block;overflow:hidden;background:url(https://linkmaker.itunes.apple.com/en-us/badge-lrg.svg?releaseDate=2020-05-13&kind=iossoftware&bubble=ios_apps) no-repeat;width:135px;height:40px;
+}
+
+ul {
+    color: 'red'
+}
