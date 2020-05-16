@@ -17,6 +17,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 //Google Analytics
 import ReactGA from 'react-ga';
+import ReactPixel from 'react-facebook-pixel';
 
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
@@ -39,13 +40,21 @@ export default function EventPage(props) {
 
   useEffect(() => {
     ReactGA.initialize('UA-151937222-1');
+
+    const options = {
+        autoConfig: true, 	// set pixel's autoConfig
+        debug: false, 		// enable logs
+    };
+
+    ReactPixel.init('3134989026565595', options);
+    ReactPixel.pageView(); 					// For tracking page view
     
   }, []);
 
   const classes = useStyles();
 
   const clickedDownload = () => {
-
+    ReactPixel.trackCustom("CLICKED_DOWNLOAD_APP") 		// For tracking default events, more info about events and data https://developers.facebook.com/docs/ads-for-websites/pixel-events/v2.9    
     ReactGA.event({
         category: 'User',
         action: 'CLICKED_DOWNLOAD_APP'
