@@ -193,12 +193,16 @@ export default function AnnouncementsPage(props) {
       <div>
         <Helmet>
           <title>{values.name} | Skedge</title>
-          <meta name="description" content={values.description} />
+          <meta name="description" content={values.name} />
           <meta name="theme-color" content="#02C39A" />
           <meta name="apple-itunes-app" content="app-id=1506618749, app-argument=myURL" />
 
           <meta name="geo.region" content="US-FL" />
           <meta name="geo.placename" content={values.city} />
+          
+          <meta property="og:title" content={`${values.name} | Skedge`} />
+          <meta property="og:image" content={values.picture_url} />
+
         </Helmet>
 
         <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={40} width={40} src={require('assets/img/logoheader.png')} onClick={handleGoHomepage}/>
