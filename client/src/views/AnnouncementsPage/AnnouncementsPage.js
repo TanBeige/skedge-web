@@ -140,7 +140,7 @@ export default function AnnouncementsPage(props) {
   }
 
   const handleGoHomepage = () => {
-    props.history.push("/app")
+    props.history.push("/")
   }
 
   const clickedDownload = () => {
@@ -195,6 +195,7 @@ export default function AnnouncementsPage(props) {
           <title>{values.name} | Skedge</title>
           <meta name="description" content={values.description} />
           <meta name="theme-color" content="#02C39A" />
+          <meta name="apple-itunes-app" content="app-id=1506618749, app-argument=myURL" />
 
           <meta name="geo.region" content="US-FL" />
           <meta name="geo.placename" content={values.city} />
@@ -210,7 +211,7 @@ export default function AnnouncementsPage(props) {
         
         </Parallax>
           
-        <AppearOnScroll scrollInHeight={10}>
+        {/* <AppearOnScroll scrollInHeight={10}>
             <Button
               color="primary"
               onClick={handleGoHomepage}
@@ -218,7 +219,7 @@ export default function AnnouncementsPage(props) {
             >
               {values.attached_events.length ? "For happy hours/deals near you, click here." : "For events near you, click here."}
             </Button>
-        </AppearOnScroll>
+        </AppearOnScroll> */}
 
         <div className={classes.container} style={{padding: 0, marginBottom: '7vh'}}>
           <SectionText 
@@ -234,11 +235,11 @@ export default function AnnouncementsPage(props) {
               </div>
             </a>
             <img height={50} src={require('assets/img/DownloadAppStore.png')} />
-            <h5>Check out our app to find the best deals in Tallahassee!</h5>
+            <h5>Download our app to discover hidden deals in Tallahassee.</h5>
 
           </div>
 
-          {
+          {/* {
             values.attached_events.length ? 
             <RelatedEventsWrapper 
               currentDealId={0}
@@ -261,7 +262,7 @@ export default function AnnouncementsPage(props) {
               state={values.state}
               is_recurring={false}
             />
-          }
+          } */}
           
           <Footer
         content={

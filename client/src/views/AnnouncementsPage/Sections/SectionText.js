@@ -68,9 +68,13 @@ export default function SectionText({ announcementInfo, client }) {
           <br />
           {announcementInfo.city}, {announcementInfo.state}
         </h4>
-        <h4 style={{wordWrap: 'break-word', whiteSpace: "pre-line", margin: '1em 0 2em 0'}}>
-          {announcementInfo.description}
-        </h4>
+        {
+          announcementInfo.description && (
+          <h4 style={{wordWrap: 'break-word', whiteSpace: "pre-line", margin: '1em 0 2em 0'}}>
+            {announcementInfo.description}
+          </h4>
+          )
+        }
       </div>
       <div style={{margin: 'auto', maxWidth: 500}}>
         {
@@ -83,7 +87,7 @@ export default function SectionText({ announcementInfo, client }) {
                   name={event.event.name}
                   picId={event.event.image.image_uuid}
                 />
-                <p style={{margin: '0 0.5em'}}>{event.description}</p>
+                <p style={{margin: '0 0.5em', wordWrap: 'break-word', whiteSpace: "pre-line"}}>{event.description}</p>
                 <br />
                 <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
                   <p style={{margin: '0 0.5em'}}>*To save or redeem this deal, download our app.*</p>
