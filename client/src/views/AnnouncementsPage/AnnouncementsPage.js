@@ -140,7 +140,14 @@ export default function AnnouncementsPage(props) {
   }
 
   const handleGoHomepage = () => {
-    props.history.push("/")
+    props.history.push("/app")
+  }
+
+  const clickedDownload = () => {
+    ReactGA.event({
+        category: 'User',
+        action: 'CLICKED_DOWNLOAD_APP'
+    });
   }
 
 
@@ -194,8 +201,15 @@ export default function AnnouncementsPage(props) {
         </Helmet>
 
         <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={40} width={40} src={require('assets/img/logoheader.png')} onClick={handleGoHomepage}/>
-        <Parallax image={values.picture_url}> </Parallax>
-
+        <Parallax image={values.picture_url}> 
+          {/* <div style={{position: 'absolute', right: 0}}> */}
+              {/* <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
+                  <img style={{maxHeight: '22vh'}} src={require("assets/img/app_advert_3.png")} />
+              </a> */}
+          {/* </div> */}
+        
+        </Parallax>
+          
         <AppearOnScroll scrollInHeight={10}>
             <Button
               color="primary"
@@ -211,6 +225,19 @@ export default function AnnouncementsPage(props) {
             announcementInfo={values}
             client={props.client}
           />
+
+          <div style={{maxWidth: 600, margin: 'auto', textAlign: 'center'}}>
+            <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
+              <div style={{width: '100%',margin: 'auto', textAlign: 'center', marginTop: 10}}>            
+                <img style={{maxHeight: '22vh'}} src={require("assets/img/app_advert_2.png")} />
+                <img style={{maxHeight: '22vh'}} src={require("assets/img/app_advert_3.png")} />
+              </div>
+            </a>
+            <img height={50} src={require('assets/img/DownloadAppStore.png')} />
+            <h5>Check out our app to find the best deals in Tallahassee!</h5>
+
+          </div>
+
           {
             values.attached_events.length ? 
             <RelatedEventsWrapper 
@@ -235,6 +262,7 @@ export default function AnnouncementsPage(props) {
               is_recurring={false}
             />
           }
+          
           <Footer
         content={
           <div>

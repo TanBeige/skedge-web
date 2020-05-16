@@ -7,7 +7,7 @@ import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from '@material-ui/styles';
-
+import { Helmet } from 'react-helmet';
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -111,6 +111,14 @@ export default function LandingPage(props) {
     // loginWithPopup({})
   }
 
+  const handleAppPress = () => {
+    ReactGA.initialize('UA-151937222-1');
+    ReactGA.event({
+      category: 'User',
+      action: 'Login/Sign Up: Landing Page'
+    });
+  }
+
   //Mobile Image
   let paraImage = ""
   if(window.innerWidth < 768) {
@@ -122,6 +130,18 @@ export default function LandingPage(props) {
 
   return (
     <ThemeProvider theme={theme}>
+      <Helmet>
+            <title>App Store | Skedge</title>
+            <meta name="description" content="Skedge on the App Store." />
+            <meta name="apple-itunes-app" content="app-id=1506618749, app-argument=myURL" />
+
+            <meta property="og:title" content={`App Store | Skedge`} />
+            <meta property="og:image" content={require('assets/img/logoheader.png')} />
+
+            <meta name="theme-color" content="#02C39A" />
+            <meta name="geo.region" content="US-FL" />
+            <meta name="geo.placename" content={"Tallahassee"} />
+        </Helmet>
     <div>
       <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={40} width={40} src={require('assets/img/logoheader.png')} />
       <div style={{position: 'absolute', zIndex: 10, top: 15, right: 25}} >
@@ -137,6 +157,11 @@ export default function LandingPage(props) {
                 Where you go to find, share, and create your favorite things to do. Sign up to see all events & deals.
               </h4>
               <br />
+              <div style={{position: 'absolute', right: 0}}>
+                <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
+                    <img style={{maxHeight: '22vh'}} src={require("assets/img/app_advert_3.png")} />
+                </a>
+              </div>
               <Button
                 color="primary"
                 onClick={handleLogin}
@@ -145,6 +170,19 @@ export default function LandingPage(props) {
               >
                 Login or Sign Up
               </Button>
+              <br />
+              <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1">
+                <Button
+                  color="secondary"
+                  onClick={handleAppPress}
+                  // style={{position: 'fixed', top: 300}}
+                  className='signup'
+                >
+                  Skedge on the App Store
+                </Button>
+              </a>
+              
+              
             </GridItem>
           </GridContainer>
 

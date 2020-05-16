@@ -61,13 +61,13 @@ export default function ItemCard({itemType, itemId, name, picId}) {
         marginTop: '1em'
       }}
     >
-        <Link to={itemUrl}>
+        {/* <Link to={itemUrl}> */}
             <CardBody background style={{minHeight: '60px',  padding: 20}}>
                 <h4 className={classes.cardTitleWhite} style={{margin: 0}}>
                     {name}
                 </h4>
             </CardBody>
-        </Link>
+        {/* </Link> */}
     </Card>
   );
 }

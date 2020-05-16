@@ -38,6 +38,13 @@ export default function SectionText({ announcementInfo, client }) {
     // loginWithPopup({});
   }
 
+  const clickedDownload = () => {
+    ReactGA.event({
+        category: 'User',
+        action: 'CLICKED_DOWNLOAD_APP'
+    });
+  }
+
 
   useEffect(() => {
     _isMounted = true;
@@ -77,6 +84,10 @@ export default function SectionText({ announcementInfo, client }) {
                   picId={event.event.image.image_uuid}
                 />
                 <p style={{margin: '0 0.5em'}}>{event.description}</p>
+                <br />
+                <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
+                  <p style={{margin: '0 0.5em'}}>*To save or redeem this deal, download our app.*</p>
+                </a>
               </div>
             )
           })
@@ -92,6 +103,10 @@ export default function SectionText({ announcementInfo, client }) {
                     picId={deal.deal.cover_pic}
                   />
                   <p style={{margin: '0 0.5em'}}>{deal.description}</p>
+                  {/* <br /> */}
+                  <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
+                    <p style={{margin: '0 0.5em'}}>*To save or redeem this deal, download our app.*</p>
+                  </a>
               </div>
             )
           })
