@@ -18,7 +18,10 @@ export default function CreateBlog() {
         name: "",
         date: "",
         city: "Tallahassee",
-        state: "Florida"
+        state: "Florida",
+        deals: [
+          {dealId: 0, description: ""}
+        ]
     });
 
     //Functions
@@ -30,95 +33,156 @@ export default function CreateBlog() {
       console.log("ass");
     }
 
+    const handleDealIdChange = (dealId, index) => {
+      let tempDeals = values.deals;
+      tempDeals[index].dealId = dealId
+      setValues({
+        ...values,
+        deals: tempDeals
+      })
+    }
+    const handleDealDescriptionChange = (description, index) => {
+      let tempDeals = values.deals;
+      tempDeals[index].description = description
+      setValues({
+        ...values,
+        deals: tempDeals
+      })
+    }
+
+    const addDeal = () => {
+      let tempDeals = values.deals;
+      tempDeals.push({dealID: 0, description: ""})
+      setValues({
+        ...values,
+        deals: tempDeals
+      })
+    }
+
 
     return(
-    <Container component="main" maxWidth="md" style={{paddingBottom: '0.5em'}}>
+    <Container component="main" maxWidth="md" style={{paddingBottom: '0.5em', marginTop: 30}}>
       <CssBaseline />
         <form  noValidate>
-        <div className='EventCreateInfo'>
-          <Grid container spacing={2} >
-            <Grid item xs={12} sm={12}>
-              <TextField
-                error={values.name.length > 50}
-                name="name"
-                variant="outlined"
-                value={values.name}
-                required
-                fullWidth
-                onChange={handleChange('name')}
-                id="event_name"
-                label="Event Name"
-                autoFocus
-                placeholder="50 character max."
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                value={values.location_name}
-                required
-                fullWidth
-                onChange={handleChange('date')}
-                id=""date
-                label="Date"
-                name="date"
-                placeholder="ex) YYYY-MM-DD ex) 2020-03-20"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                value={values.street}
-                required
-                fullWidth
-                onChange={handleChange('city')}
-                id="city"
-                label="City"
-                name="city"
-                placeholder="Tallahassee"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="state"
-                value={values.street}
-                required
-                fullWidth
-                onChange={handleChange('state')}
-                id="state"
-                label="State"
-                name="state"
-                placeholder="Florida"
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField 
-                  id="description"
-                  label="Event Description"
+          <div className='EventCreateInfo'>
+            <Grid container spacing={2} >
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  error={values.name.length > 50}
+                  name="name"
                   variant="outlined"
+                  value={values.name}
+                  required
                   fullWidth
-                  multiline
-                  value={values.description}
+                  onChange={handleChange('name')}
+                  id="blog_name"
+                  label="Blog Title"
+                  autoFocus
+                  placeholder="Ex) Top 3 Deals in Tallahassee"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  value={values.street}
+                  required
                   fullWidth
-                  onChange={handleChange('description')}
-                  margin="normal"
-              />
+                  onChange={handleChange('city')}
+                  id="city"
+                  label="City"
+                  name="city"
+                  placeholder="Tallahassee"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  value={values.street}
+                  required
+                  fullWidth
+                  onChange={handleChange('state')}
+                  id="state"
+                  label="State"
+                  name="state"
+                  placeholder="Florida"
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField 
+                    id="description"
+                    label="Blog Description"
+                    variant="outlined"
+                    fullWidth
+                    multiline
+                    value={values.description}
+                    fullWidth
+                    onChange={handleChange('description')}
+                    margin="normal"
+                    placeholder="Ex) We set out to find the best deals in tally, here they are ...: "
+                />
+              </Grid>
             </Grid>
-          </Grid>
-          
+            <hr />
+            {
+              values.deals.map((item, index) => {
+                return(
+                  <Grid container>
+                    <h5>Deal #{index + 1}</h5>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        variant="outlined"
+                        // value={values.deals[index].dealId}
+                        style={{marginTop: 10}}
+
+                        required
+                        fullWidth
+                        onChange={(event) => handleDealIdChange(event.target.value, index)}
+                        id="deal_id"
+                        label="Deal ID"
+                        name="Deal Id"
+                        placeholder="324"
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        variant="outlined"
+                        style={{marginTop: 10}}
+                        // value={values.deals[index].description}
+                        required
+                        fullWidth
+                        multiline
+                        onChange={(event) => handleDealDescriptionChange(event.target.value, index)}
+                        id="description"
+                        label="Description"
+                        name="description"
+                        placeholder="blah blah blah when/where"
+                      />
+                    </Grid>
+                  </Grid>
+                )
+              })
+            }
+            <Button
+              variant="contained"
+              color="primary"
+              style={{color: 'white', marginTop: 10}}
+              onClick={addDeal}
+            >
+            Add Deal +
+            </Button>          
           </div>
 
           <Button
             fullWidth
             variant="contained"
             color="primary"
-            style={{color: 'white'}}
+            style={{color: 'white', marginTop: 10}}
             onClick={submitEventInfo}
           >
-           Choose Category ->
+           Create Blog ->
           </Button>
-        </form>
+      </form>
     </Container>
     )
 }
