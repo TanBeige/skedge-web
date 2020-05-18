@@ -109,7 +109,7 @@ export default function SectionText({ announcementInfo, client }) {
                   <p  style={{fontSize: 16, margin: '0 0.5em'}}>{deal.description}</p>
                   {/* <br /> */}
                   <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
-                    <p style={{fontSize: 16, margin: '0 0.5em'}}>*To save or redeem this deal, download our app.*</p>
+                    <p style={{fontSize: 16, margin: '0 0.5em', color="#00A896", }}>*To redeem this deal, download our app.*</p>
                   </a>
               </div>
             )
