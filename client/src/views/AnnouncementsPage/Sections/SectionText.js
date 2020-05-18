@@ -87,10 +87,10 @@ export default function SectionText({ announcementInfo, client }) {
                   name={event.event.name}
                   picId={event.event.image.image_uuid}
                 />
-                <p style={{margin: '0 0.5em', wordWrap: 'break-word', whiteSpace: "pre-line"}}>{event.description}</p>
+                <p style={{ fontSize: 16, margin: '0 0.5em', wordWrap: 'break-word', whiteSpace: "pre-line"}}>{event.description}</p>
                 <br />
                 <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
-                  <p style={{margin: '0 0.5em'}}>*To save or redeem this deal, download our app.*</p>
+                  <p style={{fontSize: 16, margin: '0 0.5em'}}>*To save or redeem this deal, download our app.*</p>
                 </a>
               </div>
             )
@@ -106,10 +106,10 @@ export default function SectionText({ announcementInfo, client }) {
                     name={deal.deal.name}
                     picId={deal.deal.cover_pic}
                   />
-                  <p style={{margin: '0 0.5em'}}>{deal.description}</p>
+                  <p  style={{fontSize: 16, margin: '0 0.5em'}}>{deal.description}</p>
                   {/* <br /> */}
                   <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
-                    <p style={{margin: '0 0.5em'}}>*To save or redeem this deal, download our app.*</p>
+                    <p style={{fontSize: 16, margin: '0 0.5em'}}>*To save or redeem this deal, download our app.*</p>
                   </a>
               </div>
             )
