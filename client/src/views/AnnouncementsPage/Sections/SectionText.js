@@ -9,6 +9,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import sectionTextStyle from "assets/jss/material-kit-pro-react/views/blogPostSections/sectionTextStyle.js";
 //Auth0 Wrapper
 import { useAuth0 } from 'Authorization/react-auth0-wrapper';
+import Button from "components/CustomButtons/Button.js";
+import AppleIcon from '@material-ui/icons/Apple';
+import IconButton from '@material-ui/core/IconButton';
 
 import ItemCard from './ItemCard.js';
 //Google Analytics
@@ -60,13 +63,13 @@ export default function SectionText({ announcementInfo, client }) {
   return(
     <div style={{maxWidth: 600, margin: 'auto'}}>
       <div className='AnnouncementTitle'>
-          <h2 className='AnnouncementName'>{announcementInfo.name}</h2>
+          <h2 style={{textAlign: 'center'}} className='AnnouncementName'>{announcementInfo.name}</h2>
       </div>
       <div className='AnnouncementDescription'>
         <h4 style={{fontSize: '0.9em', margin: 0}}>
-          By Skedge <span style={{float: 'right', color: 'gray'}}> {moment(announcementInfo.date, "YYYY-MM-DD").format("MMMM Do, YYYY")} </span>
-          <br />
-          {announcementInfo.city}, {announcementInfo.state}
+          {/* By Skedge <span style={{float: 'right', color: 'gray'}}> {moment(announcementInfo.date, "YYYY-MM-DD").format("MMMM Do, YYYY")} </span>
+          <br /> */}
+          {/* {announcementInfo.city}, {announcementInfo.state} */}
         </h4>
         {
           announcementInfo.description && (
@@ -87,17 +90,17 @@ export default function SectionText({ announcementInfo, client }) {
                   name={event.event.name}
                   picId={event.event.image.image_uuid}
                 />
-                <p style={{ fontSize: 16, margin: '0 0.5em', wordWrap: 'break-word', whiteSpace: "pre-line"}}>{event.description}</p>
+                <p style={{ fontSize: 16, wordWrap: 'break-word', whiteSpace: "pre-line"}}>{event.description}</p>
                 <br />
                 <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
-                  <p style={{fontSize: 16, margin: '0 0.5em'}}>*To save or redeem this deal, download our app.*</p>
+                  <p style={{fontSize: 16}}>*To save or redeem this deal, download our app.*</p>
                 </a>
               </div>
             )
           })
         }
         {
-          announcementInfo.attached_deals.map(deal => {
+          announcementInfo.attached_deals.map((deal, index) => {
             return (
               <div key={deal.deal.id} style={{margin: '0 2em 2em 2em'}}>
                   <ItemCard
@@ -106,11 +109,20 @@ export default function SectionText({ announcementInfo, client }) {
                     name={deal.deal.name}
                     picId={deal.deal.cover_pic}
                   />
-                  <p  style={{fontSize: 16, margin: '0 0.5em'}}>{deal.description}</p>
-                  {/* <br /> */}
+                  <div style={{display: 'inline-flex'}}>
+                    <h3 style={{ marginRight: 5, marginTop: 0, marginBottom: 0}}>{announcementInfo.attached_deals.length - index}.</h3>
+                    <p style={{fontSize: 16}}>{deal.description}</p>                    
+                  </div>
+
+                  {/* <div style={{display: 'inline-flex'}}> */}
                   <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
-                    <p style={{fontSize: 16, margin: '0 0.5em', color="#00A896", }}>*To redeem this deal, download our app.*</p>
+                    <p style={{fontSize: 16, color:"#00A896", float: 'right'}}>*Redeem In App*</p>
                   </a>
+                  {/* <IconButton color="primary" aria-label="add to shopping cart">
+                    <AppleIcon />
+                  </IconButton> */}
+                  {/* </div> */}
+                  {/* <Button round style={{float: 'right'}} color='primary' onClick={clickedDownload}></Button> */}
               </div>
             )
           })

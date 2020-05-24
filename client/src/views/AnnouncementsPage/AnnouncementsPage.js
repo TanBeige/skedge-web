@@ -12,7 +12,6 @@ import AppearOnScroll from 'components/AppearOnScroll.js'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
-
 // core components
 import Parallax from "components/Parallax/Parallax.js";
 import Button from "components/CustomButtons/Button.js";
@@ -20,8 +19,8 @@ import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 // sections for this page
 import SectionText from "./Sections/SectionText.js";
 import LoadingPage from '../LoadingPage/LoadingPage.js';
-import RelatedEventsWrapper from 'views/EventPage/Sections/RelatedEvents/RelatedEventsWrapper.js';
-import RelatedDealsWrapper from 'views/DealPage/Sections/RelatedDeals/RelatedDealsWrapper.js';
+// import RelatedEventsWrapper from 'views/EventPage/Sections/RelatedEvents/RelatedEventsWrapper.js';
+// import RelatedDealsWrapper from 'views/DealPage/Sections/RelatedDeals/RelatedDealsWrapper.js';
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 import {
@@ -205,7 +204,7 @@ export default function AnnouncementsPage(props) {
 
         </Helmet>
 
-        <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={40} width={40} src={require('assets/img/logoheader.png')} onClick={handleGoHomepage}/>
+        {/* <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={40} width={40} src={require('assets/img/logoheader.png')} onClick={handleGoHomepage}/> */}
         <Parallax image={values.picture_url}> 
           {/* <div style={{position: 'absolute', right: 0}}> */}
               {/* <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
@@ -239,7 +238,6 @@ export default function AnnouncementsPage(props) {
               </div>
             </a>
             <img height={50} src={require('assets/img/DownloadAppStore.png')} />
-            <h5>Download our app to discover hidden deals in Tallahassee.</h5>
 
           </div>
 

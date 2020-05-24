@@ -131,12 +131,12 @@ export default function LandingPage(props) {
   return (
     <ThemeProvider theme={theme}>
       <Helmet>
-            <title>App Store | Skedge</title>
+            <title>Skedge</title>
             <meta name="description" content="Skedge on the App Store." />
             <meta name="apple-itunes-app" content="app-id=1506618749, app-argument=myURL" />
 
-            <meta property="og:title" content={`App Store | Skedge`} />
-            <meta property="og:image" content={require('assets/img/logoheader.png')} />
+            <meta property="og:title" content={`Skedge`} />
+            <meta property="og:image" content={require('assets/img/app_advert_2.png')} />
 
             <meta name="theme-color" content="#02C39A" />
             <meta name="geo.region" content="US-FL" />
