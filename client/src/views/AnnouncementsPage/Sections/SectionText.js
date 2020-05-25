@@ -61,14 +61,14 @@ export default function SectionText({ announcementInfo, client }) {
 
 
   return(
-    <div style={{maxWidth: 600, margin: 'auto'}}>
+    <div style={{maxWidth: 500, margin: 'auto'}}>
       <div className='AnnouncementTitle'>
           <h2 style={{textAlign: 'center'}} className='AnnouncementName'>{announcementInfo.name}</h2>
       </div>
       <div className='AnnouncementDescription'>
-        <h4 style={{fontSize: '0.9em', margin: 0}}>
-          {/* By Skedge <span style={{float: 'right', color: 'gray'}}> {moment(announcementInfo.date, "YYYY-MM-DD").format("MMMM Do, YYYY")} </span>
-          <br /> */}
+        <h4 style={{fontSize: '0.9em', margin: '0 1em 0 1em'}}>
+          By Skedge <span style={{float: 'right', color: 'gray'}}> {moment(announcementInfo.date, "YYYY-MM-DD").format("MMMM Do, YYYY")} </span>
+          {/* <br /> */}
           {/* {announcementInfo.city}, {announcementInfo.state} */}
         </h4>
         {
@@ -110,7 +110,7 @@ export default function SectionText({ announcementInfo, client }) {
                     picId={deal.deal.cover_pic}
                   />
                   <div style={{display: 'inline-flex'}}>
-                    <h3 style={{ marginRight: 5, marginTop: 0, marginBottom: 0}}>{announcementInfo.attached_deals.length - index}.</h3>
+                    <p style={{fontSize: 16, marginRight: 5, marginTop: 0, marginBottom: 0}}>{announcementInfo.attached_deals.length - index}.</p>
                     <p style={{fontSize: 16}}>{deal.description}</p>                    
                   </div>
 
