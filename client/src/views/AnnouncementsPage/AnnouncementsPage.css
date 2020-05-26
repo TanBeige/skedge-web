@@ -9,8 +9,8 @@ button.buttonMargin {
 
 .AnnouncementName {
     /* max-height: 7vh; */
-    margin: 0.5em 0.5em 0 0.5em;
-    font-size: 1.5em;
+    margin: 0.5em 0.5em 0.1em 0.5em;
+    font-size: 1.2em;
     font-weight: bold;
     /* padding-top: 0.2em; */
 }

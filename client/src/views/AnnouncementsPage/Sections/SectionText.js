@@ -63,7 +63,7 @@ export default function SectionText({ announcementInfo, client }) {
   return(
     <div style={{maxWidth: 500, margin: 'auto'}}>
       <div className='AnnouncementTitle'>
-          <h2 style={{textAlign: 'center'}} className='AnnouncementName'>{announcementInfo.name}</h2>
+          <h2 style={{fontSize: '1.1em',textAlign: 'center'}} className='AnnouncementName'>{announcementInfo.name}</h2>
       </div>
       <div className='AnnouncementDescription'>
         <h4 style={{fontSize: '0.9em', margin: '0 1em 0 1em'}}>
@@ -95,6 +95,7 @@ export default function SectionText({ announcementInfo, client }) {
                 <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
                   <p style={{fontSize: 16}}>*To save or redeem this deal, download our app.*</p>
                 </a>
+                {/* <Button>Redeem in App</Button> */}
               </div>
             )
           })
@@ -110,27 +111,25 @@ export default function SectionText({ announcementInfo, client }) {
                     picId={deal.deal.cover_pic}
                   />
                   <div style={{display: 'inline-flex'}}>
-                    <p style={{fontSize: 16, marginRight: 5, marginTop: 0, marginBottom: 0}}>{announcementInfo.attached_deals.length - index}.</p>
-                    <p style={{fontSize: 16}}>{deal.description}</p>                    
+                    <p style={{fontSize: 16, marginRight: 5, marginTop: 0, marginBottom: 0, fontWeight: '400'}}>{announcementInfo.attached_deals.length - index}.</p>
+                    <p style={{fontSize: 16, fontWeight: '400'}}>{deal.description}</p>                    
                   </div>
 
-                  {/* <div style={{display: 'inline-flex'}}> */}
                   <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
-                    <p style={{fontSize: 16, color:"#00A896", float: 'right'}}>*Redeem In App*</p>
+                    <div style={{display: 'inline-flex', alignItems: 'center', float: 'right', marginBottom: 8}}>
+                      <p style={{fontSize: 16, color: '#0C87C2', float: 'right'}}>Redeem In App</p>
+                      <IconButton size='small' color="info" aria-label="app-store">
+                        <AppleIcon />
+                      </IconButton>
+                    </div>
                   </a>
-                  {/* <IconButton color="primary" aria-label="add to shopping cart">
-                    <AppleIcon />
-                  </IconButton> */}
-                  {/* </div> */}
-                  {/* <Button round style={{float: 'right'}} color='primary' onClick={clickedDownload}></Button> */}
+
+                  {/* <Button round style={{float: 'right'}} color='primary' onClick={clickedDownload}>Redeem In App</Button> */}
               </div>
             )
           })
         }
       </div>
-      {
-        announcementInfo.attached_events === "deal"
-      }
     </div>
   );
 }

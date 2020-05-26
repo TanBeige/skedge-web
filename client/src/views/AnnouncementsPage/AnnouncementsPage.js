@@ -229,6 +229,8 @@ export default function AnnouncementsPage(props) {
             announcementInfo={values}
             client={props.client}
           />
+          
+          <br />
 
           <div style={{maxWidth: 600, margin: 'auto', textAlign: 'center'}}>
             <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
