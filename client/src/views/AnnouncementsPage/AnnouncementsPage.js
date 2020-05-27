@@ -127,7 +127,7 @@ export default function AnnouncementsPage(props) {
             attached_deals: data.data.announcements[0].announcement_deals,
 
             // Make first event cover_pic the cover of announcement
-            picture_url: cloudinary.url(cover_id, {secure: true, width: Math.floor(window.innerWidth), crop: "scale", fetch_format: "auto", quality: "auto"})
+            picture_url: cloudinary.url(cover_id, {secure: true, width: Math.floor(window.innerWidth < 700 ? window.innerWidth * 2 : window.innerWidth), crop: "scale", fetch_format: "auto", quality: "auto"})
           })
           //Say that we're not loading the event anymore.
           setIsLoading(false);
@@ -230,8 +230,6 @@ export default function AnnouncementsPage(props) {
             client={props.client}
           />
           
-          <br />
-
           <div style={{maxWidth: 600, margin: 'auto', textAlign: 'center'}}>
             <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
               <div style={{width: '100%',margin: 'auto', textAlign: 'center', marginTop: 10}}>            

@@ -117,10 +117,10 @@ export default function SectionText({ announcementInfo, client }) {
 
                   <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
                     <div style={{display: 'inline-flex', alignItems: 'center', float: 'right', marginBottom: 8}}>
-                      <p style={{fontSize: 16, color: '#0C87C2', float: 'right'}}>Redeem In App</p>
-                      <IconButton size='small' color="info" aria-label="app-store">
+                      <p style={{fontSize: 16, color: '#02C39A', float: 'right'}}>Redeem</p>
+                      {/* <IconButton size='small' color="info" aria-label="app-store">
                         <AppleIcon />
-                      </IconButton>
+                      </IconButton> */}
                     </div>
                   </a>
 
