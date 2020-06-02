@@ -2081,6 +2081,7 @@ query get_announcement($announcementId: Int) {
         id
         name
         cover_pic
+        web_url
       }
     }
     announcement_events{

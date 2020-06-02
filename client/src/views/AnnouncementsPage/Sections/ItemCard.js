@@ -52,21 +52,30 @@ export default function ItemCard({itemType, itemId, name, picId}) {
 
   const picUrl = cloudinary.url(picId, {secure: true, width: 900, crop: "scale", fetch_format: "auto", quality: "auto"})
 
+  const gotoDeal = () => {
+    // window.location.href = `skedge://skedge/Deal?itemId=${itemId}`
+
+  }
   return (
     <Card
       background
       style={{
         backgroundImage: `url(${picUrl})`,
         marginBottom: 10,
-        marginTop: '1em'
+        marginTop: '1em',
+        borderRadius: 0
       }}
     >
+        {/* <a href={`skedge://skedge/Deal?itemId=${itemId}`}> */}
         {/* <Link to={itemUrl}> */}
+
             <CardBody background style={{minHeight: '60px',  padding: 20}}>
+              
                 <h4 className={classes.cardTitleWhite} style={{margin: 0}}>
                     {name}
                 </h4>
             </CardBody>
+        {/* </a> */}
         {/* </Link> */}
     </Card>
   );

@@ -51,6 +51,7 @@ export default function AnnouncementsPage(props) {
   let isMounted = true;
 
   const { user, loginWithRedirect} = useAuth0();
+
   const [isLoading, setIsLoading] = useState(false);
   const [values, setValues] = useState({
     announcement_id: announcementId,
@@ -229,8 +230,10 @@ export default function AnnouncementsPage(props) {
             announcementInfo={values}
             client={props.client}
           />
+
+          <br />
           
-          <div style={{maxWidth: 600, margin: 'auto', textAlign: 'center'}}>
+          {/* <div style={{maxWidth: 600, margin: 'auto', textAlign: 'center'}}>
             <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
               <div style={{width: '100%',margin: 'auto', textAlign: 'center', marginTop: 10}}>            
                 <img style={{maxHeight: '22vh'}} src={require("assets/img/app_advert_2.png")} />
@@ -239,7 +242,7 @@ export default function AnnouncementsPage(props) {
             </a>
             <img height={50} src={require('assets/img/DownloadAppStore.png')} />
 
-          </div>
+          </div> */}
 
           {/* {
             values.attached_events.length ? 

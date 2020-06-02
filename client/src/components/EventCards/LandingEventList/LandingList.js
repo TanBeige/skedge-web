@@ -291,49 +291,49 @@ export default function EventCardListLand(props) {
           setLastTab={props.setLastTab}
           lastTab={props.lastTab}
           tabs={[
-            {
-              tabName: "Events",
-              // tabIcon: DateRangeIcon,
-              tabContent: (
+            // {
+            //   tabName: "Events",
+            //   // tabIcon: DateRangeIcon,
+            //   tabContent: (
 
-                !isSearch ?
-                <InfiniteScroll
-                  dataLength={values.events.length} //This is important field to render the next data
-                  next={loadMore}
-                  hasMore={true}
-                  style={{overflow: 'visible'}}
+            //     !isSearch ?
+            //     <InfiniteScroll
+            //       dataLength={values.events.length} //This is important field to render the next data
+            //       next={loadMore}
+            //       hasMore={true}
+            //       style={{overflow: 'visible'}}
 
-                  // loader={<h4>Loading...</h4>}
-                >
-                <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
-                  {
-                    values.events.map((event, index) => {
-                      return (
-                        <Fragment key={event.id}>
-                          <GridItem xs={12} sm={4} md={4}>
-                            <EventCard 
-                              event={event} 
-                              listType={"landing"}
-                              client={props.client}
-                              userId={props.userId}
-                              filter={props.filter}
-                              currentDate={props.filter.date}
-                            />
-                          </GridItem>
-                          {
-                            // insertAd(index)   //Add later when Skedge.com can get ads
-                          }
-                        </Fragment>
-                      )
-                    })
-                  }
-                </GridContainer>
-                <Button color="primary" variant='outlined' round onClick={() =>loginWithRedirect({})}>Sign in to view more</Button>
-                </InfiniteScroll> 
-                :
-                <LoadCardList />
-              )
-            },
+            //       // loader={<h4>Loading...</h4>}
+            //     >
+            //     <GridContainer justify='center' style={{minHeight: '8em', margin: '10px 0px 0px 0px'}}>
+            //       {
+            //         values.events.map((event, index) => {
+            //           return (
+            //             <Fragment key={event.id}>
+            //               <GridItem xs={12} sm={4} md={4}>
+            //                 <EventCard 
+            //                   event={event} 
+            //                   listType={"landing"}
+            //                   client={props.client}
+            //                   userId={props.userId}
+            //                   filter={props.filter}
+            //                   currentDate={props.filter.date}
+            //                 />
+            //               </GridItem>
+            //               {
+            //                 // insertAd(index)   //Add later when Skedge.com can get ads
+            //               }
+            //             </Fragment>
+            //           )
+            //         })
+            //       }
+            //     </GridContainer>
+            //     <Button color="primary" variant='outlined' round onClick={() =>loginWithRedirect({})}>Sign in to view more</Button>
+            //     </InfiniteScroll> 
+            //     :
+            //     <LoadCardList />
+            //   )
+            // },
             {
               tabName: "Happy Hours/Deals",
               // tabIcon: LocalAtmIcon,
