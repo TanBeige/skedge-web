@@ -97,7 +97,7 @@ export default function RedeemButton (props) {
         ReactGA.initialize('UA-151937222-1');
         ReactGA.event({
         category: 'Redeem',
-        action: 'Login/Sign Up: Deal Page'
+        action: 'Call'
         });
         window.location.href = `tel:${props.phone_number}`
     }
@@ -105,13 +105,22 @@ export default function RedeemButton (props) {
         ReactGA.initialize('UA-151937222-1');
         ReactGA.event({
             category: 'Redeem',
-            action: 'Login/Sign Up: Deal Page'
+            action: 'Web Link'
         });
         // window.location.href = props.web_url
         window.open(
             props.web_url,
             '_blank' // <- This is what makes it open in a new window.
         );
+    }
+
+    const onClickCancel = () => {
+        ReactGA.initialize('UA-151937222-1');
+        ReactGA.event({
+            category: 'Cancel Redeem',
+            action: 'Cancel'
+        });
+        setOpenEmail(false);
     }
 
     const getEmail = (
@@ -151,7 +160,7 @@ export default function RedeemButton (props) {
                     props.web_url && <Button onClick={onClickLink} color='info'>Link to Deal</Button>
                 }
                 
-                <Button onClick={() => {setOpenEmail(false)}} >Cancel</Button>
+                <Button onClick={onClickCancel} >Cancel</Button>
             </div>
         </div>
     )

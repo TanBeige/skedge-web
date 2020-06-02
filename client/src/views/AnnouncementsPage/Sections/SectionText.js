@@ -80,7 +80,7 @@ export default function SectionText({ announcementInfo, client }) {
 
 
   return(
-    <div style={{maxWidth: 500, margin: 'auto'}}>
+    <div style={{maxWidth: 500, margin: 'auto', display: 'inline-block'}}>
       <div className='AnnouncementTitle'>
           <h2 style={{fontSize: '1.1em',textAlign: 'center'}} className='AnnouncementName'>{announcementInfo.name}</h2>
       </div>
