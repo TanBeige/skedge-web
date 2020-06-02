@@ -385,7 +385,7 @@ export default function DealPage(props) {
     ReactGA.initialize('UA-151937222-1');
     ReactGA.pageview(window.location.pathname);
 
-    window.location.href = `skedge://Deal?itemId=${dealId}`
+    window.location.href = `skedge://skedge/Deal?itemId=${dealId}`
     
   }, [dealId, props.client])
 
