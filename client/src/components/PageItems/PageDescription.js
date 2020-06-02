@@ -21,7 +21,7 @@ export default function PageDescription({description, web_url, category, point_1
     return(
         <div className='ItemDescription'>
             <Paper  elevation={0} square>
-                <Collapse in={expandDetails} collapsedHeight='3em' timeout="auto">
+                <Collapse in={expandDetails} collapsedHeight='6em' timeout="auto">
                 <div style={{margin: '0px 0.5em'}}>
                     
                     <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
