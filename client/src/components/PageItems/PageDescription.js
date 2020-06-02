@@ -30,24 +30,7 @@ export default function PageDescription({description, web_url, category, point_1
                     </p>
                     {/* {point_1 ? <p>- {point_1}</p> : ""}
                     {point_2 ? <p>- {point_2}</p> : ""} */}
-                    {
-                        phone_number ? <div><a style={{color: 'black'}} href={`tel:${phone_number}`}>Call at {phone_number}</a></div> : ""
-                    }
-
-                    {
-                        category || web_url ?
-                        <div style={{display:'inline-flex', width: '100%'}}>
-                            {
-                                web_url && web_url !== "" ?
-                                <div><a href={ web_url.includes("https://") || web_url.includes("http://") ? web_url : `//${web_url}`} target='_blank'><Button color='primary'  size='sm'>Link to {pageType === "events" ? "tickets" : "deal"}</Button></a></div> : ""
-                            }
-                            <div style={{margin: '0.5em', width: '100%', textAlign: 'right'}}>
-                                {
-                                    category ? <CategoryFragment category={category} /> : ""
-                                }
-                            </div>
-                        </div> : ""
-                    }
+                    
                 </div>
                 <div style={{margin: '0px 10px 0px 10px'}}>
                     <SkedgeDisclosure/>
@@ -58,6 +41,30 @@ export default function PageDescription({description, web_url, category, point_1
                     {expandDetails ? <ExpandLessIcon /> : <ExpandMoreIcon/>}
                 </IconButton>
                 </div>
+                <div style={{display: 'flex'}}>
+                    {
+                        phone_number ? <div style={{width: '50%'}}><a style={{color: '#02C39A'}} href={`tel:${phone_number}`}><Button color='info'  size='sm'>{phone_number}</Button></a></div> : ""
+                    }
+
+                    {
+                        category || web_url ?
+                        <div style={{textAlign: 'right', width: '100%'}}>
+
+                            {
+                                web_url && web_url !== "" ?
+                                <div style={{}}><a href={ web_url.includes("https://") || web_url.includes("http://") ? web_url : `//${web_url}`} target='_blank'><Button color='primary'  size='sm'>Redeem</Button></a></div> : ""
+                            }
+                                {
+                                    category ? 
+                                        <div style={{margin: '0.5em', textAlign: 'right'}}>
+                                            <CategoryFragment category={category} /> 
+                                        </div>
+
+                                    : ""
+                                }
+                        </div> : ""
+                    }
+                </div>  
             </Paper>
         </div>
     )

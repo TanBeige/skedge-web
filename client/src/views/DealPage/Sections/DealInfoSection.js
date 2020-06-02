@@ -121,7 +121,7 @@ export default function DealInfoSection({ dealInfo, client }) {
         point_2={dealInfo.point_2}
         phone_number={dealInfo.phone_number}
       />
-      <PageLocation 
+      {/* <PageLocation 
         location_name={dealInfo.location_name}
         street={dealInfo.street} 
         city={dealInfo.city} 
@@ -131,7 +131,7 @@ export default function DealInfoSection({ dealInfo, client }) {
         event_id={dealInfo.deal_id} 
         client={client} 
         pageType="deals"
-      />
+      /> */}
     </div>
   );
 }

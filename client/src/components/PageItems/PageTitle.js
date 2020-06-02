@@ -9,12 +9,12 @@ export default function PageTitle({name, user_name}) {
     return(
         <div className='ItemTitle'>
             <h3 className='ItemName'>{name}</h3>
-            <h4 className='ItemCreator'>
+            {/* <h4 className='ItemCreator'>
                 By: 
             </h4>
             <Link to={userLink}>
             {` ${user_name}`}
-            </Link>
+            </Link> */}
         </div>
     )
 }

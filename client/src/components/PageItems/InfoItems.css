@@ -3,14 +3,14 @@ button.buttonMargin {
 }
 
 .ItemTitle {
-    margin-top: 15px;
+    margin-top: 8px;
     /* max-height: 10vh; */
     /* overflow: hidden; */
 }
 
 .ItemName {
     /* max-height: 7vh; */
-    margin: 0px 1em;
+    margin: 0px 0.5em;
     font-size: 1.2em;
     font-weight: bold;
     padding-top: 0.2em;
@@ -29,7 +29,7 @@ button.buttonMargin {
     max-height: 8vh;
     display: inline-flex;
     width: 100%;
-    padding: 0 1em;
+    padding: 0 0.5em;
     /* color: white; */
     /* margin: 0.5em 0px */
     /* text-align: center; */
@@ -41,7 +41,7 @@ button.buttonMargin {
 }
 
 .ItemDescription {
-    margin: 0 1em;
+    margin: 0 0.5em;
 }
 
 /* .FadingOut {

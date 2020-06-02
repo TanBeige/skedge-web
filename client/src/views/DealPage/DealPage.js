@@ -383,7 +383,10 @@ export default function DealPage(props) {
     
     //For Google Analytics 
     ReactGA.initialize('UA-151937222-1');
-    ReactGA.pageview(window.location.pathname)
+    ReactGA.pageview(window.location.pathname);
+
+    window.location.href = `skedge://Deal?itemId=${dealId}`
+    
   }, [dealId, props.client])
 
   const classes = useStyles();
@@ -459,6 +462,7 @@ export default function DealPage(props) {
 
           <meta property="og:title" content={`${values.name} | Skedge`} />
           <meta property="og:image" content={values.cover_url} />
+          <meta property="og:description" content={`${values.description} - ${values.point_1}`} />
 
           <meta name="geo.region" content="US-FL" />
           <meta name="geo.placename" content={values.city} />

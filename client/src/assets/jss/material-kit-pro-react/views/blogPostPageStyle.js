@@ -9,7 +9,10 @@ import {
 const blogPostPageStyle = {
   container: {
     ...container,
-    zIndex: "2"
+    zIndex: "2",
+    "@media (min-width: 768px)": {
+      maxWidth: "540px"
+    },
   },
   textCenter: {
     textAlign: "center"

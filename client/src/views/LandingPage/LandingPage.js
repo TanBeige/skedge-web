@@ -131,8 +131,8 @@ export default function LandingPage(props) {
   return (
     <ThemeProvider theme={theme}>
       <Helmet>
-            <title>Skedge</title>
-            <meta name="description" content="Skedge on the App Store." />
+            <title>{`Skedge - Free & Cheap Food`}</title>
+            <meta name="description" content="Find the cheapest deals and happy hours for restaraunts in Tallahassee" />
             <meta name="apple-itunes-app" content="app-id=1506618749, app-argument=myURL" />
 
             <meta property="og:title" content={`Skedge`} />
