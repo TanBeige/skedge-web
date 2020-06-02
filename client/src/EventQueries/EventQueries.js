@@ -2063,6 +2063,24 @@ query query_deal_info($dealId: Int!) {
 }
 `
 
+const MUTATION_ADD_ANONYMOUS_MAIL = gql`
+mutation insert_anonymous_email ($email: String!) {
+  insert_anonymous_emails (
+    objects: [
+      {
+        email: $email
+      }
+    ],
+    on_conflict: {
+      constraint: anonymous_emails_pkey,
+      update_columns: [last_time_submitted, times_submitted]
+    }
+  ) {
+    affected_rows
+  }
+}
+`
+
 const GET_ANNOUNCEMENT = gql`
 query get_announcement($announcementId: Int) {
   announcements(where: {id: {_eq: $announcementId}}) {
@@ -2082,6 +2100,7 @@ query get_announcement($announcementId: Int) {
         name
         cover_pic
         web_url
+        phone_number
       }
     }
     announcement_events{
@@ -2177,8 +2196,11 @@ export {
   QUERY_EVENT_PAGE_MOMENTS,
   MUTATION_ADD_MOMENT,
 
+
   QUERY_USER_PROFILE_ANONYMOUS,
   QUERY_DEAL_INFO_ANONYMOUS,
+
+  MUTATION_ADD_ANONYMOUS_MAIL,
 
   GET_ANNOUNCEMENT
 };

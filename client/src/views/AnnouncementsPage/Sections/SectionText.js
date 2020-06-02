@@ -13,6 +13,7 @@ import AppleIcon from '@material-ui/icons/Apple';
 import Typography from '@material-ui/core/Typography';
 import Popover from '@material-ui/core/Popover';
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
+import RedeemButton from 'components/RedeemButton.js';
 
 import ItemCard from './ItemCard.js';
 //Google Analytics
@@ -137,8 +138,9 @@ export default function SectionText({ announcementInfo, client }) {
 
                     {/* <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}> */}
                       <div style={{display: 'inline-flex', alignItems: 'center', float: 'right', marginBottom: 8}}>
+                        <RedeemButton client={client} phone_number={deal.deal.phone_number} web_url={deal.deal.web_url} />
                         {/* <p style={{fontSize: 16, color: '#02C39A', float: 'right'}}>Redeem</p> */}
-                        <Fragment>
+                        {/* <Fragment>
                             <Button round color="primary" onClick={(event)=>clickRedeem(event, deal.deal.web_url)}>
                                 Redeem
                             </Button>
@@ -161,7 +163,7 @@ export default function SectionText({ announcementInfo, client }) {
                                     <Button color='primary' round onClick={loginWithRedirect}>Sign Up/Login</Button>
                                 </div>
                             </Popover>
-                        </Fragment>
+                        </Fragment> */}
                         {/* <IconButton size='small' color="info" aria-label="app-store">
                           <AppleIcon />
                         </IconButton> */}
