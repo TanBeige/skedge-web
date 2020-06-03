@@ -121,6 +121,9 @@ export default function DealInfoSection({ dealInfo, client }) {
         point_1={dealInfo.point_1}
         point_2={dealInfo.point_2}
         phone_number={dealInfo.phone_number}
+        city = {dealInfo.city}
+        state={dealInfo.state}
+        street={dealInfo.street}
       />
       {/* <PageLocation 
         location_name={dealInfo.location_name}

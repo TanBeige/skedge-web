@@ -2,8 +2,12 @@ button.buttonMargin {
     margin: 5px;
 }
 
+p {
+    font-size: 16px;
+}
+
 .ItemTitle {
-    margin-top: 8px;
+    margin-top: 10px;
     /* max-height: 10vh; */
     /* overflow: hidden; */
 }
@@ -18,8 +22,8 @@ button.buttonMargin {
 
 .ItemCreator {
     /* max-height: 3vh; */
-    margin: 0px 0px 0px 1em;
-    font-size: 1em;
+    margin: 0.2em 0px 0px .5em;
+    /* font-size: 1em; */
     align-self: center; 
     display: inline-flex;
     padding-bottom: 3px;

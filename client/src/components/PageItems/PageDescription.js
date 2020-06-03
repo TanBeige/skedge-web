@@ -2,6 +2,7 @@ import React, {useState} from "react";
 // @material-ui/core components
 import Paper from '@material-ui/core/Paper';
 import Collapse from '@material-ui/core/Collapse';
+import PlaceIcon from '@material-ui/icons/Place';
 
 import Button from "components/CustomButtons/Button.js";
 import EventActivity from 'views/EventPage/Sections/EventPageComponents/EventActivity.js';
@@ -15,7 +16,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 require('./InfoItems.css');
 
-export default function PageDescription({description, web_url, category, point_1, point_2, pageType, phone_number}) {
+export default function PageDescription({description, web_url, category, point_1, point_2, pageType, phone_number, city, state, street}) {
     const [expandDetails, setExpandDetails] = useState(false)
 
     return(
@@ -30,6 +31,12 @@ export default function PageDescription({description, web_url, category, point_1
                     </p>
                     {/* {point_1 ? <p>- {point_1}</p> : ""}
                     {point_2 ? <p>- {point_2}</p> : ""} */}
+
+                    {/* <p style={{marginTop: 8}}>
+                        <PlaceIcon style={{fontSize: 16}}/>
+                        { street ? `${street} ` : ""} {`${city}, ${state}`}
+                    </p> */}
+
                     
                 </div>
                 <div style={{margin: '0px 10px 0px 10px'}}>
