@@ -502,7 +502,7 @@ export default function DealPage(props) {
               </div> : ""
             }     
           </Parallax>
-          {
+          {/* {
             !user &&  
             <AppearOnScroll scrollInHeight={10}>
               <Button
@@ -513,7 +513,7 @@ export default function DealPage(props) {
                 For events near you, click here.
               </Button>
             </AppearOnScroll>
-          }
+          } */}
           <div className={classes.container} style={{padding: 0, marginBottom: '7vh'}}>
             <DealInfoSection 
                 dealInfo={values}

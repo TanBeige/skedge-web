@@ -11,7 +11,7 @@ import PageDateTime from 'components/PageItems/PageDateTime.js';
 import PageDescription from 'components/PageItems/PageDescription.js';
 import PageLocation from 'components/PageItems/PageLocation.js';
 
-
+import RedeemButton from 'components/RedeemButton.js';
 // style components
 import sectionTextStyle from "assets/jss/material-kit-pro-react/views/blogPostSections/sectionTextStyle.js";
 
@@ -104,6 +104,7 @@ export default function DealInfoSection({ dealInfo, client }) {
       <PageTitle 
         name={dealInfo.name}
         user_name={dealInfo.user_name}
+        location={dealInfo.location_name}
       />
       <PageDateTime 
         start_date={dealInfo.start_date} 
@@ -132,6 +133,10 @@ export default function DealInfoSection({ dealInfo, client }) {
         client={client} 
         pageType="deals"
       /> */}
+      <div style={{textAlign: 'right', margin: '0 0.5em'}}>
+        <RedeemButton client={client} phone_number={dealInfo.phone_number} web_url={dealInfo.web_url} />
+      </div>
+
     </div>
   );
 }

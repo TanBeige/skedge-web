@@ -117,8 +117,25 @@ export default function RedeemButton (props) {
     const onClickCancel = () => {
         ReactGA.initialize('UA-151937222-1');
         ReactGA.event({
-            category: 'Cancel Redeem',
-            action: 'Cancel'
+            category: 'Redeem',
+            action: 'Clicked Cancel Button'
+        });
+        setOpenEmail(false);
+    }
+
+    const onClickRedeem = () => {
+        ReactGA.initialize('UA-151937222-1');
+        ReactGA.event({
+            category: 'Redeem',
+            action: 'Clicked Redeem Button'
+        });
+        setOpenEmail(true);
+    }
+    const onClickCloseRedeem = () => {
+        ReactGA.initialize('UA-151937222-1');
+        ReactGA.event({
+            category: 'Redeem',
+            action: 'Exit Email'
         });
         setOpenEmail(false);
     }
@@ -174,8 +191,8 @@ export default function RedeemButton (props) {
     }
     const redeem = (
         <Fragment>
-            <div onClick={() => setOpenEmail(true)}>
-                <Button round color='primary' style={{padding: '10px 15px'}}>Redeem</Button>
+            <div>
+                <Button round color='primary' onClick={onClickRedeem} size='sm'>Redeem</Button>
             </div>
             <Modal
                 aria-labelledby="spring-modal-title"
@@ -183,7 +200,7 @@ export default function RedeemButton (props) {
                 // className={classes.modal}
                 // style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
                 open={openEmail}
-                onClose={() => setOpenEmail(false)}
+                onClose={onClickCloseRedeem}
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{

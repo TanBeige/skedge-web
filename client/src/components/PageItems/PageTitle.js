@@ -3,16 +3,17 @@ import { Link } from 'react-router-dom';
 
 require('./InfoItems.css');
 
-export default function PageTitle({name, user_name}) {
+export default function PageTitle({name, user_name, location}) {
     const userLink = `/${user_name}`
 
     return(
         <div className='ItemTitle'>
-            <h3 className='ItemName'>{name}</h3>
-            {/* <h4 className='ItemCreator'>
-                By: 
+            <h1 className='ItemName'>{name}</h1>
+
+            <h4 className='ItemCreator'>
+                {location}
             </h4>
-            <Link to={userLink}>
+            {/* <Link to={userLink}>
             {` ${user_name}`}
             </Link> */}
         </div>

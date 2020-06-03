@@ -205,7 +205,7 @@ export const MakeMainRoutes = () => {
         <div style={{backgroundColor: 'white'}}>
         <Switch>
           <Route exact path="/about-us" render={props => provideClient(AboutUsPage, props)} />
-          <PrivateRoute path="/event" render={props => provideClient(EventPage, props)} />
+          {/* <PrivateRoute path="/event" render={props => provideClient(EventPage, props)} /> */}
           <Route exact path="/home" render={props => provideClient(Home, props)} />
           <PrivateRoute path="/create" render={props => provideClient(CreatePage, props)} />
           <PrivateRoute path="/create-blog" render={props => provideClient(CreateBlog, props)} />

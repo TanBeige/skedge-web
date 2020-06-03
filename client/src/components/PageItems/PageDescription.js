@@ -42,6 +42,16 @@ export default function PageDescription({description, web_url, category, point_1
                 </IconButton>
                 </div>
                 <div style={{display: 'flex'}}>
+
+
+                    
+
+
+
+
+
+{/* 
+
                     {
                         phone_number ? <div style={{width: '50%'}}><a style={{color: '#02C39A'}} href={`tel:${phone_number}`}><Button color='info'  size='sm'>{phone_number}</Button></a></div> : ""
                     }
@@ -63,7 +73,7 @@ export default function PageDescription({description, web_url, category, point_1
                                     : ""
                                 }
                         </div> : ""
-                    }
+                    } */}
                 </div>  
             </Paper>
         </div>
