@@ -138,7 +138,7 @@ export default function SectionText({ announcementInfo, client }) {
 
                     {/* <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}> */}
                       <div style={{display: 'inline-flex', alignItems: 'center', float: 'right', marginBottom: 8}}>
-                        <RedeemButton client={client} phone_number={deal.deal.phone_number} web_url={deal.deal.web_url} />
+                        <RedeemButton client={client} phone_number={deal.deal.phone_number} web_url={deal.deal.web_url} city={deal.deal.city} state={deal.deal.state} street={deal.deal.street}/>
                         {/* <p style={{fontSize: 16, color: '#02C39A', float: 'right'}}>Redeem</p> */}
                         {/* <Fragment>
                             <Button round color="primary" onClick={(event)=>clickRedeem(event, deal.deal.web_url)}>

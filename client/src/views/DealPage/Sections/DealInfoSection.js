@@ -137,7 +137,7 @@ export default function DealInfoSection({ dealInfo, client }) {
         pageType="deals"
       /> */}
       <div style={{textAlign: 'right', margin: '0 0.5em'}}>
-        <RedeemButton client={client} phone_number={dealInfo.phone_number} web_url={dealInfo.web_url} />
+        <RedeemButton client={client} phone_number={dealInfo.phone_number} web_url={dealInfo.web_url} city={dealInfo.city} state={dealInfo.state} street={dealInfo.street}/>
       </div>
 
     </div>

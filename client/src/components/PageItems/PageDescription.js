@@ -23,40 +23,33 @@ export default function PageDescription({description, web_url, category, point_1
         <div className='ItemDescription'>
             <Paper  elevation={0} square>
                 <Collapse in={expandDetails} collapsedHeight='6em' timeout="auto">
-                <div style={{margin: '0px 0.5em'}}>
-                    
-                    <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
-                    <b>Details: </b>
-                        {description}
-                    </p>
-                    {/* {point_1 ? <p>- {point_1}</p> : ""}
-                    {point_2 ? <p>- {point_2}</p> : ""} */}
+                    <div style={{margin: '0px 0.5em'}}>
+                        
+                        <p style={{wordWrap: 'break-word', whiteSpace: "pre-line"}}>
+                        <b>Details: </b>
+                            {description}
+                        </p>
+                        {/* {point_1 ? <p>- {point_1}</p> : ""}
+                        {point_2 ? <p>- {point_2}</p> : ""} */}
 
-                    {/* <p style={{marginTop: 8}}>
-                        <PlaceIcon style={{fontSize: 16}}/>
-                        { street ? `${street} ` : ""} {`${city}, ${state}`}
-                    </p> */}
+                        <p style={{marginTop: 8}}>
+                            <PlaceIcon style={{fontSize: 16}}/>
+                            { street ? `${street} ` : ""} {`${city}, ${state}`}
+                        </p>
 
-                    
-                </div>
-                <div style={{margin: '0px 10px 0px 10px'}}>
-                    <SkedgeDisclosure/>
-                </div>
+                        
+                    </div>
+                    <div style={{margin: '0px 10px 0px 10px'}}>
+                        <SkedgeDisclosure/>
+                    </div>
                 </Collapse> 
                 <div style={{width: '100%', textAlign: 'center'}}>
-                <IconButton style={{width: '100%', borderRadius: 4, padding: 0}} disableRipple onClick={()=>setExpandDetails(!expandDetails)}>
-                    {expandDetails ? <ExpandLessIcon /> : <ExpandMoreIcon/>}
-                </IconButton>
+                    <IconButton style={{width: '100%', borderRadius: 4, padding: 0}} disableRipple onClick={()=>setExpandDetails(!expandDetails)}>
+                        {expandDetails ? <ExpandLessIcon /> : <ExpandMoreIcon/>}
+                    </IconButton>
                 </div>
+                
                 <div style={{display: 'flex'}}>
-
-
-                    
-
-
-
-
-
 {/* 
 
                     {

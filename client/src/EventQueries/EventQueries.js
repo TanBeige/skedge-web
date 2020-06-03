@@ -2064,16 +2064,19 @@ query query_deal_info($dealId: Int!) {
 `
 
 const MUTATION_ADD_ANONYMOUS_MAIL = gql`
-mutation insert_anonymous_email ($email: String!) {
+mutation insert_anonymous_email ($email: String!, $city: String!, $state: String!, $allow_emails: Boolean!) {
   insert_anonymous_emails (
     objects: [
       {
-        email: $email
+        email: $email,
+        city: $city,
+        state: $state,
+        allow_emails: $allow_emails
       }
     ],
     on_conflict: {
       constraint: anonymous_emails_pkey,
-      update_columns: [last_time_submitted, times_submitted]
+      update_columns: [last_time_submitted, times_submitted, city, state]
     }
   ) {
     affected_rows
@@ -2101,6 +2104,9 @@ query get_announcement($announcementId: Int) {
         cover_pic
         web_url
         phone_number
+        city
+        state
+        street
       }
     }
     announcement_events{

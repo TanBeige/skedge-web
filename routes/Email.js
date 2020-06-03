@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+const router = express.Router();
 var nodemailer = require('nodemailer');
 var cors = require('cors');
 const creds = require('../config');
@@ -25,6 +25,44 @@ transporter.verify((error, success) => {
   } else {
     console.log('Server is ready to take messages');
   }
+});
+
+
+router.post('/add_and_send_deal', (req, res, next) => {
+  const sgMail = require('@sendgrid/mail');
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+  var subject = req.body.subject
+  var name = req.body.name
+  var description = req.body.description
+  var phone_number = req.body.phone_number
+  var web_url = req.body.web_url
+  var location_name = req.body.location_name
+  var city = req.body.city
+  var state = req.body.state
+  var street = req.body.street
+
+  console.log(name)
+
+
+  const msg = {
+    to: 'tanarin12@gmail.com',
+    from: 'info@theskedge.com',
+    templateId: '307d8a22-d4f8-4624-aca0-e25629fc3949',
+    dynamic_template_data: {
+      subject: subject,
+      name: name,
+      description: description,
+
+      phone_number: phone_number,
+      web_url: web_url,
+      location_name: location_name,
+      city: city,
+      state: state,
+      street: street
+    },
+  };
+  sgMail.send(msg);
 });
 
 router.post('/send', (req, res, next) => {
@@ -54,5 +92,6 @@ router.post('/send', (req, res, next) => {
         })
     }
   })
-})
+});
+
 module.exports = router;

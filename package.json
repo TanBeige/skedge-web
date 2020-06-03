@@ -13,6 +13,7 @@
     "heroku-postbuild": "cd ./client && npm install && npm run build && cd .."
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.1.1",
     "@slynova/flydrive": "^0.3.1",
     "amplitude-js": "^6.2.0",
     "boom": "^7.3.0",
