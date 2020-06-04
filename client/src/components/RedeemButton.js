@@ -109,11 +109,13 @@ export default function RedeemButton (props) {
                     action: 'CLICKED_SUBMIT_EMAIL_WITH_PERMISSION'
                 });
             }
-            ReactGA.initialize('UA-151937222-1');
-            ReactGA.event({
-                category: 'Redeem',
-                action: 'CLICKED_SUBMIT_EMAIL_WITHOUT_PERMISSION'
-            });
+            else{
+                ReactGA.initialize('UA-151937222-1');
+                ReactGA.event({
+                    category: 'Redeem',
+                    action: 'CLICKED_SUBMIT_EMAIL_WITHOUT_PERMISSION'
+                });
+            }
             console.log(data);
             setModalPage(modalPage + 1)
         })
