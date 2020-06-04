@@ -103,17 +103,17 @@ export default function RedeemButton (props) {
             }
         }).then((data) => {
             if(allowEmails) {
-                // ReactGA.initialize('UA-151937222-1');
-                // ReactGA.event({
-                //     category: 'Redeem',
-                //     action: 'CLICKED_SUBMIT_EMAIL_WITH_PERMISSION'
-                // });
+                ReactGA.initialize('UA-151937222-1');
+                ReactGA.event({
+                    category: 'Redeem',
+                    action: 'CLICKED_SUBMIT_EMAIL_WITH_PERMISSION'
+                });
             }
-            // ReactGA.initialize('UA-151937222-1');
-            // ReactGA.event({
-            //     category: 'Redeem',
-            //     action: 'CLICKED_SUBMIT_EMAIL_WITHOUT_PERMISSION'
-            // });
+            ReactGA.initialize('UA-151937222-1');
+            ReactGA.event({
+                category: 'Redeem',
+                action: 'CLICKED_SUBMIT_EMAIL_WITHOUT_PERMISSION'
+            });
             console.log(data);
             setModalPage(modalPage + 1)
         })
@@ -207,19 +207,19 @@ export default function RedeemButton (props) {
     }
 
     const onClickRedeem = () => {
-        // ReactGA.initialize('UA-151937222-1');
-        // ReactGA.event({
-        //     category: 'Redeem',
-        //     action: 'CLICKED_REDEEM_BUTTON'
-        // });
+        ReactGA.initialize('UA-151937222-1');
+        ReactGA.event({
+            category: 'Redeem',
+            action: 'CLICKED_REDEEM_BUTTON'
+        });
         setOpenEmail(true);
     }
     const onClickCloseRedeem = () => {
-        // ReactGA.initialize('UA-151937222-1');
-        // ReactGA.event({
-        //     category: 'Redeem',
-        //     action: 'CLICKED_CLOSE_BEFORE_MAIL'
-        // });
+        ReactGA.initialize('UA-151937222-1');
+        ReactGA.event({
+            category: 'Redeem',
+            action: 'CLICKED_CLOSE_BEFORE_MAIL'
+        });
         setOpenEmail(false);
     }
 
