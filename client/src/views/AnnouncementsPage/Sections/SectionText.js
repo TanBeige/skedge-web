@@ -122,7 +122,7 @@ export default function SectionText({ announcementInfo, client }) {
         {
           announcementInfo.attached_deals.map((deal, index) => {
             return (
-              <div key={deal.deal.id} style={{margin: '0 0em 2em 0em'}}>
+              <div key={deal.deal.id} style={{margin: '0 0em 0em 0em'}}>
                   <ItemCard
                     itemType="deal"
                     itemId={deal.deal.id}
@@ -137,7 +137,7 @@ export default function SectionText({ announcementInfo, client }) {
 
 
                     {/* <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}> */}
-                      <div style={{display: 'inline-flex', alignItems: 'center', float: 'right', marginBottom: 8}}>
+                      <div style={{display: 'inline-flex', alignItems: 'center', float: 'right', marginBottom: 12}}>
                         <RedeemButton 
                           client={client}
                           phone_number={deal.deal.phone_number} 

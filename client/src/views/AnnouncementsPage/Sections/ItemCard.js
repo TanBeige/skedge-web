@@ -63,13 +63,13 @@ export default function ItemCard({itemType, itemId, name, picId}) {
         backgroundImage: `url(${picUrl})`,
         marginBottom: 10,
         marginTop: '1em',
-        borderRadius: 0
+        borderRadius: 0,
       }}
     >
         {/* <a href={`skedge://skedge/Deal?itemId=${itemId}`}> */}
         {/* <Link to={itemUrl}> */}
 
-            <CardBody background style={{minHeight: '60px',  padding: 20}}>
+            <CardBody background style={{minHeight: '80px'}}>
               
                 <h4 className={classes.cardTitleWhite} style={{margin: 0}}>
                     {name}

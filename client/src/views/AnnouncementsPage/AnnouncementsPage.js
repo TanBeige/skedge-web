@@ -281,6 +281,7 @@ export default function AnnouncementsPage(props) {
               is_recurring={false}
             />
           } */}
+        </div>
           
           <Footer
         content={
@@ -319,7 +320,6 @@ export default function AnnouncementsPage(props) {
           </div>
         } />
           {/* <h1>{values.name}</h1> */}
-        </div>
         </ThemeProvider>
       </div>
     );
