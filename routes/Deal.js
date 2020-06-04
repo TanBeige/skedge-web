@@ -32,6 +32,7 @@ const storage = cloudinaryStorage({
     ]
 });
 
+
 const parser = multer({ storage: storage });
 
 router.post('/upload', parser.single("file"), (req, res) => {
