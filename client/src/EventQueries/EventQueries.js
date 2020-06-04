@@ -2076,7 +2076,7 @@ mutation insert_anonymous_email ($email: String!, $city: String!, $state: String
     ],
     on_conflict: {
       constraint: anonymous_emails_pkey,
-      update_columns: [last_time_submitted, times_submitted, city, state]
+      update_columns: [last_time_submitted, times_submitted, city, state, allow_emails]
     }
   ) {
     affected_rows
@@ -2101,9 +2101,11 @@ query get_announcement($announcementId: Int) {
       deal{
         id
         name
+        description
         cover_pic
         web_url
         phone_number
+        location_name
         city
         state
         street

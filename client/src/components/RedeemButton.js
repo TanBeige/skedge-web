@@ -25,6 +25,11 @@ import {
     MUTATION_ADD_ANONYMOUS_MAIL
 } from 'EventQueries/EventQueries.js';
 
+var cloudinary = require('cloudinary/lib/cloudinary').v2
+
+cloudinary.config({
+  cloud_name: "skedge"
+});
 // Fade in for Modal
 const Fade = React.forwardRef(function Fade(props, ref) {
     const { in: open, children, onEnter, onExited, ...other } = props;
@@ -97,35 +102,82 @@ export default function RedeemButton (props) {
                 allow_emails: allowEmails
             }
         }).then((data) => {
+            if(allowEmails) {
+                // ReactGA.initialize('UA-151937222-1');
+                // ReactGA.event({
+                //     category: 'Redeem',
+                //     action: 'CLICKED_SUBMIT_EMAIL_WITH_PERMISSION'
+                // });
+            }
             // ReactGA.initialize('UA-151937222-1');
             // ReactGA.event({
             //     category: 'Redeem',
-            //     action: 'CLICKED_SUBMIT_EMAIL'
+            //     action: 'CLICKED_SUBMIT_EMAIL_WITHOUT_PERMISSION'
             // });
             console.log(data);
             setModalPage(modalPage + 1)
         })
 
+
+        const picUrl = cloudinary.url(props.picId, {secure: true, height: 900, crop: "scale", fetch_format: "auto", quality: "auto"})
+
+        const request_config = {
+            method: "post",
+            url: `/email/add_and_send_deal`,
+            params: {
+                toEmail: values.email,
+                saveEmail: allowEmails,
+                subject: 'Redeem Your Deal',
+                preheader: `${props.deal_name} at ${props.location_name}`,
+                deal_name: props.deal_name,
+                description: props.description,
+          
+                phone_number: props.phone_number,
+                web_url: props.web_url,
+                location_name: props.location_name,
+                city: props.city,
+                state: props.state,
+                street: "",
+                cover_url: picUrl
+        },
+        };
+
+        let response = await axios(request_config).then((res)=>{
+            console.log(res)
+            // return res;
+        }).catch(error => {
+            console.log(error);
+            // alert("Could not upload Moment, try again later, or try another picture.")
+        });
+
         // API call to store email and send Deal Info
-        let response = await axios.post(
-            '/email/add_and_send_deal',
-            {
-                params: {
-                    subject: 'Skedge Deals',
-                    name: 'FREE Smoothie',
-                    description: '',
+        // const response = await axios.post(
+        //     '/email/add_and_send_deal',
+        //     {
+        //         params: {
+        //             subject: 'Skedge Deals',
+        //             deal_name: 'FREE Smoothie',
+        //             description: '',
               
-                    phone_number: props.phone_number,
-                    web_url: props.web_url,
-                    location_name: '',
-                    city: props.city,
-                    state: props.state,
-                    street: ""
-            }}
-            ).catch(error => {
-                alert("We couldn't send the email, we'll find out what happened right away.")
-                return;
-        })
+        //             phone_number: props.phone_number,
+        //             web_url: props.web_url,
+        //             location_name: '',
+        //             city: props.city,
+        //             state: props.state,
+        //             street: "",
+        //             cover_url: "https://res.cloudinary.com/skedge/image/upload/c_fill,f_auto,h_400,q_auto,w_800/v1/deal_covers/bosxof30i4by1dkevtpm"
+        //     }}
+        //     ).then(() => {
+        //         console.log("success");
+        //         return;
+        //     }).catch(error => {
+        //         // alert("error:", error)
+        //         console.log(error)
+
+        //         return;
+        // });
+
+        // console.log(response)
           
     }
 
@@ -151,11 +203,6 @@ export default function RedeemButton (props) {
     }
 
     const onClickCancel = () => {
-        // ReactGA.initialize('UA-151937222-1');
-        // ReactGA.event({
-        //     category: 'Redeem',
-        //     action: 'CLICKED_CLOSE_AFTER_MAIL'
-        // });
         setOpenEmail(false);
     }
 
@@ -177,8 +224,13 @@ export default function RedeemButton (props) {
     }
 
     const getEmail = (
-        <div style={{margin: 4, padding: 12,  textAlign: 'center'}}>
-            <h4 style={{marginBottom: 0}}>We'll send all the info to your email so you don't lose it.</h4>
+        <div style={{margin: 4, padding: 12}}>
+            
+            <div style={{float: 'left', marginTop: 14, marginRight: 16}}>
+                <img src={require("assets/img/logoheader.png")} width={65} height={65}/>
+            </div>
+            <h3 style={{marginBottom: 0,marginTop: 0}}>Enter Your Email</h3>
+            <h4 style={{marginBottom: 0, marginTop: 0, fontSize:16}}>The direct link to the deal will be automatically sent to your inbox.</h4>
             <TextField
               id="email"
               label="Email"
@@ -191,32 +243,31 @@ export default function RedeemButton (props) {
               margin="normal"
           >
           </TextField>
+            {
+                emailError && <h4 style={{color: 'red'}}>* Please input a valid email</h4>
+            }
           <div style={{textAlign: 'left', margin: '6px 0'}}>
             <FormControlLabel
                 control={
                     <Checkbox checked={allowEmails} onChange={() => setAllowEmails(!allowEmails)} value="allow_emails" color='primary'/>
                 }
-                  label="Allow us to send emails to you related to this deal."
-                  labelPlacement="right"
+                  label={<p style={{fontSize: 14}}><strong>Yes!</strong> I want FREE food & drink deals sent to my inbox that others won't see.</p>}
+                  labelPlacement="end"
             />
           </div>
-
-            {
-                emailError && <h4 style={{color: 'red'}}>* Please input a valid email</h4>
-            }
-          <div style={{marginTop: 8}} onClick={submitEmail}>
+          <div style={{marginTop: 8, textAlign: 'center'}} onClick={submitEmail}>
             <Button  round color='primary'>Redeem!</Button>
           </div>
           
         </div>
     )
     const showRedemption = (
-        <div style={{margin: 4, padding: 12,  textAlign: 'center'}}>
-            <h3 style={{marginTop: 0}}>Email is sending!</h3>
-            <h4 style={{marginTop: 0}}>This might be some of the information you're looking for:</h4>
+        <div style={{margin: 4, padding: 12,  textAlign: 'left'}}>
+            <h3 style={{marginTop: 0}}>Sent!</h3>
+            <h4 style={{marginTop: 0}}>The email should be in your inbox soon.</h4>
             <div style={{display: 'grid'}}>
                 
-                {/* <a style={{color: '#02C39A'}} href={`tel:${props.phone_number}`}><Button onClick={onClickCall} color='info'>Call</Button></a></div> : "" */}
+                {/* <a style={{color: '#02C39A'}} href={`tel:${props.phone_number}`}><Button onClick={onClickCall} color='info'>Call</Button></a></div> : ""
                 {
                     props.phone_number && <Button onClick={onClickCall} color='info'>Call</Button>
                 }
@@ -224,8 +275,8 @@ export default function RedeemButton (props) {
                     props.web_url && <Button onClick={onClickLink} color='info'>Link to Deal</Button>
                 }
                 {
-                    // props.street && <Button onClick={onClickLink} color='info'>Address: <br/>{`${props.street} ${props.city}, ${props.state}`}</Button>
-                }
+                    props.street && <Button onClick={onClickLink} color='info'>Address: <br/>{`${props.street} ${props.city}, ${props.state}`}</Button>
+                } */}
                 
                 <Button onClick={onClickCancel}>Close</Button>
             </div>

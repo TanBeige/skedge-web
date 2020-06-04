@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 // nodejs library to set properties for components
 import gql from "graphql-tag";
 import { Helmet } from 'react-helmet';
+import { ThemeProvider } from '@material-ui/styles';
+import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 
 import Footer from "components/Footer/Footer.js";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import AppearOnScroll from 'components/AppearOnScroll.js'
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
 
 // core components
 import Parallax from "components/Parallax/Parallax.js";
@@ -43,6 +44,16 @@ const useStyles = makeStyles(blogPostPageStyle);
 
 require('./AnnouncementsPage.css');
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#02C39A"
+    },
+    // error: {
+    //   main: "#F5DA5F"
+    // }
+  },
+});
 
 export default function AnnouncementsPage(props) {
   const announcementName = props.match.params.name;
@@ -191,6 +202,8 @@ export default function AnnouncementsPage(props) {
     const today = new Date();
     return (
       <div>
+        <ThemeProvider theme={theme}>
+
         <Helmet>
           <title>{values.name} | Skedge</title>
           <meta name="description" content={values.name} />
@@ -307,6 +320,7 @@ export default function AnnouncementsPage(props) {
         } />
           {/* <h1>{values.name}</h1> */}
         </div>
+        </ThemeProvider>
       </div>
     );
   } 
