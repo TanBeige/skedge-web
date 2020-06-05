@@ -13,6 +13,9 @@ import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
+//Icons
+import LoyaltyIcon from '@material-ui/icons/Loyalty';
+
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
@@ -117,7 +120,6 @@ export default function RedeemButton (props) {
                 });
             }
             console.log(data);
-            setModalPage(modalPage + 1)
         })
 
 
@@ -141,16 +143,19 @@ export default function RedeemButton (props) {
                 state: props.state,
                 street: "",
                 cover_url: picUrl
-        },
+            },
         };
 
-        let response = await axios(request_config).then((res)=>{
+        axios(request_config).then((res)=>{
             console.log(res)
             // return res;
         }).catch(error => {
             console.log(error);
             // alert("Could not upload Moment, try again later, or try another picture.")
         });
+
+        setModalPage(modalPage + 1);
+
 
         // API call to store email and send Deal Info
         // const response = await axios.post(
@@ -295,7 +300,7 @@ export default function RedeemButton (props) {
     const redeem = (
         <Fragment>
             <div>
-                <Button round color='primary' onClick={onClickRedeem} size='sm'>Redeem</Button>
+                <Button round color='primary'  onClick={onClickRedeem} size='sm'><LoyaltyIcon />Redeem</Button>
             </div>
             <Modal
                 aria-labelledby="spring-modal-title"

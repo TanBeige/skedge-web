@@ -82,7 +82,7 @@ export default function SectionText({ announcementInfo, client }) {
   return(
     <div style={{maxWidth: 500, margin: 'auto'}}>
       <div className='AnnouncementTitle'>
-          <h2 style={{fontSize: '1.1em',textAlign: 'center'}} className='AnnouncementName'>{announcementInfo.name}</h2>
+          <h2 style={{fontSize: '24px',textAlign: 'center'}} className='AnnouncementName'>{announcementInfo.name}</h2>
       </div>
       <div className='AnnouncementDescription'>
         <h4 style={{fontSize: '0.9em', margin: '0 1em 0 1em'}}>
@@ -98,93 +98,47 @@ export default function SectionText({ announcementInfo, client }) {
           )
         }
       </div>
-      <div style={{margin: 'auto', maxWidth: 500}}>
-        {
-          announcementInfo.attached_events.map(event => {
-            return (
-              <div key={event.event.id} style={{margin: '0 2em 2em 2em'}}>
-                <ItemCard
-                  itemType="event"
-                  itemId={event.event.id}
-                  name={event.event.name}
-                  picId={event.event.image.image_uuid}
-                />
-                <p style={{ fontSize: 16, wordWrap: 'break-word', whiteSpace: "pre-line"}}>{event.description}</p>
-                <br />
-                <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
-                  <p style={{fontSize: 16}}>*To save or redeem this deal, download our app.*</p>
-                </a>
-                {/* <Button>Redeem in App</Button> */}
-              </div>
-            )
-          })
-        }
+      <div style={{margin: 'auto', maxWidth: 500, marginTop: '1em'}}>
         {
           announcementInfo.attached_deals.map((deal, index) => {
             return (
-              <div key={deal.deal.id} style={{margin: '0 0em 0em 0em'}}>
+              <div key={deal.deal.id} style={{}}>
                   <ItemCard
                     itemType="deal"
                     itemId={deal.deal.id}
                     name={deal.deal.name}
                     picId={deal.deal.cover_pic}
+                    location_name={deal.deal.location_name}
                   />
-                  <div  style={{margin: '0 1em 0em 1em'}}>
-                    <div style={{display: 'inline-flex'}}>
-                      <p style={{fontSize: 16, marginRight: 5, marginTop: 0, marginBottom: 0, fontWeight: '400'}}>{announcementInfo.attached_deals.length - index}.</p>
-                      <p style={{fontSize: 16, fontWeight: '400'}}>{deal.description}</p>                    
+                  <div style={{display: 'inline-flex'}}>
+
+                    <h3 style={{fontSize: 32,fontWeight: '400', marginTop: 8, margin: '6px 0.2em 6px 0.3em', float: 'left'}}>{announcementInfo.attached_deals.length - index}</h3>
+
+                    <div style={{margin: '6px 0.5em 0px 0.5em', fontWeight: 400}}>
+                      <p style={{fontSize: 18}}>{deal.deal.name}</p>
+                      <p style={{fontSize: 14, color: 'grey'}}>{deal.deal.location_name}</p>
                     </div>
-
-
-                    {/* <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}> */}
-                      <div style={{display: 'inline-flex', alignItems: 'center', float: 'right', marginBottom: 12}}>
-                        <RedeemButton 
-                          client={client}
-                          phone_number={deal.deal.phone_number} 
-                          web_url={deal.deal.web_url} 
-                          city={deal.deal.city} 
-                          state={deal.deal.state} 
-                          street={deal.deal.street}
-
-                          deal_name={deal.deal.name}
-                          description={deal.deal.description}
-                          location_name={deal.deal.location_name}
-                          picId={deal.deal.cover_pic}
-          
-                        />
-                        {/* <p style={{fontSize: 16, color: '#02C39A', float: 'right'}}>Redeem</p> */}
-                        {/* <Fragment>
-                            <Button round color="primary" onClick={(event)=>clickRedeem(event, deal.deal.web_url)}>
-                                Redeem
-                            </Button>
-                            <Popover
-                                id={id}
-                                open={open}
-                                anchorEl={anchorEl}
-                                onClose={handleClose}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'center',
-                                }}
-                            >
-                                <div style={{margin: 16, textAlign: 'center'}}>
-                                    <Typography >Sign up to perform this action.</Typography>
-                                    <Button color='primary' round onClick={loginWithRedirect}>Sign Up/Login</Button>
-                                </div>
-                            </Popover>
-                        </Fragment> */}
-                        {/* <IconButton size='small' color="info" aria-label="app-store">
-                          <AppleIcon />
-                        </IconButton> */}
-                      </div>
-                    {/* </a> */}
                   </div>
 
-                  {/* <Button round style={{float: 'right'}} color='primary' onClick={clickedDownload}>Redeem In App</Button> */}
+
+                  <div  style={{textAlign: 'center', width: '100%'}}>
+                    <div style={{marginBottom: 6}}>
+                      <RedeemButton 
+                        client={client}
+                        phone_number={deal.deal.phone_number} 
+                        web_url={deal.deal.web_url} 
+                        city={deal.deal.city} 
+                        state={deal.deal.state} 
+                        street={deal.deal.street}
+
+                        deal_name={deal.deal.name}
+                        description={deal.deal.description}
+                        location_name={deal.deal.location_name}
+                        picId={deal.deal.cover_pic}
+        
+                      />
+                    </div>
+                  </div>
               </div>
             )
           })

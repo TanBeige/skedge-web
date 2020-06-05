@@ -157,11 +157,11 @@ export default function LandingPage(props) {
                 Where you go to find, share, and create your favorite things to do. Sign up to see all events & deals.
               </h4>
               <br />
-              <div style={{position: 'absolute', right: 0}}>
+              {/* <div style={{position: 'absolute', right: 0}}>
                 <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
                     <img style={{maxHeight: '22vh'}} src={require("assets/img/app_advert_3.png")} />
                 </a>
-              </div>
+              </div> */}
               <Button
                 color="primary"
                 onClick={handleLogin}

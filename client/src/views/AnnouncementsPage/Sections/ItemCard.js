@@ -41,7 +41,7 @@ cloudinary.config({
   cloud_name: "skedge"
 });
 
-export default function ItemCard({itemType, itemId, name, picId}) {
+export default function ItemCard({itemType, itemId, name, picId, location_name}) {
   const classes = useStyles();
 
   const spacesRemoved = name.replace(/\s/g, '-');
@@ -56,27 +56,35 @@ export default function ItemCard({itemType, itemId, name, picId}) {
     // window.location.href = `skedge://skedge/Deal?itemId=${itemId}`
 
   }
-  return (
-    <Card
-      background
-      style={{
-        backgroundImage: `url(${picUrl})`,
-        marginBottom: 10,
-        marginTop: '1em',
-        borderRadius: 0,
-      }}
-    >
-        {/* <a href={`skedge://skedge/Deal?itemId=${itemId}`}> */}
-        {/* <Link to={itemUrl}> */}
 
-            <CardBody background style={{minHeight: '80px'}}>
+  return(
+    <div>
+      <div>
+        <img src={picUrl} style={{height: 150, width: '100%', objectFit: 'cover'}}/>
+      </div>
+    </div>
+  )
+  // return (
+  //   <Card
+  //     background
+  //     style={{
+  //       backgroundImage: `url(${picUrl})`,
+  //       marginBottom: 10,
+  //       marginTop: '1em',
+  //       borderRadius: 0,
+  //     }}
+  //   >
+  //       {/* <a href={`skedge://skedge/Deal?itemId=${itemId}`}> */}
+  //       {/* <Link to={itemUrl}> */}
+
+  //           <CardBody background style={{minHeight: '130px'}}>
               
-                <h4 className={classes.cardTitleWhite} style={{margin: 0}}>
-                    {name}
-                </h4>
-            </CardBody>
-        {/* </a> */}
-        {/* </Link> */}
-    </Card>
-  );
+  //               <h3 className={classes.cardTitleWhite} style={{margin: 0}}>
+  //                   {name}
+  //               </h3>
+  //           </CardBody>
+  //       {/* </a> */}
+  //       {/* </Link> */}
+  //   </Card>
+  // );
 }
