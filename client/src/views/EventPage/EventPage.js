@@ -524,7 +524,7 @@ export default function EventPage(props) {
     return (
       <div>
         <Helmet>
-          <title>{values.name} | Skedge</title>
+          <title>{values.name} | Skedge - Free & Cheap Food</title>
           <meta name="description" content={values.description} />
 
           <meta property="og:title" content={`${values.name} | Skedge`} />

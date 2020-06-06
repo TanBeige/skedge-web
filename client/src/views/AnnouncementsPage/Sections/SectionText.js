@@ -82,7 +82,7 @@ export default function SectionText({ announcementInfo, client, email }) {
   return(
     <div style={{maxWidth: 500, margin: 'auto'}}>
       <div className='AnnouncementTitle'>
-          <h2 style={{fontSize: '24px',textAlign: 'center'}} className='AnnouncementName'>{announcementInfo.name}</h2>
+          <h1 style={{fontSize: '24px',textAlign: 'center'}} className='AnnouncementName'>{announcementInfo.name}</h1>
       </div>
       <div className='AnnouncementDescription'>
         <h4 style={{fontSize: '0.9em', margin: '0 1em 0 1em'}}>
@@ -116,12 +116,13 @@ export default function SectionText({ announcementInfo, client, email }) {
 
                     <div style={{margin: '6px 0.5em 0px 0.5em', fontWeight: 400}}>
                       <p style={{fontSize: 18}}>{deal.deal.name}</p>
-                      <p style={{fontSize: 14, color: 'grey'}}>{deal.deal.location_name}</p>
+                      <p style={{fontSize: 14, color: 'grey'}}>{deal.deal.location_name} | {moment(deal.deal.start_time, "HH:mm:ss").format("h:mm A")} {deal.deal.end_time && `- ${moment(deal.deal.end_time, "HH:mm:ss").format("h:mm A")}`}</p>
+
                     </div>
                   </div>
 
 
-                  <div  style={{textAlign: 'center', width: '100%'}}>
+                  <div  style={{textAlign: 'right', width: '100%'}}>
                     <div style={{marginBottom: 6}}>
                       <RedeemButton 
                         client={client}

@@ -206,7 +206,7 @@ export default function AnnouncementsPage(props) {
         <ThemeProvider theme={theme}>
 
         <Helmet>
-          <title>{values.name} | Skedge</title>
+          <title>{values.name} | Skedge - Free & Cheap Food</title>
           <meta name="description" content={values.name} />
           <meta name="theme-color" content="#02C39A" />
           <meta name="apple-itunes-app" content="app-id=1506618749, app-argument=myURL" />
@@ -219,7 +219,11 @@ export default function AnnouncementsPage(props) {
 
         </Helmet>
 
-        <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={40} width={40} src={require('assets/img/logoheader.png')} onClick={handleGoHomepage}/>
+        <div style={{position: 'absolute', zIndex: 10, top: 15, left: 15}}>
+          <img  height={40} width={40} src={require('assets/img/logoheader.png')} onClick={handleGoHomepage}/>        
+          <p style={{marginTop: 6, color: 'white', fontWeight: 400}}>Skedge - Free & Cheap Food</p>
+        </div>
+
         <div style={{position: 'absolute', zIndex: 10, top: 15, right: 25}} >
           <InformationPopover/>
         </div>

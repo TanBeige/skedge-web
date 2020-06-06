@@ -456,7 +456,7 @@ export default function DealPage(props) {
     return (
       <div>
         <Helmet>
-          <title>{values.name} | Skedge</title>
+          <title>{values.name} | Skedge - Free & Cheap Food</title>
           <meta name="description" content={`${values.description} - ${values.point_1}`} />
           <meta name="theme-color" content="#02C39A" />
 

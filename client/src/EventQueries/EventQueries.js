@@ -2201,6 +2201,8 @@ query get_announcement($announcementId: Int) {
         web_url
         phone_number
         location_name
+        start_time
+        end_time
         city
         state
         street
@@ -2220,6 +2222,39 @@ query get_announcement($announcementId: Int) {
   }
 }
 `
+
+const MUTATION_CREATE_ANNOUNCEMENT = gql`
+mutation create_announcement($object: [announcements_insert_input!]!) {
+  insert_announcements(objects: $object){
+    affected_rows
+  }
+}
+`
+// How we would input into MUTATION_CREATE_ANNOUNCEMENT
+// {
+//   "object": {
+//     "name": "Top 10 Food Deals in Tallahassee Today",
+//     "city": "Tallahassee",
+//     "state": "Florida",
+//     "date": "2020-06-06",
+//     "announcement_deals": {
+//       "data": [
+//  	  		{
+//         	"deal_id": 214,
+//         	"description": "Village Inn | 6am - 9pm"
+//         },
+//         {
+//         	"deal_id": 384,
+//         	"description": "Wendy's | 10:30am - 11pm"
+//         },
+//         {
+//         	"deal_id": 329,
+//         	"description": "Five Star Pizza | 11am - 3am"
+//         }
+//       ]
+//     }
+//   }
+// }
 
 export {
   QUERY_FILTERED_EVENT,
@@ -2309,7 +2344,8 @@ export {
   MUTATION_ADD_USER_EMAIL,
   MUTATION_ADD_ANONYMOUS_MAIL,
 
-  GET_ANNOUNCEMENT
+  GET_ANNOUNCEMENT,
+  MUTATION_CREATE_ANNOUNCEMENT
 };
 
 

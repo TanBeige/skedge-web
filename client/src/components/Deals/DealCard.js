@@ -259,7 +259,7 @@ export default function DealCard({ itemInfo, userId, client, currentDate, email 
 
   const spacesRemoved = itemInfo.name.replace(/\s/g, '-');
   const dealUrl = `/deals/${itemInfo.id}-${encodeURIComponent(spacesRemoved)}`;
-
+  
 
   return (
     <div>
