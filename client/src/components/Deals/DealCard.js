@@ -10,13 +10,7 @@ import RenewIcon from '@material-ui/icons/Autorenew'
 import IconButton from '@material-ui/core/IconButton';
 import PlaceIcon from '@material-ui/icons/Place';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
-import TurnedInNotIcon from '@material-ui/icons/TurnedInNot';
-import TurnedInIcon from '@material-ui/icons/TurnedIn';
-import TurnedInTwoToneIcon from '@material-ui/icons/TurnedInTwoTone';
-import CreateIcon from '@material-ui/icons/Create';
-import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
-import FlareIcon from '@material-ui/icons/Flare';
-
+// import StarIcon from '@material-ui/icons/Star';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
 // core components
@@ -40,6 +34,7 @@ import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPosts
 //Images
 // import { Image, Transformation, CloudinaryContext } from 'cloudinary-react';
 import LoadImage from 'material-ui-image'
+import RedeemButton from 'components/RedeemButton.js';
 
 //import Fade from '@material-ui/core/Fade';
 import Grow from '@material-ui/core/Grow';
@@ -60,16 +55,16 @@ const theme = createMuiTheme({
       main: "#02C39A"
     },
     secondary: {
-      main: pink[600]
+      main: "#FFFFFF"
     },
-    error: {
-      main: "#F5DA5F"
+    warning: {
+      main: "#ffff00"
     }
   },
 });
 
 
-export default function DealCard({ itemInfo, userId, client, currentDate }) {
+export default function DealCard({ itemInfo, userId, client, currentDate, email }) {
 
   // Styling
   const classes = useStyles();
@@ -265,6 +260,51 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
   const spacesRemoved = itemInfo.name.replace(/\s/g, '-');
   const dealUrl = `/deals/${itemInfo.id}-${encodeURIComponent(spacesRemoved)}`;
 
+
+  return (
+    <div>
+        {/* <div style={{position: 'absolute', right: 0, top: 0}}>
+          <IconButton aria-label="save" onClick={()=>{console.log("Ass")}}>
+            <StarIcon color={'secondary'} fontSize='large'/>
+          </IconButton> 
+        </div> */}
+        <Link to={dealUrl}>
+          <div>
+            <img src={values.image_url} style={{height: 150, width: '100%', objectFit: 'cover'}}/>
+            <div style={{display: 'inline-flex'}}>
+              <div style={{margin: '6px 0.5em 0px 0.5em', fontWeight: 400}}>
+                <p style={{fontSize: 18, color: 'black'}}>{itemInfo.name}</p>
+                <p style={{fontSize: 14, color: 'grey'}}>{itemInfo.location_name} | {moment(itemInfo.start_time, "HH:mm:ss").format("h:mm A")} {itemInfo.end_time && `- ${moment(itemInfo.end_time, "HH:mm:ss").format("h:mm A")}`}</p>
+              </div>
+            </div>
+          </div>
+        </Link>
+          
+
+
+      <div  style={{textAlign: 'right', width: '100%'}}>
+        <div style={{marginBottom: 6}}>
+          <RedeemButton 
+            client={client}
+            phone_number={itemInfo.phone_number} 
+            web_url={itemInfo.web_url} 
+            city={itemInfo.city} 
+            state={itemInfo.state} 
+            street={itemInfo.street}
+
+            deal_name={itemInfo.name}
+            description={itemInfo.description}
+            location_name={itemInfo.location_name}
+            picId={itemInfo.cover_pic}
+
+            email={email}
+
+          />
+        </div>
+      </div>
+    </div>
+  )
+
   return(
         <ThemeProvider theme={theme}>
           {/* <Grow in={true}> */}
@@ -331,7 +371,7 @@ export default function DealCard({ itemInfo, userId, client, currentDate }) {
                     </div>
                   </div>
                     <div style={{display: 'flex', color: 'gold'}}> 
-                      <FlareIcon size='small' style={{fontSize: 12, margin: 'auto 4px'}}/>
+                      {/* <FlareIcon size='small' style={{fontSize: 12, margin: 'auto 4px'}}/> */}
                       <p style={{color: 'black'}}>{itemInfo.point_1}</p>
                     </div>
                 </CardBody>

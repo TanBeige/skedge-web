@@ -52,8 +52,8 @@ export default function RelatedDealsWrapper(props) {
                 dealId: props.currentDealId,
                 // city: props.city,
                 // state: props.state,
-                date: props.is_recurring ? varDate : props.start_date,
-                weekday: props.is_recurring ? `%${varDay}%` : `%${dealDate.getDay()}%`
+                date: moment().format("YYYY-MM-DD"),//props.is_recurring ? varDate : props.start_date,
+                weekday: `%${moment().day()}%`//props.is_recurring ? `%${varDay}%` : `%${dealDate.getDay()}%`
             }
         }).then((data)=>{
             let tempDeals = data.data.deals;
@@ -77,7 +77,8 @@ export default function RelatedDealsWrapper(props) {
     return(
         <div className="RelatedWrapper">
             <hr style={{margin: '0 5px'}}/>
-            <h4 style={{margin: '10px 5px 5px 5px'}}>More deals {props.is_recurring ? `this ${formatDate}` : `on ${formatDate}`}.</h4>
+            {/* <h4 style={{margin: '10px 5px 5px 5px'}}>More deals {props.is_recurring ? `this ${formatDate}` : `on ${formatDate}`}.</h4> */}
+            <h4 style={{margin: '10px 5px 5px 5px'}}>More deals today</h4>
             <GridContainer>
                 {
                     deals.map(deal => {

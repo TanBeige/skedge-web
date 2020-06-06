@@ -44,7 +44,7 @@ Date.prototype.formatDate = function() {
 }
 
 // Functional Component
-export default function EventList({ listType, filter, client, CardComponent, userId, query, tryTomorrow}) {
+export default function EventList({ listType, filter, client, CardComponent, userId, query, tryTomorrow, email}) {
   // Checks if we are still grabbing events
   const [isSearch, setIsSearch] = useState(false);
   let isMounted = true;
@@ -267,7 +267,7 @@ export default function EventList({ listType, filter, client, CardComponent, use
           <h5 style={{marginTop: 20, textAlign: 'center'}}>There are no deals for today.</h5>
             <hr />
             {
-                values.loadedAllEvents ? <h4 style={{textAlign: 'center'}}>Try tomorrow!</h4> : ""
+                values.loadedAllEvents ? <div style={{textAlign: 'center'}}><Button round size='sm' variant='contained' color='primary' onClick={tryTomorrow}>Try tomorrow!</Button></div> : ""
             }
           {/* {futureEvents} */}
         </div>
@@ -291,10 +291,11 @@ export default function EventList({ listType, filter, client, CardComponent, use
                 finalEvents.map((item, index) => {
                     return (
                       <Fragment key={item.id}>
-                        <GridItem xs={12} sm={6} md={6} >
+                        <GridItem xs={12} sm={6} md={6}  style={{paddingLeft: 0, paddingRight: 0}}>
                           <CardComponent
                               itemInfo={item} 
                               listType={listType}
+                              email={email}
                               client={client}
                               userId={userId}
                               filter={filter}
@@ -370,6 +371,7 @@ const getVariables = (listType, userId, eventsLength, filter) => {
     usedVariables = {
       limit: limitValue,
       offset: eventsLength,
+      search: `%${filter.searchText}%`,
       city: `%${filter.city}%`,
       state: `%${filter.state}%`,
       userId: userId,

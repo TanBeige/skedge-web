@@ -141,6 +141,7 @@ class PrimaryNav extends Component {
                 ) {
                   id
                   name
+                  email
                 }
               }
             `,
@@ -149,6 +150,7 @@ class PrimaryNav extends Component {
             }
         }).then((data) => {
             if(data.data.users[0]){
+              console.log(data.data.users[0])
               //Set State variable
               this.setState({
                   pathMap: [
@@ -160,7 +162,7 @@ class PrimaryNav extends Component {
                   ],
                   //notifs: (data.data.users[0].followers_aggregate.aggregate.count + data.data.users[0].notifications_aggregate.aggregate.count)
               })
-              this.props.setNames(data.data.users[0].name, data.data.users[0].full_name);
+              this.props.setNames(data.data.users[0].name, data.data.users[0].full_name, data.data.users[0].email);
 
               //Set current Page View
               if(this.state.path.includes(`/${data.data.users[0].name}`)) {
@@ -212,7 +214,7 @@ class PrimaryNav extends Component {
                   value={value}
                   onChange={this.handleChange}
                   className="nav primary"
-                  style={{height: '7vh'}}
+                  style={{height: '55px'}}
                   showLabels
                 >
                   <BottomNavigationAction label="Feeds" icon={<DynamicFeedIcon />} component={Link} to={pathMap[0]} />

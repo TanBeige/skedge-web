@@ -22,7 +22,7 @@ import DealCard from "components/Deals/DealCard.js";
 
 const useStyles = makeStyles(sectionTextStyle);
 
-export default function SectionText({ announcementInfo, client }) {
+export default function SectionText({ announcementInfo, client, email }) {
 
   let _isMounted = true;
 
@@ -130,6 +130,8 @@ export default function SectionText({ announcementInfo, client }) {
                         city={deal.deal.city} 
                         state={deal.deal.state} 
                         street={deal.deal.street}
+
+                        email={email}
 
                         deal_name={deal.deal.name}
                         description={deal.deal.description}

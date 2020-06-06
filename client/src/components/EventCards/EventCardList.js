@@ -120,6 +120,7 @@ export default function EventCardList(props) {
           listType={props.listType} 
           client={props.client}
           CardComponent={DealCard}
+          email={props.email}
           userId={user.sub}
           query={QUERY_DEAL_FEED}
           filter={props.filter}

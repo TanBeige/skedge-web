@@ -63,6 +63,12 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       main: "#02C39A"
+    },
+    secondary: {
+      main: "#FFFFFF"
+    },
+    warning: {
+      main: "#ffff00"
     }
   },
 });
@@ -266,21 +272,21 @@ export default function SectionPills(props) {
         isEntity={props.isEntity}
         searchText={localFilter.searchText}
         tabs={[
-        {
-          tabButton: "Events",
-          tabIcon: DateRangeIcon,
-          tabContent: (
-            <div>
-              <EventCardList 
-                  client={props.client}
-                  // userId={props.userId}
-                  filter={localFilter}
-                  listType='local'
-              />
+        // {
+        //   tabButton: "Events",
+        //   tabIcon: DateRangeIcon,
+        //   tabContent: (
+        //     <div>
+        //       <EventCardList 
+        //           client={props.client}
+        //           // userId={props.userId}
+        //           filter={localFilter}
+        //           listType='local'
+        //       />
 
-            </div>
-          )
-        },
+        //     </div>
+        //   )
+        // },
         {
           tabButton: "Happy Hours/Deals",
           tabIcon: LocalAtmIcon,
@@ -290,25 +296,26 @@ export default function SectionPills(props) {
                   client={props.client}
                   filter={localFilter}
                   listType='deals'
+                  email={props.email}
                   tryTomorrow={tryTomorrow}
               />
             </div>
           )
         },
-        {
-          tabButton: "Following",
-          tabIcon: EmojiPeopleIcon,
-          tabContent: (
-            <div>
-              <EventCardList 
-                  client={props.client}
-                  // userId={props.userId}
-                  filter={localFilter}
-                  listType='following'
-              />
-            </div>
-          )
-        }
+        // {
+        //   tabButton: "Following",
+        //   tabIcon: EmojiPeopleIcon,
+        //   tabContent: (
+        //     <div>
+        //       <EventCardList 
+        //           client={props.client}
+        //           // userId={props.userId}
+        //           filter={localFilter}
+        //           listType='following'
+        //       />
+        //     </div>
+        //   )
+        // }
       ]}
     />
   )

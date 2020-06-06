@@ -25,7 +25,8 @@ import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 import ReactGA from 'react-ga';
 
 import {
-    MUTATION_ADD_ANONYMOUS_MAIL
+    MUTATION_ADD_ANONYMOUS_MAIL,
+    MUTATION_ADD_USER_EMAIL
 } from 'EventQueries/EventQueries.js';
 
 var cloudinary = require('cloudinary/lib/cloudinary').v2
@@ -96,35 +97,63 @@ export default function RedeemButton (props) {
             return;
         }
 
-        props.client.mutate({
-            mutation: MUTATION_ADD_ANONYMOUS_MAIL,
-            variables: {
-                email: values.email,
-                city: props.city,
-                state: props.state,
-                allow_emails: allowEmails
-            }
-        }).then((data) => {
-            if(allowEmails) {
-                ReactGA.initialize('UA-151937222-1');
-                ReactGA.event({
-                    category: 'Redeem',
-                    action: 'CLICKED_SUBMIT_EMAIL_WITH_PERMISSION'
-                });
-            }
-            else{
-                ReactGA.initialize('UA-151937222-1');
-                ReactGA.event({
-                    category: 'Redeem',
-                    action: 'CLICKED_SUBMIT_EMAIL_WITHOUT_PERMISSION'
-                });
-            }
-            console.log(data);
-        })
+        if (isAuthenticated && user) {
+            props.client.mutate({
+                mutation: MUTATION_ADD_USER_EMAIL,
+                variables: {
+                    userId: user.sub,
+                    email: values.email,
+                    allow_emails: allowEmails
+                }
+            }).then((data) => {
+                if(allowEmails) {
+                    ReactGA.initialize('UA-151937222-1');
+                    ReactGA.event({
+                        category: 'Redeem',
+                        action: 'CLICKED_SUBMIT_EMAIL_WITH_PERMISSION'
+                    });
+                }
+                else{
+                    ReactGA.initialize('UA-151937222-1');
+                    ReactGA.event({
+                        category: 'Redeem',
+                        action: 'CLICKED_SUBMIT_EMAIL_WITHOUT_PERMISSION'
+                    });
+                }
+                console.log(data);
+            })
+        }
+        else {
+            props.client.mutate({
+                mutation: MUTATION_ADD_ANONYMOUS_MAIL,
+                variables: {
+                    email: values.email,
+                    city: props.city,
+                    state: props.state,
+                    allow_emails: allowEmails
+                }
+            }).then((data) => {
+                if(allowEmails) {
+                    ReactGA.initialize('UA-151937222-1');
+                    ReactGA.event({
+                        category: 'Redeem',
+                        action: 'CLICKED_SUBMIT_EMAIL_WITH_PERMISSION'
+                    });
+                }
+                else{
+                    ReactGA.initialize('UA-151937222-1');
+                    ReactGA.event({
+                        category: 'Redeem',
+                        action: 'CLICKED_SUBMIT_EMAIL_WITHOUT_PERMISSION'
+                    });
+                }
+                console.log(data);
+            })
+        }
 
 
+        // Create Email API
         const picUrl = cloudinary.url(props.picId, {secure: true, height: 900, crop: "scale", fetch_format: "auto", quality: "auto"})
-
         const request_config = {
             method: "post",
             url: `/email/add_and_send_deal`,
@@ -154,37 +183,10 @@ export default function RedeemButton (props) {
             // alert("Could not upload Moment, try again later, or try another picture.")
         });
 
+        // Next Page
         setModalPage(modalPage + 1);
 
 
-        // API call to store email and send Deal Info
-        // const response = await axios.post(
-        //     '/email/add_and_send_deal',
-        //     {
-        //         params: {
-        //             subject: 'Skedge Deals',
-        //             deal_name: 'FREE Smoothie',
-        //             description: '',
-              
-        //             phone_number: props.phone_number,
-        //             web_url: props.web_url,
-        //             location_name: '',
-        //             city: props.city,
-        //             state: props.state,
-        //             street: "",
-        //             cover_url: "https://res.cloudinary.com/skedge/image/upload/c_fill,f_auto,h_400,q_auto,w_800/v1/deal_covers/bosxof30i4by1dkevtpm"
-        //     }}
-        //     ).then(() => {
-        //         console.log("success");
-        //         return;
-        //     }).catch(error => {
-        //         // alert("error:", error)
-        //         console.log(error)
-
-        //         return;
-        // });
-
-        // console.log(response)
           
     }
 
@@ -214,12 +216,29 @@ export default function RedeemButton (props) {
     }
 
     const onClickRedeem = () => {
-        ReactGA.initialize('UA-151937222-1');
-        ReactGA.event({
-            category: 'Redeem',
-            action: 'CLICKED_REDEEM_BUTTON'
-        });
+        if(isAuthenticated && props.email){
+            // Set email to user email
+            setValues({ ...values, email: props.email });
+
+            // ReactGA.initialize('UA-151937222-1');
+            // ReactGA.event({
+            //     category: 'Redeem',
+            //     action: 'CLICKED_REDEEM_BUTTON_USER'
+            // });
+
+            // Go to user redeem page
+            setOpenEmail(true);
+            setModalPage(2);
+            return;
+        }
+
+        // ReactGA.initialize('UA-151937222-1');
+        // ReactGA.event({
+        //     category: 'Redeem',
+        //     action: 'CLICKED_REDEEM_BUTTON'
+        // });
         setOpenEmail(true);
+
     }
     const onClickCloseRedeem = () => {
         ReactGA.initialize('UA-151937222-1');
@@ -289,12 +308,35 @@ export default function RedeemButton (props) {
             </div>
         </div>
     )
+    const showUserRedeem = (
+        <div style={{margin: 4, padding: 12,  textAlign: 'left'}}>
+            <h3 style={{marginTop: 0}}>Here you go!</h3>
+            <h4 style={{marginTop: 0}}>Thanks for using Skedge as your daily deal saver!</h4>
+            <div style={{display: 'grid'}}>
+                
+                {/* <a style={{color: '#02C39A'}} href={`tel:${props.phone_number}`}><Button onClick={onClickCall} color='info'>Call</Button></a> */}
+                {
+                    props.phone_number && <Button onClick={onClickCall} color='info'>Call</Button>
+                }
+                {
+                    props.web_url && <Button onClick={onClickLink} color='info'>Link to Deal</Button>
+                }
+                {
+                    // props.street && <Button onClick={onClickLink} color='info'>Address: <br/>{`${props.street} ${props.city}, ${props.state}`}</Button>
+                }
+                
+                <Button onClick={onClickCancel}>Close</Button>
+            </div>
+        </div>
+    )
     const currentPage = () => {
         switch(modalPage) {
             case 0: 
                 return getEmail
             case 1: 
                 return showRedemption
+            case 2: 
+                return showUserRedeem
         }
     }
     const redeem = (

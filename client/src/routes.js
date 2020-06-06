@@ -70,16 +70,18 @@ export const MakeMainRoutes = () => {
 
     username: "",
     full_name: "",
+    email: "",
     lastTab: 0
   })
 
   let newToken = "";
 
-  const setNames = (username, full_name) => {
+  const setNames = (username, full_name, email) => {
     setValues({
       ...values,
       username: username,
-      full_name: full_name
+      full_name: full_name,
+      email: email
     })
 
   }
@@ -129,7 +131,7 @@ export const MakeMainRoutes = () => {
   const provideClient = (Component, renderProps) => { 
     return (
       <ApolloProvider client={values.client}>
-        <Component {...renderProps} client={values.client} anonymous={values.userAnonymous} setLastTab={setLastTab} username={values.username} lastTab={values.lastTab} /> 
+        <Component {...renderProps} client={values.client} anonymous={values.userAnonymous} setLastTab={setLastTab} username={values.username} email={values.email} lastTab={values.lastTab} /> 
       </ApolloProvider>
     );
   };

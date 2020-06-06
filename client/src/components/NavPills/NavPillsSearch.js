@@ -144,7 +144,7 @@ export default function NavPillsSearch(props) {
     <GridContainer>
       <GridItem {...horizontal.tabsGrid}>{tabButtons}</GridItem>
 
-      <IconButton style={{position: 'absolute', top: '7vh', right: '1vw', padding: '8px',backgroundColor: 'white', border: window.innerWidth < 350 ? '1px solid darkgrey' : "none"}} onClick={handleExpandClick}>
+      <IconButton style={{position: 'absolute', top: '2em', right: '0', padding: '8px',backgroundColor: 'white', border: window.innerWidth < 350 ? '1px solid darkgrey' : "none"}} onClick={handleExpandClick}>
         <SearchIcon />
       </IconButton>
       <Collapse in={expanded} timeout="auto">
@@ -160,16 +160,19 @@ export default function NavPillsSearch(props) {
     <div>
       <GridContainer justify="center">
         <GridItem xs={12} sm={12} md={12} style={{paddingLeft: 0, paddingRight: 0}} className={classes.textCenter}>
-          {tabButtons}
+          {/* {tabButtons} */}
           
-          <IconButton style={{position: 'absolute', top: '8vh', right: '1vw', padding: '8px',backgroundColor: 'white', border: window.innerWidth < 350 ? '1px solid darkgrey' : "none"}} onClick={handleExpandClick}>
+          <IconButton style={{position: 'absolute', top: '0em', right: '0', padding: '8px',backgroundColor: 'white', border: window.innerWidth < 350 ? '1px solid darkgrey' : "none", zIndex: 5}} onClick={handleExpandClick}>
             <SearchIcon/>
           </IconButton>
           <Collapse in={expanded} timeout="auto">
             <SearchFilterBar handleFilters={props.handleFilters} handleDateChange={props.handleDateChange} submitSearch={props.submitSearch} values={props.values}/>
           </Collapse>
 
-          <DateSelect handleDayBack={props.handleDayBack} handleDayForward={props.handleDayForward} date={props.formattedDate}/>
+          <div >
+            <p style={{fontSize: 28, textAlign: 'center', margin: 8}}>Deals</p>
+            <DateSelect handleDayBack={props.handleDayBack} handleDayForward={props.handleDayForward} date={props.formattedDate}/>
+          </div>
           
           {tabContent}
         </GridItem>

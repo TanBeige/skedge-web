@@ -8,11 +8,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 // @material-ui/icons
-import Camera from "@material-ui/icons/Camera";
-import Palette from "@material-ui/icons/Palette";   //Tab icons
-import People from "@material-ui/icons/People";
 import EventIcon from '@material-ui/icons/Event';
-import EventBusyIcon from '@material-ui/icons/EventBusy';
 import TurnedInIcon from '@material-ui/icons/TurnedIn';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -25,8 +21,7 @@ import NavPillsProfile from "components/NavPills/NavPillsProfile.js";
 import EventCardList from "components/EventCards/EventCardList";
 import ProfileFollowerList from './ProfileFollowerList.js';
 import ProfileFollowingList from './ProfileFollowingList.js';
-
-import cardProfile2Square from "assets/img/faces/card-profile2-square.jpg";
+import SavedDealsList from 'components/EventCards/SavedDealsList.js'
 
 import profilePageStyle from "assets/jss/material-kit-pro-react/views/profilePageStyle.js";
 
@@ -38,7 +33,7 @@ import {
 } from 'EventQueries/EventQueries.js'
 import { Button } from "@material-ui/core";
 import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
+// import GridItem from "components/Grid/GridItem.js";
 
 const useStyles = makeStyles(profilePageStyle);
 
@@ -98,19 +93,19 @@ export default function FriendProfile(props) {
                 alignCenter
                 color="primary"
                 tabs={[
-                {
-                    tabButton: "My Events",
-                    tabIcon: EventIcon,
-                    tabContent: (
-                        <EventCardList 
-                            client={props.client}
-                            userId={props.userId}
-                            profileId={props.profileId}
-                            date={date}
-                            listType='profile'
-                        /> 
-                    )
-                },
+                // {
+                //     tabButton: "My Events",
+                //     tabIcon: EventIcon,
+                //     tabContent: (
+                //         <EventCardList 
+                //             client={props.client}
+                //             userId={props.userId}
+                //             profileId={props.profileId}
+                //             date={date}
+                //             listType='profile'
+                //         /> 
+                //     )
+                // },
                 {
                     tabButton: "Saved",
                     tabIcon: TurnedInIcon,
@@ -168,24 +163,33 @@ export default function FriendProfile(props) {
     return (
         <div className={classes.profileTabs} style={{marginTop: 10}}>
             {userFriendsEvents()}
-            
-            <div style={{display: "block", margin: '10px 0px'}}>
-            <IconButton 
-                onClick={handleDayBack}
-                style={{position: 'absolute', left: 5, marginTop: '-12px', padding: '12px 18px'}}
-            >
-                <ChevronLeftIcon fontSize='large' />
-            </IconButton>
-            <IconButton 
-                onClick={handleDayForward}
-                style={{position: 'absolute', right: 5, marginTop: '-12px', padding: '12px 18px'}}
-            >
-                <ChevronRightIcon fontSize='large'  />
-            </IconButton>
-                <h3 style={{textAlign: 'center', verticalAlign: 'middle'}}>{formatDate.format("dddd, MMM D")}</h3>
-            </div>
+            {props.currentUserProfile &&
+            <div>
+                <div style={{display: "block", margin: '10px 0px'}}>
+                    <IconButton 
+                        onClick={handleDayBack}
+                        style={{position: 'absolute', left: 5, marginTop: '-12px', padding: '12px 18px'}}
+                    >
+                        <ChevronLeftIcon fontSize='large' />
+                    </IconButton>
+                    <IconButton 
+                        onClick={handleDayForward}
+                        style={{position: 'absolute', right: 5, marginTop: '-12px', padding: '12px 18px'}}
+                    >
+                        <ChevronRightIcon fontSize='large'  />
+                    </IconButton>
+                    <h3 style={{textAlign: 'center', verticalAlign: 'middle'}}>{formatDate.format("dddd, MMM D")}</h3>
+                </div>
 
-            {displayPills}
+                {/* {displayPills} */}
+                    <SavedDealsList 
+                        client={props.client}
+                        userId={props.userId}
+                        profileId={props.profileId}
+                        date={formatDate}            
+                    />
+                </div>
+            }
         </div>
   );
 }

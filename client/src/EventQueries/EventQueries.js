@@ -119,11 +119,16 @@ const USER_SEARCH_FRAGMENT = gql`
   }
 `
 
+
 const DEAL_FRAGMENT = gql`
   fragment DealFragment on deals {
       id
       name
       description
+
+      web_url
+      phone_number
+
       point_1
       point_2
       location_name
@@ -137,6 +142,7 @@ const DEAL_FRAGMENT = gql`
       city
       state
       cover_pic
+      
       savings
       user {
         id
@@ -1868,7 +1874,7 @@ query query_deal_info($dealId: Int!) {
 `
 
 const QUERY_DEAL_FEED = gql`
-  query query_deal_feed($limit: Int, $offset: Int, $userId: String, $city: String, $state: String, $date: date, $weekday: String) {
+  query query_deal_feed($limit: Int, $offset: Int, $userId: String, $search: String, $city: String, $state: String, $date: date, $weekday: String) {
     deals(
       order_by: [{deal_likes_aggregate: {count: desc}}, {id: desc}]    
       limit: $limit
@@ -1877,6 +1883,7 @@ const QUERY_DEAL_FEED = gql`
         _and: [
           {city: {_ilike: $city}},
           {state: {_ilike: $state}},
+          {name: {_ilike: $search}},
           {_or:[
               {
                 _and: [
@@ -2063,6 +2070,94 @@ query query_deal_info($dealId: Int!) {
 }
 `
 
+//  SAVE DEALS
+const MUTATION_SAVE_DEAL = gql`
+mutation save_deal($userId: String!, $dealId: Int!) {
+  insert_user_saved_deals(
+    objects: {
+      deal_id: $dealId, 
+      user_id: $userId
+    }, 
+    on_conflict: {
+      update_columns: 
+        time_saved, 
+        constraint: user_saved_deals_pkey
+    }
+  ) 
+  {
+      affected_rows
+  }
+}
+`
+
+// UNSAVE DEALS
+const MUTATION_UNSAVE_DEAL = gql`
+mutation unsave_deal($userId: String!, $dealId: Int!) {
+  delete_user_saved_deals(
+    where: { 
+      _and:[
+        {deal_id: { _eq: $dealId }},
+        {user_id:{_eq: $userId}}
+      ]
+    }) {
+    affected_rows
+  }
+}
+`
+
+// Query Saved Deals
+const QUERY_SAVED_DEALS = gql`
+query query_saved_deals($userId: String!, $inputDate: date!, $inputWeekday: String!, $limit: Int, $offset: Int) {
+  deals (
+    limit: $limit
+    offset: $offset
+    order_by: {id: desc}
+    where: {_and: [
+      {user_saved_deals: {user_id: {_eq: $userId}}},
+      {_or:[
+          {
+            _and: [
+              {is_recurring: {_eq: false}},
+              {start_date: {_eq: $inputDate}}
+            ]
+          },
+          {
+            _and: [
+              {is_recurring: {_eq: true}},
+              {start_date: {_lte: $inputDate}},
+              {end_date: {_gte: $inputDate}},
+              {weekday: {_like: $inputWeekday}}
+            ]
+          }
+        ]
+      }
+    ]} 
+  ) {
+    ...DealFragment
+    user_saved_deals(where: {user_id: {_eq: $userId}}){
+      user_id
+    }
+    experiences(where: {user_id: {_eq: $userId}}){
+      id
+      user_id
+      rating
+    }
+  }
+}
+${DEAL_FRAGMENT}
+`
+
+
+const MUTATION_ADD_USER_EMAIL = gql`
+mutation insert_email($userId: String!, $email: String!, $allow_emails: Boolean!){
+  update_users(
+    where: {auth0_id: {_eq: $userId}}
+    _set: {email: $email, allow_emails: $allow_emails}
+  ){
+    affected_rows
+  }
+}
+`
 const MUTATION_ADD_ANONYMOUS_MAIL = gql`
 mutation insert_anonymous_email ($email: String!, $city: String!, $state: String!, $allow_emails: Boolean!) {
   insert_anonymous_emails (
@@ -2207,7 +2302,11 @@ export {
 
   QUERY_USER_PROFILE_ANONYMOUS,
   QUERY_DEAL_INFO_ANONYMOUS,
+  QUERY_SAVED_DEALS,
+  MUTATION_SAVE_DEAL,
+  MUTATION_UNSAVE_DEAL,
 
+  MUTATION_ADD_USER_EMAIL,
   MUTATION_ADD_ANONYMOUS_MAIL,
 
   GET_ANNOUNCEMENT

@@ -21,7 +21,8 @@ import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 import SectionText from "./Sections/SectionText.js";
 import LoadingPage from '../LoadingPage/LoadingPage.js';
 // import RelatedEventsWrapper from 'views/EventPage/Sections/RelatedEvents/RelatedEventsWrapper.js';
-// import RelatedDealsWrapper from 'views/DealPage/Sections/RelatedDeals/RelatedDealsWrapper.js';
+import RelatedDealsWrapper from 'views/DealPage/Sections/RelatedDeals/RelatedDealsWrapper.js';
+import InformationPopover from 'components/InformationPopover.js'
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 import {
@@ -218,7 +219,10 @@ export default function AnnouncementsPage(props) {
 
         </Helmet>
 
-        {/* <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={40} width={40} src={require('assets/img/logoheader.png')} onClick={handleGoHomepage}/> */}
+        <img style={{position: 'absolute', zIndex: 10, top: 15, left: 15}} height={40} width={40} src={require('assets/img/logoheader.png')} onClick={handleGoHomepage}/>
+        <div style={{position: 'absolute', zIndex: 10, top: 15, right: 25}} >
+          <InformationPopover/>
+        </div>
         <Parallax image={values.picture_url}> 
           {/* <div style={{position: 'absolute', right: 0}}> */}
               {/* <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
@@ -242,6 +246,7 @@ export default function AnnouncementsPage(props) {
           <SectionText 
             announcementInfo={values}
             client={props.client}
+            email={props.email}
           />
 
           <br />
@@ -269,7 +274,7 @@ export default function AnnouncementsPage(props) {
               state={values.state}
               is_recurring={false}
             />
-            :
+            : */}
             <RelatedDealsWrapper 
               currentDealId={0}
               client={props.client} 
@@ -280,7 +285,7 @@ export default function AnnouncementsPage(props) {
               state={values.state}
               is_recurring={false}
             />
-          } */}
+          {/* } */}
         </div>
           
           <Footer
