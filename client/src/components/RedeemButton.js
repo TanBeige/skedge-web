@@ -191,19 +191,19 @@ export default function RedeemButton (props) {
     }
 
     const onClickCall = () => {
-        // ReactGA.initialize('UA-151937222-1');
-        // ReactGA.event({
-        // category: 'Redeem',
-        // action: 'CLICKED_CALL_BUTTON'
-        // });
+        ReactGA.initialize('UA-151937222-1');
+        ReactGA.event({
+        category: 'Redeem',
+        action: 'CLICKED_CALL_BUTTON'
+        });
         window.location.href = `tel:${props.phone_number}`
     }
     const onClickLink = () => {
-        // ReactGA.initialize('UA-151937222-1');
-        // ReactGA.event({
-        //     category: 'Redeem',
-        //     action: 'CLICKED_WEB_LINK_BUTTON'
-        // });
+        ReactGA.initialize('UA-151937222-1');
+        ReactGA.event({
+            category: 'Redeem',
+            action: 'CLICKED_WEB_LINK_BUTTON'
+        });
         // window.location.href = props.web_url
         window.open(
             props.web_url,
@@ -220,11 +220,11 @@ export default function RedeemButton (props) {
             // Set email to user email
             setValues({ ...values, email: props.email });
 
-            // ReactGA.initialize('UA-151937222-1');
-            // ReactGA.event({
-            //     category: 'Redeem',
-            //     action: 'CLICKED_REDEEM_BUTTON_USER'
-            // });
+            ReactGA.initialize('UA-151937222-1');
+            ReactGA.event({
+                category: 'Redeem',
+                action: 'CLICKED_REDEEM_BUTTON_USER'
+            });
 
             // Go to user redeem page
             setOpenEmail(true);
@@ -232,11 +232,11 @@ export default function RedeemButton (props) {
             return;
         }
 
-        // ReactGA.initialize('UA-151937222-1');
-        // ReactGA.event({
-        //     category: 'Redeem',
-        //     action: 'CLICKED_REDEEM_BUTTON'
-        // });
+        ReactGA.initialize('UA-151937222-1');
+        ReactGA.event({
+            category: 'Redeem',
+            action: 'CLICKED_REDEEM_BUTTON'
+        });
         setOpenEmail(true);
 
     }
