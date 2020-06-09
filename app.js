@@ -16,6 +16,7 @@ const profile = require('./routes/Profile');
 const moment = require('./routes/Moment');
 const auth0calls = require('./routes/Auth0calls');
 const email = require('./routes/Email');
+const email = require('./routes/Notifications');
 
 var app = express();
 var env = process.env.NODE_ENV || 'development';
@@ -65,6 +66,7 @@ app.get('*', (req, res) => {
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/notifications', notifications);
 app.use('/storage', storage);
 app.use('/deal', deal);
 app.use('/profile', profile);

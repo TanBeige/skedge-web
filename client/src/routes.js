@@ -57,8 +57,6 @@ require('./SkedgeStyle.css')
 // var hist = createBrowserHistory();
 
 export const MakeMainRoutes = () => {
-  
-
   // Variables/Imports from auth0-spa
   const {loading, getIdTokenClaims, isAuthenticated, user } = useAuth0();
   const [isLoading, setIsLoading] = useState(true);
@@ -220,7 +218,7 @@ export const MakeMainRoutes = () => {
           <Route exact path="/login-page" render={props => provideClient(LoginPage, props)} />
           {/* <Route exact path="/user" render={props => provideClient(ProfilePage, props)} /> */}
           <PrivateRoute path="/notifications" render={props => provideClient(NotificationsPage, props)} />
-          <PrivateRoute path="/admin" render={props => provideClient(NotificationsPage, props)} />
+          <PrivateRoute path="/admin" render={props => provideClient(AdminPage, props)} />
           <Route exact path="/error-page" render={props => provideClient(ErrorPage, props)} />
           <Route exact path="/app" render={props => provideClient(AppStorePage, props)} />
 

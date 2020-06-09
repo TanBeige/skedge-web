@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Helmet } from 'react-helmet';
-
+import axios from 'axios'
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
+// Material Ui Imports
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+
 // core components
-import Header from "components/Header/Header.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
-import Parallax from "components/Parallax/Parallax.js";
-import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-//Google Analytics
-import ReactGA from 'react-ga';
-import ReactPixel from 'react-facebook-pixel';
 
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
@@ -33,45 +29,116 @@ cloudinary.config({
 
 const useStyles = makeStyles(blogPostPageStyle);
 
-require('./AppStore.css');
-
+//Test notification:
+// ExponentPushToken[Z-NfkJGdSK8h9M98q2cLfA]
 
 export default function SendPushNotifications(props) {
 
-    const [page, setPage] = useState()
     const classes = useStyles();
 
-    sendPushNotification = async () => {
-        
-        const message = {
-            to: this.state.expoPushToken,
-            sound: 'default',
-            title: 'Original Title',
-            body: 'And here is the body!',
-            data: { data: 'goes here' },
-            _displayInForeground: true,
-        };
-        const response = await fetch('https://exp.host/--/api/v2/push/send', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Accept-encoding': 'gzip, deflate',
-                'Content-Type': 'application/json',
+    const [values, setValues] = React.useState({
+        // Event Creation
+        title: "",
+        subtitle: ""
+    });
+
+    //Functions
+    const handleChange = name => event => {
+        setValues({ ...values, [name]: event.target.value });
+    };
+
+    const sendPushNotification = async () => {
+
+        const request_config = {
+            method: "post",
+            url: `/notifications/to_all`,
+            params: {
+                title: "", 
+                body: "",
+                notifData: ""
             },
-            body: JSON.stringify(message),
+        };
+
+        await axios(request_config).then((res)=>{
+            console.log(res)
+        }).catch(error => {
+            console.log(error);
         });
+        
+        // const message = {
+        //     to: "ExponentPushToken[Z-NfkJGdSK8h9M98q2cLfA]",
+        //     sound: 'default',
+        //     title: 'Title',
+        //     body: 'Body',
+        //     data: { dealId: 401 },
+        //     _displayInForeground: true,
+        // };
+        // await fetch('https://exp.host/--/api/v2/push/send', {
+        //     method: 'POST',
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Accept-encoding': 'gzip, deflate',
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(message),
+        // });
     };
     
 
 
     return (
-        <div>            
+        <div style={{maxWidth: 600, margin: 'auto'}}> 
             <h2>Sending push notifications to all devices.</h2>
-            <h3>
-                Title: 
-            </h3>
-            <h4>Subtitle: </h4>
-            <h4>Body: </h4>
+            <Grid container spacing={2} >
+                <Grid item xs={12} sm={12}>
+                    <h3>Title:</h3>
+                    <TextField
+                    error={values.title.length > 50}
+                    name="title"
+                    variant="outlined"
+                    value={values.title}
+                    required
+                    fullWidth
+                    onChange={handleChange('title')}
+                    id="blog_name"
+                    label="Notification Title"
+                    autoFocus
+                    placeholder="New Deals Today!"
+                    />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                    <h4>Subtitle: </h4>
+                    <TextField
+                    variant="outlined"
+                    value={values.subtitle}
+                    required
+                    fullWidth
+                    onChange={handleChange('subtitle')}
+                    id="subtitle"
+                    label="subtitle"
+                    name="subtitle"
+                    placeholder="Tallahassee"
+                    />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                    <h4>Body: </h4>
+                    <TextField
+                    variant="outlined"
+                    value={values.street}
+                    required
+                    fullWidth
+                    onChange={handleChange('body')}
+                    id="body"
+                    label="Body"
+                    name="body"
+                    placeholder="body"
+                    />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                    <Button onClick={sendPushNotification}>Send to all</Button>
+                </Grid>
+            </Grid>           
+            
         </div>
     );
   

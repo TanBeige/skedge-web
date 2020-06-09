@@ -605,7 +605,6 @@ export default function DealInfo(props) {
         !values.state.replace(/\s/g, '').length || 
         
         values.point_1.replace(/\s/g, '').length >= 35 || 
-        !values.point_1.replace(/\s/g, '').length || 
         values.point_2.replace(/\s/g, '').length >= 35
     ) {
         continueDisabled = true;
@@ -782,7 +781,6 @@ export default function DealInfo(props) {
                                     <TextField
                                         error={values.point_1.length > 35}
                                         className={classes.input}
-                                        required
                                         name="point_1"
                                         variant="outlined"
                                         value={values.point_1}
@@ -912,7 +910,6 @@ export default function DealInfo(props) {
                             */}
                             {
                                 values.point_1.replace(/\s/g, '').length >= 35 || 
-                                !values.point_1.replace(/\s/g, '').length || 
                                 values.point_2.replace(/\s/g, '').length >= 35
                                 ? `Bullet Points ` : "" 
                             }

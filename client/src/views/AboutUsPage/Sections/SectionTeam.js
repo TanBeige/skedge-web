@@ -81,11 +81,24 @@ export default function SectionTeam() {
           <hr />
 
           <h2 className={classes.title}>Skedge Founders</h2>
-          <h5 className={classes.description}>Skedge was founded in 2019 by a college couple and a 3rd wheel.</h5>
+          <h5 className={classes.description}>Skedge was founded in 2019 by FSU Marketing Alumnus Kyle Picha, Education Alumnus Estefania Rios, and Computer Science Student Tan Arin.</h5>
         </GridItem>
       </GridContainer>
       <GridContainer>
-        <GridItem md={3} sm={3}>
+      <GridItem md={4} sm={4}>
+          <Card profile plain>
+            <CardAvatar profile plain>
+              <a href="#pablo">
+                <img src={require('assets/img/stefpic.jpg')} alt="picture of Estefania" className={classes.img} />
+              </a>
+            </CardAvatar>
+            <CardBody plain>
+              <h4 className={classes.cardTitle}>Estefania Rios</h4>
+              <h6 className={classes.textMuted}>Co-Founder</h6>
+            </CardBody>
+          </Card>
+        </GridItem>
+        <GridItem md={4} sm={4}>
           <Card profile plain>
             <CardAvatar profile plain>
               <a href="#pablo">
@@ -98,7 +111,7 @@ export default function SectionTeam() {
             </CardBody>
           </Card>
         </GridItem>
-        <GridItem md={3} sm={3}>
+        <GridItem md={4} sm={4}>
           <Card profile plain>
             <CardAvatar profile plain>
               <a href="#pablo">
@@ -112,26 +125,9 @@ export default function SectionTeam() {
             <CardBody plain>
               <h4 className={classes.cardTitle}>Tan Arin</h4>
               <h6 className={classes.textMuted}>CTO / Co-Founder</h6>
-              <p className={classes.cardDescription}>
-                (I'm the third wheel)
-              </p>
             </CardBody>
           </Card>
         </GridItem>
-        <GridItem md={3} sm={3}>
-          <Card profile plain>
-            <CardAvatar profile plain>
-              <a href="#pablo">
-                <img src={require('assets/img/stefpic.jpg')} alt="picture of Estefania" className={classes.img} />
-              </a>
-            </CardAvatar>
-            <CardBody plain>
-              <h4 className={classes.cardTitle}>Estefania Rios</h4>
-              <h6 className={classes.textMuted}>Co-Founder</h6>
-            </CardBody>
-          </Card>
-        </GridItem>
-        
       </GridContainer>
     </div>
   );

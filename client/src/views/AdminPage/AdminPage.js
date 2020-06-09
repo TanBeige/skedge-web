@@ -8,8 +8,6 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
-import Parallax from "components/Parallax/Parallax.js";
-import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
@@ -17,7 +15,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 //Google Analytics
 import ReactGA from 'react-ga';
-import ReactPixel from 'react-facebook-pixel';
+import SendPushNotifications from "./SendPushNotifications";
+import { useAuth0 } from "../../Authorization/react-auth0-wrapper";
 
 
 // import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
@@ -37,20 +36,34 @@ cloudinary.config({
 
 export default function EventPage(props) {
 
-    const [page, setPage] = useState()
+    const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+    const [page, setPage] = useState("")
     // const classes = useStyles();
+
+    // useEffect(() => {
+    //     if(isAuthenticated && user) {
+    //         if(user.sub !== ""){
+    //             window.location.href="/"
+    //         }
+    //     }
+    // }, [])
 
 
 
     const displayView = () => {
-
         switch(page) {
-            case "push_notification": 
+            case "push_notifications": 
                 return (
                     <div>
-                        <p>push_notification</p>
+                        <SendPushNotifications />
                     </div>
                 );
+            default: 
+                return(
+                    <div style={{textAlign: 'center'}}>
+                        <Button color='primary' onClick={()=>{setPage("push_notifications")}}>Send Push Notifications</Button>
+                    </div>
+                )
         }
     }
 
@@ -63,12 +76,13 @@ export default function EventPage(props) {
                 fixed
                 color="primary"//"transparent"
                 changeColorOnScroll={{
-                height: 100,
-                color: "primary"
+                    height: 100,
+                    color: "primary"
                 }}
             />
-            <Button onClick={()=>{setPage("push_notifications")}}>Send Push Notifications</Button>
-
+            <div style={{marginTop: '4em'}}>
+                {displayView()}
+            </div>
         </div>
     );
   
