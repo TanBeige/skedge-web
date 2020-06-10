@@ -23,6 +23,7 @@ import LoadingPage from '../LoadingPage/LoadingPage.js';
 // import RelatedEventsWrapper from 'views/EventPage/Sections/RelatedEvents/RelatedEventsWrapper.js';
 import RelatedDealsWrapper from 'views/DealPage/Sections/RelatedDeals/RelatedDealsWrapper.js';
 import InformationPopover from 'components/InformationPopover.js'
+import Header from "components/Header/Header.js";
 
 import blogPostPageStyle from "assets/jss/material-kit-pro-react/views/blogPostPageStyle.js";
 import {
@@ -204,6 +205,16 @@ export default function AnnouncementsPage(props) {
     return (
       <div>
         <ThemeProvider theme={theme}>
+        <Header
+          brand="Skedge"
+          //links={<HeaderLinks dropdownHoverColor="info"/>}
+          fixed
+          color="primary"//"transparent"
+          changeColorOnScroll={{
+            height: 100,
+            color: "primary"
+          }}
+        />
 
         <Helmet>
           <title>{values.name} | Skedge - Free & Cheap Food</title>
@@ -219,14 +230,15 @@ export default function AnnouncementsPage(props) {
 
         </Helmet>
 
-        <div style={{position: 'absolute', zIndex: 10, top: 15, left: 15}}>
+        {/* <div style={{position: 'absolute', zIndex: 10, top: 15, left: 15}}>
           <img  height={40} width={40} src={require('assets/img/logoheader.png')} onClick={handleGoHomepage}/>        
           <p style={{marginTop: 6, color: 'white', fontWeight: 400}}>Skedge - Free & Cheap Food</p>
-        </div>
+        </div> */}
 
-        <div style={{position: 'absolute', zIndex: 10, top: 15, right: 25}} >
+        {/* <div style={{position: 'absolute', zIndex: 10, top: 15, right: 25}} >
           <InformationPopover/>
-        </div>
+        </div> */}
+        <div style={{height: '56px'}}></div>
         <Parallax image={values.picture_url}> 
           {/* <div style={{position: 'absolute', right: 0}}> */}
               {/* <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>

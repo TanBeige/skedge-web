@@ -454,7 +454,7 @@ export default function DealPage(props) {
   //If user is signed in
   else {
     return (
-      <div>
+      <div >
         <Helmet>
           <title>{values.name} | Skedge - Free & Cheap Food</title>
           <meta name="description" content={`${values.description} - ${values.point_1}`} />
@@ -469,8 +469,20 @@ export default function DealPage(props) {
           <meta name="geo.position" content={`${values.latitude};${values.longitude}`}/>
           <meta name="ICBM" content={`${values.latitude},${values.longitude}`}/>
         </Helmet>
+        <Header
+          brand="Skedge"
+          //links={<HeaderLinks dropdownHoverColor="info"/>}
+          fixed
+          color="primary"//"transparent"
+          changeColorOnScroll={{
+            height: 100,
+            color: "primary"
+          }}
+        />
 
         <ThemeProvider theme={theme}>
+          <div style={{height: '56px'}}></div>
+
           {
             //If user is changing deals
             imageUploading ? 

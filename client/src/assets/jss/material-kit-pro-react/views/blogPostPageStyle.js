@@ -10,8 +10,8 @@ const blogPostPageStyle = {
   container: {
     ...container,
     zIndex: "2",
-    "@media (min-width: 768px)": {
-      maxWidth: "540px"
+    "@media (min-width: 600px)": {
+      maxWidth: "680px"
     },
   },
   textCenter: {

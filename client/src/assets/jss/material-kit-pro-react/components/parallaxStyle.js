@@ -13,15 +13,17 @@ const parallaxStyle = {
   parallax: {
     height: "30vh",
     maxHeight: "1600px",
+    maxWidth: '900px',
     // overflow: "hidden",
     position: "relative",
     backgroundPosition: "50%",
     backgroundSize: "cover",
-    margin: "0",
+    margin: "auto",
     padding: "0",
     border: "0",
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
+    
   },
   filter: {},
   primaryColor: {

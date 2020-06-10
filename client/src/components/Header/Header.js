@@ -58,8 +58,6 @@ export default function Header(props) {
         <Button className={classes.title}>
           <Link to="/"><img alt='Skedge' src={require("assets/img/logoheader.png")} height={40} width={40}/></Link>
         </Button>
-        {
-          isAuthenticated ? 
           <div>
             <CustomButton round onClick={event => setAnchorElTop(event.currentTarget)} justIcon color="primary">
               <PersonIcon style={{color: "white"}} className={classes.followIcon} />
@@ -85,16 +83,20 @@ export default function Header(props) {
                   {/* <CustomButton size='sm' round color="info" onClick={() => {goToPage("about-us")}}>
                     About Us
                   </CustomButton> */}
-                  <CustomButton round color="danger" onClick={logout}>
-                    Logout
-                  </CustomButton>
+                  {
+                    isAuthenticated ? 
+                    <CustomButton round color="danger" onClick={logout}>
+                      Logout
+                    </CustomButton>
+                    :
+                    <CustomButton round color="primary" onClick={logout}>
+                      Login
+                    </CustomButton>
+                  }
                 </div>
               </div>
             </Popover>
           </div>
-          :
-          ""
-        }
       </Toolbar>
     </AppBar>
   );

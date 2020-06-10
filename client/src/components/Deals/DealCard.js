@@ -270,7 +270,7 @@ export default function DealCard({ itemInfo, userId, client, currentDate, email 
         </div> */}
         <Link to={dealUrl}>
           <div>
-            <img src={values.image_url} style={{height: 150, width: '100%', objectFit: 'cover'}}/>
+            <img src={values.image_url} alt={values.name} style={{height: 150, width: '100%', objectFit: 'cover'}}/>
             <div style={{display: 'inline-flex'}}>
               <div style={{margin: '6px 0.5em 0px 0.5em', fontWeight: 400}}>
                 <p style={{fontSize: 18, color: 'black'}}>{itemInfo.name}</p>
@@ -304,96 +304,97 @@ export default function DealCard({ itemInfo, userId, client, currentDate, email 
       </div>
     </div>
   )
-
-  return(
-        <ThemeProvider theme={theme}>
-          {/* <Grow in={true}> */}
-            <Card style={{border: "2px solid darkgrey", marginTop: 5}} raised>  
-              {/* <CardHeader image style={{marginBottom: -30}}> */}
-  
-              <div style={coverImgStyle}>
-                <Link to={dealUrl}>
-                  <LoadImage className={classes.imgCardTop} color='white' src={values.image_url} aspectRatio={2/1}/>
-                </Link>
-  
-                  <div className={classes.imgCardOverlay} style={{width: '100%'}}>
-                    {displayCornerDate}
-
-  
-                    <Link to={`/${values.username}`}>
-                      <div
-                        // className={classes.cardTitle}
-                        style={{
-                          color: "#02C39A",
-                          position: "absolute",
-                          bottom: "0px",
-                          left: "6px",
-                        }}
-                      >
-                        <Avatar style={{float:'left', border: '1px solid #02C39A', height: 32, width: 32}} width={32} alt={values.username} src={values.userProfilePic}/>
-                        <h5 style={usernameStyle}>
-                          @{values.username}
-                        </h5>
-                      </div>
-                    </Link>
-                  </div>
-              </div>
-              {/* </CardHeader> */}
-  
-                <CardBody style={{padding: '0px 15px'}}>
-                
-                  {/* {followFeedInfo} */}
-  
-                  <Link to={dealUrl}>
-                    <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center", fontSize: '1.5em'}}>{values.name}</h3>
-                  </Link>
-                  {/* <EventMomentsWrapper 
-                    eventId={itemInfo.id}
-                    cover={values.image_url}
-                    client={client}
-                    type={type}
-                    //ifGoing={values.ifGoing}
-                  /> */}
-                  <hr style={{margin: 2}}/>
-  
-                  <div style={{fontSize: 14}}>
-                    <div style={{width: '100%', textAlign: 'left'}}>
-                      <AccessAlarmIcon fontSize='small' style={{verticalAlign: 'top'}}/>
-                      {` ${values.start_time.format("h:mma")}`}
-                      {values.end_time ? ` - ${values.end_time.format("h:mma")}` : ""}
-                    </div>
-                    
-                    <div style={{textAlign: 'left'}}>
-                      <p style={{display: 'inline', width: '100%'}}>
-                        <PlaceIcon color="secondary" fontSize='small' style={{verticalAlign: 'top'}} />
-                        {` ${itemInfo.location_name}`}
-                      </p>
-                    </div>
-                  </div>
-                    <div style={{display: 'flex', color: 'gold'}}> 
-                      {/* <FlareIcon size='small' style={{fontSize: 12, margin: 'auto 4px'}}/> */}
-                      <p style={{color: 'black'}}>{itemInfo.point_1}</p>
-                    </div>
-                </CardBody>
-  
-                <CardFooter style={{padding: '0rem 1rem'}}>
-                  <Info style={{textAlign: 'left'}}>
-                    <h6 color='primary' className={classes.cardCategory}>Deal</h6>
-                  </Info>
-                  {/* <div style={{position: 'absolute',right: 15}}>
-                    <IconButton onClick={handleLike} aria-label="Like" style={{padding: 6}}>
-                      <LoyaltyIcon /> 
-                    </IconButton>
-                    <IconButton onClick={handleLike} aria-label="Like" style={{padding: 6}}>
-                      <FavoriteIcon color={values.ifLiked}/>
-                      <div style={{fontSize: 14}}>
-                        {values.likeAmount}
-                      </div> 
-                    </IconButton>
-                  </div> */}
-                </CardFooter>
-            </Card>
-          {/* </Grow> */}
-        </ThemeProvider>
-      )
 }
+
+//   return(
+//         <ThemeProvider theme={theme}>
+//           {/* <Grow in={true}> */}
+//             <Card style={{border: "2px solid darkgrey", marginTop: 5}} raised>  
+//               {/* <CardHeader image style={{marginBottom: -30}}> */}
+  
+//               <div style={coverImgStyle}>
+//                 <Link to={dealUrl}>
+//                   <LoadImage className={classes.imgCardTop} color='white' src={values.image_url} aspectRatio={2/1}/>
+//                 </Link>
+  
+//                   <div className={classes.imgCardOverlay} style={{width: '100%'}}>
+//                     {displayCornerDate}
+
+  
+//                     <Link to={`/${values.username}`}>
+//                       <div
+//                         // className={classes.cardTitle}
+//                         style={{
+//                           color: "#02C39A",
+//                           position: "absolute",
+//                           bottom: "0px",
+//                           left: "6px",
+//                         }}
+//                       >
+//                         <Avatar style={{float:'left', border: '1px solid #02C39A', height: 32, width: 32}} width={32} alt={values.username} src={values.userProfilePic}/>
+//                         <h5 style={usernameStyle}>
+//                           @{values.username}
+//                         </h5>
+//                       </div>
+//                     </Link>
+//                   </div>
+//               </div>
+//               {/* </CardHeader> */}
+  
+//                 <CardBody style={{padding: '0px 15px'}}>
+                
+//                   {/* {followFeedInfo} */}
+  
+//                   <Link to={dealUrl}>
+//                     <h3 style={{margin: '5px 0px 0px 0px', textAlign: "center", fontSize: '1.5em'}}>{values.name}</h3>
+//                   </Link>
+//                   {/* <EventMomentsWrapper 
+//                     eventId={itemInfo.id}
+//                     cover={values.image_url}
+//                     client={client}
+//                     type={type}
+//                     //ifGoing={values.ifGoing}
+//                   /> */}
+//                   <hr style={{margin: 2}}/>
+  
+//                   <div style={{fontSize: 14}}>
+//                     <div style={{width: '100%', textAlign: 'left'}}>
+//                       <AccessAlarmIcon fontSize='small' style={{verticalAlign: 'top'}}/>
+//                       {` ${values.start_time.format("h:mma")}`}
+//                       {values.end_time ? ` - ${values.end_time.format("h:mma")}` : ""}
+//                     </div>
+                    
+//                     <div style={{textAlign: 'left'}}>
+//                       <p style={{display: 'inline', width: '100%'}}>
+//                         <PlaceIcon color="secondary" fontSize='small' style={{verticalAlign: 'top'}} />
+//                         {` ${itemInfo.location_name}`}
+//                       </p>
+//                     </div>
+//                   </div>
+//                     <div style={{display: 'flex', color: 'gold'}}> 
+//                       {/* <FlareIcon size='small' style={{fontSize: 12, margin: 'auto 4px'}}/> */}
+//                       <p style={{color: 'black'}}>{itemInfo.point_1}</p>
+//                     </div>
+//                 </CardBody>
+  
+//                 <CardFooter style={{padding: '0rem 1rem'}}>
+//                   <Info style={{textAlign: 'left'}}>
+//                     <h6 color='primary' className={classes.cardCategory}>Deal</h6>
+//                   </Info>
+//                   {/* <div style={{position: 'absolute',right: 15}}>
+//                     <IconButton onClick={handleLike} aria-label="Like" style={{padding: 6}}>
+//                       <LoyaltyIcon /> 
+//                     </IconButton>
+//                     <IconButton onClick={handleLike} aria-label="Like" style={{padding: 6}}>
+//                       <FavoriteIcon color={values.ifLiked}/>
+//                       <div style={{fontSize: 14}}>
+//                         {values.likeAmount}
+//                       </div> 
+//                     </IconButton>
+//                   </div> */}
+//                 </CardFooter>
+//             </Card>
+//           {/* </Grow> */}
+//         </ThemeProvider>
+//       )
+// }

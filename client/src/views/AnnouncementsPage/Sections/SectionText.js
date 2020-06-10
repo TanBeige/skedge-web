@@ -9,9 +9,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import sectionTextStyle from "assets/jss/material-kit-pro-react/views/blogPostSections/sectionTextStyle.js";
 //Auth0 Wrapper
 import Button from "components/CustomButtons/Button.js";
-import AppleIcon from '@material-ui/icons/Apple';
-import Typography from '@material-ui/core/Typography';
-import Popover from '@material-ui/core/Popover';
+import GridContainer from "components/Grid/GridContainer.js";
+import GridItem from "components/Grid/GridItem.js";
 import { useAuth0 } from 'Authorization/react-auth0-wrapper.js'
 import RedeemButton from 'components/RedeemButton.js';
 
@@ -80,7 +79,7 @@ export default function SectionText({ announcementInfo, client, email }) {
 
 
   return(
-    <div style={{maxWidth: 500, margin: 'auto'}}>
+    <div style={{maxWidth: 680, margin: 'auto'}}>
       <div className='AnnouncementTitle'>
           <h1 style={{fontSize: '24px',textAlign: 'center'}} className='AnnouncementName'>{announcementInfo.name}</h1>
       </div>
@@ -98,11 +97,13 @@ export default function SectionText({ announcementInfo, client, email }) {
           )
         }
       </div>
-      <div style={{margin: 'auto', maxWidth: 500, marginTop: '1em'}}>
+      <div style={{margin: 'auto', marginTop: '1em'}}>
+        <GridContainer>
         {
           announcementInfo.attached_deals.map((deal, index) => {
             return (
-              <div key={deal.deal.id} style={{}}>
+              // <div key={deal.deal.id}>
+                <GridItem sm={12} md={announcementInfo.attached_deals.length - index === 1 ? 12 : 6}>
                   <ItemCard
                     itemType="deal"
                     itemId={deal.deal.id}
@@ -142,10 +143,12 @@ export default function SectionText({ announcementInfo, client, email }) {
                       />
                     </div>
                   </div>
-              </div>
+                  </GridItem>
+              // </div>
             )
           })
         }
+        </GridContainer>
       </div>
     </div>
   );

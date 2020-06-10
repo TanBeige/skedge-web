@@ -47,7 +47,7 @@ const headerStyle = theme => ({
   },
   container: {
     ...container,
-    minHeight: "7vh",
+    minHeight: "56px",
     alignItems: "center",
     justifyContent: "space-between",
     display: "flex",

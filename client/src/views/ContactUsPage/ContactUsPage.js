@@ -153,7 +153,7 @@ export default function ContactUsPage() {
   return (
     <div>
       <Header
-        brand="Material Kit PRO React"
+        brand="Skedge"
         links={<HeaderLinks dropdownHoverColor="dark" />}
         fixed
         color="dark"
