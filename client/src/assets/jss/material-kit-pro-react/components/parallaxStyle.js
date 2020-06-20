@@ -13,7 +13,7 @@ const parallaxStyle = {
   parallax: {
     height: "30vh",
     maxHeight: "1600px",
-    maxWidth: '900px',
+    // maxWidth: '900px',
     // overflow: "hidden",
     position: "relative",
     backgroundPosition: "50%",
