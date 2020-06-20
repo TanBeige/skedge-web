@@ -1,9 +1,10 @@
 var express = require('express');
 const router = express.Router();
-import { Expo } from 'expo-server-sdk';
+// import { Expo } from 'expo-server-sdk';
+const Expo = require("expo-server-sdk")
 
 // Create a new Expo SDK client
-let expo = new Expo();
+// let expo = new Expo();
 
 // Create Messages
 function createMessages(title, body, data, pushTokens) {
