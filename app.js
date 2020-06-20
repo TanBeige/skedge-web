@@ -16,7 +16,7 @@ const profile = require('./routes/Profile');
 const moment = require('./routes/Moment');
 const auth0calls = require('./routes/Auth0calls');
 const email = require('./routes/Email');
-const email = require('./routes/Notifications');
+const notifications = require('./routes/Notifications');
 
 var app = express();
 var env = process.env.NODE_ENV || 'development';
