@@ -95,8 +95,6 @@ export default function DealInfo(props) {
     const re = /^[0-9\b]+$/;
     const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
 
-
-
     const [uploading, setUploading] = React.useState(false);
 
     const [values, setValues] = React.useState({
@@ -121,6 +119,10 @@ export default function DealInfo(props) {
         point_1: "",
         point_2: "",
         phone_number: "",
+
+        takeout: false,
+        delivery: false,
+        dine_in: false,
 
         //Recurring Deals
         repeatCheck: false,
@@ -204,33 +206,9 @@ export default function DealInfo(props) {
         })
     }
 
-    // Deal Categories Functions:
-    const handleTags = (regularTags) => {
-        setValues({
-            ...values,
-            tags: regularTags
-        });
-    };
-
-    // Deal Banner Functions
-    const bannerSelect = (banner) => {
-        setValues({
-            ...values,
-            selectingBanner: !values.selectingBanner
-        })
-    };
-
     const bannerChoose = (banner) => {
         setValues({ ...values, bannerImg: banner });
     };
-
-
-    const bannerSubmit = (e) => {
-        const {bannerImg} = values;
-        e.preventDefault();
-
-        props.submitEvent(bannerImg);
-    }
 
 
     //Get banner pics before they show up
@@ -379,7 +357,11 @@ export default function DealInfo(props) {
                     street: values.street, 
                     web_url: values.web_url, 
                     weekday: weekdayString,
-                    phone_number: values.phone_number
+                    phone_number: values.phone_number,
+                                
+                    takeout: values.takeout,
+                    delivery: values.delivery,
+                    dine_in: values.dine_in,
                 }
             }
         }).then((data)=> {
@@ -419,7 +401,6 @@ export default function DealInfo(props) {
 
     // Changes to Date/Time input dynamically based on time types
     let endTimeJS = ""
-
     if (values.endTimeExists) {
         endTimeJS = (
             <div>
@@ -444,21 +425,22 @@ export default function DealInfo(props) {
                 </Grid>
             </div>
         )
-  }
-  else {
-    endTimeJS = (
-        <Button 
-            variant="contained" 
-            color='primary' 
-            style={{width: '100%', height: '80%', color: 'white'}}
-            onClick={handleEndTimeClick}>
-            End Time
-        </Button>
+    }
+    else {
+        endTimeJS = (
+            <Button 
+                variant="contained" 
+                color='primary' 
+                style={{width: '100%', height: '80%', color: 'white'}}
+                onClick={handleEndTimeClick}>
+                End Time
+            </Button>
     )}
 
   let repeatDeal = ""
-  if (!values.repeatCheck) {
-    repeatDeal = (<MuiPickersUtilsProvider utils={MomentUtils}>
+    if (!values.repeatCheck) {
+        repeatDeal = (
+            <MuiPickersUtilsProvider utils={MomentUtils}>
                     <Grid item xs={12}>
                         <DatePicker
                             variant="inline"
@@ -482,9 +464,10 @@ export default function DealInfo(props) {
                     <Grid item xs={6}>
                         {endTimeJS}
                     </Grid>
-                </MuiPickersUtilsProvider>)
-  }
-  else {
+                </MuiPickersUtilsProvider>
+        )
+    }
+    else {
     repeatDeal = (
       <div className='weekdayCheckboxes'>
       <FormControl required error={error} component="fieldset" style={{marginBottom: 15, width: '100%'}}>
@@ -677,10 +660,6 @@ export default function DealInfo(props) {
                             <div>
                                 <ImageUpload setFile={bannerChoose} bannerImg={values.bannerImg}/>
                             </div>
-                            {/* <Button variant='contained' color='primary' onClick={bannerSelect}>
-                                Choose A Banner
-                            </Button>
-                            {selectBanners()} */}
                         </div>
 
                         <div className='DealInfo'>
@@ -746,7 +725,8 @@ export default function DealInfo(props) {
                                 </Grid>
 
                                 {repeatDeal}
-                                
+
+                                {/*                                 
                                 <Grid item xs={12} >
                                     <FormControl fullWidth variant="outlined" style={{marginTop: '1em'}}>
                                         <InputLabel htmlFor="outlined-adornment-amount">Deal Savings</InputLabel>
@@ -759,7 +739,9 @@ export default function DealInfo(props) {
                                         labelWidth={110}
                                         />
                                     </FormControl>
-                                </Grid>
+                                </Grid> */}
+
+                                {/* Web Url and Phone Number */}
                                 <Grid item xs={12} sm={12}>
                                     <TextField
                                         className={classes.input}
@@ -771,38 +753,6 @@ export default function DealInfo(props) {
                                         id="web_url"
                                         label="Link to Deal"
                                         // placeholder="50 character max."
-                                    />
-                                </Grid>
-                                <div style={{margin: '8px 8px 0px 8px'}}>
-                                    <h4 style={{marginBottom: 0}}>Deal Bullet Points</h4>
-                                    <p>- These will be shown on the display cards</p>
-                                </div>
-                                <Grid item xs={12} sm={12}>
-                                    <TextField
-                                        error={values.point_1.length > 35}
-                                        className={classes.input}
-                                        name="point_1"
-                                        variant="outlined"
-                                        value={values.point_1}
-                                        fullWidth
-                                        onChange={handleChange('point_1')}
-                                        id="point_1"
-                                        label="Point 1"
-                                        placeholder="35 character max."
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={12}>
-                                    <TextField
-                                        error={values.point_2.length > 35}
-                                        className={classes.input}
-                                        name="point_2"
-                                        variant="outlined"
-                                        value={values.point_2}
-                                        fullWidth
-                                        onChange={handleChange('point_2')}
-                                        id="point_2"
-                                        label="Point 2"
-                                        placeholder="35 character max."
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
@@ -819,6 +769,39 @@ export default function DealInfo(props) {
                                         placeholder="1234567890"
                                     />
                                 </Grid>
+
+                                {/* Takeout/Delivery/Dine-In */}
+                                <FormControl>
+                                    <FormGroup>
+                                        <Grid container direction='row' alignContent='center'>
+                                            <Grid item xs={4}>
+                                                <FormControlLabel
+                                                control={<Checkbox checked={values.takeout} onChange={handleCheck('takeout')} value="takeout" color='primary'/>}
+                                                label="Takeout"
+                                                labelPlacement="top"
+                                                />
+                                            </Grid>
+                                            <Grid item xs={4}>
+                                                <FormControlLabel
+                                                control={<Checkbox checked={values.delivery} onChange={handleCheck('delivery')} value="delivery" color='primary'/>}
+                                                label="Delivery"
+                                                labelPlacement="top"
+                                                />
+                                            </Grid>
+                                            <Grid item xs={4}>
+                                                <FormControlLabel
+                                                control={
+                                                    <Checkbox checked={values.dine_in} onChange={handleCheck('dine_in')} value="dine_in" color='primary'/>
+                                                }
+                                                label="Dine-In"
+                                                labelPlacement="top"
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </FormGroup>
+                                </FormControl>
+
+                                {/* Description */}
                                 <Grid item xs={12}>
                                     <TextField 
                                         id="description"
@@ -833,7 +816,6 @@ export default function DealInfo(props) {
                                         onChange={handleChange('description')}
                                         margin="normal"/>
                                 </Grid>
-                                
                             </Grid>
 
                             {/* ----Deal Tags---- */}
@@ -858,7 +840,9 @@ export default function DealInfo(props) {
                                 </Grid>
                             </div> */}
                         </div>
+
                     {
+                        // Tell user what they missed
                         continueDisabled ? 
                         <p style={{color: 'red', marginTop: '1em'}}>
                             {`Missing: `}

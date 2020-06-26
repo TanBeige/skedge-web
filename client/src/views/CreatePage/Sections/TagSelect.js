@@ -3,8 +3,6 @@ import Slide from '@material-ui/core/Slide';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
-import RadioGroup from '@material-ui/core/RadioGroup'
-import Radio from '@material-ui/core/Radio';
 import Grid from '@material-ui/core/Grid';
 import FormGroup from '@material-ui/core/FormGroup';
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
@@ -48,7 +46,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function TagSelect(props) {
     const classes = useStyles();
-
     const [values, setValues] = React.useState({
         category: props.savedCategory,
         categories: props.savedCategory,
@@ -67,7 +64,6 @@ export default function TagSelect(props) {
     };
 
     const handleToggle = value =>{
-        
         const currentIndex = values.categories.indexOf(value);
         const newChecked = values.categories;
 
@@ -79,7 +75,6 @@ export default function TagSelect(props) {
         } else {
             newChecked.splice(currentIndex, 1);
         }
-
 
         setValues({
             ...values,
@@ -121,6 +116,7 @@ export default function TagSelect(props) {
                         </div>
                     </Grid>
                 </div>
+
                 <Button
                 fullWidth
                 variant="contained"
