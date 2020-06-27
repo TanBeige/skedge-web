@@ -30,6 +30,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
+import Grid from '@material-ui/core/Grid';
 
 
 // @material-ui icons
@@ -108,6 +109,10 @@ export default function EditDealButton(props) {
 
         web_url: props.oldDeal.web_url,
         savings: props.oldDeal.savings,
+
+        takeout: props.oldDeal.takeout,
+        delivery: props.oldDeal.delivery,
+        dine_in: props.oldDeal.dine_in,
 
         //Recurring events
         is_recurring: props.oldDeal.is_recurring,
@@ -610,6 +615,37 @@ export default function EditDealButton(props) {
                             placeholder="35 character max."
                         />
                     </GridItem>
+
+                    {/* Takeout/Delivery/Dine-In */}
+                    <FormControl>
+                        <FormGroup>
+                            <Grid container direction='row' alignContent='center'>
+                                <Grid item xs={4}>
+                                    <FormControlLabel
+                                    control={<Checkbox checked={dealInfo.takeout} onChange={handleCheck('takeout')} value="takeout" color='primary'/>}
+                                    label="Takeout"
+                                    labelPlacement="top"
+                                    />
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <FormControlLabel
+                                    control={<Checkbox checked={dealInfo.delivery} onChange={handleCheck('delivery')} value="delivery" color='primary'/>}
+                                    label="Delivery"
+                                    labelPlacement="top"
+                                    />
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <FormControlLabel
+                                    control={
+                                        <Checkbox checked={dealInfo.dine_in} onChange={handleCheck('dine_in')} value="dine_in" color='primary'/>
+                                    }
+                                    label="Dine-In"
+                                    labelPlacement="top"
+                                    />
+                                </Grid>
+                            </Grid>
+                        </FormGroup>
+                    </FormControl>
 
                     {/* Deal Description */}
                     <GridItem xs={12} sm={12}>

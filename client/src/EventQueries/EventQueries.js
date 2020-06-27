@@ -1769,7 +1769,7 @@ const MUTATION_DEAL_ADD = gql`
   }
 `
 const MUTATION_DEAL_UPDATE = gql`
-mutation update_deal($dealId: Int!, $name: String, $locationName: String, $street: String, $city: String, $state: String, $startTime: time, $endTime: time,$startDate: date, $endDate: date, $isRecurring: Boolean, $weekday:String, $description: String, $point1: String, $point2: String, $coverPic: String, $webUrl:String, $savings: String, $lat: numeric, $long: numeric){
+mutation update_deal($dealId: Int!, $name: String, $locationName: String, $street: String, $city: String, $state: String, $startTime: time, $endTime: time,$startDate: date, $endDate: date, $isRecurring: Boolean, $weekday:String, $description: String, $point1: String, $point2: String, $coverPic: String, $webUrl:String, $savings: String, $lat: numeric, $long: numeric, $takeout: Boolean, $delivery: Boolean, $dine_in: Boolean){
   update_deals(
     where: {id: {_eq: $dealId}}
     _set: {
@@ -1786,6 +1786,10 @@ mutation update_deal($dealId: Int!, $name: String, $locationName: String, $stree
       is_recurring: $isRecurring,
       weekday: $weekday,
       
+      takeout: $takeout,
+      delivery: $delivery,
+      dine_in: $dine_in,
+
       point_1: $point1,
       point_2: $point2,
       description: $description,
@@ -1837,6 +1841,11 @@ query query_deal_info($dealId: Int!) {
     street
     savings
     web_url
+
+    takeout
+    delivery
+    dine_in
+
 
     latitude
     longitude
@@ -2046,6 +2055,10 @@ query query_deal_info($dealId: Int!) {
     street
     savings
     web_url
+
+    takeout
+    delivery
+    dine_in
 
     latitude
     longitude

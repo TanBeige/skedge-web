@@ -116,6 +116,10 @@ export default function DealPage(props) {
     web_url: "",
     updated_at: "",
 
+    delivery: false,
+    takeout: false,
+    dine_in: false,
+
     cover_uuid: "",
     cover_url: "",
 
@@ -205,6 +209,11 @@ export default function DealPage(props) {
           savings: data.data.deals[0].savings,
           web_url: data.data.deals[0].web_url,
           updated_at: data.data.deals[0].updated_at,
+
+          delivery: data.data.deals[0].delivery,
+          takeout: data.data.deals[0].takeout,
+          dine_in: data.data.deals[0].dine_in,
+      
 
           // latitude: data.data.deals[0].latitude,
           // longitude: data.data.deals[0].longitude,
@@ -305,6 +314,11 @@ export default function DealPage(props) {
         description: newInfo.description,
         point1: newInfo.point_1,
         point2: newInfo.point_2,
+        
+        takeout: newInfo.takeout,
+        delivery: newInfo.delivery,
+        dine_in: newInfo.dine_in,
+    
 
         coverPic: response ? response.data.id : coverPicId,
         webUrl: newInfo.web_url,
