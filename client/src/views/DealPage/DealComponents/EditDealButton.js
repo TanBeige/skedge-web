@@ -108,6 +108,7 @@ export default function EditDealButton(props) {
         point_2: props.oldDeal.point_2 ? props.oldDeal.point_2 : "",
 
         web_url: props.oldDeal.web_url,
+        menu_link: props.oldDeal.menu_link,
         savings: props.oldDeal.savings,
 
         takeout: props.oldDeal.takeout,
@@ -581,7 +582,21 @@ export default function EditDealButton(props) {
                             fullWidth
                             onChange={handleChange('web_url')}
                             id="web_url"
-                            label="Link to Deal"
+                            label="'Get Online' Link"
+                            // placeholder="50 character max."
+                        />
+                    </GridItem>
+                    <GridItem xs={12} sm={12}>
+                        <TextField
+                            name="menu_link"
+                            variant="outlined"
+                            margin="normal"
+
+                            value={dealInfo.menu_link}
+                            fullWidth
+                            onChange={handleChange('menu_link')}
+                            id="menu_link"
+                            label="Menu Link"
                             // placeholder="50 character max."
                         />
                     </GridItem>

@@ -322,6 +322,7 @@ export default function DealPage(props) {
 
         coverPic: response ? response.data.id : coverPicId,
         webUrl: newInfo.web_url,
+        menuLink: newInfo.menu_link,
         savings: newInfo.savings,
         lat: newInfo.street != values.street ? null : values.latitude,
         long: newInfo.street != values.street ? null : values.longitude,
@@ -354,6 +355,7 @@ export default function DealPage(props) {
       cover_url: response ? cloudinary.url(response.data.id, {secure: true, height: window.innerHeight, crop: "scale", fetch_format: "auto", quality: "auto"}) : values.cover_url,
 
       webUrl: newInfo.web_url,
+      menu_link: newInfo.menu_link,
       savings: newInfo.savings
     })
   }
@@ -503,15 +505,15 @@ export default function DealPage(props) {
             <EventLoading text="Saving Changes" /> : ""
           }
           
-          {
-            user &&
-            
-            <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 20,  left: 20, zIndex: 5}} color="primary">
-                <ChevronLeftIcon />
-            </Button>
-          }
           <Parallax image={values.cover_url}>
+            {user &&
+              <Button onClick={goBack} justIcon round style={{position: 'fixed', top: 20,  left: 20, zIndex: 5}} color="primary">
+                  <ChevronLeftIcon />
+              </Button>
+            }
+
             {editingDeal()}
+            
             {
               !user ? 
               <div style={{margin: 'auto', textAlign: 'center', marginBottom: '-1em',paddingBottom: '12', maxWidth: '300px'}}>

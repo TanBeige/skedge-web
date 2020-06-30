@@ -87,7 +87,7 @@ export default function SendPushNotifications(props) {
 
 
     return (
-        <div style={{maxWidth: 600, margin: 'auto'}}> 
+        <div style={{maxWidth: 600, margin: 'auto', marginBottom: 46}}> 
             <h2>Sending push notifications to all devices.</h2>
             <Grid container spacing={2} >
                 <Grid item xs={12} sm={12}>
@@ -115,9 +115,24 @@ export default function SendPushNotifications(props) {
                     fullWidth
                     onChange={handleChange('subtitle')}
                     id="subtitle"
-                    label="subtitle"
+                    label="Subtitle"
                     name="subtitle"
                     placeholder="Tallahassee"
+                    />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                    <h4 style={{marginBottom: 0}}>Deal ID: </h4>
+                    <p>Found in link, first number before dash.<br/> ex) "theskedge.com/deals/<strong>123</strong>-10-percent-off-food" </p>
+                    <TextField
+                    variant="outlined"
+                    value={values.subtitle}
+                    required
+                    fullWidth
+                    onChange={handleChange('subtitle')}
+                    id="subtitle"
+                    label="Deal ID"
+                    name="subtitle"
+                    placeholder="123"
                     />
                 </Grid>
                 <Grid item xs={12} sm={12}>
@@ -134,7 +149,9 @@ export default function SendPushNotifications(props) {
                     placeholder="body"
                     />
                 </Grid>
+                <hr />
                 <Grid item xs={12} sm={12}>
+                    <h5>Double check everything before sending to ALL USERS!</h5>
                     <Button onClick={sendPushNotification}>Send to all</Button>
                 </Grid>
             </Grid>           

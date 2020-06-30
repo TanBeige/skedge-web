@@ -114,11 +114,14 @@ export default function DealInfo(props) {
         end_time: null,
 
         savings: "0",
+
         web_url: "",
+        menu_link: "",
+        phone_number: "",
+
         description: "",
         point_1: "",
         point_2: "",
-        phone_number: "",
 
         takeout: false,
         delivery: false,
@@ -355,8 +358,10 @@ export default function DealInfo(props) {
                     start_time: moment(values.start_time).format('HH:mm:ss'),
                     state: values.state, 
                     street: values.street, 
-                    web_url: values.web_url, 
                     weekday: weekdayString,
+
+                    web_url: values.web_url, 
+                    menu_link: values.menu_link,
                     phone_number: values.phone_number,
                                 
                     takeout: values.takeout,
@@ -751,7 +756,20 @@ export default function DealInfo(props) {
                                         fullWidth
                                         onChange={handleChange('web_url')}
                                         id="web_url"
-                                        label="Link to Deal"
+                                        label={`"Get Online" Link`}
+                                        // placeholder="50 character max."
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <TextField
+                                        className={classes.input}
+                                        name="menu_link"
+                                        variant="outlined"
+                                        value={values.menu_link}
+                                        fullWidth
+                                        onChange={handleChange('menu_link')}
+                                        id="menu_link"
+                                        label="Menu Link"
                                         // placeholder="50 character max."
                                     />
                                 </Grid>
@@ -771,35 +789,37 @@ export default function DealInfo(props) {
                                 </Grid>
 
                                 {/* Takeout/Delivery/Dine-In */}
-                                <FormControl>
-                                    <FormGroup>
-                                        <Grid container direction='row' alignContent='center'>
-                                            <Grid item xs={4}>
-                                                <FormControlLabel
-                                                control={<Checkbox checked={values.takeout} onChange={handleCheck('takeout')} value="takeout" color='primary'/>}
-                                                label="Takeout"
-                                                labelPlacement="top"
-                                                />
+                                <Grid item xs={12} sm={12} style={{textAlign: 'center'}}>
+                                    <FormControl>
+                                        <FormGroup>
+                                            <Grid container direction='row'>
+                                                <Grid item xs={4}>
+                                                    <FormControlLabel
+                                                    control={<Checkbox checked={values.takeout} onChange={handleCheck('takeout')} value="takeout" color='primary'/>}
+                                                    label="Takeout"
+                                                    labelPlacement="top"
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={4}>
+                                                    <FormControlLabel
+                                                    control={<Checkbox checked={values.delivery} onChange={handleCheck('delivery')} value="delivery" color='primary'/>}
+                                                    label="Delivery"
+                                                    labelPlacement="top"
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={4}>
+                                                    <FormControlLabel
+                                                    control={
+                                                        <Checkbox checked={values.dine_in} onChange={handleCheck('dine_in')} value="dine_in" color='primary'/>
+                                                    }
+                                                    label="Dine-In"
+                                                    labelPlacement="top"
+                                                    />
+                                                </Grid>
                                             </Grid>
-                                            <Grid item xs={4}>
-                                                <FormControlLabel
-                                                control={<Checkbox checked={values.delivery} onChange={handleCheck('delivery')} value="delivery" color='primary'/>}
-                                                label="Delivery"
-                                                labelPlacement="top"
-                                                />
-                                            </Grid>
-                                            <Grid item xs={4}>
-                                                <FormControlLabel
-                                                control={
-                                                    <Checkbox checked={values.dine_in} onChange={handleCheck('dine_in')} value="dine_in" color='primary'/>
-                                                }
-                                                label="Dine-In"
-                                                labelPlacement="top"
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                    </FormGroup>
-                                </FormControl>
+                                        </FormGroup>
+                                    </FormControl>
+                                </Grid>
 
                                 {/* Description */}
                                 <Grid item xs={12}>
