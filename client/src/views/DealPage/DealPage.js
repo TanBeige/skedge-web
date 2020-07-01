@@ -114,6 +114,7 @@ export default function DealPage(props) {
     street: "",
     savings: "",
     web_url: "",
+    menu_link: "",
     updated_at: "",
 
     delivery: false,
@@ -208,6 +209,7 @@ export default function DealPage(props) {
           street: data.data.deals[0].street,
           savings: data.data.deals[0].savings,
           web_url: data.data.deals[0].web_url,
+          menu_link: data.data.deals[0].menu_link,
           updated_at: data.data.deals[0].updated_at,
 
           delivery: data.data.deals[0].delivery,

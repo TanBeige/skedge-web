@@ -1869,6 +1869,7 @@ query query_deal_info($dealId: Int!) {
     street
     savings
     web_url
+    menu_link
 
     takeout
     delivery
@@ -2083,6 +2084,7 @@ query query_deal_info($dealId: Int!) {
     street
     savings
     web_url
+    menu_link
 
     takeout
     delivery
