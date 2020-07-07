@@ -38,6 +38,7 @@ export default function EventPage(props) {
 
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
     const [page, setPage] = useState("")
+
     // const classes = useStyles();
 
     // useEffect(() => {
@@ -58,7 +59,7 @@ export default function EventPage(props) {
                         <SendPushNotifications />
                     </div>
                 );
-            default: 
+            default:
                 return(
                     <div style={{textAlign: 'center'}}>
                         <Button color='primary' onClick={()=>{setPage("push_notifications")}}>Send Push Notifications</Button>

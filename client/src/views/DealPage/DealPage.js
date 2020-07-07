@@ -183,6 +183,7 @@ export default function DealPage(props) {
         })
       }
       else {
+        console.log(data.data.deals[0].delivery)
         setValues({
           ...values,
 

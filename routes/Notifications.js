@@ -1,27 +1,34 @@
 var express = require('express');
 const router = express.Router();
 // import { Expo } from 'expo-server-sdk';
-const Expo = require("expo-server-sdk")
+const { Expo } = require('expo-server-sdk')
+// import { Expo } from 'expo-server-sdk';
+
+let expo = new Expo();
+
 
 // Create a new Expo SDK client
 // let expo = new Expo();
 
 // Create Messages
-function createMessages(title, body, data, pushTokens) {
+async function createMessages(title, subtitle, body, data, pushTokens) {
     // Create the messages that you want to send to clents
     let messages = [];
     for (let pushToken of pushTokens) {
         // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
         // Check that all your push tokens appear to be valid Expo push tokens
-        if (!Expo.isExpoPushToken(pushToken)) {
-            console.error(`Push token ${pushToken} is not a valid Expo push token`);
-            continue;
-        }
+
+        // if (!Expo.isExpoPushToken(pushToken)) {
+        //     console.error(`Push token ${pushToken} is not a valid Expo push token`);
+        //     continue;
+        // }
+
         // Construct a message (see https://docs.expo.io/versions/latest/guides/push-notifications.html)
         messages.push({
             to: pushToken,
             sound: 'default',
             title,
+            subtitle,
             body,
             data,
         })
@@ -87,15 +94,15 @@ async function obtainReceipts(receiptIds) {
             // notification and information about an error, if one occurred.
             for (let receipt of receipts) {
             if (receipt.status === 'ok') {
-            continue;
+                continue;
             } else if (receipt.status === 'error') {
-            console.error(`There was an error sending a notification: ${receipt.message}`);
-            if (receipt.details && receipt.details.error) {
-            // The error codes are listed in the Expo documentation:
-            // https://docs.expo.io/versions/latest/guides/push-notifications#response-format
-            // You must handle the errors appropriately.
-            console.error(`The error code is ${receipt.details.error}`);
-            }
+                console.error(`There was an error sending a notification: ${receipt.message}`);
+                if (receipt.details && receipt.details.error) {
+                    // The error codes are listed in the Expo documentation:
+                    // https://docs.expo.io/versions/latest/guides/push-notifications#response-format
+                    // You must handle the errors appropriately.
+                    console.error(`The error code is ${receipt.details.error}`);
+                }
             }
             }
         } catch (error) {
@@ -106,17 +113,25 @@ async function obtainReceipts(receiptIds) {
 
 
 
-router.post('/to_all', (req, res, next) => {
+router.post('/to_all', async (req, res, next) => {
     // Get Variables
     var title = req.query.title;
     var body = req.query.body;
+    var subtitle = req.query.subtitle;
     var notifData = req.query.notifData;
 
-    console.log("req query: ", req.query);
+    // console.log("req query: ", req.query);
 
-    const messages = createMessages(title, body, notifData, pushTokens);
+    pushTokens = ["ExponentPushToken[Z-NfkJGdSK8h9M98q2cLfA]", "ExponentPushToken[wQgvVOPNhjCXNBfDVBrQE9]", "ExponentPushToken[3gN7UZActphmrz2jv17Yj4]"]
 
-    // sendMessages(messages);
+    const messages = await createMessages(title, subtitle, body, notifData, pushTokens);
+
+    const tickets = await sendMessages(messages);
+
+    const receiptIds = getReceiptIds(tickets);
+
+    await obtainReceipts(receiptIds);
+
 });
 
 module.exports = router;

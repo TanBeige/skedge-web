@@ -39,7 +39,9 @@ export default function SendPushNotifications(props) {
     const [values, setValues] = React.useState({
         // Event Creation
         title: "",
-        subtitle: ""
+        subtitle: "",
+        dealId: null,
+        body: "",
     });
 
     //Functions
@@ -53,9 +55,12 @@ export default function SendPushNotifications(props) {
             method: "post",
             url: `/notifications/to_all`,
             params: {
-                title: "", 
-                body: "",
-                notifData: ""
+                title: values.title, 
+                body: values.body,
+                subtitle: values.subtitle,
+                notifData: {
+                    dealId: values.dealId
+                }
             },
         };
 
@@ -87,7 +92,7 @@ export default function SendPushNotifications(props) {
 
 
     return (
-        <div style={{maxWidth: 600, margin: 'auto', marginBottom: 46}}> 
+        <div style={{maxWidth: 600, margin: 'auto', marginBottom: 60}}> 
             <h2>Sending push notifications to all devices.</h2>
             <Grid container spacing={2} >
                 <Grid item xs={12} sm={12}>
@@ -125,13 +130,13 @@ export default function SendPushNotifications(props) {
                     <p>Found in link, first number before dash.<br/> ex) "theskedge.com/deals/<strong>123</strong>-10-percent-off-food" </p>
                     <TextField
                     variant="outlined"
-                    value={values.subtitle}
-                    required
+                    value={values.dealId}
+                    type="number"
                     fullWidth
-                    onChange={handleChange('subtitle')}
-                    id="subtitle"
+                    onChange={handleChange('dealId')}
+                    id="dealId"
                     label="Deal ID"
-                    name="subtitle"
+                    name="dealId"
                     placeholder="123"
                     />
                 </Grid>
