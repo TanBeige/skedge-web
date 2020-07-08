@@ -119,11 +119,13 @@ router.post('/to_all', async (req, res, next) => {
     var body = req.query.body;
     var subtitle = req.query.subtitle;
     var notifData = req.query.notifData;
+    var pushTokens = req.query.expo_tokens;
 
-    // console.log("req query: ", req.query);
 
-    pushTokens = ["ExponentPushToken[Z-NfkJGdSK8h9M98q2cLfA]", "ExponentPushToken[wQgvVOPNhjCXNBfDVBrQE9]", "ExponentPushToken[3gN7UZActphmrz2jv17Yj4]"]
+    // pushTokens = ["ExponentPushToken[Z-NfkJGdSK8h9M98q2cLfA]", "ExponentPushToken[wQgvVOPNhjCXNBfDVBrQE9]", "ExponentPushToken[3gN7UZActphmrz2jv17Yj4]"]
 
+
+    
     const messages = await createMessages(title, subtitle, body, notifData, pushTokens);
 
     const tickets = await sendMessages(messages);
@@ -132,6 +134,10 @@ router.post('/to_all', async (req, res, next) => {
 
     await obtainReceipts(receiptIds);
 
+    res.json({
+        status: 'success',
+        receipts: receiptIds
+    })
 });
 
 module.exports = router;

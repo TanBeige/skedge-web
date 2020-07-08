@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios'
+import gql from 'graphql-tag'
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -32,6 +33,17 @@ const useStyles = makeStyles(blogPostPageStyle);
 //Test notification:
 // ExponentPushToken[Z-NfkJGdSK8h9M98q2cLfA]
 
+const QUERY_ALL_TOKENS = gql`
+query all_push_tokens {
+    anonymous_users {
+      expo_push_token
+    }
+    users(where: {_and: [{expo_push_token: {_is_null: false}}, {expo_push_token: {_neq: ""}}]}) {
+      expo_push_token
+    }
+  }
+`
+
 export default function SendPushNotifications(props) {
 
     const classes = useStyles();
@@ -51,42 +63,62 @@ export default function SendPushNotifications(props) {
 
     const sendPushNotification = async () => {
 
-        const request_config = {
-            method: "post",
-            url: `/notifications/to_all`,
-            params: {
-                title: values.title, 
-                body: values.body,
-                subtitle: values.subtitle,
-                notifData: {
-                    dealId: values.dealId
-                }
-            },
-        };
+        console.log(props.client)
 
-        await axios(request_config).then((res)=>{
-            console.log(res)
-        }).catch(error => {
-            console.log(error);
-        });
+        const token_list = await props.client.query({
+            query: QUERY_ALL_TOKENS,
+            variables: {
+              eventLimit: values.limit,
+              eventOffset: values.eventsLength,
+              userId: props.userId,
+  
+            }
+        })
+        console.log(token_list)
+
+
+        // Grab tokens from each table
+        const anonymous_tokens = token_list.data.anonymous_users
+        const user_tokens = token_list.data.users
+
+        // Concatenate the two tables
+        const all_tokens = anonymous_tokens.concat(user_tokens);
+
+        // Turn array of objects into an array of only token values
+        const token_array = all_tokens.map(item => {
+            return item.expo_push_token
+        })
+
+        // console.log(all_tokens)
+        console.log(token_array.length);
+        token_array.filter((item,index) => {
+            return token_array.indexOf(item) === index
+        })
+
+        for(let i = 0;i < token_array.length; i += 100) {
+            console.log(i);
+
+            const request_config = {
+                method: "post",
+                url: `/notifications/to_all`,
+                params: {
+                    title: values.title, 
+                    body: values.body,
+                    subtitle: values.subtitle,
+                    notifData: {
+                        dealId: values.dealId
+                    },
+                    expo_tokens: token_array.slice(i, i + 100)
+                },
+            };
+
+            await axios(request_config).then((res)=>{
+                console.log(res)
+            }).catch(error => {
+                console.log(error);
+            });
+        }
         
-        // const message = {
-        //     to: "ExponentPushToken[Z-NfkJGdSK8h9M98q2cLfA]",
-        //     sound: 'default',
-        //     title: 'Title',
-        //     body: 'Body',
-        //     data: { dealId: 401 },
-        //     _displayInForeground: true,
-        // };
-        // await fetch('https://exp.host/--/api/v2/push/send', {
-        //     method: 'POST',
-        //     headers: {
-        //         Accept: 'application/json',
-        //         'Accept-encoding': 'gzip, deflate',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(message),
-        // });
     };
     
 
@@ -157,7 +189,7 @@ export default function SendPushNotifications(props) {
                 <hr />
                 <Grid item xs={12} sm={12}>
                     <h5>Double check everything before sending to ALL USERS!</h5>
-                    <Button onClick={sendPushNotification}>Send to all</Button>
+                    {/* <Button onClick={sendPushNotification}>Send to all</Button> */}
                 </Grid>
             </Grid>           
             

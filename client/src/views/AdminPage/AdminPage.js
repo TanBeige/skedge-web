@@ -41,13 +41,17 @@ export default function EventPage(props) {
 
     // const classes = useStyles();
 
-    // useEffect(() => {
-    //     if(isAuthenticated && user) {
-    //         if(user.sub !== ""){
-    //             window.location.href="/"
-    //         }
-    //     }
-    // }, [])
+    useEffect(() => {
+        // Get all admin users here:
+        // compare to current user
+        // Then allow them to enter if they are an admin
+
+        if(isAuthenticated && user) {
+            if(user.sub !== ""){
+                window.location.href="/"
+            }
+        }
+    }, [])
 
 
 
@@ -56,7 +60,9 @@ export default function EventPage(props) {
             case "push_notifications": 
                 return (
                     <div>
-                        <SendPushNotifications />
+                        <SendPushNotifications 
+                            client={props.client}
+                        />
                     </div>
                 );
             default:
