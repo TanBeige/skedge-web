@@ -65,15 +65,7 @@ export default function SendPushNotifications(props) {
 
         console.log(props.client)
 
-        const token_list = await props.client.query({
-            query: QUERY_ALL_TOKENS,
-            variables: {
-              eventLimit: values.limit,
-              eventOffset: values.eventsLength,
-              userId: props.userId,
-  
-            }
-        })
+        const token_list = await props.client.query({query: QUERY_ALL_TOKENS})
         console.log(token_list)
 
 
@@ -90,10 +82,10 @@ export default function SendPushNotifications(props) {
         })
 
         // console.log(all_tokens)
-        console.log(token_array.length);
-        token_array.filter((item,index) => {
+        const filtered_array = token_array.filter((item,index) => {
             return token_array.indexOf(item) === index
         })
+        console.log(filtered_array.length);
 
         for(let i = 0;i < token_array.length; i += 100) {
             console.log(i);
@@ -189,7 +181,7 @@ export default function SendPushNotifications(props) {
                 <hr />
                 <Grid item xs={12} sm={12}>
                     <h5>Double check everything before sending to ALL USERS!</h5>
-                    {/* <Button onClick={sendPushNotification}>Send to all</Button> */}
+                    <Button onClick={sendPushNotification}>Send to all</Button>
                 </Grid>
             </Grid>           
             

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from 'react-helmet';
+import gql from 'graphql-tag'
 
 
 // @material-ui/core components
@@ -30,33 +31,63 @@ cloudinary.config({
   cloud_name: "skedge"
 });
 
-// const useStyles = makeStyles(blogPostPageStyle);
 
+
+const QUERY_ALL_ADMINS = gql`
+query get_admins {
+    administrators{
+        id
+        user_id
+    }
+  }
+`
 
 
 export default function EventPage(props) {
 
-    const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+    const { user, isAuthenticated } = useAuth0();
     const [page, setPage] = useState("")
 
     // const classes = useStyles();
+
+    const checkIfAdmin = async() => {
+        const adminList = await props.client.query({query: QUERY_ALL_ADMINS})
+        console.log(adminList.data)
+        console.log(user.sub)
+        const isAdmin = adminList.data.administrators.some(u => (u.user_id === user.sub))
+        console.log(isAdmin)
+
+        if(!isAdmin) {
+            setPage("notAdmin")
+            // props.history.push="/"
+        }
+        else {
+            setPage("")
+        }
+    }
 
     useEffect(() => {
         // Get all admin users here:
         // compare to current user
         // Then allow them to enter if they are an admin
-
-        if(isAuthenticated && user) {
-            if(user.sub !== ""){
-                window.location.href="/"
-            }
+        if(isAuthenticated && user){
+            checkIfAdmin()
         }
-    }, [])
+        else {
+            setPage("notAdmin")
+        }
+    }, [user])
 
 
 
     const displayView = () => {
         switch(page) {
+            case "notAdmin":
+            return (
+                <div>
+                    <h2>get outta here</h2>
+                </div>
+            )
             case "push_notifications": 
                 return (
                     <div>
