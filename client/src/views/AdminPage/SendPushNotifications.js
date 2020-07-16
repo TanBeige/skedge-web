@@ -86,8 +86,9 @@ export default function SendPushNotifications(props) {
             return token_array.indexOf(item) === index
         })
         console.log(filtered_array.length);
+        // const filtered_array = ["ExponentPushToken[Z-NfkJGdSK8h9M98q2cLfA]", "ExponentPushToken[wQgvVOPNhjCXNBfDVBrQE9]" ]
 
-        for(let i = 0;i < token_array.length; i += 100) {
+        for(let i = 0;i < filtered_array.length; i += 100) {
             console.log(i);
 
             const request_config = {
@@ -100,7 +101,7 @@ export default function SendPushNotifications(props) {
                     notifData: {
                         dealId: values.dealId
                     },
-                    expo_tokens: token_array.slice(i, i + 100)
+                    expo_tokens: filtered_array.slice(i, i + 100)
                 },
             };
 
