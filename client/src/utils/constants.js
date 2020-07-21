@@ -45,6 +45,8 @@ export const categoryList = [
   "Miscellaneous"
 ]
 
+export const dealCategories = ["Alcohol", "American", "Asian", "Beverage",  "Cuban", "Dessert", "Fast Food", "Italian", "Mexican", "Seafood"]
+
 export const states = [ 
   "Alabama",
   "Alaska",

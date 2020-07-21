@@ -1793,7 +1793,8 @@ mutation update_deal(
     $long: numeric, 
     $takeout: Boolean, 
     $delivery: Boolean, 
-    $dine_in: Boolean
+    $dine_in: Boolean,
+    $category: String
   ){
   update_deals(
     where: {id: {_eq: $dealId}}
@@ -1814,6 +1815,8 @@ mutation update_deal(
       takeout: $takeout,
       delivery: $delivery,
       dine_in: $dine_in,
+
+      category: $category,
 
       point_1: $point1,
       point_2: $point2,
@@ -2068,6 +2071,7 @@ query query_deal_info($dealId: Int!) {
     description
     phone_number
     location_name
+    category
 
     start_date
     end_date

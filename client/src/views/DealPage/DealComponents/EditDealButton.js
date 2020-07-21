@@ -41,7 +41,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 //import CustomInput from 'components/CustomInput/CustomInput.js';
 import { MenuItem } from '@material-ui/core';
-import { categoryList } from "utils/constants";
+import { dealCategories } from "utils/constants";
 import DeleteDealButton from './DeleteDealButton.js';
 
 import { createWeekdayString } from 'components/CommonFunctions.js'
@@ -110,6 +110,8 @@ export default function EditDealButton(props) {
         web_url: props.oldDeal.web_url,
         menu_link: props.oldDeal.menu_link,
         savings: props.oldDeal.savings,
+
+        category: props.oldDeal.category,
 
         takeout: props.oldDeal.takeout,
         delivery: props.oldDeal.delivery,
@@ -629,6 +631,30 @@ export default function EditDealButton(props) {
                             label="Point 2"
                             placeholder="35 character max."
                         />
+                    </GridItem>
+                    <GridItem xs={12}>
+                        <TextField
+                            id="category"
+                            select
+                            label="Category"
+                            variant="outlined"
+                            required
+                            fullWidth
+                            className={classes.textField}
+                            value={dealInfo.category}
+                            onChange={(text) => setDealInfo({...dealInfo, category: text.target.value})}
+                            SelectProps={{
+                                MenuProps: {
+                                    className: classes.menu,
+                                },
+                            }}
+                            margin="normal">
+                            {
+                                dealCategories.map((item, index) => {
+                                    return <MenuItem key={index} value={item}>{item}</MenuItem>
+                                })
+                            }
+                        </TextField>
                     </GridItem>
 
                     {/* Takeout/Delivery/Dine-In */}

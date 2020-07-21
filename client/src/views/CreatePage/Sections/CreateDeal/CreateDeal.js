@@ -23,7 +23,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 import TagsInput from "react-tagsinput";
-import { categoryList } from "utils/constants";
+import { categoryList, dealCategories } from "utils/constants";
 import ImageUpload from 'components/CustomUpload/ImageUpload.js';
 
 
@@ -138,7 +138,7 @@ export default function DealInfo(props) {
         sunday: false,
 
         //Categories
-        categories: [],
+        category: "",
         tags: [],
 
         //Banner
@@ -337,7 +337,6 @@ export default function DealInfo(props) {
             mutation: MUTATION_DEAL_ADD,
             variables: {
                 objects: {
-                    category: "", 
                     city: values.city, 
                     cover_pic: response.data.id, 
                     creator_id: user.sub, 
@@ -363,6 +362,8 @@ export default function DealInfo(props) {
                     web_url: values.web_url, 
                     menu_link: values.menu_link,
                     phone_number: values.phone_number,
+                    
+                    category: values.category,
                                 
                     takeout: values.takeout,
                     delivery: values.delivery,
@@ -788,6 +789,32 @@ export default function DealInfo(props) {
                                     />
                                 </Grid>
 
+                                {/* Category */}
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="category"
+                                        select
+                                        label="Category"
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        className={classes.textField}
+                                        value={values.category}
+                                        onChange={(text) => setValues({...values, category: text.target.value})}
+                                        SelectProps={{
+                                            MenuProps: {
+                                                className: classes.menu,
+                                            },
+                                        }}
+                                        margin="normal">
+                                        {
+                                            dealCategories.map((item, index) => {
+                                                return <MenuItem key={index} value={item}>{item}</MenuItem>
+                                            })
+                                        }
+                                    </TextField>
+                                </Grid>
+
                                 {/* Takeout/Delivery/Dine-In */}
                                 <Grid item xs={12} sm={12} style={{textAlign: 'center'}}>
                                     <FormControl>
@@ -943,6 +970,7 @@ const skedgeLocations = [
     state: "Florida"
   }
 ]
+
 
 const EventTags = ({values, handleToggle}) => {
     return(

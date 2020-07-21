@@ -195,6 +195,8 @@ export default function DealPage(props) {
           description: data.data.deals[0].description,
           phone_number: data.data.deals[0].phone_number,
 
+          category: data.data.deals[0].category,
+
           start_date: data.data.deals[0].start_date,
           end_date: data.data.deals[0].end_date,
 
@@ -321,6 +323,8 @@ export default function DealPage(props) {
         takeout: newInfo.takeout,
         delivery: newInfo.delivery,
         dine_in: newInfo.dine_in,
+
+        category: newInfo.category,
     
 
         coverPic: response ? response.data.id : coverPicId,
