@@ -127,6 +127,8 @@ export default function DealInfo(props) {
         delivery: false,
         dine_in: false,
 
+        locked: false,
+
         //Recurring Deals
         repeatCheck: false,
         monday: false,
@@ -368,6 +370,8 @@ export default function DealInfo(props) {
                     takeout: values.takeout,
                     delivery: values.delivery,
                     dine_in: values.dine_in,
+
+                    locked: values.locked
                 }
             }
         }).then((data)=> {
@@ -846,6 +850,21 @@ export default function DealInfo(props) {
                                             </Grid>
                                         </FormGroup>
                                     </FormControl>
+                                </Grid>
+
+                                <Grid item xs={12} style={{textAlign: 'center'}}>
+                                    <FormControlLabel
+                                        control={
+                                        <Checkbox 
+                                        color="primary"
+                                        onChange={handleCheck('locked')}
+                                        checked={values.locked}
+                                        value="locked"
+                                        style={{marginTop: 0, marginBottom: 0}}
+                                        />
+                                        }
+                                        label="Locked"
+                                    />
                                 </Grid>
 
                                 {/* Description */}

@@ -1794,7 +1794,8 @@ mutation update_deal(
     $takeout: Boolean, 
     $delivery: Boolean, 
     $dine_in: Boolean,
-    $category: String
+    $category: String,
+    $locked: Boolean
   ){
   update_deals(
     where: {id: {_eq: $dealId}}
@@ -1815,6 +1816,8 @@ mutation update_deal(
       takeout: $takeout,
       delivery: $delivery,
       dine_in: $dine_in,
+
+      locked: $locked,
 
       category: $category,
 
@@ -1861,6 +1864,7 @@ query query_deal_info($dealId: Int!) {
     is_recurring
     weekday
   
+    locked
 
     start_time
     end_time
@@ -2081,7 +2085,7 @@ query query_deal_info($dealId: Int!) {
     start_time
     end_time
 
-    category
+    locked
 
     city
     state

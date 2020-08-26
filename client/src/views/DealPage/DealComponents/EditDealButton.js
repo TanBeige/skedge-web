@@ -117,6 +117,8 @@ export default function EditDealButton(props) {
         delivery: props.oldDeal.delivery,
         dine_in: props.oldDeal.dine_in,
 
+        locked: props.oldDeal.locked,
+
         //Recurring events
         is_recurring: props.oldDeal.is_recurring,
         monday: props.oldDeal.weekday.includes("1"),
@@ -658,9 +660,9 @@ export default function EditDealButton(props) {
                     </GridItem>
 
                     {/* Takeout/Delivery/Dine-In */}
-                    <FormControl>
+                    <FormControl style={{width: '100%'}}>
                         <FormGroup>
-                            <Grid container direction='row' alignContent='center'>
+                            <Grid container direction='row' alignContent='center' style={{textAlign: 'center'}}>
                                 <Grid item xs={4}>
                                     <FormControlLabel
                                     control={<Checkbox checked={dealInfo.takeout} onChange={handleCheck('takeout')} value="takeout" color='primary'/>}
@@ -687,6 +689,21 @@ export default function EditDealButton(props) {
                             </Grid>
                         </FormGroup>
                     </FormControl>
+
+                    <GridItem xs={12} style={{textAlign: 'center'}}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox 
+                                color="primary"
+                                onChange={handleCheck('locked')}
+                                checked={dealInfo.locked}
+                                value="locked"
+                                style={{marginTop: 0, marginBottom: 0}}
+                                />
+                            }
+                            label="Locked"
+                        />
+                    </GridItem>
 
                     {/* Deal Description */}
                     <GridItem xs={12} sm={12}>

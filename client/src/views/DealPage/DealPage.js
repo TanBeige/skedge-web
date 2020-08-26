@@ -121,6 +121,8 @@ export default function DealPage(props) {
     takeout: false,
     dine_in: false,
 
+    locked: false,
+
     cover_uuid: "",
     cover_url: "",
 
@@ -218,6 +220,8 @@ export default function DealPage(props) {
           delivery: data.data.deals[0].delivery,
           takeout: data.data.deals[0].takeout,
           dine_in: data.data.deals[0].dine_in,
+
+          locked: data.data.deals[0].locked,
       
 
           // latitude: data.data.deals[0].latitude,
@@ -323,6 +327,8 @@ export default function DealPage(props) {
         takeout: newInfo.takeout,
         delivery: newInfo.delivery,
         dine_in: newInfo.dine_in,
+
+        locked: newInfo.locked,
 
         category: newInfo.category,
     
