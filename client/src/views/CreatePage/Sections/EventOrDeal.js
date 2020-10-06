@@ -95,19 +95,19 @@ export default function EventOrDeal(props) {
         <Slide direction={dir} in >
             <div className='EventOrDeal' style={vertStyle}>
                 <div style={{margin: '1em'}}>
-                    <Button variant='contained' color='primary' style={buttonStyle} onClick={() => props.handleCreateType("event")}>
+                    {/* <Button variant='contained' color='primary' style={buttonStyle} onClick={() => props.handleCreateType("event")}>
                         Event
-                    </Button>
+                    </Button> */}
 
                     <div style={{margin: '2.5em'}}></div>
                     {localEntityButton}
                     <div style={{textAlign: 'left', marginTop: '3em'}}> 
                         <hr />
 
-                        <h3>Event: </h3>
+                        {/* <h3>Event: </h3>
                         <ul>
                             <li>Something you host that you normally don’t, and brings people together.</li>
-                        </ul>
+                        </ul> */}
                         <h3>Deal: </h3>
                         <ul>
                             <li>Discounts on regularly priced items.</li>

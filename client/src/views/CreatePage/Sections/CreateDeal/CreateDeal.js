@@ -99,6 +99,9 @@ export default function DealInfo(props) {
 
     const [values, setValues] = React.useState({
         // Deal Creation
+
+        eventCheck: false,
+
         name: "",
         street: "",
         location_name: "",
@@ -346,6 +349,7 @@ export default function DealInfo(props) {
                     end_date: values.repeatCheck ? moment(values.end_date).format('YYYY-MM-DD') : moment(values.start_date).format('YYYY-MM-DD'), 
                     end_time: values.endTimeExists ? moment(values.end_time).format('HH:mm:ss') : null, 
                     is_recurring: values.repeatCheck, 
+                    is_event: values.eventCheck, 
                     location_name: values.location_name, 
                     location_geo: {
                         type: "Point",
@@ -674,6 +678,20 @@ export default function DealInfo(props) {
 
                         <div className='DealInfo'>
                             <Grid container spacing={2} >
+                                <Grid item xs={12}>
+                                    <FormControlLabel
+                                        control={
+                                        <Checkbox 
+                                            color="primary"
+                                            onChange={handleCheck('eventCheck')}
+                                            checked={values.eventCheck}
+                                            value="eventCheck"
+                                            style={{marginTop: 0, marginBottom: 0}}
+                                        />
+                                        }
+                                        label="Is this an event?"
+                                    />
+                                </Grid>
                                 <Grid item xs={12} sm={12}>
                                     <TextField
                                         error={values.name.length > 50}
