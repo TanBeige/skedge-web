@@ -992,7 +992,7 @@ export default function DealInfo(props) {
                         className={classes.submit}
                         onClick={submitDealInfo}
                     >
-                    Submit Deal ->
+                    Submit Deal {'->'}
                     </Button>
                 </form>
             </ThemeProvider>
