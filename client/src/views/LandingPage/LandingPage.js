@@ -153,16 +153,16 @@ export default function LandingPage(props) {
           <GridContainer>
             <GridItem xs={12} sm={6} md={6}>
               <SectionTitle className={classes.title} />
-              <h4>
+              {/* <h4>
                 Where you go to find, share, and create your favorite things to do. Sign up to see all events & deals.
+              </h4> */}
+              <h4>
+                Thank you Tallahassee. The Skedge team worked hard to bring a product unique here and we couldn't have done it without all of you.
+                <br />We hope to see you again in another form someday. 
+                <br />For now... Stay safe!
               </h4>
               <br />
-              {/* <div style={{position: 'absolute', right: 0}}>
-                <a href="https://apps.apple.com/us/app/skedge/id1506618749?ls=1" onClick={() => clickedDownload()}>
-                    <img style={{maxHeight: '22vh'}} src={require("assets/img/app_advert_3.png")} />
-                </a>
-              </div> */}
-              <Button
+              {/* <Button
                 color="primary"
                 onClick={handleLogin}
                 // style={{position: 'fixed', top: 300}}
@@ -181,7 +181,7 @@ export default function LandingPage(props) {
                   Skedge on the App Store
                 </Button>
               </a>
-              
+               */}
               
             </GridItem>
           </GridContainer>
@@ -198,7 +198,7 @@ export default function LandingPage(props) {
         </Button>
         <div style={{paddingBottom: 0, minHeight: '200vh'}}>
           
-          <AppearOnScroll scrollInHeight={500}>
+          {/* <AppearOnScroll scrollInHeight={500}>
             <Button
               color="primary"
               onClick={handleLogin}
@@ -206,9 +206,9 @@ export default function LandingPage(props) {
             >
               Sign up for more events and happy hours
             </Button>
-          </AppearOnScroll>
+          </AppearOnScroll> */}
           
-          <SectionTeam client={props.client} setLastTab={props.setLastTab} lastTab={props.lastTab}/>
+          {/* <SectionTeam client={props.client} setLastTab={props.setLastTab} lastTab={props.lastTab}/> */}
           {/* <SectionWork /> */}
         </div>
       {/* </div> */}
